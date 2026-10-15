@@ -11,7 +11,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
    
-    <!-- Supabase JS Client -->
+    <!-- Supabase JS Client -->z
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         tailwind.config = {
@@ -811,24 +811,35 @@
             document.getElementById('cfg-adminPassword').value = '';
         }
 
-        function saveGeneralInfo(e) {
-            e.preventDefault();
-            appData.general.siteName = document.getElementById('cfg-siteName').value;
-            appData.general.siteLocation = document.getElementById('cfg-siteLocation').value;
-            appData.general.heroSubtitle = document.getElementById('cfg-heroSubtitle').value;
-            appData.general.statStudents = document.getElementById('cfg-statStudents').value;
-            appData.general.statEvents = document.getElementById('cfg-statEvents').value;
-            appData.general.statFinanced = document.getElementById('cfg-statFinanced').value;
-            appData.general.contactEmail = document.getElementById('cfg-contactEmail').value;
+       async function saveGeneralInfo(e) {
+    e.preventDefault();
+    appData.general.siteName = document.getElementById('cfg-siteName').value;
+    appData.general.siteLocation = document.getElementById('cfg-sitelocation').value;
+    appData.general.heroSubtitle = document.getElementById('cfg-heroSubtitle').value;
+    appData.general.statStudents = document.getElementById('cfg-statStudents').value;
+    appData.general.statEvents = document.getElementById('cfg-statEvents').value;
+    appData.general.statFinanced = document.getElementById('cfg-statFinanced').value;
+    appData.general.contactEmail = document.getElementById('cfg-contactEmail').value;
 
-            const newPass = document.getElementById('cfg-adminPassword').value.trim();
-            if (newPass !== "") {
-                appData.general.adminPassword = newPass;
-            }
+    const newPass = document.getElementById('cfg-adminPassword').value.trim();
+    if (newPass !== "") {
+        appData.general.adminPassword = newPass;
+    }
 
-            saveDataToStorage();
-            showToast("Informations générales sauvegardées !");
-        }
+    // Enregistrement dans Supabase
+    try {
+        const { error } = await _supabase
+            .from('site_content')
+            .upsert({ id: 1, content: appData });
+
+        if (error) throw error;
+
+        showToast("Informations générales sauvegardées et synchronisées !");
+    } catch (err) {
+        console.error("Erreur Supabase :", err);
+        showToast("Erreur lors de la synchronisation Supabase");
+    }
+}
 
         // 2. PROJECT & BUDGET
         function fillProjectForm() {
