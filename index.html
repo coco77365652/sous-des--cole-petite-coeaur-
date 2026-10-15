@@ -1186,11 +1186,24 @@
             link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
         });
 
-        // Initialisation
-        window.onload = function() {
-            renderSite();
-            fetchRemoteData();
-        };
+async function fetchRemoteData() {
+    try {
+        const { data, error } = await _supabase
+            .from('site_content')
+            .select('content')
+            .eq('id', 1)
+            .single();
+
+        if (error) throw error;
+
+        if (data && data.content) {
+            appData = data.content; // Met à jour vos données locales
+            renderSite();          // Rafraîchit l'affichage de la page
+        }
+    } catch (err) {
+        console.error("Erreur de chargement Supabase :", err);
+    }
+}
     </script>
 </body>
 </html>
