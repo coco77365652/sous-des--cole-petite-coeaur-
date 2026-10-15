@@ -815,20 +815,27 @@
             document.getElementById('cfg-contactEmail').value = g.contactEmail || '';
             document.getElementById('cfg-adminPassword').value = '';
         }
-
-       async function saveGeneralInfo(e) {
+        
+async function saveGeneralInfo(e) {
     e.preventDefault();
-    appData.general.siteName = document.getElementById('cfg-siteName').value;
-    appData.general.siteLocation = document.getElementById('cfg-sitelocation').value;
-    appData.general.heroSubtitle = document.getElementById('cfg-heroSubtitle').value;
-    appData.general.statStudents = document.getElementById('cfg-statStudents').value;
-    appData.general.statEvents = document.getElementById('cfg-statEvents').value;
-    appData.general.statFinanced = document.getElementById('cfg-statFinanced').value;
-    appData.general.contactEmail = document.getElementById('cfg-contactEmail').value;
 
-    const newPass = document.getElementById('cfg-adminPassword').value.trim();
-    if (newPass !== "") {
-        appData.general.adminPassword = newPass;
+    // Fonction sécurisée pour éviter les plantages si un ID est introuvable
+    const getVal = (id) => {
+        const el = document.getElementById(id);
+        return el ? el.value : '';
+    };
+
+    appData.general.siteName = getVal('cfg-siteName');
+    appData.general.siteLocation = getVal('cfg-sitelocation');
+    appData.general.heroSubtitle = getVal('cfg-heroSubtitle');
+    appData.general.statStudents = getVal('cfg-statStudents');
+    appData.general.statEvents = getVal('cfg-statEvents');
+    appData.general.statFinanced = getVal('cfg-statFinanced');
+    appData.general.contactEmail = getVal('cfg-contactEmail');
+
+    const passEl = document.getElementById('cfg-adminPassword');
+    if (passEl && passEl.value.trim() !== "") {
+        appData.general.adminPassword = passEl.value.trim();
     }
 
     // Enregistrement dans Supabase
