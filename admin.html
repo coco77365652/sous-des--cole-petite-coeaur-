@@ -14,6 +14,11 @@
     <!-- Supabase JS Client -->z
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+  const SUPABASE_URL = 'https://gdbktvxramksondbobns.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_6Q9vML3WwH7_8n5Ipvo-3g_DRZx_VPK';
+  const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+</script>
+    <script>
         tailwind.config = {
             theme: {
                 extend: {
