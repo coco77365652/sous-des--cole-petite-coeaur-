@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration - Sou des Écoles de Petit-Cœur</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                        },
+                        amberCustom: {
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- OVERLAY NOTIFICATION -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
+        <i id="toast-icon" class="fas fa-check-circle text-emerald-400 text-lg"></i>
+        <span id="toast-message" class="text-sm font-semibold">Action réussie !</span>
+    </div>
+
+    <!-- ECRAN DE CONNEXION (LOGIN) -->
+    <div id="login-view" class="fixed inset-0 z-50 bg-slate-900 flex items-center justify-center p-4">
+        <div class="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8 relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-brand-500/10 rounded-full blur-2xl"></div>
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-brand-50 rounded-2xl flex items-center justify-center text-brand-600 mx-auto mb-4 text-2xl shadow-inner">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h1 class="font-heading text-2xl font-extrabold text-slate-900">Espace Administration</h1>
+                <p class="text-slate-500 text-sm mt-1">Sou des Écoles de Petit-Cœur</p>
+            </div>
+
+            <form id="login-form" onsubmit="handleLogin(event)" class="space-y-5">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Mot de passe d'accès</label>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="password" id="admin-pass-input" placeholder="Mot de passe (par défaut: admin123)" required 
+                            class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all">
+                    </div>
+                    <p id="login-error" class="text-rose-500 text-xs font-semibold mt-2 hidden"><i class="fas fa-exclamation-circle mr-1"></i> Mot de passe incorrect.</p>
+                </div>
+                <button type="submit" class="w-full py-3.5 px-6 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg shadow-brand-500/30 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+                    <span>Connexion</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <div class="mt-8 pt-6 border-t border-slate-100 flex justify-between items-center text-xs text-slate-500">
+                <span>Code par défaut : <code class="bg-slate-100 px-2 py-0.5 rounded font-mono text-slate-700">admin123</code></span>
+                <a href="sou_des_coles_de_petit_c_ur.html" class="hover:text-brand-600 font-semibold transition"><i class="fas fa-arrow-left mr-1"></i> Site public</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- INTERFACE ADMIN (Masquée au départ) -->
+    <div id="admin-dashboard" class="hidden min-h-screen flex flex-col md:flex-row">
+        
+        <!-- SIDEBAR BARRE LATÉRALE -->
+        <aside class="w-full md:w-64 bg-slate-900 text-white flex-shrink-0 flex flex-col justify-between p-5 border-r border-slate-800">
+            <div>
+                <!-- Brand Header -->
+                <div class="flex items-center gap-3 pb-6 border-b border-slate-800">
+                    <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold shadow-lg shadow-brand-500/30">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-heading font-extrabold text-sm leading-tight text-white">Sou Petit-Cœur</h2>
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-brand-400 bg-brand-500/10 px-2 py-0.5 rounded">Dashboard Admin</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Links -->
+                <nav class="mt-6 space-y-1">
+                    <button onclick="switchTab('tab-general')" id="nav-tab-general" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
+                        <i class="fas fa-[#10B981] fa-sliders w-5"></i>
+                        <span>Général & Infos</span>
+                    </button>
+
+                    <button onclick="switchTab('tab-projects')" id="nav-tab-projects" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
+                        <i class="fas fa-[#3B82F6] fa-piggy-bank w-5"></i>
+                        <span>Projet & Budget</span>
+                    </button>
+
+                    <button onclick="switchTab('tab-upcoming')" id="nav-tab-upcoming" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
+                        <i class="fas fa-[#8B5CF6] fa-calendar-alt w-5"></i>
+                        <span>Événements à Venir</span>
+                    </button>
+
+                    <button onclick="switchTab('tab-past')" id="nav-tab-past" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
+                        <i class="fas fa-[#EC4899] fa-[#EC4899] fa-camera-retro w-5"></i>
+                        <span>Albums & Photos</span>
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Bottom Actions -->
+            <div class="pt-6 border-t border-slate-800 space-y-2">
+                <a href="sou_des_coles_de_petit_c_ur.html" target="_blank" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold text-slate-300 bg-slate-800/80 hover:bg-slate-800 hover:text-white transition">
+                    <span><i class="fas fa-external-link-alt mr-2 text-brand-400"></i> Voir le site public</span>
+                    <i class="fas fa-chevron-right text-[10px] opacity-50"></i>
+                </a>
+                <button onclick="logoutAdmin()" class="w-full flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-rose-400 hover:bg-rose-500/10 transition">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Déconnexion</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- CONTENU PRINCIPAL -->
+        <main class="flex-1 bg-slate-100 p-4 md:p-8 overflow-y-auto custom-scrollbar">
+            
+            <!-- HEADER TOP BAR -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                <div>
+                    <h1 id="page-title" class="font-heading text-2xl md:text-3xl font-extrabold text-slate-900">Panneau de Configuration</h1>
+                    <p id="page-subtitle" class="text-slate-500 text-sm mt-1">Gérez le contenu publié sur le site officiel du Sou des Écoles.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="exportDataJSON()" class="px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs rounded-xl border border-slate-200 shadow-sm transition flex items-center gap-2">
+                        <i class="fas fa-download text-slate-400"></i> Exporter JSON
+                    </button>
+                    <button onclick="resetDataDefault()" class="px-3.5 py-2 bg-white hover:bg-rose-50 text-rose-600 font-bold text-xs rounded-xl border border-slate-200 shadow-sm transition flex items-center gap-2">
+                        <i class="fas fa-undo"></i> Réinitialiser
+                    </button>
+                </div>
+            </div>
+
+            <!-- KPI SUMMARY CARDS -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center text-xl font-bold">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Budget Collecté</span>
+                        <h4 id="stat-budget" class="text-xl font-extrabold text-slate-900">0 €</h4>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center text-xl font-bold">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Événements futurs</span>
+                        <h4 id="stat-upcoming" class="text-xl font-extrabold text-slate-900">0</h4>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-500 flex items-center justify-center text-xl font-bold">
+                        <i class="fas fa-images"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Albums Passés</span>
+                        <h4 id="stat-past" class="text-xl font-extrabold text-slate-900">0</h4>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center text-xl font-bold">
+                        <i class="fas fa-[#10B981] fa-camera"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Total Photos</span>
+                        <h4 id="stat-photos" class="text-xl font-extrabold text-slate-900">0</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTIONS DES ONGLETS -->
+            
+            <!-- TAB 1 : GÉNÉRAL & SÉCURITÉ -->
+            <div id="tab-general" class="tab-content hidden space-y-6">
+                <form id="form-general" onsubmit="saveGeneralInfo(event)" class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm space-y-6">
+                    <h3 class="font-heading text-lg font-bold text-slate-900 border-b border-slate-100 pb-4">
+                        <i class="fas fa-[#10B981] fa-info-circle text-brand-600 mr-2"></i> Informations Principales du Sou
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Nom de l'Association</label>
+                            <input type="text" id="cfg-siteName" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Commune / Localisation</label>
+                            <input type="text" id="cfg-siteLocation" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Slogan / Sous-titre d'accueil</label>
+                        <input type="text" id="cfg-heroSubtitle" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-slate-100">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Statistique : Élevés soutenus</label>
+                            <input type="number" id="cfg-statStudents" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Statistique : Événements / an</label>
+                            <input type="number" id="cfg-statEvents" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Statistique : Financement (%)</label>
+                            <input type="number" id="cfg-statFinanced" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-100">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Email de Contact</label>
+                            <input type="email" id="cfg-contactEmail" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Changer le Mot de passe d'Admin</label>
+                            <input type="password" id="cfg-adminPassword" placeholder="Laissez vide pour conserver" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex justify-end">
+                        <button type="submit" class="px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg shadow-brand-500/20 transition active:scale-95">
+                            <i class="fas fa-save mr-2"></i> Enregistrer les modifications
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- TAB 2 : PROJET & BUDGET -->
+            <div id="tab-projects" class="tab-content hidden space-y-6">
+                <form id="form-project" onsubmit="saveProjectData(event)" class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm space-y-6">
+                    <h3 class="font-heading text-lg font-bold text-slate-900 border-b border-slate-100 pb-4">
+                        <i class="fas fa-bullseye text-brand-600 mr-2"></i> Projet Annuel et Jauge Budgétaire
+                    </h3>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Titre du Grand Projet de l'Année</label>
+                        <input type="text" id="proj-title" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Description Détaillée</label>
+                        <textarea id="proj-description" rows="3" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium"></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Montant Récolté Actuel (€)</label>
+                            <input type="number" id="proj-current" oninput="updateJaugePreview()" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-bold text-emerald-600">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Objectif Total à Atteindre (€)</label>
+                            <input type="number" id="proj-target" oninput="updateJaugePreview()" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-bold text-slate-700">
+                        </div>
+                    </div>
+
+                    <!-- APERÇU DE LA JAUGE -->
+                    <div class="p-5 bg-slate-50 rounded-2xl border border-slate-200">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-bold text-slate-500 uppercase">Aperçu en temps réel de la progression</span>
+                            <span id="jauge-percent" class="text-sm font-extrabold text-brand-600">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-200 h-4 rounded-full overflow-hidden">
+                            <div id="jauge-bar" class="bg-gradient-to-r from-amber-500 to-brand-600 h-full transition-all duration-500" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex justify-end">
+                        <button type="submit" class="px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg shadow-brand-500/20 transition active:scale-95">
+                            <i class="fas fa-save mr-2"></i> Mettre à jour le Budget
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- TAB 3 : ÉVÉNEMENTS À VENIR -->
+            <div id="tab-upcoming" class="tab-content hidden space-y-6">
+                <!-- Actions Top -->
+                <div class="flex justify-between items-center">
+                    <h3 class="font-heading text-lg font-bold text-slate-900">
+                        Agenda des Événements Futurs
+                    </h3>
+                    <button onclick="openUpcomingModal()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center gap-2">
+                        <i class="fas fa-plus"></i> Nouvel Événement
+                    </button>
+                </div>
+
+                <!-- Upcoming List Grid -->
+                <div id="upcoming-events-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Dynamic rendering -->
+                </div>
+            </div>
+
+            <!-- TAB 4 : ALBUMS & ÉVÉNEMENTS PASSÉS -->
+            <div id="tab-past" class="tab-content hidden space-y-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="font-heading text-lg font-bold text-slate-900">Galerie Souvenirs & Albums Passés</h3>
+                        <p class="text-xs text-slate-500">Ajoutez des photos de manifestations ou des retours en images.</p>
+                    </div>
+                    <button onclick="openPastModal()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center gap-2">
+                        <i class="fas fa-folder-plus"></i> Nouvel Album Passé
+                    </button>
+                </div>
+
+                <!-- Past Events / Gallery Manager List -->
+                <div id="past-events-list" class="space-y-6">
+                    <!-- Dynamic rendering -->
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- MODAL 1 : ÉVÉNEMENT À VENIR -->
+    <div id="upcoming-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 id="upcoming-modal-title" class="font-heading font-extrabold text-slate-900 text-lg">Créer un événement à venir</h3>
+                <button onclick="closeUpcomingModal()" class="text-slate-400 hover:text-slate-600 p-1"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <form id="form-upcoming-event" onsubmit="saveUpcomingEvent(event)" class="space-y-4">
+                <input type="hidden" id="upcoming-edit-id">
+                
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Titre de l'événement</label>
+                    <input type="text" id="up-title" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Date (Ex: 12 Déc 2024)</label>
+                        <input type="text" id="up-date" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Horaire (Ex: 14h00 - 18h00)</label>
+                        <input type="text" id="up-time" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Lieu</label>
+                    <input type="text" id="up-location" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Description</label>
+                    <textarea id="up-desc" rows="3" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Badge / Statut (Optionnel)</label>
+                    <input type="text" id="up-badge" placeholder="Ex: Inscription requise, À ne pas manquer" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 flex justify-end gap-2">
+                    <button type="button" onclick="closeUpcomingModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition">Annuler</button>
+                    <button type="submit" class="px-5 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-md transition">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2 : ALBUM ÉVÉNEMENT PASSÉ -->
+    <div id="past-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 id="past-modal-title" class="font-heading font-extrabold text-slate-900 text-lg">Créer un album souvenir</h3>
+                <button onclick="closePastModal()" class="text-slate-400 hover:text-slate-600 p-1"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <form id="form-past-event" onsubmit="savePastEvent(event)" class="space-y-4">
+                <input type="hidden" id="past-edit-id">
+                
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Nom de la manifestation</label>
+                    <input type="text" id="past-title" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Date / Période</label>
+                        <input type="text" id="past-date" required placeholder="Ex: Octobre 2024" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Bénéfices Générés (€)</label>
+                        <input type="text" id="past-raised" placeholder="Ex: +1 250 €" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Résumé / Description</label>
+                    <textarea id="past-desc" rows="3" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500"></textarea>
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 flex justify-end gap-2">
+                    <button type="button" onclick="closePastModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition">Annuler</button>
+                    <button type="submit" class="px-5 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-md transition">Créer l'album</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC & LOCALSTORAGE HANDLER -->
+    <script>
+        // CONFIGURATION DEFAULT DATA
+        const DEFAULT_DATA = {
+            general: {
+                siteName: "Sou des Écoles",
+                siteLocation: "Petit-Cœur",
+                heroSubtitle: "Ensemble pour enrichir le quotidien scolaire des enfants de Petit-Cœur !",
+                statStudents: "120",
+                statEvents: "8",
+                statFinanced: "100",
+                contactEmail: "contact@sou-petitcoeur.fr",
+                adminPassword: "admin123"
+            },
+            project: {
+                title: "Financement de la Classe de Découverte à la Montagne",
+                description: "Nous soutenons cette année la sortie scolaire de 3 jours à la montagne pour tous les élèves du primaire (visite de fermes, nuit en gîte, activités nature).",
+                currentAmount: 1850,
+                targetAmount: 2500
+            },
+            upcomingEvents: [
+                {
+                    id: 1,
+                    title: "Vente de Pâtisseries & Chocolats de Noël",
+                    date: "Vendredi 08 Décembre",
+                    time: "16h30 - 18h00",
+                    location: "Cour de l'école de Petit-Cœur",
+                    description: "Commandes de chocolats de chocolatier local et vente de gâteaux confectionnés par les parents d'élèves.",
+                    badge: "Gourmandise"
+                },
+                {
+                    id: 2,
+                    title: "Grand Carnaval & Loto des Enfants",
+                    date: "Samedi 17 Février",
+                    time: "14h00 - 17h30",
+                    location: "Salle des Fêtes de La Léchère",
+                    description: "Défilé déguisé des enfants suivi d'un loto récréatif doté de superbes lots pour toute la famille !",
+                    badge: "Incontournable"
+                }
+            ],
+            pastEvents: [
+                {
+                    id: 101,
+                    title: "Vente de Sapins de Noël & Brioches",
+                    date: "Décembre 2023",
+                    raised: "+ 980 € récoltés",
+                    description: "Grâce à votre immense générosité lors de la commande de sapins Nordmann et de brioches, les bénéfices ont permis d'acheter des nouveaux jeux pour la récréation.",
+                    photos: [
+                        "https://images.unsplash.com/photo-1543589077-47d5199647ce?auto=format&fit=crop&w=600&q=80",
+                        "https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&w=600&q=80",
+                        "https://images.unsplash.com/photo-1513297887119-d46091b24bfa?auto=format&fit=crop&w=600&q=80"
+                    ]
+                },
+                {
+                    id: 102,
+                    title: "Kermesse de Fin d'Année Scolaire",
+                    date: "Juin 2023",
+                    raised: "+ 1 450 € récoltés",
+                    description: "Une magnifique journée ensoleillée avec stand de chamboule-tout, pêche aux canards, spectacle chanté par les élèves et buvette conviviale.",
+                    photos: [
+                        "https://images.unsplash.com/photo-1472162072942-cd5147eb3902?auto=format&fit=crop&w=600&q=80",
+                        "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=600&q=80"
+                    ]
+                }
+            ]
+        };
+
+        let appData = {};
+
+        // INITIALISATION
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDataFromStorage();
+            fetchRemoteData();
+            checkSession();
+        });
+
+        // Conversion / Normalisation bidirectionnelle avec le schéma du site public
+        function normalizeAppData(data) {
+            const res = JSON.parse(JSON.stringify(DEFAULT_DATA));
+            if (!data) return res;
+
+            // Si format siteData (public)
+            if (data.general) {
+                if (data.general.siteName) res.general.siteName = data.general.siteName;
+                else if (data.general.assocName) res.general.siteName = data.general.assocName;
+
+                if (data.general.siteLocation) res.general.siteLocation = data.general.siteLocation;
+                else if (data.general.assocSub) res.general.siteLocation = data.general.assocSub;
+
+                if (data.general.heroSubtitle) res.general.heroSubtitle = data.general.heroSubtitle;
+                else if (data.general.heroDesc) res.general.heroSubtitle = data.general.heroDesc;
+
+                if (data.general.statStudents) res.general.statStudents = data.general.statStudents;
+                else if (data.general.statEleves) res.general.statStudents = data.general.statEleves.toString().replace(/[^0-9]/g, '');
+
+                if (data.general.statEvents) res.general.statEvents = data.general.statEvents;
+                if (data.general.statFinanced) res.general.statFinanced = data.general.statFinanced;
+                if (data.general.contactEmail) res.general.contactEmail = data.general.contactEmail;
+                if (data.general.adminPassword) res.general.adminPassword = data.general.adminPassword;
+            }
+            if (data.adminPassword) res.general.adminPassword = data.adminPassword;
+
+            if (data.project) {
+                if (data.project.title) res.project.title = data.project.title;
+                if (data.project.description) res.project.description = data.project.description;
+                if (data.project.currentAmount !== undefined) res.project.currentAmount = Number(data.project.currentAmount);
+                if (data.project.targetAmount !== undefined) res.project.targetAmount = Number(data.project.targetAmount);
+            } else if (data.budget) {
+                if (data.budget.current !== undefined) res.project.currentAmount = Number(data.budget.current);
+                if (data.budget.target !== undefined) res.project.targetAmount = Number(data.budget.target);
+            }
+
+            if (Array.isArray(data.upcomingEvents)) {
+                res.upcomingEvents = data.upcomingEvents.map(ev => ({
+                    id: ev.id || Date.now(),
+                    title: ev.title || '',
+                    date: ev.date || '',
+                    time: ev.time || '',
+                    location: ev.location || '',
+                    description: ev.description || ev.desc || '',
+                    badge: ev.badge || 'Événement'
+                }));
+            }
+
+            if (Array.isArray(data.pastEvents)) {
+                res.pastEvents = data.pastEvents.map(pev => ({
+                    id: pev.id || Date.now(),
+                    title: pev.title || '',
+                    date: pev.date || '',
+                    raised: pev.raised || '',
+                    description: pev.description || pev.desc || '',
+                    photos: pev.photos || []
+                }));
+            }
+
+            return res;
+        }
+
+        // Conversion de appData vers le format attendu par le site public (sou_petit_coeur_data)
+        function toPublicSiteData(app) {
+            let existing = {};
+            try {
+                const raw = localStorage.getItem('sou_petit_coeur_data');
+                if (raw) existing = JSON.parse(raw);
+            } catch(e) {}
+
+            return {
+                adminPassword: app.general.adminPassword || "admin123",
+                general: {
+                    assocName: app.general.siteName || "Sou des Écoles de Petit-Cœur",
+                    assocSub: app.general.siteLocation || "Petit-Cœur • La Léchère",
+                    heroTitle: (existing.general && existing.general.heroTitle) || "Ensemble pour les enfants de Petit-Cœur !",
+                    heroDesc: app.general.heroSubtitle || "Association de parents bénévoles dédiée au financement des sorties scolaires.",
+                    bureauText: (existing.general && existing.general.bureauText) || "« Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, du matériel informatique ou des spectacles pour nos enfants. Merci à toute l'équipe enseignante, aux bénévoles et aux familles de la commune pour leur engagement ! »",
+                    locationTag: "Savoie - Commune de La Léchère",
+                    statEleves: app.general.statStudents ? (app.general.statStudents + "+") : "120+",
+                    statEvents: app.general.statEvents ? String(app.general.statEvents) : "6",
+                    statBudget: app.general.statFinanced ? (app.general.statFinanced + "%") : "100%"
+                },
+                budget: {
+                    current: app.project.currentAmount || 0,
+                    target: app.project.targetAmount || 1
+                },
+                upcomingEvents: (app.upcomingEvents || []).map(item => ({
+                    id: item.id,
+                    title: item.title,
+                    date: item.date,
+                    time: item.time,
+                    location: item.location,
+                    badge: item.badge || 'Événement',
+                    desc: item.description || ''
+                })),
+                pastEvents: (app.pastEvents || []).map(album => ({
+                    id: album.id,
+                    title: album.title,
+                    date: album.date,
+                    raised: album.raised || '',
+                    desc: album.description || '',
+                    photos: album.photos || []
+                })),
+                projects: existing.projects || [
+                    {
+                        id: 201,
+                        title: "Cycle Ski de Fond à Naves",
+                        category: "Sport & Montagne",
+                        status: "Financé à 100%",
+                        desc: "Financement du matériel et du transport pour 5 séances d'apprentissage sur le plateau nordique."
+                    },
+                    {
+                        id: 202,
+                        title: "Classe Découverte Nature (3 jours)",
+                        category: "Voyage Pédagogique",
+                        status: "En cours (65%)",
+                        desc: "Séjour au Lac d'Annecy pour la classe de CM1/CM2 (hébergement & ateliers faune/flore)."
+                    }
+                ]
+            };
+        }
+
+        async function fetchRemoteData() {
+            try {
+                const res = await fetch('/api/data', { cache: 'no-store' });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && typeof data === 'object') {
+                        appData = normalizeAppData(data);
+                        localStorage.setItem('sou_app_data', JSON.stringify(appData));
+                        localStorage.setItem('sou_petit_coeur_data', JSON.stringify(toPublicSiteData(appData)));
+                        updateDashboardStats();
+                        initDashboardUI();
+                    }
+                }
+            } catch (err) {
+                console.warn('Mode hors ligne ou serveur indisponible:', err);
+            }
+        }
+
+        function loadDataFromStorage() {
+            const stored = localStorage.getItem('sou_app_data');
+            const shared = localStorage.getItem('sou_petit_coeur_data');
+            if (stored) {
+                try {
+                    appData = normalizeAppData(JSON.parse(stored));
+                } catch(e) {
+                    appData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+                }
+            } else if (shared) {
+                try {
+                    appData = normalizeAppData(JSON.parse(shared));
+                } catch(e) {
+                    appData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+                }
+            } else {
+                appData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+                saveDataToStorage();
+            }
+        }
+
+        async function saveDataToStorage() {
+            // Sauvegardes locales
+            localStorage.setItem('sou_app_data', JSON.stringify(appData));
+            const publicData = toPublicSiteData(appData);
+            localStorage.setItem('sou_petit_coeur_data', JSON.stringify(publicData));
+            updateDashboardStats();
+
+            // Synchronisation distante sur Netlify Database
+            try {
+                await fetch('/api/data', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(publicData)
+                });
+            } catch (err) {
+                console.error('Erreur lors de la sauvegarde distante:', err);
+            }
+        }
+
+        // Écouter les modifications si effectuées dans un autre onglet
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'sou_app_data' || e.key === 'sou_petit_coeur_data') {
+                loadDataFromStorage();
+                initDashboardUI();
+            }
+        });
+
+        function checkSession() {
+            const loggedIn = sessionStorage.getItem('sou_admin_logged');
+            if (loggedIn === 'true') {
+                document.getElementById('login-view').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                initDashboardUI();
+            } else {
+                document.getElementById('login-view').classList.remove('hidden');
+                document.getElementById('admin-dashboard').classList.add('hidden');
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const passInput = document.getElementById('admin-pass-input').value;
+            const currentPass = appData.general.adminPassword || "admin123";
+
+            if (passInput === currentPass) {
+                sessionStorage.setItem('sou_admin_logged', 'true');
+                document.getElementById('login-error').classList.add('hidden');
+                checkSession();
+                showToast("Connexion réussie !");
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        }
+
+        function logoutAdmin() {
+            sessionStorage.removeItem('sou_admin_logged');
+            checkSession();
+            showToast("Vous vous êtes déconnecté.", "info");
+        }
+
+        function initDashboardUI() {
+            switchTab('tab-general');
+            fillGeneralForm();
+            fillProjectForm();
+            renderUpcomingList();
+            renderPastList();
+            updateDashboardStats();
+        }
+
+        // TABS NAVIGATION
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white');
+                btn.classList.add('text-slate-400');
+            });
+
+            document.getElementById(tabId).classList.remove('hidden');
+            const activeBtn = document.getElementById('nav-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-brand-600', 'text-white');
+                activeBtn.classList.remove('text-slate-400');
+            }
+
+            // Titles
+            const titles = {
+                'tab-general': 'Configuration Générale',
+                'tab-projects': 'Gestion des Projets & Budget',
+                'tab-upcoming': 'Gestion des Événements à Venir',
+                'tab-past': 'Albums Photos & Événements Passés'
+            };
+            document.getElementById('page-title').textContent = titles[tabId] || 'Panneau d\'Administration';
+        }
+
+        // UPDATE KPI STATS
+        function updateDashboardStats() {
+            document.getElementById('stat-budget').textContent = `${appData.project.currentAmount.toLocaleString()} €`;
+            document.getElementById('stat-upcoming').textContent = appData.upcomingEvents.length;
+            document.getElementById('stat-past').textContent = appData.pastEvents.length;
+            
+            let photoCount = 0;
+            appData.pastEvents.forEach(album => {
+                photoCount += (album.photos ? album.photos.length : 0);
+            });
+            document.getElementById('stat-photos').textContent = photoCount;
+        }
+
+        // 1. GENERAL INFO
+        function fillGeneralForm() {
+            const g = appData.general;
+            document.getElementById('cfg-siteName').value = g.siteName || '';
+            document.getElementById('cfg-siteLocation').value = g.siteLocation || '';
+            document.getElementById('cfg-heroSubtitle').value = g.heroSubtitle || '';
+            document.getElementById('cfg-statStudents').value = g.statStudents || '';
+            document.getElementById('cfg-statEvents').value = g.statEvents || '';
+            document.getElementById('cfg-statFinanced').value = g.statFinanced || '';
+            document.getElementById('cfg-contactEmail').value = g.contactEmail || '';
+            document.getElementById('cfg-adminPassword').value = '';
+        }
+
+        function saveGeneralInfo(e) {
+            e.preventDefault();
+            appData.general.siteName = document.getElementById('cfg-siteName').value;
+            appData.general.siteLocation = document.getElementById('cfg-siteLocation').value;
+            appData.general.heroSubtitle = document.getElementById('cfg-heroSubtitle').value;
+            appData.general.statStudents = document.getElementById('cfg-statStudents').value;
+            appData.general.statEvents = document.getElementById('cfg-statEvents').value;
+            appData.general.statFinanced = document.getElementById('cfg-statFinanced').value;
+            appData.general.contactEmail = document.getElementById('cfg-contactEmail').value;
+
+            const newPass = document.getElementById('cfg-adminPassword').value.trim();
+            if (newPass !== "") {
+                appData.general.adminPassword = newPass;
+            }
+
+            saveDataToStorage();
+            showToast("Informations générales sauvegardées !");
+        }
+
+        // 2. PROJECT & BUDGET
+        function fillProjectForm() {
+            const p = appData.project;
+            document.getElementById('proj-title').value = p.title || '';
+            document.getElementById('proj-description').value = p.description || '';
+            document.getElementById('proj-current').value = p.currentAmount || 0;
+            document.getElementById('proj-target').value = p.targetAmount || 100;
+            updateJaugePreview();
+        }
+
+        function updateJaugePreview() {
+            const cur = parseFloat(document.getElementById('proj-current').value) || 0;
+            const tgt = parseFloat(document.getElementById('proj-target').value) || 1;
+            const pct = Math.min(Math.round((cur / tgt) * 100), 100);
+
+            document.getElementById('jauge-percent').textContent = pct + "%";
+            document.getElementById('jauge-bar').style.width = pct + "%";
+        }
+
+        function saveProjectData(e) {
+            e.preventDefault();
+            appData.project.title = document.getElementById('proj-title').value;
+            appData.project.description = document.getElementById('proj-description').value;
+            appData.project.currentAmount = parseFloat(document.getElementById('proj-current').value) || 0;
+            appData.project.targetAmount = parseFloat(document.getElementById('proj-target').value) || 1;
+
+            saveDataToStorage();
+            showToast("Budget et projet mis à jour !");
+        }
+
+        // 3. UPCOMING EVENTS
+        function renderUpcomingList() {
+            const container = document.getElementById('upcoming-events-list');
+            container.innerHTML = '';
+
+            if (appData.upcomingEvents.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-2 bg-white rounded-2xl p-8 text-center text-slate-400 border border-slate-200">
+                        <i class="fas fa-calendar-times text-3xl mb-2"></i>
+                        <p class="text-sm font-semibold">Aucun événement à venir actuellement.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            appData.upcomingEvents.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex flex-col justify-between space-y-4";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-start justify-between gap-2 mb-2">
+                            <span class="text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 bg-brand-50 text-brand-600 rounded-lg">${item.badge || 'Événement'}</span>
+                            <div class="flex items-center gap-1">
+                                <button onclick="editUpcomingEvent(${item.id})" class="text-slate-400 hover:text-brand-600 p-1.5 transition"><i class="fas fa-edit"></i></button>
+                                <button onclick="deleteUpcomingEvent(${item.id})" class="text-slate-400 hover:text-rose-600 p-1.5 transition"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </div>
+                        <h4 class="font-heading font-extrabold text-slate-900 text-base">${item.title}</h4>
+                        <p class="text-xs text-slate-500 mt-2 line-clamp-2">${item.description}</p>
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-100 flex flex-wrap gap-y-1 gap-x-4 text-xs font-semibold text-slate-600">
+                        <span><i class="fas fa-calendar-day text-brand-500 mr-1.5"></i>${item.date}</span>
+                        <span><i class="fas fa-clock text-brand-500 mr-1.5"></i>${item.time}</span>
+                        <span><i class="fas fa-map-marker-alt text-brand-500 mr-1.5"></i>${item.location}</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function openUpcomingModal(editId = null) {
+            document.getElementById('form-upcoming-event').reset();
+            document.getElementById('upcoming-edit-id').value = '';
+            
+            if (editId) {
+                const ev = appData.upcomingEvents.find(e => e.id === editId);
+                if (ev) {
+                    document.getElementById('upcoming-modal-title').textContent = "Modifier l'événement";
+                    document.getElementById('upcoming-edit-id').value = ev.id;
+                    document.getElementById('up-title').value = ev.title;
+                    document.getElementById('up-date').value = ev.date;
+                    document.getElementById('up-time').value = ev.time;
+                    document.getElementById('up-location').value = ev.location;
+                    document.getElementById('up-desc').value = ev.description;
+                    document.getElementById('up-badge').value = ev.badge || '';
+                }
+            } else {
+                document.getElementById('upcoming-modal-title').textContent = "Nouveau événement à venir";
+            }
+            
+            document.getElementById('upcoming-modal').classList.remove('hidden');
+        }
+
+        function closeUpcomingModal() {
+            document.getElementById('upcoming-modal').classList.add('hidden');
+        }
+
+        function saveUpcomingEvent(e) {
+            e.preventDefault();
+            const editId = document.getElementById('upcoming-edit-id').value;
+
+            const payload = {
+                id: editId ? parseInt(editId) : Date.now(),
+                title: document.getElementById('up-title').value,
+                date: document.getElementById('up-date').value,
+                time: document.getElementById('up-time').value,
+                location: document.getElementById('up-location').value,
+                description: document.getElementById('up-desc').value,
+                badge: document.getElementById('up-badge').value
+            };
+
+            if (editId) {
+                const idx = appData.upcomingEvents.findIndex(e => e.id === parseInt(editId));
+                if (idx !== -1) appData.upcomingEvents[idx] = payload;
+            } else {
+                appData.upcomingEvents.push(payload);
+            }
+
+            saveDataToStorage();
+            renderUpcomingList();
+            closeUpcomingModal();
+            showToast("Événement à venir enregistré !");
+        }
+
+        function editUpcomingEvent(id) {
+            openUpcomingModal(id);
+        }
+
+        function deleteUpcomingEvent(id) {
+            if (confirm("Voulez-vous vraiment supprimer cet événement ?")) {
+                appData.upcomingEvents = appData.upcomingEvents.filter(e => e.id !== id);
+                saveDataToStorage();
+                renderUpcomingList();
+                showToast("Événement supprimé.", "warning");
+            }
+        }
+
+        // 4. PAST EVENTS & GALLERY MANAGER
+        function renderPastList() {
+            const container = document.getElementById('past-events-list');
+            container.innerHTML = '';
+
+            if (appData.pastEvents.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-white rounded-2xl p-8 text-center text-slate-400 border border-slate-200">
+                        <i class="fas fa-camera text-3xl mb-2"></i>
+                        <p class="text-sm font-semibold">Aucun album passé configuré.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            appData.pastEvents.forEach(album => {
+                const block = document.createElement('div');
+                block.className = "bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm space-y-4";
+                
+                // Photos grid HTML
+                let photosHTML = '';
+                if (album.photos && album.photos.length > 0) {
+                    album.photos.forEach((photoUrl, photoIdx) => {
+                        photosHTML += `
+                            <div class="relative group rounded-xl overflow-hidden aspect-video bg-slate-100 border border-slate-200">
+                                <img src="${photoUrl}" class="w-full h-full object-cover">
+                                <button onclick="deletePhotoFromAlbum(${album.id}, ${photoIdx})" class="absolute top-2 right-2 w-7 h-7 bg-rose-600/90 text-white rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition shadow-lg">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        `;
+                    });
+                } else {
+                    photosHTML = `
+                        <div class="col-span-full py-6 text-center text-xs font-semibold text-slate-400 bg-slate-50 rounded-xl border border-dashed border-slate-200">
+                            Aucune photo dans cet album. Ajoutez-en ci-dessous !
+                        </div>
+                    `;
+                }
+
+                block.innerHTML = `
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                        <div>
+                            <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">${album.date}</span>
+                            <h4 class="font-heading font-extrabold text-slate-900 text-lg">${album.title}</h4>
+                            ${album.raised ? `<span class="inline-block mt-1 text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">${album.raised}</span>` : ''}
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="editPastEvent(${album.id})" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition">
+                                <i class="fas fa-edit mr-1"></i> Modifier Infos
+                            </button>
+                            <button onclick="deletePastEvent(${album.id})" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg text-xs font-bold transition">
+                                <i class="fas fa-trash mr-1"></i> Supprimer
+                            </button>
+                        </div>
+                    </div>
+
+                    <p class="text-xs text-slate-600">${album.description}</p>
+
+                    <!-- PHOTOS MANAGER GRID -->
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold text-slate-500 uppercase">Photos de l'album (${album.photos ? album.photos.length : 0})</span>
+                            
+                            <div class="flex items-center gap-2">
+                                <label class="cursor-pointer px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-lg transition flex items-center gap-1.5 shadow-sm">
+                                    <i class="fas fa-[#10B981] fa-upload"></i>
+                                    <span>Importer photo</span>
+                                    <input type="file" accept="image/*" class="hidden" onchange="uploadPhotoLocal(event, ${album.id})">
+                                </label>
+                                <button onclick="promptPhotoUrl(${album.id})" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-lg transition">
+                                    <i class="fas fa-link mr-1"></i> Via URL
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                            ${photosHTML}
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(block);
+            });
+        }
+
+        function openPastModal(editId = null) {
+            document.getElementById('form-past-event').reset();
+            document.getElementById('past-edit-id').value = '';
+
+            if (editId) {
+                const alb = appData.pastEvents.find(a => a.id === editId);
+                if (alb) {
+                    document.getElementById('past-modal-title').textContent = "Modifier l'album";
+                    document.getElementById('past-edit-id').value = alb.id;
+                    document.getElementById('past-title').value = alb.title;
+                    document.getElementById('past-date').value = alb.date;
+                    document.getElementById('past-raised').value = alb.raised || '';
+                    document.getElementById('past-desc').value = alb.description;
+                }
+            } else {
+                document.getElementById('past-modal-title').textContent = "Nouveau album souvenir";
+            }
+
+            document.getElementById('past-modal').classList.remove('hidden');
+        }
+
+        function closePastModal() {
+            document.getElementById('past-modal').classList.add('hidden');
+        }
+
+        function savePastEvent(e) {
+            e.preventDefault();
+            const editId = document.getElementById('past-edit-id').value;
+
+            if (editId) {
+                const alb = appData.pastEvents.find(a => a.id === parseInt(editId));
+                if (alb) {
+                    alb.title = document.getElementById('past-title').value;
+                    alb.date = document.getElementById('past-date').value;
+                    alb.raised = document.getElementById('past-raised').value;
+                    alb.description = document.getElementById('past-desc').value;
+                }
+            } else {
+                const newAlbum = {
+                    id: Date.now(),
+                    title: document.getElementById('past-title').value,
+                    date: document.getElementById('past-date').value,
+                    raised: document.getElementById('past-raised').value,
+                    description: document.getElementById('past-desc').value,
+                    photos: []
+                };
+                appData.pastEvents.push(newAlbum);
+            }
+
+            saveDataToStorage();
+            renderPastList();
+            closePastModal();
+            showToast("Album enregistré !");
+        }
+
+        function editPastEvent(id) {
+            openPastModal(id);
+        }
+
+        function deletePastEvent(id) {
+            if (confirm("Voulez-vous vraiment supprimer cet album et ses photos ?")) {
+                appData.pastEvents = appData.pastEvents.filter(a => a.id !== id);
+                saveDataToStorage();
+                renderPastList();
+                showToast("Album supprimé.", "warning");
+            }
+        }
+
+        // PHOTO HANDLERS
+        function uploadPhotoLocal(event, albumId) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Img = e.target.result;
+                addPhotoToAlbum(albumId, base64Img);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function promptPhotoUrl(albumId) {
+            const url = prompt("Entrez l'URL directe de l'image (https://...) :");
+            if (url && url.trim() !== '') {
+                addPhotoToAlbum(albumId, url.trim());
+            }
+        }
+
+        function addPhotoToAlbum(albumId, photoSrc) {
+            const album = appData.pastEvents.find(a => a.id === albumId);
+            if (album) {
+                if (!album.photos) album.photos = [];
+                album.photos.push(photoSrc);
+                saveDataToStorage();
+                renderPastList();
+                showToast("Photo ajoutée avec succès !");
+            }
+        }
+
+        function deletePhotoFromAlbum(albumId, photoIndex) {
+            const album = appData.pastEvents.find(a => a.id === albumId);
+            if (album && album.photos) {
+                album.photos.splice(photoIndex, 1);
+                saveDataToStorage();
+                renderPastList();
+                showToast("Photo retirée.", "warning");
+            }
+        }
+
+        // TOOLS EXPORT & RESET
+        function exportDataJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "sou_ecoles_data.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function resetDataDefault() {
+            if (confirm("Attention: Cette action va réinitialiser toutes les données aux valeurs par défaut ! Continuer ?")) {
+                appData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+                saveDataToStorage();
+                initDashboardUI();
+                showToast("Données réinitialisées !", "warning");
+            }
+        }
+
+        // TOAST NOTIFICATION
+        function showToast(message, type = "success") {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-message');
+            const iconEl = document.getElementById('toast-icon');
+
+            msgEl.textContent = message;
+
+            if (type === "warning") {
+                iconEl.className = "fas fa-exclamation-triangle text-amber-400 text-lg";
+            } else if (type === "info") {
+                iconEl.className = "fas fa-info-circle text-blue-400 text-lg";
+            } else {
+                iconEl.className = "fas fa-check-circle text-emerald-400 text-lg";
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
