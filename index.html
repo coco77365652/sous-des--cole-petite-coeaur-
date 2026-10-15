@@ -1197,11 +1197,13 @@ async function fetchRemoteData() {
         if (error) throw error;
 
         if (data && data.content) {
-            appData = data.content; // Met à jour vos données locales
-            renderSite();          // Rafraîchit l'affichage de la page
+            appData = data.content; // Récupère le contenu mis à jour depuis Supabase
+            if (typeof renderSite === 'function') {
+                renderSite();        // Rafraîchit les éléments textuels sur la page
+            }
         }
     } catch (err) {
-        console.error("Erreur de chargement Supabase :", err);
+        console.error("Erreur lors de la récupération Supabase :", err);
     }
 }
     </script>
