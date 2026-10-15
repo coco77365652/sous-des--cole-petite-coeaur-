@@ -1186,7 +1186,7 @@
             link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
         });
 
-async function fetchRemoteData() {
+async function loadDataFromSupabase() {
     try {
         const { data, error } = await _supabase
             .from('site_content')
@@ -1197,15 +1197,27 @@ async function fetchRemoteData() {
         if (error) throw error;
 
         if (data && data.content) {
-            appData = data.content; // Récupère le contenu mis à jour depuis Supabase
-            if (typeof renderSite === 'function') {
-                renderSite();        // Rafraîchit les éléments textuels sur la page
+            // Remplacer vos données locales par celles de Supabase
+            appData = data.content; 
+            
+            // Mettre à jour les textes sur la page d'accueil
+            if (document.getElementById('site-name')) {
+                document.getElementById('site-name').textContent = appData.general.siteName;
             }
+            if (document.getElementById('site-subtitle')) {
+                document.getElementById('site-subtitle').textContent = appData.general.heroSubtitle;
+            }
+            // (Appelez ici les autres fonctions qui mettent à jour vos textes sur index.html)
         }
     } catch (err) {
-        console.error("Erreur lors de la récupération Supabase :", err);
+        console.error("Erreur de chargement depuis Supabase :", err);
     }
 }
+
+// Appeler cette fonction dès que la page est chargée
+window.addEventListener('DOMContentLoaded', () => {
+    loadDataFromSupabase();
+});
     </script>
 </body>
 </html>
