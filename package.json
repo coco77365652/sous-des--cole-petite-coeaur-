@@ -1,0 +1,30 @@
+{
+  "name": "repo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://x-access-token:ghs_13473_eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRobmQiLCJjdHgiOiJJV3lMalN6MDNFVVRRdldNT1VrU0lFc0JCVjAxMFdqMU9lSE80ak9OME1ZWkJ2WW9wdmloZ1dlQ0FnIiwiZXhwIjoxNzkyMDExNTEyLCJpYXQiOjE3OTIwMDc5MTIsImlzcyI6ImdpdGh1YiIsImp0aSI6IjQ4MDEyNmJjLWY0OGMtNGE0MC04YWVmLWIwNzBiNDZmMzc0ZCIsInZlciI6M30.0ARVVk8_eT1L-dVh6rPzWptOl7S6rRvlx-9bCWwBvjt6SoZbQ5Q0nvXraRhh7JX5wTMKHQB_8z8K768Qs4LLzg@github.com/coco77365652/sous-des--cole-petite-coeaur.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/coco77365652/sous-des--cole-petite-coeaur/issues"
+  },
+  "homepage": "https://github.com/coco77365652/sous-des--cole-petite-coeaur#readme",
+  "dependencies": {
+    "@netlify/database": "^2.0.1",
+    "drizzle-orm": "^1.0.0-beta.22"
+  },
+  "devDependencies": {
+    "@netlify/functions": "^6.0.2",
+    "drizzle-kit": "^1.0.0-beta.22",
+    "typescript": "^7.0.2"
+  }
+}
