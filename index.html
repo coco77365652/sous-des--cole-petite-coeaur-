@@ -67,8 +67,7 @@
         <span id="toast-message">Action effectuée avec succès !</span>
     </div>
 
-    <!-- HEADER / NAVIGATION PUBLIQUE -->
-     <a href="admin.html" class="hover:text-red-500 transition-colors">Admin</a>
+  <!-- HEADER / NAVIGATION PUBLIQUE -->
     <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md shadow-sm border-b border-amber-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
@@ -80,7 +79,7 @@
                     <div>
                         <span id="header-assoc-name" class="font-title font-bold text-xl text-gray-800 tracking-wide block leading-none">Sou des Écoles</span>
                         <span id="header-assoc-sub" class="text-xs font-semibold text-brand-darkblue tracking-wider uppercase">Petit-Cœur • La Léchère</span>
-                    </div>*
+                    </div>
                 </a>
 
                 <!-- Desktop Navigation Public -->
@@ -89,15 +88,25 @@
                     <a href="#evenements" onclick="showPublicView()" class="hover:text-brand-blue transition-colors">Événements à Venir</a>
                     <a href="#evenements-passes" onclick="showPublicView()" class="hover:text-brand-blue transition-colors">Événements Passés</a>
                     <a href="#projets" onclick="showPublicView()" class="hover:text-brand-blue transition-colors">Nos Projets Financés</a>
+                    <a href="admin.html" class="text-brand-red hover:underline transition-colors">Admin</a>
                 </nav>
 
                 <!-- Mobile Menu Button -->
-                 <a href="admin.html" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Admin</a>
                 <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none">
                     <i class="fa-solid fa-bars text-2xl"></i>
                 </button>
             </div>
         </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-200 px-4 pt-2 pb-6 space-y-3">
+            <a href="#accueil" onclick="showPublicView()" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Accueil</a>
+            <a href="#evenements" onclick="showPublicView()" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Événements à Venir</a>
+            <a href="#evenements-passes" onclick="showPublicView()" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Événements Passés</a>
+            <a href="#projets" onclick="showPublicView()" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Nos Projets Financés</a>
+            <a href="admin.html" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-brand-red hover:bg-amber-50">Admin</a>
+        </div>
+    </header>
 
         <!-- Mobile Menu Dropdown -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-200 px-4 pt-2 pb-6 space-y-3">
