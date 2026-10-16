@@ -657,18 +657,24 @@
             };
         }
 
-async function saveData() {
+async function fetchRemoteData() {
     try {
         const { data, error } = await _supabase
             .from('site_content')
-            .upsert({ id: 1, content: siteData });
+            .select('content')
+            .eq('id', 1)
+            .single();
 
         if (error) throw error;
 
-        alert('Modifications enregistrées avec succès !');
+        if (data && data.content) {
+            siteData = Object.assign({}, defaultSiteData, data.content);
+            if (typeof renderAdminForms === 'function') {
+                renderAdminForms();
+            }
+        }
     } catch (err) {
-        console.error("Erreur de sauvegarde Supabase :", err);
-        alert("Erreur lors de la sauvegarde.");
+        console.warn("Erreur de chargement Supabase :", err);
     }
 }
 
