@@ -740,18 +740,14 @@ async function fetchRemoteData() {
         if (error) throw error;
 
         if (data && data.content) {
-            // Met à jour siteData avec les données distantes de Supabase
+            // Met à jour vos données locales avec le contenu récupéré de Supabase
             siteData = Object.assign({}, defaultSiteData, data.content);
             
-            // Sauvegarde locale pour garder le cache propre
+            // Sauvegarde dans le stockage local du navigateur
             localStorage.setItem('sou_petit_coeur_data', JSON.stringify(siteData));
             
-            // Rafraîchit l'affichage du site
+            // Rafraîchit l'affichage de la page publique
             renderSite();
-            
-            if (document.getElementById('view-admin') && !document.getElementById('view-admin').classList.contains('hidden')) {
-                renderAdminForms();
-            }
         }
     } catch (err) {
         console.warn("Mode hors ligne ou erreur Supabase :", err);
