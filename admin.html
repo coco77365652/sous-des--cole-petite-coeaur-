@@ -657,23 +657,20 @@
             };
         }
 
-        async function fetchRemoteData() {
-            try {
-                const res = await fetch('/api/data', { cache: 'no-store' });
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data && typeof data === 'object') {
-                        appData = normalizeAppData(data);
-                        localStorage.setItem('sou_app_data', JSON.stringify(appData));
-                        localStorage.setItem('sou_petit_coeur_data', JSON.stringify(toPublicSiteData(appData)));
-                        updateDashboardStats();
-                        initDashboardUI();
-                    }
-                }
-            } catch (err) {
-                console.warn('Mode hors ligne ou serveur indisponible:', err);
-            }
-        }
+async function saveData() {
+    try {
+        const { data, error } = await _supabase
+            .from('site_content')
+            .upsert({ id: 1, content: siteData });
+
+        if (error) throw error;
+
+        alert('Modifications enregistrées avec succès !');
+    } catch (err) {
+        console.error("Erreur de sauvegarde Supabase :", err);
+        alert("Erreur lors de la sauvegarde.");
+    }
+}
 
         function loadDataFromStorage() {
             const stored = localStorage.getItem('sou_app_data');
