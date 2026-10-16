@@ -728,25 +728,35 @@ const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         // Chargement initial depuis localStorage avec repli
         let siteData = JSON.parse(localStorage.getItem('sou_petit_coeur_data')) || defaultSiteData;
 
-        // Synchronisation réseau avec l'API Netlify Database
-        async function fetchRemoteData() {
-            try {
-                const res = await fetch('/api/data', { cache: 'no-store' });
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data && typeof data === 'object') {
-                        siteData = Object.assign({}, defaultSiteData, data);
-                        localStorage.setItem('sou_petit_coeur_data', JSON.stringify(siteData));
-                        renderSite();
-                        if (document.getElementById('view-admin') && !document.getElementById('view-admin').classList.contains('hidden')) {
-                            renderAdminForms();
-                        }
-                    }
-                }
-            } catch (err) {
-                console.warn('Mode hors ligne ou serveur indisponible:', err);
+  // Synchronisation directe avec Supabase
+async function fetchRemoteData() {
+    try {
+        const { data, error } = await _supabase
+            .from('site_content')
+            .select('content')
+            .eq('id', 1)
+            .single();
+
+        if (error) throw error;
+
+        if (data && data.content) {
+            // Met à jour siteData avec les données distantes de Supabase
+            siteData = Object.assign({}, defaultSiteData, data.content);
+            
+            // Sauvegarde locale pour garder le cache propre
+            localStorage.setItem('sou_petit_coeur_data', JSON.stringify(siteData));
+            
+            // Rafraîchit l'affichage du site
+            renderSite();
+            
+            if (document.getElementById('view-admin') && !document.getElementById('view-admin').classList.contains('hidden')) {
+                renderAdminForms();
             }
         }
+    } catch (err) {
+        console.warn("Mode hors ligne ou erreur Supabase :", err);
+    }
+}
 
         async function saveData() {
             // Mise à jour immédiate locale pour réactivité instantanée
