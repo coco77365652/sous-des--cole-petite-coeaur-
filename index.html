@@ -633,6 +633,11 @@
 
     <!-- JAVASCRIPT & STATE MANAGEMENT -->
     <script>
+        // Initialisation de Supabase pour la page publique
+const SUPABASE_URL = 'https://gdbktvxramksondbobns.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_6Q9vML3WwH7_8n5Ipvo-3g_DRZx_VPK'; // (Mettez la même clé que dans admin.html)
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         // DONNÉES PAR DÉFAUT DU SITE
         const defaultSiteData = {
             adminPassword: "admin123",
