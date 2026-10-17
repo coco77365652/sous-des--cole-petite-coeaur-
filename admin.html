@@ -709,24 +709,25 @@ async function fetchRemoteData() {
             }
         }
 
-        async function saveDataToStorage() {
-            // Sauvegardes locales
-            localStorage.setItem('sou_app_data', JSON.stringify(appData));
-            const publicData = toPublicSiteData(appData);
-            localStorage.setItem('sou_petit_coeur_data', JSON.stringify(publicData));
-            updateDashboardStats();
+     async function saveDataToStorage() {
+    // 1. Sauvegardes locales (pour que l'admin garde ses données instantanément)
+    localStorage.setItem('sou_app_data', JSON.stringify(appData));
+    const publicData = toPublicSiteData(appData);
+    localStorage.setItem('sou_petit_coeur_data', JSON.stringify(publicData));
+    updateDashboardStats();
 
-            // Synchronisation distante sur Netlify Database
-            try {
-                await fetch('/api/data', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(publicData)
-                });
-            } catch (err) {
-                console.error('Erreur lors de la sauvegarde distante:', err);
-            }
-        }
+    // 2. Synchronisation distante sur Supabase
+    try {
+        const { error } = await _supabase
+            .from('site_content')
+            .upsert({ id: 1, content: publicData });
+
+        if (error) throw error;
+        console.log("Synchronisé avec succès sur Supabase !");
+    } catch (err) {
+        console.error("Erreur lors de la sauvegarde distante Supabase :", err);
+    }
+}
 
         // Écouter les modifications si effectuées dans un autre onglet
         window.addEventListener('storage', (e) => {
