@@ -145,7 +145,7 @@
             </div>
         </section>
 
-        <!-- CHIFFRES CLÉS -->
+        <!-- CHIFFRES CLÉS ET STATS -->
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
                 <div class="bg-white p-6 rounded-2xl shadow-lg border border-amber-100 text-center">
@@ -258,7 +258,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT DE SYNCHRONISATION ET RECHARGEMENT EN TEMPS RÉEL -->
+    <!-- SCRIPT DE SYNCHRONISATION SUPABASE ET MISE À JOUR EN DIRECT -->
     <script>
         const SUPABASE_URL = 'https://gdbktvxramksondbobns.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_6Q9vML3WwH7_8n5Ipvo-3g_DRZx_VPK';
@@ -294,10 +294,12 @@
             document.getElementById('about-assoc-desc').textContent = siteData.general.heroDesc;
             document.getElementById('about-bureau-text').textContent = siteData.general.bureauText;
 
+            // Statistiques clés (correction des IDs ciblés)
             document.getElementById('stat-eleves').textContent = siteData.general.statEleves;
             document.getElementById('stat-events').textContent = siteData.general.statEvents;
             document.getElementById('stat-budget').textContent = siteData.general.statBudget;
 
+            // Budget Jauge
             const currentB = siteData.budget.current || 0;
             const targetB = siteData.budget.target || 1;
             const pct = Math.min(100, Math.round((currentB / targetB) * 100));
@@ -334,7 +336,7 @@
                 });
             }
 
-            // Événements passés
+            // Événements passés & photos
             const pastContainer = document.getElementById('past-events-container');
             pastContainer.innerHTML = '';
             if (!siteData.pastEvents || siteData.pastEvents.length === 0) {
@@ -387,7 +389,7 @@
             });
         }
 
-        // Récupération des données distantes
+        // Chargement initial des données depuis Supabase
         async function fetchRemoteData() {
             try {
                 const { data, error } = await _supabase
@@ -403,7 +405,7 @@
                     renderSite();
                 }
             } catch (err) {
-                console.warn("Erreur Supabase, utilisation du cache :", err);
+                console.warn("Erreur Supabase, utilisation du cache local :", err);
                 const local = localStorage.getItem('sou_petit_coeur_data');
                 if (local) {
                     try { siteData = JSON.parse(local); } catch(e) {}
@@ -412,8 +414,7 @@
             }
         }
 
-        // TRÈS IMPORTANT : Abonnement en temps réel Supabase
-        // Dès qu'une modification est enregistrée dans l'admin, cette fonction recharge instantanément la page publique !
+        // Écoute en temps réel Supabase : actualise instantanément le site sans recharger la page
         function setupRealtimeSubscription() {
             _supabase
                 .channel('public:site_content')
@@ -429,7 +430,7 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             fetchRemoteData();
-            setupRealtimeSubscription(); // Active l'écoute en direct
+            setupRealtimeSubscription();
         });
 
         function openLightbox(imgUrl, caption) {
