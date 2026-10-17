@@ -284,18 +284,19 @@
 
         let siteData = Object.assign({}, defaultSiteData);
 
-        function renderSite() {
-    // On sécurise chaque champ pour afficher la donnée ou garder un texte par défaut si c'est vide
+   function renderSite() {
     const gen = siteData.general || {};
     
-    document.getElementById('header-assoc-name').textContent = gen.assocName || defaultSiteData.general.assocName;
-    document.getElementById('header-assoc-sub').textContent = gen.assocSub || defaultSiteData.general.assocSub;
-    document.getElementById('hero-location-tag').textContent = gen.locationTag || defaultSiteData.general.locationTag;
-    document.getElementById('hero-title').textContent = gen.heroTitle || defaultSiteData.general.heroTitle;
-    document.getElementById('hero-description').textContent = gen.heroDesc || defaultSiteData.general.heroDesc;
-    document.getElementById('about-assoc-title').textContent = gen.assocName || defaultSiteData.general.assocName;
-    document.getElementById('about-assoc-desc').textContent = gen.heroDesc || defaultSiteData.general.heroDesc;
-    document.getElementById('about-bureau-text').textContent = gen.bureauText || defaultSiteData.general.bureauText;
+    // En-tête et Titre Principal de l'accueil
+    document.getElementById('header-assoc-name').textContent = gen.assocName || "Sou des Écoles";
+    document.getElementById('header-assoc-sub').textContent = gen.assocSub || "Petit-Cœur • La Léchère";
+    document.getElementById('hero-location-tag').textContent = gen.locationTag || "Savoie - Commune de La Léchère";
+    document.getElementById('hero-title').textContent = gen.heroTitle || "Ensemble pour les enfants de Petit-Cœur !";
+    document.getElementById('hero-description').textContent = gen.heroDesc || gen.heroSubtitle || "Association de parents bénévoles...";
+    
+    // Textes de la carte image (en haut à droite de l'accueil)
+    // Assurez-vous d'avoir ajouté des ID si besoin, ou modifiez directement via les balises correspondantes.
+}
 
     // Statistiques sécurisées
     document.getElementById('stat-eleves').textContent = gen.statEleves || gen.statStudents || "120+";

@@ -11,13 +11,13 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
    
-    <!-- Supabase JS Client -->z
+    <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-  const SUPABASE_URL = 'https://gdbktvxramksondbobns.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_6Q9vML3WwH7_8n5Ipvo-3g_DRZx_VPK';
-  const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-</script>
+        const SUPABASE_URL = 'https://gdbktvxramksondbobns.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_6Q9vML3WwH7_8n5Ipvo-3g_DRZx_VPK';
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    </script>
     <script>
         tailwind.config = {
             theme: {
@@ -57,10 +57,6 @@
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
-        }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
         }
     </style>
 </head>
@@ -107,13 +103,12 @@
         </div>
     </div>
 
-    <!-- INTERFACE ADMIN (Masquée au départ) -->
+    <!-- INTERFACE ADMIN -->
     <div id="admin-dashboard" class="hidden min-h-screen flex flex-col md:flex-row">
         
-        <!-- SIDEBAR BARRE LATÉRALE -->
+        <!-- SIDEBAR -->
         <aside class="w-full md:w-64 bg-slate-900 text-white flex-shrink-0 flex flex-col justify-between p-5 border-r border-slate-800">
             <div>
-                <!-- Brand Header -->
                 <div class="flex items-center gap-3 pb-6 border-b border-slate-800">
                     <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold shadow-lg shadow-brand-500/30">
                         <i class="fas fa-heart"></i>
@@ -124,31 +119,26 @@
                     </div>
                 </div>
 
-                <!-- Navigation Links -->
                 <nav class="mt-6 space-y-1">
                     <button onclick="switchTab('tab-general')" id="nav-tab-general" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
-                        <i class="fas fa-[#10B981] fa-sliders w-5"></i>
+                        <i class="fas fa-sliders w-5 text-emerald-400"></i>
                         <span>Général & Infos</span>
                     </button>
-
                     <button onclick="switchTab('tab-projects')" id="nav-tab-projects" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
-                        <i class="fas fa-[#3B82F6] fa-piggy-bank w-5"></i>
+                        <i class="fas fa-piggy-bank w-5 text-blue-400"></i>
                         <span>Projet & Budget</span>
                     </button>
-
                     <button onclick="switchTab('tab-upcoming')" id="nav-tab-upcoming" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
-                        <i class="fas fa-[#8B5CF6] fa-calendar-alt w-5"></i>
+                        <i class="fas fa-calendar-alt w-5 text-purple-400"></i>
                         <span>Événements à Venir</span>
                     </button>
-
                     <button onclick="switchTab('tab-past')" id="nav-tab-past" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
-                        <i class="fas fa-[#EC4899] fa-[#EC4899] fa-camera-retro w-5"></i>
+                        <i class="fas fa-camera-retro w-5 text-pink-400"></i>
                         <span>Albums & Photos</span>
                     </button>
                 </nav>
             </div>
 
-            <!-- Bottom Actions -->
             <div class="pt-6 border-t border-slate-800 space-y-2">
                 <a href="index.html" target="_blank" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold text-slate-300 bg-slate-800/80 hover:bg-slate-800 hover:text-white transition">
                     <span><i class="fas fa-external-link-alt mr-2 text-brand-400"></i> Voir le site public</span>
@@ -164,7 +154,6 @@
         <!-- CONTENU PRINCIPAL -->
         <main class="flex-1 bg-slate-100 p-4 md:p-8 overflow-y-auto custom-scrollbar">
             
-            <!-- HEADER TOP BAR -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                 <div>
                     <h1 id="page-title" class="font-heading text-2xl md:text-3xl font-extrabold text-slate-900">Panneau de Configuration</h1>
@@ -214,7 +203,7 @@
 
                 <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
                     <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center text-xl font-bold">
-                        <i class="fas fa-[#10B981] fa-camera"></i>
+                        <i class="fas fa-camera"></i>
                     </div>
                     <div>
                         <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Total Photos</span>
@@ -223,13 +212,11 @@
                 </div>
             </div>
 
-            <!-- SECTIONS DES ONGLETS -->
-            
-            <!-- TAB 1 : GÉNÉRAL & SÉCURITÉ -->
+            <!-- TAB 1 : GÉNÉRAL & INFOS -->
             <div id="tab-general" class="tab-content hidden space-y-6">
                 <form id="form-general" onsubmit="saveGeneralInfo(event)" class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm space-y-6">
                     <h3 class="font-heading text-lg font-bold text-slate-900 border-b border-slate-100 pb-4">
-                        <i class="fas fa-[#10B981] fa-info-circle text-brand-600 mr-2"></i> Informations Principales du Sou
+                        <i class="fas fa-info-circle text-brand-600 mr-2"></i> Informations Principales & En-tête du Site
                     </h3>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -243,23 +230,53 @@
                         </div>
                     </div>
 
-                    <div>
-                        <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Slogan / Sous-titre d'accueil</label>
-                        <input type="text" id="cfg-heroSubtitle" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
+                    <!-- NOUVEAUX CHAMPS POUR L'ACCUEIL (HERO SECTION) -->
+                    <div class="p-5 bg-amber-50/50 rounded-2xl border border-amber-200/60 space-y-4">
+                        <h4 class="font-heading font-bold text-amber-900 text-sm"><i class="fas fa-star text-amber-500 mr-1.5"></i> Personnalisation de la bannière d'accueil (Hero)</h4>
+                        
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Tag de Localisation (Haut de page)</label>
+                            <input type="text" id="cfg-locationTag" placeholder="Ex: Savoie - Commune de La Léchère" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Titre Principal de la Page</label>
+                            <input type="text" id="cfg-heroTitle" placeholder="Ex: Ensemble pour les enfants de Petit-Cœur !" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 font-semibold">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Description / Paragraphe d'accueil</label>
+                            <textarea id="cfg-heroDesc" rows="2" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500"></textarea>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Titre de la carte image</label>
+                                <input type="text" id="cfg-cardTitle" placeholder="Ex: 100% pour nos écoliers" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Sous-titre de la carte image</label>
+                                <input type="text" id="cfg-cardSub" placeholder="Ex: Activités, découvertes & spectacles" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Badge de la carte image</label>
+                                <input type="text" id="cfg-cardBadge" placeholder="Ex: Écoles de La Léchère" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-slate-100">
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Statistique : Élevés soutenus</label>
-                            <input type="number" id="cfg-statStudents" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Statistique : Élèves soutenus</label>
+                            <input type="text" id="cfg-statStudents" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
                         </div>
                         <div>
                             <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Statistique : Événements / an</label>
-                            <input type="number" id="cfg-statEvents" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
+                            <input type="text" id="cfg-statEvents" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Statistique : Financement (%)</label>
-                            <input type="number" id="cfg-statFinanced" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Statistique : Financement / an</label>
+                            <input type="text" id="cfg-statBudget" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
                         </div>
                     </div>
 
@@ -310,7 +327,6 @@
                         </div>
                     </div>
 
-                    <!-- APERÇU DE LA JAUGE -->
                     <div class="p-5 bg-slate-50 rounded-2xl border border-slate-200">
                         <div class="flex justify-between items-center mb-2">
                             <span class="text-xs font-bold text-slate-500 uppercase">Aperçu en temps réel de la progression</span>
@@ -331,20 +347,13 @@
 
             <!-- TAB 3 : ÉVÉNEMENTS À VENIR -->
             <div id="tab-upcoming" class="tab-content hidden space-y-6">
-                <!-- Actions Top -->
                 <div class="flex justify-between items-center">
-                    <h3 class="font-heading text-lg font-bold text-slate-900">
-                        Agenda des Événements Futurs
-                    </h3>
+                    <h3 class="font-heading text-lg font-bold text-slate-900">Agenda des Événements Futurs</h3>
                     <button onclick="openUpcomingModal()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center gap-2">
                         <i class="fas fa-plus"></i> Nouvel Événement
                     </button>
                 </div>
-
-                <!-- Upcoming List Grid -->
-                <div id="upcoming-events-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Dynamic rendering -->
-                </div>
+                <div id="upcoming-events-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
             </div>
 
             <!-- TAB 4 : ALBUMS & ÉVÉNEMENTS PASSÉS -->
@@ -358,11 +367,7 @@
                         <i class="fas fa-folder-plus"></i> Nouvel Album Passé
                     </button>
                 </div>
-
-                <!-- Past Events / Gallery Manager List -->
-                <div id="past-events-list" class="space-y-6">
-                    <!-- Dynamic rendering -->
-                </div>
+                <div id="past-events-list" class="space-y-6"></div>
             </div>
 
         </main>
@@ -378,38 +383,32 @@
             
             <form id="form-upcoming-event" onsubmit="saveUpcomingEvent(event)" class="space-y-4">
                 <input type="hidden" id="upcoming-edit-id">
-                
                 <div>
                     <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Titre de l'événement</label>
                     <input type="text" id="up-title" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
                 </div>
-
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Date (Ex: 12 Déc 2024)</label>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Date</label>
                         <input type="text" id="up-date" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Horaire (Ex: 14h00 - 18h00)</label>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Horaire</label>
                         <input type="text" id="up-time" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
                     </div>
                 </div>
-
                 <div>
                     <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Lieu</label>
                     <input type="text" id="up-location" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
                 </div>
-
                 <div>
                     <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Description</label>
                     <textarea id="up-desc" rows="3" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500"></textarea>
                 </div>
-
                 <div>
-                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Badge / Statut (Optionnel)</label>
-                    <input type="text" id="up-badge" placeholder="Ex: Inscription requise, À ne pas manquer" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Badge / Statut</label>
+                    <input type="text" id="up-badge" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
                 </div>
-
                 <div class="pt-3 border-t border-slate-100 flex justify-end gap-2">
                     <button type="button" onclick="closeUpcomingModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition">Annuler</button>
                     <button type="submit" class="px-5 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-md transition">Enregistrer</button>
@@ -428,28 +427,24 @@
             
             <form id="form-past-event" onsubmit="savePastEvent(event)" class="space-y-4">
                 <input type="hidden" id="past-edit-id">
-                
                 <div>
                     <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Nom de la manifestation</label>
                     <input type="text" id="past-title" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
                 </div>
-
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Date / Période</label>
-                        <input type="text" id="past-date" required placeholder="Ex: Octobre 2024" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                        <input type="text" id="past-date" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Bénéfices Générés (€)</label>
-                        <input type="text" id="past-raised" placeholder="Ex: +1 250 €" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Bénéfices</label>
+                        <input type="text" id="past-raised" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
                     </div>
                 </div>
-
                 <div>
-                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Résumé / Description</label>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Résumé</label>
                     <textarea id="past-desc" rows="3" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500"></textarea>
                 </div>
-
                 <div class="pt-3 border-t border-slate-100 flex justify-end gap-2">
                     <button type="button" onclick="closePastModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition">Annuler</button>
                     <button type="submit" class="px-5 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-md transition">Créer l'album</button>
@@ -458,248 +453,140 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC & LOCALSTORAGE HANDLER -->
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // CONFIGURATION DEFAULT DATA
         const DEFAULT_DATA = {
             general: {
                 siteName: "Sou des Écoles",
                 siteLocation: "Petit-Cœur",
-                heroSubtitle: "Ensemble pour enrichir le quotidien scolaire des enfants de Petit-Cœur !",
-                statStudents: "120",
-                statEvents: "8",
-                statFinanced: "100",
+                heroTitle: "Ensemble pour les enfants de Petit-Cœur !",
+                heroDesc: "Association de parents bénévoles dédiée au financement des sorties scolaires, projets pédagogiques, équipements et animations des écoles de notre village.",
+                heroSubtitle: "Association de parents bénévoles dédiée au financement des sorties scolaires.",
+                locationTag: "Savoie - Commune de La Léchère",
+                cardTitle: "100% pour nos écoliers",
+                cardSub: "Activités, découvertes & spectacles",
+                cardBadge: "Écoles de La Léchère",
+                statStudents: "120+",
+                statEvents: "6",
+                statBudget: "4 500 €",
                 contactEmail: "contact@sou-petitcoeur.fr",
                 adminPassword: "admin123"
             },
             project: {
-                title: "Financement de la Classe de Découverte à la Montagne",
-                description: "Nous soutenons cette année la sortie scolaire de 3 jours à la montagne pour tous les élèves du primaire (visite de fermes, nuit en gîte, activités nature).",
-                currentAmount: 1850,
-                targetAmount: 2500
+                title: "Financement de la Classe de Découverte",
+                description: "Nous soutenons cette année la sortie scolaire pour tous les élèves.",
+                currentAmount: 3800,
+                targetAmount: 5000
             },
-            upcomingEvents: [
-                {
-                    id: 1,
-                    title: "Vente de Pâtisseries & Chocolats de Noël",
-                    date: "Vendredi 08 Décembre",
-                    time: "16h30 - 18h00",
-                    location: "Cour de l'école de Petit-Cœur",
-                    description: "Commandes de chocolats de chocolatier local et vente de gâteaux confectionnés par les parents d'élèves.",
-                    badge: "Gourmandise"
-                },
-                {
-                    id: 2,
-                    title: "Grand Carnaval & Loto des Enfants",
-                    date: "Samedi 17 Février",
-                    time: "14h00 - 17h30",
-                    location: "Salle des Fêtes de La Léchère",
-                    description: "Défilé déguisé des enfants suivi d'un loto récréatif doté de superbes lots pour toute la famille !",
-                    badge: "Incontournable"
-                }
-            ],
-            pastEvents: [
-                {
-                    id: 101,
-                    title: "Vente de Sapins de Noël & Brioches",
-                    date: "Décembre 2023",
-                    raised: "+ 980 € récoltés",
-                    description: "Grâce à votre immense générosité lors de la commande de sapins Nordmann et de brioches, les bénéfices ont permis d'acheter des nouveaux jeux pour la récréation.",
-                    photos: [
-                        "https://images.unsplash.com/photo-1543589077-47d5199647ce?auto=format&fit=crop&w=600&q=80",
-                        "https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&w=600&q=80",
-                        "https://images.unsplash.com/photo-1513297887119-d46091b24bfa?auto=format&fit=crop&w=600&q=80"
-                    ]
-                },
-                {
-                    id: 102,
-                    title: "Kermesse de Fin d'Année Scolaire",
-                    date: "Juin 2023",
-                    raised: "+ 1 450 € récoltés",
-                    description: "Une magnifique journée ensoleillée avec stand de chamboule-tout, pêche aux canards, spectacle chanté par les élèves et buvette conviviale.",
-                    photos: [
-                        "https://images.unsplash.com/photo-1472162072942-cd5147eb3902?auto=format&fit=crop&w=600&q=80",
-                        "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=600&q=80"
-                    ]
-                }
-            ]
+            upcomingEvents: [],
+            pastEvents: []
         };
 
         let appData = {};
 
-        // INITIALISATION
         document.addEventListener('DOMContentLoaded', () => {
             loadDataFromStorage();
             fetchRemoteData();
             checkSession();
         });
 
-        // Conversion / Normalisation bidirectionnelle avec le schéma du site public
         function normalizeAppData(data) {
             const res = JSON.parse(JSON.stringify(DEFAULT_DATA));
             if (!data) return res;
 
-            // Si format siteData (public)
             if (data.general) {
-                if (data.general.siteName) res.general.siteName = data.general.siteName;
-                else if (data.general.assocName) res.general.siteName = data.general.assocName;
-
-                if (data.general.siteLocation) res.general.siteLocation = data.general.siteLocation;
-                else if (data.general.assocSub) res.general.siteLocation = data.general.assocSub;
-
-                if (data.general.heroSubtitle) res.general.heroSubtitle = data.general.heroSubtitle;
-                else if (data.general.heroDesc) res.general.heroSubtitle = data.general.heroDesc;
-
-                if (data.general.statStudents) res.general.statStudents = data.general.statStudents;
-                else if (data.general.statEleves) res.general.statStudents = data.general.statEleves.toString().replace(/[^0-9]/g, '');
-
-                if (data.general.statEvents) res.general.statEvents = data.general.statEvents;
-                if (data.general.statFinanced) res.general.statFinanced = data.general.statFinanced;
-                if (data.general.contactEmail) res.general.contactEmail = data.general.contactEmail;
-                if (data.general.adminPassword) res.general.adminPassword = data.general.adminPassword;
-            }
-            if (data.adminPassword) res.general.adminPassword = data.adminPassword;
-
-            if (data.project) {
-                if (data.project.title) res.project.title = data.project.title;
-                if (data.project.description) res.project.description = data.project.description;
-                if (data.project.currentAmount !== undefined) res.project.currentAmount = Number(data.project.currentAmount);
-                if (data.project.targetAmount !== undefined) res.project.targetAmount = Number(data.project.targetAmount);
-            } else if (data.budget) {
-                if (data.budget.current !== undefined) res.project.currentAmount = Number(data.budget.current);
-                if (data.budget.target !== undefined) res.project.targetAmount = Number(data.budget.target);
+                res.general.siteName = data.general.siteName || data.general.assocName || res.general.siteName;
+                res.general.siteLocation = data.general.siteLocation || data.general.assocSub || res.general.siteLocation;
+                res.general.heroTitle = data.general.heroTitle || res.general.heroTitle;
+                res.general.heroDesc = data.general.heroDesc || res.general.heroDesc;
+                res.general.heroSubtitle = data.general.heroSubtitle || data.general.heroDesc || res.general.heroSubtitle;
+                res.general.locationTag = data.general.locationTag || res.general.locationTag;
+                res.general.cardTitle = data.general.cardTitle || res.general.cardTitle;
+                res.general.cardSub = data.general.cardSub || res.general.cardSub;
+                res.general.cardBadge = data.general.cardBadge || res.general.cardBadge;
+                res.general.statStudents = data.general.statStudents || data.general.statEleves || res.general.statStudents;
+                res.general.statEvents = data.general.statEvents || res.general.statEvents;
+                res.general.statBudget = data.general.statBudget || res.general.statBudget;
+                res.general.contactEmail = data.general.contactEmail || res.general.contactEmail;
+                res.general.adminPassword = data.general.adminPassword || data.adminPassword || res.general.adminPassword;
             }
 
-            if (Array.isArray(data.upcomingEvents)) {
-                res.upcomingEvents = data.upcomingEvents.map(ev => ({
-                    id: ev.id || Date.now(),
-                    title: ev.title || '',
-                    date: ev.date || '',
-                    time: ev.time || '',
-                    location: ev.location || '',
-                    description: ev.description || ev.desc || '',
-                    badge: ev.badge || 'Événement'
-                }));
+            if (data.budget) {
+                res.project.currentAmount = Number(data.budget.current) || res.project.currentAmount;
+                res.project.targetAmount = Number(data.budget.target) || res.project.targetAmount;
+            } else if (data.project) {
+                res.project.currentAmount = Number(data.project.currentAmount) || res.project.currentAmount;
+                res.project.targetAmount = Number(data.project.targetAmount) || res.project.targetAmount;
             }
 
-            if (Array.isArray(data.pastEvents)) {
-                res.pastEvents = data.pastEvents.map(pev => ({
-                    id: pev.id || Date.now(),
-                    title: pev.title || '',
-                    date: pev.date || '',
-                    raised: pev.raised || '',
-                    description: pev.description || pev.desc || '',
-                    photos: pev.photos || []
-                }));
-            }
+            if (Array.isArray(data.upcomingEvents)) res.upcomingEvents = data.upcomingEvents;
+            if (Array.isArray(data.pastEvents)) res.pastEvents = data.pastEvents;
 
             return res;
         }
 
-        // Conversion de appData vers le format attendu par le site public (sou_petit_coeur_data)
         function toPublicSiteData(app) {
-            let existing = {};
-            try {
-                const raw = localStorage.getItem('sou_petit_coeur_data');
-                if (raw) existing = JSON.parse(raw);
-            } catch(e) {}
-
             return {
                 adminPassword: app.general.adminPassword || "admin123",
                 general: {
-                    assocName: app.general.siteName || "Sou des Écoles de Petit-Cœur",
-                    assocSub: app.general.siteLocation || "Petit-Cœur • La Léchère",
-                    heroTitle: (existing.general && existing.general.heroTitle) || "Ensemble pour les enfants de Petit-Cœur !",
-                    heroDesc: app.general.heroSubtitle || "Association de parents bénévoles dédiée au financement des sorties scolaires.",
-                    bureauText: (existing.general && existing.general.bureauText) || "« Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, du matériel informatique ou des spectacles pour nos enfants. Merci à toute l'équipe enseignante, aux bénévoles et aux familles de la commune pour leur engagement ! »",
-                    locationTag: "Savoie - Commune de La Léchère",
-                    statEleves: app.general.statStudents ? (app.general.statStudents + "+") : "120+",
-                    statEvents: app.general.statEvents ? String(app.general.statEvents) : "6",
-                    statBudget: app.general.statFinanced ? (app.general.statFinanced + "%") : "100%"
+                    assocName: app.general.siteName,
+                    assocSub: app.general.siteLocation,
+                    heroTitle: app.general.heroTitle,
+                    heroDesc: app.general.heroDesc,
+                    heroSubtitle: app.general.heroSubtitle,
+                    locationTag: app.general.locationTag,
+                    cardTitle: app.general.cardTitle,
+                    cardSub: app.general.cardSub,
+                    cardBadge: app.general.cardBadge,
+                    bureauText: "« Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, ou des spectacles pour nos enfants. Merci à toute l'équipe enseignante et aux familles ! »",
+                    statEleves: app.general.statStudents,
+                    statEvents: app.general.statEvents,
+                    statBudget: app.general.statBudget
                 },
                 budget: {
-                    current: app.project.currentAmount || 0,
-                    target: app.project.targetAmount || 1
+                    current: app.project.currentAmount,
+                    target: app.project.targetAmount
                 },
-                upcomingEvents: (app.upcomingEvents || []).map(item => ({
-                    id: item.id,
-                    title: item.title,
-                    date: item.date,
-                    time: item.time,
-                    location: item.location,
-                    badge: item.badge || 'Événement',
-                    desc: item.description || ''
-                })),
-                pastEvents: (app.pastEvents || []).map(album => ({
-                    id: album.id,
-                    title: album.title,
-                    date: album.date,
-                    raised: album.raised || '',
-                    desc: album.description || '',
-                    photos: album.photos || []
-                })),
-                projects: existing.projects || [
+                upcomingEvents: app.upcomingEvents,
+                pastEvents: app.pastEvents,
+                projects: [
                     {
                         id: 201,
                         title: "Cycle Ski de Fond à Naves",
                         category: "Sport & Montagne",
                         status: "Financé à 100%",
-                        desc: "Financement du matériel et du transport pour 5 séances d'apprentissage sur le plateau nordique."
-                    },
-                    {
-                        id: 202,
-                        title: "Classe Découverte Nature (3 jours)",
-                        category: "Voyage Pédagogique",
-                        status: "En cours (65%)",
-                        desc: "Séjour au Lac d'Annecy pour la classe de CM1/CM2 (hébergement & ateliers faune/flore)."
+                        desc: "Financement du matériel et du transport pour les élèves."
                     }
                 ]
             };
         }
 
-// 1. Déclaration des données par défaut en premier
-const defaultSiteData = {
-    adminPassword: "admin123",
-    general: {
-        assocName: "Sou des Écoles de Petit-Cœur",
-        // ...
-    }
-};
+        async function fetchRemoteData() {
+            try {
+                const { data, error } = await _supabase
+                    .from('site_content')
+                    .select('content')
+                    .eq('id', 1)
+                    .single();
 
-// 2. Déclaration de la fonction juste en dessous
-async function fetchRemoteData() {
-    try {
-        const { data, error } = await _supabase
-            .from('site_content')
-            .select('content')
-            .eq('id', 1)
-            .single();
+                if (error) throw error;
 
-        if (error) throw error;
-
-        if (data && data.content) {
-            siteData = Object.assign({}, defaultSiteData, data.content);
-            if (typeof renderAdminForms === 'function') {
-                renderAdminForms();
+                if (data && data.content) {
+                    appData = normalizeAppData(data.content);
+                    localStorage.setItem('sou_app_data', JSON.stringify(appData));
+                    localStorage.setItem('sou_petit_coeur_data', JSON.stringify(toPublicSiteData(appData)));
+                    initDashboardUI();
+                }
+            } catch (err) {
+                console.warn("Erreur Supabase :", err);
             }
         }
-    } catch (err) {
-        console.warn("Erreur de chargement Supabase :", err);
-    }
-}
 
         function loadDataFromStorage() {
             const stored = localStorage.getItem('sou_app_data');
-            const shared = localStorage.getItem('sou_petit_coeur_data');
             if (stored) {
                 try {
                     appData = normalizeAppData(JSON.parse(stored));
-                } catch(e) {
-                    appData = JSON.parse(JSON.stringify(DEFAULT_DATA));
-                }
-            } else if (shared) {
-                try {
-                    appData = normalizeAppData(JSON.parse(shared));
                 } catch(e) {
                     appData = JSON.parse(JSON.stringify(DEFAULT_DATA));
                 }
@@ -709,33 +596,22 @@ async function fetchRemoteData() {
             }
         }
 
-     async function saveDataToStorage() {
-    // 1. Sauvegardes locales (pour que l'admin garde ses données instantanément)
-    localStorage.setItem('sou_app_data', JSON.stringify(appData));
-    const publicData = toPublicSiteData(appData);
-    localStorage.setItem('sou_petit_coeur_data', JSON.stringify(publicData));
-    updateDashboardStats();
+        async function saveDataToStorage() {
+            localStorage.setItem('sou_app_data', JSON.stringify(appData));
+            const publicData = toPublicSiteData(appData);
+            localStorage.setItem('sou_petit_coeur_data', JSON.stringify(publicData));
+            updateDashboardStats();
 
-    // 2. Synchronisation distante sur Supabase
-    try {
-        const { error } = await _supabase
-            .from('site_content')
-            .upsert({ id: 1, content: publicData });
+            try {
+                const { error } = await _supabase
+                    .from('site_content')
+                    .upsert({ id: 1, content: publicData });
 
-        if (error) throw error;
-        console.log("Synchronisé avec succès sur Supabase !");
-    } catch (err) {
-        console.error("Erreur lors de la sauvegarde distante Supabase :", err);
-    }
-}
-
-        // Écouter les modifications si effectuées dans un autre onglet
-        window.addEventListener('storage', (e) => {
-            if (e.key === 'sou_app_data' || e.key === 'sou_petit_coeur_data') {
-                loadDataFromStorage();
-                initDashboardUI();
+                if (error) throw error;
+            } catch (err) {
+                console.error("Erreur de sauvegarde Supabase :", err);
             }
-        });
+        }
 
         function checkSession() {
             const loggedIn = sessionStorage.getItem('sou_admin_logged');
@@ -767,7 +643,7 @@ async function fetchRemoteData() {
         function logoutAdmin() {
             sessionStorage.removeItem('sou_admin_logged');
             checkSession();
-            showToast("Vous vous êtes déconnecté.", "info");
+            showToast("Déconnexion réussie.", "info");
         }
 
         function initDashboardUI() {
@@ -779,7 +655,6 @@ async function fetchRemoteData() {
             updateDashboardStats();
         }
 
-        // TABS NAVIGATION
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -793,81 +668,58 @@ async function fetchRemoteData() {
                 activeBtn.classList.add('bg-brand-600', 'text-white');
                 activeBtn.classList.remove('text-slate-400');
             }
-
-            // Titles
-            const titles = {
-                'tab-general': 'Configuration Générale',
-                'tab-projects': 'Gestion des Projets & Budget',
-                'tab-upcoming': 'Gestion des Événements à Venir',
-                'tab-past': 'Albums Photos & Événements Passés'
-            };
-            document.getElementById('page-title').textContent = titles[tabId] || 'Panneau d\'Administration';
         }
 
-        // UPDATE KPI STATS
         function updateDashboardStats() {
             document.getElementById('stat-budget').textContent = `${appData.project.currentAmount.toLocaleString()} €`;
             document.getElementById('stat-upcoming').textContent = appData.upcomingEvents.length;
             document.getElementById('stat-past').textContent = appData.pastEvents.length;
-            
             let photoCount = 0;
-            appData.pastEvents.forEach(album => {
-                photoCount += (album.photos ? album.photos.length : 0);
-            });
+            appData.pastEvents.forEach(album => { photoCount += (album.photos ? album.photos.length : 0); });
             document.getElementById('stat-photos').textContent = photoCount;
         }
 
-        // 1. GENERAL INFO
         function fillGeneralForm() {
             const g = appData.general;
             document.getElementById('cfg-siteName').value = g.siteName || '';
             document.getElementById('cfg-siteLocation').value = g.siteLocation || '';
-            document.getElementById('cfg-heroSubtitle').value = g.heroSubtitle || '';
+            document.getElementById('cfg-heroTitle').value = g.heroTitle || '';
+            document.getElementById('cfg-heroDesc').value = g.heroDesc || '';
+            document.getElementById('cfg-locationTag').value = g.locationTag || '';
+            document.getElementById('cfg-cardTitle').value = g.cardTitle || '';
+            document.getElementById('cfg-cardSub').value = g.cardSub || '';
+            document.getElementById('cfg-cardBadge').value = g.cardBadge || '';
             document.getElementById('cfg-statStudents').value = g.statStudents || '';
             document.getElementById('cfg-statEvents').value = g.statEvents || '';
-            document.getElementById('cfg-statFinanced').value = g.statFinanced || '';
+            document.getElementById('cfg-statBudget').value = g.statBudget || '';
             document.getElementById('cfg-contactEmail').value = g.contactEmail || '';
             document.getElementById('cfg-adminPassword').value = '';
         }
-        
-async function saveGeneralInfo(e) {
-    e.preventDefault();
 
-    // Fonction sécurisée pour éviter les plantages si un ID est introuvable
-    const getVal = (id) => {
-        const el = document.getElementById(id);
-        return el ? el.value : '';
-    };
+        async function saveGeneralInfo(e) {
+            e.preventDefault();
+            appData.general.siteName = document.getElementById('cfg-siteName').value;
+            appData.general.siteLocation = document.getElementById('cfg-siteLocation').value;
+            appData.general.heroTitle = document.getElementById('cfg-heroTitle').value;
+            appData.general.heroDesc = document.getElementById('cfg-heroDesc').value;
+            appData.general.locationTag = document.getElementById('cfg-locationTag').value;
+            appData.general.cardTitle = document.getElementById('cfg-cardTitle').value;
+            appData.general.cardSub = document.getElementById('cfg-cardSub').value;
+            appData.general.cardBadge = document.getElementById('cfg-cardBadge').value;
+            appData.general.statStudents = document.getElementById('cfg-statStudents').value;
+            appData.general.statEvents = document.getElementById('cfg-statEvents').value;
+            appData.general.statBudget = document.getElementById('cfg-statBudget').value;
+            appData.general.contactEmail = document.getElementById('cfg-contactEmail').value;
 
-    appData.general.siteName = getVal('cfg-siteName');
-    appData.general.siteLocation = getVal('cfg-sitelocation');
-    appData.general.heroSubtitle = getVal('cfg-heroSubtitle');
-    appData.general.statStudents = getVal('cfg-statStudents');
-    appData.general.statEvents = getVal('cfg-statEvents');
-    appData.general.statFinanced = getVal('cfg-statFinanced');
-    appData.general.contactEmail = getVal('cfg-contactEmail');
+            const passEl = document.getElementById('cfg-adminPassword');
+            if (passEl && passEl.value.trim() !== "") {
+                appData.general.adminPassword = passEl.value.trim();
+            }
 
-    const passEl = document.getElementById('cfg-adminPassword');
-    if (passEl && passEl.value.trim() !== "") {
-        appData.general.adminPassword = passEl.value.trim();
-    }
+            await saveDataToStorage();
+            showToast("Informations d'accueil enregistrées !");
+        }
 
-    // Enregistrement dans Supabase
-    try {
-        const { error } = await _supabase
-            .from('site_content')
-            .upsert({ id: 1, content: appData });
-
-        if (error) throw error;
-
-        showToast("Informations générales sauvegardées et synchronisées !");
-    } catch (err) {
-        console.error("Erreur Supabase :", err);
-        showToast("Erreur lors de la synchronisation Supabase");
-    }
-}
-
-        // 2. PROJECT & BUDGET
         function fillProjectForm() {
             const p = appData.project;
             document.getElementById('proj-title').value = p.title || '';
@@ -881,7 +733,6 @@ async function saveGeneralInfo(e) {
             const cur = parseFloat(document.getElementById('proj-current').value) || 0;
             const tgt = parseFloat(document.getElementById('proj-target').value) || 1;
             const pct = Math.min(Math.round((cur / tgt) * 100), 100);
-
             document.getElementById('jauge-percent').textContent = pct + "%";
             document.getElementById('jauge-bar').style.width = pct + "%";
         }
@@ -892,46 +743,31 @@ async function saveGeneralInfo(e) {
             appData.project.description = document.getElementById('proj-description').value;
             appData.project.currentAmount = parseFloat(document.getElementById('proj-current').value) || 0;
             appData.project.targetAmount = parseFloat(document.getElementById('proj-target').value) || 1;
-
             saveDataToStorage();
-            showToast("Budget et projet mis à jour !");
+            showToast("Budget mis à jour !");
         }
 
-        // 3. UPCOMING EVENTS
         function renderUpcomingList() {
             const container = document.getElementById('upcoming-events-list');
             container.innerHTML = '';
-
             if (appData.upcomingEvents.length === 0) {
-                container.innerHTML = `
-                    <div class="col-span-2 bg-white rounded-2xl p-8 text-center text-slate-400 border border-slate-200">
-                        <i class="fas fa-calendar-times text-3xl mb-2"></i>
-                        <p class="text-sm font-semibold">Aucun événement à venir actuellement.</p>
-                    </div>
-                `;
+                container.innerHTML = `<div class="col-span-2 bg-white rounded-2xl p-8 text-center text-slate-400 border border-slate-200"><p class="text-sm font-semibold">Aucun événement à venir.</p></div>`;
                 return;
             }
-
             appData.upcomingEvents.forEach(item => {
                 const card = document.createElement('div');
-                card.className = "bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex flex-col justify-between space-y-4";
+                card.className = "bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between space-y-4";
                 card.innerHTML = `
                     <div>
                         <div class="flex items-start justify-between gap-2 mb-2">
-                            <span class="text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 bg-brand-50 text-brand-600 rounded-lg">${item.badge || 'Événement'}</span>
+                            <span class="text-[10px] uppercase font-bold px-2.5 py-1 bg-brand-50 text-brand-600 rounded-lg">${item.badge || 'Événement'}</span>
                             <div class="flex items-center gap-1">
-                                <button onclick="editUpcomingEvent(${item.id})" class="text-slate-400 hover:text-brand-600 p-1.5 transition"><i class="fas fa-edit"></i></button>
-                                <button onclick="deleteUpcomingEvent(${item.id})" class="text-slate-400 hover:text-rose-600 p-1.5 transition"><i class="fas fa-trash-alt"></i></button>
+                                <button onclick="editUpcomingEvent(${item.id})" class="text-slate-400 hover:text-brand-600 p-1.5"><i class="fas fa-edit"></i></button>
+                                <button onclick="deleteUpcomingEvent(${item.id})" class="text-slate-400 hover:text-rose-600 p-1.5"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </div>
                         <h4 class="font-heading font-extrabold text-slate-900 text-base">${item.title}</h4>
-                        <p class="text-xs text-slate-500 mt-2 line-clamp-2">${item.description}</p>
-                    </div>
-
-                    <div class="pt-3 border-t border-slate-100 flex flex-wrap gap-y-1 gap-x-4 text-xs font-semibold text-slate-600">
-                        <span><i class="fas fa-calendar-day text-brand-500 mr-1.5"></i>${item.date}</span>
-                        <span><i class="fas fa-clock text-brand-500 mr-1.5"></i>${item.time}</span>
-                        <span><i class="fas fa-map-marker-alt text-brand-500 mr-1.5"></i>${item.location}</span>
+                        <p class="text-xs text-slate-500 mt-2">${item.desc || item.description || ''}</p>
                     </div>
                 `;
                 container.appendChild(card);
@@ -941,7 +777,6 @@ async function saveGeneralInfo(e) {
         function openUpcomingModal(editId = null) {
             document.getElementById('form-upcoming-event').reset();
             document.getElementById('upcoming-edit-id').value = '';
-            
             if (editId) {
                 const ev = appData.upcomingEvents.find(e => e.id === editId);
                 if (ev) {
@@ -949,55 +784,44 @@ async function saveGeneralInfo(e) {
                     document.getElementById('upcoming-edit-id').value = ev.id;
                     document.getElementById('up-title').value = ev.title;
                     document.getElementById('up-date').value = ev.date;
-                    document.getElementById('up-time').value = ev.time;
-                    document.getElementById('up-location').value = ev.location;
-                    document.getElementById('up-desc').value = ev.description;
+                    document.getElementById('up-time').value = ev.time || '';
+                    document.getElementById('up-location').value = ev.location || '';
+                    document.getElementById('up-desc').value = ev.desc || ev.description || '';
                     document.getElementById('up-badge').value = ev.badge || '';
                 }
-            } else {
-                document.getElementById('upcoming-modal-title').textContent = "Nouveau événement à venir";
             }
-            
             document.getElementById('upcoming-modal').classList.remove('hidden');
         }
 
-        function closeUpcomingModal() {
-            document.getElementById('upcoming-modal').classList.add('hidden');
-        }
+        function closeUpcomingModal() { document.getElementById('upcoming-modal').classList.add('hidden'); }
 
         function saveUpcomingEvent(e) {
             e.preventDefault();
             const editId = document.getElementById('upcoming-edit-id').value;
-
             const payload = {
                 id: editId ? parseInt(editId) : Date.now(),
                 title: document.getElementById('up-title').value,
                 date: document.getElementById('up-date').value,
                 time: document.getElementById('up-time').value,
                 location: document.getElementById('up-location').value,
-                description: document.getElementById('up-desc').value,
+                desc: document.getElementById('up-desc').value,
                 badge: document.getElementById('up-badge').value
             };
-
             if (editId) {
                 const idx = appData.upcomingEvents.findIndex(e => e.id === parseInt(editId));
                 if (idx !== -1) appData.upcomingEvents[idx] = payload;
             } else {
                 appData.upcomingEvents.push(payload);
             }
-
             saveDataToStorage();
             renderUpcomingList();
             closeUpcomingModal();
-            showToast("Événement à venir enregistré !");
+            showToast("Événement enregistré !");
         }
 
-        function editUpcomingEvent(id) {
-            openUpcomingModal(id);
-        }
-
+        function editUpcomingEvent(id) { openUpcomingModal(id); }
         function deleteUpcomingEvent(id) {
-            if (confirm("Voulez-vous vraiment supprimer cet événement ?")) {
+            if (confirm("Supprimer cet événement ?")) {
                 appData.upcomingEvents = appData.upcomingEvents.filter(e => e.id !== id);
                 saveDataToStorage();
                 renderUpcomingList();
@@ -1005,153 +829,52 @@ async function saveGeneralInfo(e) {
             }
         }
 
-        // 4. PAST EVENTS & GALLERY MANAGER
         function renderPastList() {
             const container = document.getElementById('past-events-list');
             container.innerHTML = '';
-
             if (appData.pastEvents.length === 0) {
-                container.innerHTML = `
-                    <div class="bg-white rounded-2xl p-8 text-center text-slate-400 border border-slate-200">
-                        <i class="fas fa-camera text-3xl mb-2"></i>
-                        <p class="text-sm font-semibold">Aucun album passé configuré.</p>
-                    </div>
-                `;
+                container.innerHTML = `<div class="bg-white rounded-2xl p-8 text-center text-slate-400 border border-slate-200"><p class="text-sm font-semibold">Aucun album passé.</p></div>`;
                 return;
             }
-
             appData.pastEvents.forEach(album => {
                 const block = document.createElement('div');
-                block.className = "bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm space-y-4";
-                
-                // Photos grid HTML
-                let photosHTML = '';
-                if (album.photos && album.photos.length > 0) {
-                    album.photos.forEach((photoUrl, photoIdx) => {
-                        photosHTML += `
-                            <div class="relative group rounded-xl overflow-hidden aspect-video bg-slate-100 border border-slate-200">
-                                <img src="${photoUrl}" class="w-full h-full object-cover">
-                                <button onclick="deletePhotoFromAlbum(${album.id}, ${photoIdx})" class="absolute top-2 right-2 w-7 h-7 bg-rose-600/90 text-white rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition shadow-lg">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        `;
-                    });
-                } else {
-                    photosHTML = `
-                        <div class="col-span-full py-6 text-center text-xs font-semibold text-slate-400 bg-slate-50 rounded-xl border border-dashed border-slate-200">
-                            Aucune photo dans cet album. Ajoutez-en ci-dessous !
-                        </div>
-                    `;
-                }
-
+                block.className = "bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4";
                 block.innerHTML = `
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                    <div class="flex justify-between items-center border-b pb-3">
                         <div>
-                            <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">${album.date}</span>
+                            <span class="text-xs font-bold text-brand-600 uppercase">${album.date}</span>
                             <h4 class="font-heading font-extrabold text-slate-900 text-lg">${album.title}</h4>
-                            ${album.raised ? `<span class="inline-block mt-1 text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">${album.raised}</span>` : ''}
                         </div>
-                        <div class="flex items-center gap-2">
-                            <button onclick="editPastEvent(${album.id})" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition">
-                                <i class="fas fa-edit mr-1"></i> Modifier Infos
-                            </button>
-                            <button onclick="deletePastEvent(${album.id})" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg text-xs font-bold transition">
-                                <i class="fas fa-trash mr-1"></i> Supprimer
-                            </button>
-                        </div>
+                        <button onclick="deletePastEvent(${album.id})" class="px-3 py-1.5 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold"><i class="fas fa-trash mr-1"></i> Supprimer</button>
                     </div>
-
-                    <p class="text-xs text-slate-600">${album.description}</p>
-
-                    <!-- PHOTOS MANAGER GRID -->
-                    <div>
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-xs font-bold text-slate-500 uppercase">Photos de l'album (${album.photos ? album.photos.length : 0})</span>
-                            
-                            <div class="flex items-center gap-2">
-                                <label class="cursor-pointer px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-lg transition flex items-center gap-1.5 shadow-sm">
-                                    <i class="fas fa-[#10B981] fa-upload"></i>
-                                    <span>Importer photo</span>
-                                    <input type="file" accept="image/*" class="hidden" onchange="uploadPhotoLocal(event, ${album.id})">
-                                </label>
-                                <button onclick="promptPhotoUrl(${album.id})" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-lg transition">
-                                    <i class="fas fa-link mr-1"></i> Via URL
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                            ${photosHTML}
-                        </div>
-                    </div>
+                    <p class="text-xs text-slate-600">${album.desc || album.description || ''}</p>
                 `;
-
                 container.appendChild(block);
             });
         }
 
-        function openPastModal(editId = null) {
-            document.getElementById('form-past-event').reset();
-            document.getElementById('past-edit-id').value = '';
-
-            if (editId) {
-                const alb = appData.pastEvents.find(a => a.id === editId);
-                if (alb) {
-                    document.getElementById('past-modal-title').textContent = "Modifier l'album";
-                    document.getElementById('past-edit-id').value = alb.id;
-                    document.getElementById('past-title').value = alb.title;
-                    document.getElementById('past-date').value = alb.date;
-                    document.getElementById('past-raised').value = alb.raised || '';
-                    document.getElementById('past-desc').value = alb.description;
-                }
-            } else {
-                document.getElementById('past-modal-title').textContent = "Nouveau album souvenir";
-            }
-
-            document.getElementById('past-modal').classList.remove('hidden');
-        }
-
-        function closePastModal() {
-            document.getElementById('past-modal').classList.add('hidden');
-        }
+        function openPastModal() { document.getElementById('past-modal').classList.remove('hidden'); }
+        function closePastModal() { document.getElementById('past-modal').classList.add('hidden'); }
 
         function savePastEvent(e) {
             e.preventDefault();
-            const editId = document.getElementById('past-edit-id').value;
-
-            if (editId) {
-                const alb = appData.pastEvents.find(a => a.id === parseInt(editId));
-                if (alb) {
-                    alb.title = document.getElementById('past-title').value;
-                    alb.date = document.getElementById('past-date').value;
-                    alb.raised = document.getElementById('past-raised').value;
-                    alb.description = document.getElementById('past-desc').value;
-                }
-            } else {
-                const newAlbum = {
-                    id: Date.now(),
-                    title: document.getElementById('past-title').value,
-                    date: document.getElementById('past-date').value,
-                    raised: document.getElementById('past-raised').value,
-                    description: document.getElementById('past-desc').value,
-                    photos: []
-                };
-                appData.pastEvents.push(newAlbum);
-            }
-
+            const newAlbum = {
+                id: Date.now(),
+                title: document.getElementById('past-title').value,
+                date: document.getElementById('past-date').value,
+                raised: document.getElementById('past-raised').value,
+                desc: document.getElementById('past-desc').value,
+                photos: []
+            };
+            appData.pastEvents.push(newAlbum);
             saveDataToStorage();
             renderPastList();
             closePastModal();
-            showToast("Album enregistré !");
-        }
-
-        function editPastEvent(id) {
-            openPastModal(id);
+            showToast("Album créé !");
         }
 
         function deletePastEvent(id) {
-            if (confirm("Voulez-vous vraiment supprimer cet album et ses photos ?")) {
+            if (confirm("Supprimer cet album ?")) {
                 appData.pastEvents = appData.pastEvents.filter(a => a.id !== id);
                 saveDataToStorage();
                 renderPastList();
@@ -1159,48 +882,6 @@ async function saveGeneralInfo(e) {
             }
         }
 
-        // PHOTO HANDLERS
-        function uploadPhotoLocal(event, albumId) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const base64Img = e.target.result;
-                addPhotoToAlbum(albumId, base64Img);
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function promptPhotoUrl(albumId) {
-            const url = prompt("Entrez l'URL directe de l'image (https://...) :");
-            if (url && url.trim() !== '') {
-                addPhotoToAlbum(albumId, url.trim());
-            }
-        }
-
-        function addPhotoToAlbum(albumId, photoSrc) {
-            const album = appData.pastEvents.find(a => a.id === albumId);
-            if (album) {
-                if (!album.photos) album.photos = [];
-                album.photos.push(photoSrc);
-                saveDataToStorage();
-                renderPastList();
-                showToast("Photo ajoutée avec succès !");
-            }
-        }
-
-        function deletePhotoFromAlbum(albumId, photoIndex) {
-            const album = appData.pastEvents.find(a => a.id === albumId);
-            if (album && album.photos) {
-                album.photos.splice(photoIndex, 1);
-                saveDataToStorage();
-                renderPastList();
-                showToast("Photo retirée.", "warning");
-            }
-        }
-
-        // TOOLS EXPORT & RESET
         function exportDataJSON() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
             const downloadAnchor = document.createElement('a');
@@ -1212,7 +893,7 @@ async function saveGeneralInfo(e) {
         }
 
         function resetDataDefault() {
-            if (confirm("Attention: Cette action va réinitialiser toutes les données aux valeurs par défaut ! Continuer ?")) {
+            if (confirm("Réinitialiser toutes les données ?")) {
                 appData = JSON.parse(JSON.stringify(DEFAULT_DATA));
                 saveDataToStorage();
                 initDashboardUI();
@@ -1220,27 +901,11 @@ async function saveGeneralInfo(e) {
             }
         }
 
-        // TOAST NOTIFICATION
         function showToast(message, type = "success") {
             const toast = document.getElementById('toast');
-            const msgEl = document.getElementById('toast-message');
-            const iconEl = document.getElementById('toast-icon');
-
-            msgEl.textContent = message;
-
-            if (type === "warning") {
-                iconEl.className = "fas fa-exclamation-triangle text-amber-400 text-lg";
-            } else if (type === "info") {
-                iconEl.className = "fas fa-info-circle text-blue-400 text-lg";
-            } else {
-                iconEl.className = "fas fa-check-circle text-emerald-400 text-lg";
-            }
-
+            document.getElementById('toast-message').textContent = message;
             toast.classList.remove('translate-y-20', 'opacity-0');
-            toast.classList.add('translate-y-0', 'opacity-100');
-
             setTimeout(() => {
-                toast.classList.remove('translate-y-0', 'opacity-100');
                 toast.classList.add('translate-y-20', 'opacity-0');
             }, 3000);
         }
