@@ -657,6 +657,16 @@
             };
         }
 
+// 1. Déclaration des données par défaut en premier
+const defaultSiteData = {
+    adminPassword: "admin123",
+    general: {
+        assocName: "Sou des Écoles de Petit-Cœur",
+        // ...
+    }
+};
+
+// 2. Déclaration de la fonction juste en dessous
 async function fetchRemoteData() {
     try {
         const { data, error } = await _supabase
