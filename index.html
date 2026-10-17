@@ -58,7 +58,7 @@
 </head>
 <body class="antialiased flex flex-col min-h-screen">
 
-    <!-- Toast Notification -->
+    <!-- Toast Notification de mise à jour en direct -->
     <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-32 opacity-0 transition-all duration-300 bg-emerald-600 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3">
         <i class="fa-solid fa-circle-check text-2xl"></i>
         <span id="toast-message">Mise à jour en direct !</span>
@@ -115,7 +115,7 @@
                             Ensemble pour les enfants de Petit-Cœur !
                         </h1>
                         <p id="hero-description" class="text-lg md:text-xl text-sky-50 font-light leading-relaxed max-w-xl">
-                            Association de parents bénévoles dédiée au financement des sorties scolaires, projets pédagogiques, équipements et animations des écoles de notre village.
+                            Association de parents bénévoles dédiée au financement des sorties scolaires, projets pédagogiques et animations des écoles de notre village.
                         </p>
                         <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start pt-4">
                             <a href="#evenements" class="bg-brand-yellow hover:bg-amber-300 text-gray-900 font-title font-semibold px-6 py-3.5 rounded-2xl shadow-lg transition-all text-center flex items-center justify-center gap-2">
@@ -127,15 +127,16 @@
                         </div>
                     </div>
 
+                    <!-- CARTE IMAGE MODIFIABLE DEPUIS L'ADMIN -->
                     <div class="relative flex justify-center">
                         <div class="relative w-full max-w-md bg-white p-4 rounded-3xl shadow-2xl transform rotate-2">
                             <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=800&q=80" alt="Enfants à l'école" class="w-full h-72 object-cover rounded-2xl">
                             <div class="mt-4 flex items-center justify-between text-gray-800">
                                 <div>
-                                    <p class="font-title font-bold text-lg">100% pour nos écoliers</p>
-                                    <p class="text-xs text-gray-500">Activités, découvertes & spectacles</p>
+                                    <p id="card-title" class="font-title font-bold text-lg">100% pour nos écoliers</p>
+                                    <p id="card-sub" class="text-xs text-gray-500">Activités, découvertes & spectacles</p>
                                 </div>
-                                <span class="bg-brand-green/20 text-emerald-700 font-bold px-3 py-1 rounded-full text-xs">
+                                <span id="card-badge" class="bg-brand-green/20 text-emerald-700 font-bold px-3 py-1 rounded-full text-xs">
                                     Écoles de La Léchère
                                 </span>
                             </div>
@@ -145,7 +146,7 @@
             </div>
         </section>
 
-        <!-- CHIFFRES CLÉS ET STATS -->
+        <!-- CHIFFRES CLÉS -->
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
                 <div class="bg-white p-6 rounded-2xl shadow-lg border border-amber-100 text-center">
@@ -173,7 +174,7 @@
                 <span class="text-brand-blue font-title font-bold text-sm tracking-wider uppercase bg-blue-50 px-4 py-1.5 rounded-full">Présentation</span>
                 <h2 id="about-assoc-title" class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Le Sou des Écoles de Petit-Cœur</h2>
                 <p id="about-assoc-desc" class="text-gray-600 mt-4 text-lg">
-                    Une association dynamique constituée de parents d'élèves bénévoles dont le seul objectif est d'offrir aux enfants des écoles de Petit-Cœur des moments inoubliables.
+                    Une association dynamique constituée de parents d'élèves bénévoles dont le seul objectif est d'offrir aux enfants des moments inoubliables.
                 </p>
             </div>
 
@@ -258,7 +259,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT DE SYNCHRONISATION SUPABASE ET MISE À JOUR EN DIRECT -->
+    <!-- SCRIPTS DE SYNCHRONISATION SUPABASE ET RECHARGEMENT EN TEMPS RÉEL -->
     <script>
         const SUPABASE_URL = 'https://gdbktvxramksondbobns.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_6Q9vML3WwH7_8n5Ipvo-3g_DRZx_VPK';
@@ -266,12 +267,16 @@
 
         const defaultSiteData = {
             general: {
-                assocName: "Sou des Écoles de Petit-Cœur",
+                assocName: "Sou des Écoles",
                 assocSub: "Petit-Cœur • La Léchère",
                 heroTitle: "Ensemble pour les enfants de Petit-Cœur !",
-                heroDesc: "Association de parents bénévoles dédiée au financement des sorties scolaires, projets pédagogiques et animations des écoles de notre village.",
-                bureauText: "« Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, ou des spectacles pour nos enfants. Merci à toute l'équipe enseignante et aux familles ! »",
+                heroDesc: "Association de parents bénévoles dédiée au financement des sorties scolaires, projets pédagogiques, équipements et animations des écoles de notre village.",
+                heroSubtitle: "Association de parents bénévoles dédiée au financement des sorties scolaires.",
                 locationTag: "Savoie - Commune de La Léchère",
+                cardTitle: "100% pour nos écoliers",
+                cardSub: "Activités, découvertes & spectacles",
+                cardBadge: "Écoles de La Léchère",
+                bureauText: "« Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, ou des spectacles pour nos enfants. Merci à toute l'équipe enseignante et aux familles ! »",
                 statEleves: "120+",
                 statEvents: "6",
                 statBudget: "4 500 €"
@@ -284,129 +289,130 @@
 
         let siteData = Object.assign({}, defaultSiteData);
 
-   function renderSite() {
-    const gen = siteData.general || {};
-    
-    // En-tête et Titre Principal de l'accueil
-    document.getElementById('header-assoc-name').textContent = gen.assocName || "Sou des Écoles";
-    document.getElementById('header-assoc-sub').textContent = gen.assocSub || "Petit-Cœur • La Léchère";
-    document.getElementById('hero-location-tag').textContent = gen.locationTag || "Savoie - Commune de La Léchère";
-    document.getElementById('hero-title').textContent = gen.heroTitle || "Ensemble pour les enfants de Petit-Cœur !";
-    document.getElementById('hero-description').textContent = gen.heroDesc || gen.heroSubtitle || "Association de parents bénévoles...";
-    
-    // Textes de la carte image (en haut à droite de l'accueil)
-    // Assurez-vous d'avoir ajouté des ID si besoin, ou modifiez directement via les balises correspondantes.
-}
+        function renderSite() {
+            const gen = siteData.general || {};
+            
+            document.getElementById('header-assoc-name').textContent = gen.assocName || defaultSiteData.general.assocName;
+            document.getElementById('header-assoc-sub').textContent = gen.assocSub || defaultSiteData.general.assocSub;
+            document.getElementById('hero-location-tag').textContent = gen.locationTag || defaultSiteData.general.locationTag;
+            document.getElementById('hero-title').textContent = gen.heroTitle || defaultSiteData.general.heroTitle;
+            document.getElementById('hero-description').textContent = gen.heroDesc || gen.heroSubtitle || defaultSiteData.general.heroDesc;
+            
+            document.getElementById('about-assoc-title').textContent = gen.assocName || defaultSiteData.general.assocName;
+            document.getElementById('about-assoc-desc').textContent = gen.heroDesc || defaultSiteData.general.heroDesc;
+            document.getElementById('about-bureau-text').textContent = gen.bureauText || defaultSiteData.general.bureauText;
 
-    // Statistiques sécurisées
-    document.getElementById('stat-eleves').textContent = gen.statEleves || gen.statStudents || "120+";
-    document.getElementById('stat-events').textContent = gen.statEvents || "6";
-    document.getElementById('stat-budget').textContent = gen.statBudget || "4 500 €";
+            // Textes de la carte image
+            if (document.getElementById('card-title')) document.getElementById('card-title').textContent = gen.cardTitle || defaultSiteData.general.cardTitle;
+            if (document.getElementById('card-sub')) document.getElementById('card-sub').textContent = gen.cardSub || defaultSiteData.general.cardSub;
+            if (document.getElementById('card-badge')) document.getElementById('card-badge').textContent = gen.cardBadge || defaultSiteData.general.cardBadge;
 
-    // Budget Jauge
-    const budget = siteData.budget || {};
-    const currentB = Number(budget.current) || 3800;
-    const targetB = Number(budget.target) || 5000;
-    const pct = Math.min(100, Math.round((currentB / targetB) * 100));
-    
-    document.getElementById('budget-current-text').textContent = currentB.toLocaleString('fr-FR') + ' €';
-    document.getElementById('budget-target-text').textContent = ' / ' + targetB.toLocaleString('fr-FR') + ' € récoltés';
-    document.getElementById('budget-progress-bar').style.width = pct + '%';
-    document.getElementById('budget-percentage-text').textContent = pct + '%';
+            // Statistiques clés
+            document.getElementById('stat-eleves').textContent = gen.statStudents || gen.statEleves || "120+";
+            document.getElementById('stat-events').textContent = gen.statEvents || "6";
+            document.getElementById('stat-budget').textContent = gen.statBudget || "4 500 €";
 
-    // Événements à venir
-    const upContainer = document.getElementById('events-upcoming-container');
-    if (upContainer) {
-        upContainer.innerHTML = '';
-        const upcoming = siteData.upcomingEvents || [];
-        if (upcoming.length === 0) {
-            upContainer.innerHTML = '<p class="text-gray-500 col-span-3 text-center py-8">Aucun événement à venir pour le moment.</p>';
-        } else {
-            upcoming.forEach(ev => {
-                upContainer.innerHTML += `
-                    <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-amber-100 flex flex-col justify-between">
-                        <div class="relative bg-brand-yellow p-6 flex justify-between items-start">
-                            <span class="bg-white/90 text-gray-900 font-title font-bold text-xs px-3 py-1.5 rounded-full">${ev.date || ''}</span>
-                            <span class="bg-amber-800/20 text-amber-900 text-xs px-2.5 py-1 rounded-md font-semibold">${ev.badge || ''}</span>
-                        </div>
-                        <div class="p-6 flex-1 flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-title font-bold text-xl text-gray-900 mb-2">${ev.title || ''}</h3>
-                                <p class="text-gray-600 text-sm mb-4">${ev.desc || ''}</p>
-                                <div class="space-y-2 text-xs text-gray-500">
-                                    <p class="flex items-center gap-2"><i class="fa-regular fa-clock text-brand-blue"></i> ${ev.time || 'Non précisé'}</p>
-                                    <p class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-brand-red"></i> ${ev.location || 'École de Petit-Cœur'}</p>
+            // Budget Jauge
+            const budget = siteData.budget || {};
+            const currentB = Number(budget.current) || 3800;
+            const targetB = Number(budget.target) || 5000;
+            const pct = Math.min(100, Math.round((currentB / targetB) * 100));
+            document.getElementById('budget-current-text').textContent = currentB.toLocaleString('fr-FR') + ' €';
+            document.getElementById('budget-target-text').textContent = ' / ' + targetB.toLocaleString('fr-FR') + ' € récoltés';
+            document.getElementById('budget-progress-bar').style.width = pct + '%';
+            document.getElementById('budget-percentage-text').textContent = pct + '%';
+
+            // Événements à venir
+            const upContainer = document.getElementById('events-upcoming-container');
+            if (upContainer) {
+                upContainer.innerHTML = '';
+                const upcoming = siteData.upcomingEvents || [];
+                if (upcoming.length === 0) {
+                    upContainer.innerHTML = '<p class="text-gray-500 col-span-3 text-center py-8">Aucun événement à venir pour le moment.</p>';
+                } else {
+                    upcoming.forEach(ev => {
+                        upContainer.innerHTML += `
+                            <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-amber-100 flex flex-col justify-between">
+                                <div class="relative bg-brand-yellow p-6 flex justify-between items-start">
+                                    <span class="bg-white/90 text-gray-900 font-title font-bold text-xs px-3 py-1.5 rounded-full">${ev.date || ''}</span>
+                                    <span class="bg-amber-800/20 text-amber-900 text-xs px-2.5 py-1 rounded-md font-semibold">${ev.badge || 'Événement'}</span>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-    }
-
-    // Événements passés
-    const pastContainer = document.getElementById('past-events-container');
-    if (pastContainer) {
-        pastContainer.innerHTML = '';
-        const past = siteData.pastEvents || [];
-        if (past.length === 0) {
-            pastContainer.innerHTML = '<p class="text-gray-500 text-center py-8">Aucun événement passé enregistré.</p>';
-        } else {
-            past.forEach(pev => {
-                let photosHTML = '';
-                if (pev.photos && pev.photos.length > 0) {
-                    photosHTML = `<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">`;
-                    pev.photos.forEach(imgUrl => {
-                        photosHTML += `
-                            <div class="relative overflow-hidden rounded-2xl group cursor-pointer h-40 bg-gray-100 border border-gray-100" onclick="openLightbox('${imgUrl}', '${(pev.title || '').replace(/'/g, "\\'")}')">
-                                <img src="${imgUrl}" alt="${pev.title || ''}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                <div class="p-6 flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h3 class="font-title font-bold text-xl text-gray-900 mb-2">${ev.title || ''}</h3>
+                                        <p class="text-gray-600 text-sm mb-4">${ev.desc || ev.description || ''}</p>
+                                        <div class="space-y-2 text-xs text-gray-500">
+                                            <p class="flex items-center gap-2"><i class="fa-regular fa-clock text-brand-blue"></i> ${ev.time || 'Non précisé'}</p>
+                                            <p class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-brand-red"></i> ${ev.location || 'École de Petit-Cœur'}</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         `;
                     });
-                    photosHTML += `</div>`;
                 }
+            }
 
-                pastContainer.innerHTML += `
-                    <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-amber-100">
-                        <div class="flex justify-between items-start flex-wrap gap-2 mb-2">
-                            <h3 class="font-title text-2xl font-bold text-gray-900">${pev.title || ''}</h3>
-                            <span class="bg-amber-100 text-amber-800 font-title text-xs font-bold px-3 py-1 rounded-full">${pev.date || ''}</span>
+            // Événements passés & Galerie
+            const pastContainer = document.getElementById('past-events-container');
+            if (pastContainer) {
+                pastContainer.innerHTML = '';
+                const past = siteData.pastEvents || [];
+                if (past.length === 0) {
+                    pastContainer.innerHTML = '<p class="text-gray-500 text-center py-8">Aucun événement passé enregistré.</p>';
+                } else {
+                    past.forEach(pev => {
+                        let photosHTML = '';
+                        if (pev.photos && pev.photos.length > 0) {
+                            photosHTML = `<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">`;
+                            pev.photos.forEach(imgUrl => {
+                                photosHTML += `
+                                    <div class="relative overflow-hidden rounded-2xl group cursor-pointer h-40 bg-gray-100 border border-gray-100" onclick="openLightbox('${imgUrl}', '${(pev.title || '').replace(/'/g, "\\'")}')">
+                                        <img src="${imgUrl}" alt="${pev.title || ''}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    </div>
+                                `;
+                            });
+                            photosHTML += `</div>`;
+                        }
+
+                        pastContainer.innerHTML += `
+                            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-amber-100">
+                                <div class="flex justify-between items-start flex-wrap gap-2 mb-2">
+                                    <h3 class="font-title text-2xl font-bold text-gray-900">${pev.title || ''}</h3>
+                                    <span class="bg-amber-100 text-amber-800 font-title text-xs font-bold px-3 py-1 rounded-full">${pev.date || ''}</span>
+                                </div>
+                                <p class="text-gray-600 text-sm leading-relaxed">${pev.desc || pev.description || ''}</p>
+                                ${photosHTML}
+                            </div>
+                        `;
+                    });
+                }
+            }
+
+            // Projets
+            const projContainer = document.getElementById('projects-container');
+            if (projContainer) {
+                projContainer.innerHTML = '';
+                const projects = siteData.projects || [];
+                projects.forEach(proj => {
+                    projContainer.innerHTML += `
+                        <div class="bg-white rounded-3xl p-6 shadow-sm border border-amber-100 flex flex-col justify-between">
+                            <div>
+                                <span class="bg-sky-100 text-brand-darkblue text-xs font-bold px-2.5 py-1 rounded-md">${proj.category || ''}</span>
+                                <h4 class="font-title font-bold text-lg text-gray-900 mt-2">${proj.title || ''}</h4>
+                                <p class="text-gray-600 text-xs mt-1 mb-4">${proj.desc || ''}</p>
+                            </div>
+                            <div class="flex items-center justify-between text-xs font-semibold pt-2 border-t border-gray-100">
+                                <span class="text-brand-green">${proj.status || ''}</span>
+                                <i class="fa-solid fa-circle-check text-brand-green text-sm"></i>
+                            </div>
                         </div>
-                        <p class="text-gray-600 text-sm leading-relaxed">${pev.desc || ''}</p>
-                        ${photosHTML}
-                    </div>
-                `;
-            });
+                    `;
+                });
+            }
         }
-    }
 
-    // Projets
-    const projContainer = document.getElementById('projects-container');
-    if (projContainer) {
-        projContainer.innerHTML = '';
-        const projects = siteData.projects || [];
-        projects.forEach(proj => {
-            projContainer.innerHTML += `
-                <div class="bg-white rounded-3xl p-6 shadow-sm border border-amber-100 flex flex-col justify-between">
-                    <div>
-                        <span class="bg-sky-100 text-brand-darkblue text-xs font-bold px-2.5 py-1 rounded-md">${proj.category || ''}</span>
-                        <h4 class="font-title font-bold text-lg text-gray-900 mt-2">${proj.title || ''}</h4>
-                        <p class="text-gray-600 text-xs mt-1 mb-4">${proj.desc || ''}</p>
-                    </div>
-                    <div class="flex items-center justify-between text-xs font-semibold pt-2 border-t border-gray-100">
-                        <span class="text-brand-green">${proj.status || ''}</span>
-                        <i class="fa-solid fa-circle-check text-brand-green text-sm"></i>
-                    </div>
-                </div>
-            `;
-        });
-    }
-}
-
- 
-
-        // Chargement initial des données depuis Supabase
+        // Chargement initial depuis Supabase
         async function fetchRemoteData() {
             try {
                 const { data, error } = await _supabase
@@ -431,7 +437,7 @@
             }
         }
 
-        // Écoute en temps réel Supabase : actualise instantanément le site sans recharger la page
+        // Abonnement en temps réel : actualise instantanément sans recharger la page
         function setupRealtimeSubscription() {
             _supabase
                 .channel('public:site_content')
