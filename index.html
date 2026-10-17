@@ -61,14 +61,13 @@
     <!-- Toast Notification -->
     <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-32 opacity-0 transition-all duration-300 bg-emerald-600 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3">
         <i class="fa-solid fa-circle-check text-2xl"></i>
-        <span id="toast-message">Action effectuée avec succès !</span>
+        <span id="toast-message">Mise à jour en direct !</span>
     </div>
 
     <!-- HEADER / NAVIGATION PUBLIQUE -->
     <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md shadow-sm border-b border-amber-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
-                <!-- Logo -->
                 <a href="#accueil" class="flex items-center gap-3 group">
                     <div class="w-12 h-12 bg-brand-yellow rounded-2xl flex items-center justify-center text-brand-red text-2xl font-bold shadow-md transform group-hover:rotate-6 transition-transform">
                         <i class="fa-solid fa-heart text-brand-red"></i>
@@ -79,7 +78,6 @@
                     </div>
                 </a>
 
-                <!-- Desktop Navigation Public -->
                 <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-gray-700">
                     <a href="#accueil" class="hover:text-brand-blue transition-colors">Accueil</a>
                     <a href="#evenements" class="hover:text-brand-blue transition-colors">Événements à Venir</a>
@@ -88,14 +86,12 @@
                     <a href="admin.html" class="text-brand-red hover:underline transition-colors">Admin</a>
                 </nav>
 
-                <!-- Mobile Menu Button -->
                 <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none">
                     <i class="fa-solid fa-bars text-2xl"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Mobile Menu Dropdown -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-200 px-4 pt-2 pb-6 space-y-3">
             <a href="#accueil" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Accueil</a>
             <a href="#evenements" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Événements à Venir</a>
@@ -107,7 +103,6 @@
 
     <!-- MAIN SITE PUBLIC VIEW -->
     <main class="flex-grow">
-        <!-- HERO SECTION -->
         <section id="accueil" class="relative hero-pattern text-white py-16 md:py-24 overflow-hidden">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="grid md:grid-cols-2 gap-12 items-center">
@@ -132,7 +127,6 @@
                         </div>
                     </div>
 
-                    <!-- Hero Card Container -->
                     <div class="relative flex justify-center">
                         <div class="relative w-full max-w-md bg-white p-4 rounded-3xl shadow-2xl transform rotate-2">
                             <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=800&q=80" alt="Enfants à l'école" class="w-full h-72 object-cover rounded-2xl">
@@ -151,7 +145,7 @@
             </div>
         </section>
 
-        <!-- CHIFFRES CLÉS ET STATS -->
+        <!-- CHIFFRES CLÉS -->
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
                 <div class="bg-white p-6 rounded-2xl shadow-lg border border-amber-100 text-center">
@@ -173,17 +167,16 @@
             </div>
         </section>
 
-        <!-- SECTION PRÉSENTATION / MOT DU BUREAU -->
+        <!-- SECTION PRÉSENTATION -->
         <section id="a-propos" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-16">
                 <span class="text-brand-blue font-title font-bold text-sm tracking-wider uppercase bg-blue-50 px-4 py-1.5 rounded-full">Présentation</span>
                 <h2 id="about-assoc-title" class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Le Sou des Écoles de Petit-Cœur</h2>
                 <p id="about-assoc-desc" class="text-gray-600 mt-4 text-lg">
-                    Une association dynamique constituée de parents d'élèves bénévoles dont le seul objectif est d'offrir aux enfants des écoles de Petit-Cœur des moments inoubliables et des ressources pédagogiques enrichissantes.
+                    Une association dynamique constituée de parents d'élèves bénévoles dont le seul objectif est d'offrir aux enfants des écoles de Petit-Cœur des moments inoubliables.
                 </p>
             </div>
 
-            <!-- Mot du bureau -->
             <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-sm mb-12 flex flex-col md:flex-row items-center gap-8">
                 <div class="w-20 h-20 bg-brand-yellow/30 text-amber-800 rounded-3xl flex items-center justify-center text-4xl shrink-0 font-title font-bold">
                     <i class="fa-solid fa-quote-left"></i>
@@ -191,37 +184,13 @@
                 <div>
                     <h3 class="font-title text-2xl font-bold text-gray-900 mb-2">Le Mot du Bureau</h3>
                     <p id="about-bureau-text" class="text-gray-600 italic leading-relaxed text-base">
-                        « Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, du matériel informatique ou des spectacles pour nos enfants. Merci à toute l'équipe enseignante, aux bénévoles et aux familles de la commune pour leur engagement ! »
+                        « Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, ou des spectacles pour nos enfants. »
                     </p>
-                </div>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-3xl shadow-sm border border-amber-100">
-                    <div class="w-14 h-14 bg-amber-100 text-brand-yellow rounded-2xl flex items-center justify-center text-2xl mb-6 font-bold text-amber-600">
-                        <i class="fa-solid fa-bus"></i>
-                    </div>
-                    <h3 class="font-title text-xl font-bold text-gray-900 mb-3">Sorties & Voyages</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">Prise en charge des frais de transport et de billetterie pour les visites de musées et classes de découverte.</p>
-                </div>
-                <div class="bg-white p-8 rounded-3xl shadow-sm border border-amber-100">
-                    <div class="w-14 h-14 bg-sky-100 text-brand-blue rounded-2xl flex items-center justify-center text-2xl mb-6 font-bold">
-                        <i class="fa-solid fa-laptop-code"></i>
-                    </div>
-                    <h3 class="font-title text-xl font-bold text-gray-900 mb-3">Matériel & Culture</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">Achat de livres, matériel de sport, outils numériques et organisation de spectacles culturels.</p>
-                </div>
-                <div class="bg-white p-8 rounded-3xl shadow-sm border border-amber-100">
-                    <div class="w-14 h-14 bg-emerald-100 text-brand-green rounded-2xl flex items-center justify-center text-2xl mb-6 font-bold">
-                        <i class="fa-solid fa-users"></i>
-                    </div>
-                    <h3 class="font-title text-xl font-bold text-gray-900 mb-3">Convivialité</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">Création de lien social entre les familles de La Léchère à travers nos événements festifs.</p>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION ÉVÉNEMENTS À VENIR -->
+        <!-- ÉVÉNEMENTS À VENIR -->
         <section id="evenements" class="py-20 bg-amber-50/50 border-y border-amber-100">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="mb-12 text-center md:text-left">
@@ -232,17 +201,16 @@
             </div>
         </section>
 
-        <!-- SECTION ÉVÉNEMENTS PASSÉS & GALERIE DE PHOTOS -->
+        <!-- ÉVÉNEMENTS PASSÉS -->
         <section id="evenements-passes" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mb-12 text-center md:text-left">
                 <span class="text-brand-yellow font-title font-bold text-sm tracking-wider uppercase bg-amber-100/60 px-4 py-1.5 rounded-full text-amber-900">Souvenirs</span>
                 <h2 class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Événements Passés & Galerie Photos</h2>
-                <p class="text-gray-600 mt-2">Revivez les moments forts des écoles de Petit-Cœur à travers nos albums photos.</p>
             </div>
             <div class="space-y-12" id="past-events-container"></div>
         </section>
 
-        <!-- SECTION PROJETS FINANCÉS ET JAUGE BUDGET -->
+        <!-- PROJETS & BUDGET -->
         <section id="projets" class="py-20 bg-amber-50/50 border-t border-amber-100">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-16">
@@ -250,12 +218,11 @@
                     <h2 class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Nos Projets Financés</h2>
                 </div>
 
-                <!-- Jauge globale -->
                 <div class="bg-white rounded-3xl p-8 shadow-sm border border-amber-100 mb-12">
                     <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
                         <div>
                             <h3 class="font-title text-xl font-bold text-gray-900">Objectif de Financement Annuel</h3>
-                            <p class="text-sm text-gray-500">Avancement du budget pour les activités scolaires 2026-2027</p>
+                            <p class="text-sm text-gray-500">Avancement du budget pour les activités scolaires</p>
                         </div>
                         <div class="text-right">
                             <span id="budget-current-text" class="font-title text-2xl font-bold text-brand-green">3 800 €</span>
@@ -274,14 +241,13 @@
         </section>
     </main>
 
-    <!-- FOOTER -->
     <footer class="bg-gray-900 text-white py-12 border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-400">
             <p>&copy; 2026 Sou des Écoles de Petit-Cœur (La Léchère). Tous droits réservés.</p>
         </div>
     </footer>
 
-    <!-- LIGHTBOX IMAGE MODAL -->
+    <!-- LIGHTBOX -->
     <div id="modal-lightbox" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-4" onclick="closeLightbox()">
         <div class="relative max-w-4xl w-full max-h-screen flex flex-col items-center justify-center">
             <button onclick="closeLightbox()" class="absolute -top-12 right-0 text-white hover:text-brand-yellow text-3xl font-bold">
@@ -292,7 +258,7 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT PRINCIPAL ET SYNCHRONISATION SUPABASE -->
+    <!-- SCRIPT DE SYNCHRONISATION ET RECHARGEMENT EN TEMPS RÉEL -->
     <script>
         const SUPABASE_URL = 'https://gdbktvxramksondbobns.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_6Q9vML3WwH7_8n5Ipvo-3g_DRZx_VPK';
@@ -318,7 +284,6 @@
 
         let siteData = Object.assign({}, defaultSiteData);
 
-        // Fonction d'affichage du site
         function renderSite() {
             document.getElementById('header-assoc-name').textContent = siteData.general.assocName;
             document.getElementById('header-assoc-sub').textContent = siteData.general.assocSub;
@@ -333,7 +298,6 @@
             document.getElementById('stat-events').textContent = siteData.general.statEvents;
             document.getElementById('stat-budget').textContent = siteData.general.statBudget;
 
-            // Budget Jauge
             const currentB = siteData.budget.current || 0;
             const targetB = siteData.budget.target || 1;
             const pct = Math.min(100, Math.round((currentB / targetB) * 100));
@@ -370,7 +334,7 @@
                 });
             }
 
-            // Événements Passés & Photos
+            // Événements passés
             const pastContainer = document.getElementById('past-events-container');
             pastContainer.innerHTML = '';
             if (!siteData.pastEvents || siteData.pastEvents.length === 0) {
@@ -423,7 +387,7 @@
             });
         }
 
-        // Chargement direct depuis Supabase
+        // Récupération des données distantes
         async function fetchRemoteData() {
             try {
                 const { data, error } = await _supabase
@@ -436,27 +400,38 @@
 
                 if (data && data.content) {
                     siteData = Object.assign({}, defaultSiteData, data.content);
-                    localStorage.setItem('sou_petit_coeur_data', JSON.stringify(siteData));
                     renderSite();
                 }
             } catch (err) {
-                console.warn("Mode hors ligne ou erreur Supabase, utilisation du cache local :", err);
+                console.warn("Erreur Supabase, utilisation du cache :", err);
                 const local = localStorage.getItem('sou_petit_coeur_data');
                 if (local) {
-                    try {
-                        siteData = JSON.parse(local);
-                    } catch(e) {}
+                    try { siteData = JSON.parse(local); } catch(e) {}
                 }
                 renderSite();
             }
         }
 
-        // Lancement au démarrage
+        // TRÈS IMPORTANT : Abonnement en temps réel Supabase
+        // Dès qu'une modification est enregistrée dans l'admin, cette fonction recharge instantanément la page publique !
+        function setupRealtimeSubscription() {
+            _supabase
+                .channel('public:site_content')
+                .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'site_content' }, payload => {
+                    if (payload.new && payload.new.content) {
+                        siteData = Object.assign({}, defaultSiteData, payload.new.content);
+                        renderSite();
+                        showToast("Le site a été mis à jour en direct !");
+                    }
+                })
+                .subscribe();
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             fetchRemoteData();
+            setupRealtimeSubscription(); // Active l'écoute en direct
         });
 
-        // Lightbox
         function openLightbox(imgUrl, caption) {
             document.getElementById('lightbox-img').src = imgUrl;
             document.getElementById('lightbox-caption').textContent = caption;
@@ -467,7 +442,15 @@
             document.getElementById('modal-lightbox').classList.add('hidden');
         }
 
-        // Menu mobile
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = msg;
+            toast.classList.remove('translate-y-32', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-32', 'opacity-0');
+            }, 3000);
+        }
+
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         if (mobileMenuBtn && mobileMenu) {
