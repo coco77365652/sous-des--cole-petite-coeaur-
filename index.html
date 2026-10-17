@@ -54,11 +54,6 @@
             background-position: 0 0, 40px 40px;
             opacity: 0.95;
         }
-        .tab-btn.active {
-            background-color: #2B6CB0;
-            color: white;
-            box-shadow: 0 4px 12px rgba(43, 108, 176, 0.25);
-        }
     </style>
 </head>
 <body class="antialiased flex flex-col min-h-screen">
@@ -69,12 +64,12 @@
         <span id="toast-message">Action effectuée avec succès !</span>
     </div>
 
-  <!-- HEADER / NAVIGATION PUBLIQUE -->
+    <!-- HEADER / NAVIGATION PUBLIQUE -->
     <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md shadow-sm border-b border-amber-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <!-- Logo -->
-                <a href="#accueil" onclick="showPublicView()" class="flex items-center gap-3 group">
+                <a href="#accueil" class="flex items-center gap-3 group">
                     <div class="w-12 h-12 bg-brand-yellow rounded-2xl flex items-center justify-center text-brand-red text-2xl font-bold shadow-md transform group-hover:rotate-6 transition-transform">
                         <i class="fa-solid fa-heart text-brand-red"></i>
                     </div>
@@ -86,10 +81,10 @@
 
                 <!-- Desktop Navigation Public -->
                 <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-gray-700">
-                    <a href="#accueil" onclick="showPublicView()" class="hover:text-brand-blue transition-colors">Accueil</a>
-                    <a href="#evenements" onclick="showPublicView()" class="hover:text-brand-blue transition-colors">Événements à Venir</a>
-                    <a href="#evenements-passes" onclick="showPublicView()" class="hover:text-brand-blue transition-colors">Événements Passés</a>
-                    <a href="#projets" onclick="showPublicView()" class="hover:text-brand-blue transition-colors">Nos Projets Financés</a>
+                    <a href="#accueil" class="hover:text-brand-blue transition-colors">Accueil</a>
+                    <a href="#evenements" class="hover:text-brand-blue transition-colors">Événements à Venir</a>
+                    <a href="#evenements-passes" class="hover:text-brand-blue transition-colors">Événements Passés</a>
+                    <a href="#projets" class="hover:text-brand-blue transition-colors">Nos Projets Financés</a>
                     <a href="admin.html" class="text-brand-red hover:underline transition-colors">Admin</a>
                 </nav>
 
@@ -102,25 +97,16 @@
 
         <!-- Mobile Menu Dropdown -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-200 px-4 pt-2 pb-6 space-y-3">
-            <a href="#accueil" onclick="showPublicView()" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Accueil</a>
-            <a href="#evenements" onclick="showPublicView()" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Événements à Venir</a>
-            <a href="#evenements-passes" onclick="showPublicView()" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Événements Passés</a>
-            <a href="#projets" onclick="showPublicView()" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Nos Projets Financés</a>
+            <a href="#accueil" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Accueil</a>
+            <a href="#evenements" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Événements à Venir</a>
+            <a href="#evenements-passes" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Événements Passés</a>
+            <a href="#projets" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Nos Projets Financés</a>
             <a href="admin.html" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-brand-red hover:bg-amber-50">Admin</a>
         </div>
     </header>
 
-        <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-200 px-4 pt-2 pb-6 space-y-3">
-            <a href="#accueil" onclick="showPublicView()" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Accueil</a>
-            <a href="#evenements" onclick="showPublicView()" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Événements à Venir</a>
-            <a href="#evenements-passes" onclick="showPublicView()" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Événements Passés</a>
-            <a href="#projets" onclick="showPublicView()" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Nos Projets Financés</a>
-        </div>
-    </header>
-
     <!-- MAIN SITE PUBLIC VIEW -->
-    <main id="view-public" class="flex-grow">
+    <main class="flex-grow">
         <!-- HERO SECTION -->
         <section id="accueil" class="relative hero-pattern text-white py-16 md:py-24 overflow-hidden">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -137,7 +123,7 @@
                             Association de parents bénévoles dédiée au financement des sorties scolaires, projets pédagogiques, équipements et animations des écoles de notre village.
                         </p>
                         <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start pt-4">
-                            <a href="#evenements" class="bg-brand-yellow hover:bg-amber-300 text-gray-900 font-title font-semibold px-6 py-3.5 rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 text-center flex items-center justify-center gap-2">
+                            <a href="#evenements" class="bg-brand-yellow hover:bg-amber-300 text-gray-900 font-title font-semibold px-6 py-3.5 rounded-2xl shadow-lg transition-all text-center flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-calendar-star text-brand-red"></i> Prochains Événements
                             </a>
                             <a href="#evenements-passes" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/40 text-white font-title font-semibold px-6 py-3.5 rounded-2xl transition-all text-center flex items-center justify-center gap-2">
@@ -148,8 +134,8 @@
 
                     <!-- Hero Card Container -->
                     <div class="relative flex justify-center">
-                        <div class="relative w-full max-w-md bg-white p-4 rounded-3xl shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-300">
-                            <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=800&q=80" alt="Enfants à l'école" class="w-full h-72 object-cover rounded-2xl" onerror="this.src='https://placehold.co/600x400/4EA8DE/FFF?text=Sou+des+Ecoles+Petit-Coeur'">
+                        <div class="relative w-full max-w-md bg-white p-4 rounded-3xl shadow-2xl transform rotate-2">
+                            <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=800&q=80" alt="Enfants à l'école" class="w-full h-72 object-cover rounded-2xl">
                             <div class="mt-4 flex items-center justify-between text-gray-800">
                                 <div>
                                     <p class="font-title font-bold text-lg">100% pour nos écoliers</p>
@@ -168,19 +154,19 @@
         <!-- CHIFFRES CLÉS ET STATS -->
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-                <div class="bg-white p-6 rounded-2xl shadow-lg border border-amber-100 text-center transform hover:-translate-y-1 transition-transform">
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-amber-100 text-center">
                     <div id="stat-eleves" class="text-3xl sm:text-4xl font-title font-bold text-brand-blue mb-1">120+</div>
                     <div class="text-xs sm:text-sm text-gray-600 font-medium">Élèves soutenus</div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-lg border border-amber-100 text-center transform hover:-translate-y-1 transition-transform">
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-amber-100 text-center">
                     <div id="stat-events" class="text-3xl sm:text-4xl font-title font-bold text-brand-red mb-1">6</div>
                     <div class="text-xs sm:text-sm text-gray-600 font-medium">Événements par an</div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-lg border border-amber-100 text-center transform hover:-translate-y-1 transition-transform">
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-amber-100 text-center">
                     <div class="text-3xl sm:text-4xl font-title font-bold text-brand-green mb-1">100%</div>
                     <div class="text-xs sm:text-sm text-gray-600 font-medium">Bénévolat engagé</div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-lg border border-amber-100 text-center transform hover:-translate-y-1 transition-transform">
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-amber-100 text-center">
                     <div id="stat-budget" class="text-3xl sm:text-4xl font-title font-bold text-brand-yellow mb-1">4 500 €</div>
                     <div class="text-xs sm:text-sm text-gray-600 font-medium">Financés l'an dernier</div>
                 </div>
@@ -211,34 +197,26 @@
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-3xl shadow-sm border border-amber-100 relative overflow-hidden group hover:shadow-md transition-shadow">
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-amber-100">
                     <div class="w-14 h-14 bg-amber-100 text-brand-yellow rounded-2xl flex items-center justify-center text-2xl mb-6 font-bold text-amber-600">
                         <i class="fa-solid fa-bus"></i>
                     </div>
                     <h3 class="font-title text-xl font-bold text-gray-900 mb-3">Sorties & Voyages</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">
-                        Prise en charge des frais de transport et de billetterie pour les visites de musées, sorties nature et classes de découverte (ski, montagne).
-                    </p>
+                    <p class="text-gray-600 text-sm leading-relaxed">Prise en charge des frais de transport et de billetterie pour les visites de musées et classes de découverte.</p>
                 </div>
-
-                <div class="bg-white p-8 rounded-3xl shadow-sm border border-amber-100 relative overflow-hidden group hover:shadow-md transition-shadow">
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-amber-100">
                     <div class="w-14 h-14 bg-sky-100 text-brand-blue rounded-2xl flex items-center justify-center text-2xl mb-6 font-bold">
                         <i class="fa-solid fa-laptop-code"></i>
                     </div>
                     <h3 class="font-title text-xl font-bold text-gray-900 mb-3">Matériel & Culture</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">
-                        Achat de livres, matériel de sport, outils numériques et organisation de spectacles culturels au sein des écoles.
-                    </p>
+                    <p class="text-gray-600 text-sm leading-relaxed">Achat de livres, matériel de sport, outils numériques et organisation de spectacles culturels.</p>
                 </div>
-
-                <div class="bg-white p-8 rounded-3xl shadow-sm border border-amber-100 relative overflow-hidden group hover:shadow-md transition-shadow">
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-amber-100">
                     <div class="w-14 h-14 bg-emerald-100 text-brand-green rounded-2xl flex items-center justify-center text-2xl mb-6 font-bold">
                         <i class="fa-solid fa-users"></i>
                     </div>
                     <h3 class="font-title text-xl font-bold text-gray-900 mb-3">Convivialité</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">
-                        Création de lien social entre les familles de La Léchère à travers nos événements festifs tout au long de l'année scolaire.
-                    </p>
+                    <p class="text-gray-600 text-sm leading-relaxed">Création de lien social entre les familles de La Léchère à travers nos événements festifs.</p>
                 </div>
             </div>
         </section>
@@ -250,11 +228,7 @@
                     <span class="text-brand-red font-title font-bold text-sm tracking-wider uppercase bg-rose-100/60 px-4 py-1.5 rounded-full">Agenda des écoliers</span>
                     <h2 class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Prochains Événements</h2>
                 </div>
-
-                <!-- Grille d'événements à venir -->
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="events-upcoming-container">
-                    <!-- Contenu JS -->
-                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="events-upcoming-container"></div>
             </div>
         </section>
 
@@ -265,11 +239,7 @@
                 <h2 class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Événements Passés & Galerie Photos</h2>
                 <p class="text-gray-600 mt-2">Revivez les moments forts des écoles de Petit-Cœur à travers nos albums photos.</p>
             </div>
-
-            <!-- Liste des événements passés -->
-            <div class="space-y-12" id="past-events-container">
-                <!-- JS Dynamique -->
-            </div>
+            <div class="space-y-12" id="past-events-container"></div>
         </section>
 
         <!-- SECTION PROJETS FINANCÉS ET JAUGE BUDGET -->
@@ -278,9 +248,6 @@
                 <div class="text-center max-w-3xl mx-auto mb-16">
                     <span class="text-brand-green font-title font-bold text-sm tracking-wider uppercase bg-emerald-50 px-4 py-1.5 rounded-full">Transparence & Impact</span>
                     <h2 class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Nos Projets Financés</h2>
-                    <p class="text-gray-600 mt-4 text-lg">
-                        Grâce à la participation des familles aux différentes manifestations, voici les projets financés pour nos enfants cette année.
-                    </p>
                 </div>
 
                 <!-- Jauge globale -->
@@ -295,7 +262,6 @@
                             <span id="budget-target-text" class="text-gray-500 text-sm"> / 5 000 € récoltés</span>
                         </div>
                     </div>
-                    <!-- Progress bar -->
                     <div class="w-full bg-gray-100 rounded-full h-5 overflow-hidden p-1 border border-gray-200">
                         <div id="budget-progress-bar" class="bg-gradient-to-r from-brand-yellow via-brand-green to-brand-blue h-full rounded-full transition-all duration-1000 relative" style="width: 76%;">
                             <span id="budget-percentage-text" class="absolute right-2 top-0 text-[10px] text-white font-bold leading-3">76%</span>
@@ -303,320 +269,15 @@
                     </div>
                 </div>
 
-                <!-- Cartes des projets -->
-                <div class="grid md:grid-cols-2 gap-8" id="projects-container">
-                    <!-- Contenu injecté dynamiquement par JS -->
-                </div>
+                <div class="grid md:grid-cols-2 gap-8" id="projects-container"></div>
             </div>
         </section>
     </main>
 
-    <!-- AUTH MODAL / MOT DE PASSE ADMIN CACHÉ -->
-    <div id="modal-admin-auth" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-md w-full p-8 relative shadow-2xl border border-gray-100">
-            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            
-            <div class="text-center mb-6">
-                <div class="w-16 h-16 bg-slate-100 text-brand-darkblue rounded-full mx-auto flex items-center justify-center text-2xl mb-3">
-                    <i class="fa-solid fa-lock"></i>
-                </div>
-                <h3 class="font-title text-2xl font-bold text-gray-900">Espace Administration</h3>
-                <p class="text-xs text-gray-500 mt-1">Accès réservé aux membres du bureau</p>
-            </div>
-
-            <form onsubmit="verifyAdminPassword(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Mot de passe de sécurité</label>
-                    <input type="password" id="admin-password-input" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-blue text-sm" placeholder="Entrez le mot de passe">
-                    <p class="text-[10px] text-gray-400 mt-1">Mot de passe par défaut : <code class="bg-gray-100 px-1 py-0.5 rounded text-gray-700">admin123</code></p>
-                </div>
-
-                <div id="auth-error-msg" class="hidden text-xs text-red-600 font-semibold text-center">
-                    Mot de passe incorrect. Veuillez réessayer.
-                </div>
-
-                <button type="submit" class="w-full bg-brand-darkblue hover:bg-blue-900 text-white font-title font-semibold py-3 rounded-xl shadow-md transition-colors">
-                    Déverrouiller la Console
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- PAGE / VIEW SEPAREE DE L'ADMINISTRATION -->
-    <main id="view-admin" class="flex-grow hidden bg-slate-100 py-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white rounded-3xl shadow-sm p-6 sm:p-8 mb-8 border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <div class="flex items-center gap-2">
-                        <span class="bg-brand-darkblue text-white text-xs font-title font-bold px-3 py-1 rounded-full uppercase tracking-wider">Console Admin Sécurisée</span>
-                        <span class="text-xs bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-full"><i class="fa-solid fa-shield-halved mr-1"></i> Connecté</span>
-                    </div>
-                    <h1 class="font-title text-3xl font-bold text-gray-900 mt-2">Gestion & Paramètres du Site</h1>
-                    <p class="text-sm text-gray-500">Gérez le contenu, les photos, le budget et les événements de l'association.</p>
-                </div>
-                <div class="flex flex-wrap gap-3">
-                    <button onclick="resetDefaultData()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-title font-bold px-4 py-2.5 rounded-xl transition-colors">
-                        <i class="fa-solid fa-rotate-left mr-1"></i> Réinitialiser
-                    </button>
-                    <button onclick="showPublicView()" class="bg-brand-green hover:bg-emerald-600 text-white text-xs font-title font-bold px-5 py-2.5 rounded-xl shadow-sm transition-colors flex items-center gap-2">
-                        <i class="fa-solid fa-arrow-left"></i> Quitter & Retourner au Site Public
-                    </button>
-                </div>
-            </div>
-
-            <!-- Tabs Admin -->
-            <div class="flex flex-wrap gap-2 mb-8 border-b border-slate-200 pb-4">
-                <button onclick="switchAdminTab('general')" id="tab-admin-general" class="tab-btn active px-5 py-2.5 rounded-xl font-title font-bold text-sm text-gray-600 hover:bg-white transition-all">Infos Association & Bureau</button>
-                <button onclick="switchAdminTab('upcoming')" id="tab-admin-upcoming" class="tab-btn px-5 py-2.5 rounded-xl font-title font-bold text-sm text-gray-600 hover:bg-white transition-all">Événements à Venir</button>
-                <button onclick="switchAdminTab('past')" id="tab-admin-past" class="tab-btn px-5 py-2.5 rounded-xl font-title font-bold text-sm text-gray-600 hover:bg-white transition-all">Événements Passés & Albums Photos</button>
-                <button onclick="switchAdminTab('projects')" id="tab-admin-projects" class="tab-btn px-5 py-2.5 rounded-xl font-title font-bold text-sm text-gray-600 hover:bg-white transition-all">Budget & Projets</button>
-                <button onclick="switchAdminTab('security')" id="tab-admin-security" class="tab-btn px-5 py-2.5 rounded-xl font-title font-bold text-sm text-gray-600 hover:bg-white transition-all">Sécurité / Pass</button>
-            </div>
-
-            <!-- TAB ADMIN 1: INFOS GÉNÉRALES -->
-            <div id="admin-sec-general" class="admin-section space-y-6">
-                <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200">
-                    <h3 class="font-title text-xl font-bold text-gray-900 mb-4 border-b pb-2">Informations Principales</h3>
-                    <form onsubmit="saveGeneralInfo(event)" class="space-y-4">
-                        <div class="grid md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-bold text-gray-700 mb-1">Nom de l'Association</label>
-                                <input type="text" id="admin-input-assoc-name" required class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-gray-700 mb-1">Sous-titre / Commune</label>
-                                <input type="text" id="admin-input-assoc-sub" required class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-700 mb-1">Titre de la Page d'Accueil</label>
-                            <input type="text" id="admin-input-hero-title" required class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-700 mb-1">Description courte de présentation</label>
-                            <textarea id="admin-input-hero-desc" rows="3" required class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm"></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-700 mb-1">Mot du Bureau</label>
-                            <textarea id="admin-input-bureau-text" rows="3" required class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm"></textarea>
-                        </div>
-
-                        <h4 class="font-title font-bold text-gray-900 pt-4 border-b pb-2">Chiffres Clés</h4>
-                        <div class="grid md:grid-cols-3 gap-4">
-                            <div>
-                                <label class="block text-xs font-bold text-gray-700 mb-1">Nombre d'Élèves Soutenus</label>
-                                <input type="text" id="admin-input-stat-eleves" required class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-gray-700 mb-1">Événements par An</label>
-                                <input type="text" id="admin-input-stat-events" required class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-gray-700 mb-1">Montant Financé l'An Dernier</label>
-                                <input type="text" id="admin-input-stat-budget" required class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm">
-                            </div>
-                        </div>
-
-                        <div class="pt-4">
-                            <button type="submit" class="bg-brand-darkblue text-white font-title font-bold px-6 py-2.5 rounded-xl shadow-md hover:bg-blue-900 transition-colors">
-                                Enregistrer les modifications
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- TAB ADMIN 2: ÉVÉNEMENTS À VENIR -->
-            <div id="admin-sec-upcoming" class="admin-section space-y-6 hidden">
-                <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200">
-                    <h3 class="font-title text-xl font-bold text-gray-900 mb-4">Ajouter un Événement à Venir</h3>
-                    <form onsubmit="addUpcomingEvent(event)" class="space-y-4">
-                        <div class="grid md:grid-cols-3 gap-4">
-                            <div>
-                                <label class="block text-xs font-bold text-gray-700 mb-1">Titre de l'Événement *</label>
-                                <input type="text" id="new-up-title" required class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm" placeholder="Ex: Loto des Écoles">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-gray-700 mb-1">Date *</label>
-                                <input type="text" id="new-up-date" required class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm" placeholder="Ex: 25 JUIN 2027">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-gray-700 mb-1">Badge / Catégorie</label>
-                                <input type="text" id="new-up-badge" required class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm" placeholder="Ex: Fête d'école">
-                            </div>
-                        </div>
-                        <div class="grid md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-bold text-gray-700 mb-1">Horaires</label>
-                                <input type="text" id="new-up-time" placeholder="Ex: 14h00 - 18h00" class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-gray-700 mb-1">Lieu</label>
-                                <input type="text" id="new-up-location" placeholder="Ex: Salle des fêtes, Petit-Cœur" class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-700 mb-1">Description *</label>
-                            <textarea id="new-up-desc" rows="2" required class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm"></textarea>
-                        </div>
-                        <button type="submit" class="bg-brand-green text-white font-title font-bold px-6 py-2.5 rounded-xl shadow-md hover:bg-emerald-600 transition-colors">
-                            <i class="fa-solid fa-plus mr-1"></i> Ajouter cet événement
-                        </button>
-                    </form>
-                </div>
-
-                <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200">
-                    <h3 class="font-title text-xl font-bold text-gray-900 mb-4">Liste des Événements à Venir</h3>
-                    <div id="admin-upcoming-list" class="space-y-4">
-                        <!-- JS -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB ADMIN 3: ÉVÉNEMENTS PASSÉS & PHOTOS -->
-            <div id="admin-sec-past" class="admin-section space-y-6 hidden">
-                <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200">
-                    <h3 class="font-title text-xl font-bold text-gray-900 mb-4">Créer un Nouvel Album Souvenir (Événement Passé)</h3>
-                    <form onsubmit="addPastEvent(event)" class="space-y-4">
-                        <div class="grid md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-bold text-gray-700 mb-1">Nom de l'Événement *</label>
-                                <input type="text" id="new-past-title" required class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm" placeholder="Ex: Carnaval des Écoliers 2026">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-gray-700 mb-1">Date / Mois *</label>
-                                <input type="text" id="new-past-date" required class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm" placeholder="Ex: Mars 2026">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-700 mb-1">Résumé / Commentaires</label>
-                            <textarea id="new-past-desc" rows="2" class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm" placeholder="Une journée festive..."></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-700 mb-1">Ajouter des Photos (Télécharger fichier(s) local/s ou saisir une URL)</label>
-                            <div class="flex flex-col sm:flex-row gap-3">
-                                <input type="file" id="new-past-files" accept="image/*" multiple class="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-sky-50 file:text-brand-darkblue hover:file:bg-sky-100">
-                                <input type="text" id="new-past-url" placeholder="Ou URL d'image (ex: https://...)" class="flex-1 px-4 py-2 rounded-xl border border-gray-300 text-sm">
-                            </div>
-                        </div>
-                        <button type="submit" class="bg-brand-blue text-white font-title font-bold px-6 py-2.5 rounded-xl shadow-md hover:bg-blue-600 transition-colors">
-                            <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Enregistrer l'Album
-                        </button>
-                    </form>
-                </div>
-
-                <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200">
-                    <h3 class="font-title text-xl font-bold text-gray-900 mb-4">Albums Passés Existant(s)</h3>
-                    <div id="admin-past-list" class="space-y-6">
-                        <!-- JS -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB ADMIN 4: PROJETS & BUDGET -->
-            <div id="admin-sec-projects" class="admin-section space-y-6 hidden">
-                <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200">
-                    <h3 class="font-title text-xl font-bold text-gray-900 mb-4">Gestion de la Jauge Budgétaire Globale</h3>
-                    <form onsubmit="saveBudgetGoal(event)" class="grid md:grid-cols-3 gap-4 items-end">
-                        <div>
-                            <label class="block text-xs font-bold text-gray-700 mb-1">Montant Actuel Récolté (€)</label>
-                            <input type="number" id="admin-budget-current" required class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-700 mb-1">Objectif Total (€)</label>
-                            <input type="number" id="admin-budget-target" required class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm">
-                        </div>
-                        <button type="submit" class="bg-brand-darkblue text-white font-title font-bold px-6 py-2.5 rounded-xl shadow-md hover:bg-blue-900 transition-colors">
-                            Mettre à jour la Jauge
-                        </button>
-                    </form>
-                </div>
-
-                <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200">
-                    <h3 class="font-title text-xl font-bold text-gray-900 mb-4">Ajouter un Projet Financé</h3>
-                    <form onsubmit="addProject(event)" class="space-y-4">
-                        <div class="grid md:grid-cols-3 gap-4">
-                            <div>
-                                <label class="block text-xs font-bold text-gray-700 mb-1">Titre du Projet *</label>
-                                <input type="text" id="new-proj-title" required class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-gray-700 mb-1">Catégorie *</label>
-                                <input type="text" id="new-proj-category" required class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm" placeholder="Ex: Sport / Culture">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-gray-700 mb-1">Statut *</label>
-                                <input type="text" id="new-proj-status" required class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm" placeholder="Ex: Financé à 100%">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-700 mb-1">Description du projet</label>
-                            <textarea id="new-proj-desc" rows="2" required class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm"></textarea>
-                        </div>
-                        <button type="submit" class="bg-brand-green text-white font-title font-bold px-6 py-2.5 rounded-xl shadow-md hover:bg-emerald-600 transition-colors">
-                            Ajouter le Projet
-                        </button>
-                    </form>
-                </div>
-
-                <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200">
-                    <h3 class="font-title text-xl font-bold text-gray-900 mb-4">Liste des Projets</h3>
-                    <div id="admin-projects-list" class="space-y-4">
-                        <!-- JS -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB ADMIN 5: MOT DE PASSE -->
-            <div id="admin-sec-security" class="admin-section space-y-6 hidden">
-                <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200 max-w-xl">
-                    <h3 class="font-title text-xl font-bold text-gray-900 mb-4">Modifier le Mot de Passe d'Accès Admin</h3>
-                    <form onsubmit="changeAdminPassword(event)" class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-bold text-gray-700 mb-1">Nouveau Mot de Passe</label>
-                            <input type="password" id="new-admin-password" required class="w-full px-4 py-2 rounded-xl border border-gray-300 text-sm">
-                        </div>
-                        <button type="submit" class="bg-brand-red text-white font-title font-bold px-6 py-2.5 rounded-xl shadow-md hover:bg-rose-600 transition-colors">
-                            Changer le mot de passe
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- FOOTER ÉPURÉ AVEC LIEN ADMIN DISCRET -->
+    <!-- FOOTER -->
     <footer class="bg-gray-900 text-white py-12 border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-8 mb-8 pb-8 border-b border-gray-800">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-brand-yellow rounded-xl flex items-center justify-center text-brand-red font-bold text-xl">
-                        <i class="fa-solid fa-heart"></i>
-                    </div>
-                    <div>
-                        <span id="footer-assoc-name" class="font-title font-bold text-lg text-white block">Sou des Écoles de Petit-Cœur</span>
-                        <span class="text-xs text-gray-400">73260 La Léchère • Savoie</span>
-                    </div>
-                </div>
-
-                <!-- Navigation rapide Footer -->
-                <nav class="flex flex-wrap justify-center gap-6 text-xs font-semibold text-gray-300">
-                    <a href="#accueil" onclick="showPublicView()" class="hover:text-brand-yellow transition-colors">Accueil</a>
-                    <a href="#evenements" onclick="showPublicView()" class="hover:text-brand-yellow transition-colors">Événements à Venir</a>
-                    <a href="#evenements-passes" onclick="showPublicView()" class="hover:text-brand-yellow transition-colors">Événements Passés</a>
-                    <a href="#projets" onclick="showPublicView()" class="hover:text-brand-yellow transition-colors">Nos Projets</a>
-                </nav>
-            </div>
-
-            <div class="flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500 gap-4">
-                <p>&copy; 2026 Sou des Écoles de Petit-Cœur - Tous droits réservés.</p>
-                <!-- LIEN DISCRET ADMIN -->
-                <button onclick="openAuthModal()" class="text-gray-600 hover:text-gray-400 text-[11px] font-mono flex items-center gap-1 transition-colors">
-                    <i class="fa-solid fa-lock text-[9px]"></i> Accès Administration
-                </button>
-            </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-400">
+            <p>&copy; 2026 Sou des Écoles de Petit-Cœur (La Léchère). Tous droits réservés.</p>
         </div>
     </footer>
 
@@ -631,134 +292,51 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT & STATE MANAGEMENT -->
+    <!-- JAVASCRIPT PRINCIPAL ET SYNCHRONISATION SUPABASE -->
     <script>
-        // Initialisation de Supabase pour la page publique
-const SUPABASE_URL = 'https://gdbktvxramksondbobns.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_6Q9vML3WwH7_8n5Ipvo-3g_DRZx_VPK'; // (Mettez la même clé que dans admin.html)
-const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const SUPABASE_URL = 'https://gdbktvxramksondbobns.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_6Q9vML3WwH7_8n5Ipvo-3g_DRZx_VPK';
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// 1. D'abord, vous avez vos données par défaut (le code que vous venez de montrer)
-const defaultSiteData = {
-    adminPassword: "admin123",
-    general: {
-        assocName: "Sou des Écoles de Petit-Cœur",
-        // ... (toutes vos propriétés)
-    },
-    // ... budget, upcomingEvents, pastEvents, projects ...
-};
+        const defaultSiteData = {
+            general: {
+                assocName: "Sou des Écoles de Petit-Cœur",
+                assocSub: "Petit-Cœur • La Léchère",
+                heroTitle: "Ensemble pour les enfants de Petit-Cœur !",
+                heroDesc: "Association de parents bénévoles dédiée au financement des sorties scolaires, projets pédagogiques et animations des écoles de notre village.",
+                bureauText: "« Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, ou des spectacles pour nos enfants. Merci à toute l'équipe enseignante et aux familles ! »",
+                locationTag: "Savoie - Commune de La Léchère",
+                statEleves: "120+",
+                statEvents: "6",
+                statBudget: "4 500 €"
+            },
+            budget: { current: 3800, target: 5000 },
+            upcomingEvents: [],
+            pastEvents: [],
+            projects: []
+        };
 
-// 2. Juste EN DESSOUS, placez la fonction fetchRemoteData pour qu'elle connaisse defaultSiteData
-async function fetchRemoteData() {
-    try {
-        const { data, error } = await _supabase
-            .from('site_content')
-            .select('content')
-            .eq('id', 1)
-            .single();
+        let siteData = Object.assign({}, defaultSiteData);
 
-        if (error) throw error;
-
-        if (data && data.content) {
-            siteData = Object.assign({}, defaultSiteData, data.content);
-            if (typeof renderAdminForms === 'function') {
-                renderAdminForms();
-            }
-        }
-    } catch (err) {
-        console.warn("Erreur de chargement Supabase :", err);
-    }
-}
-
-        // Chargement initial depuis localStorage avec repli
-        let siteData = JSON.parse(localStorage.getItem('sou_petit_coeur_data')) || defaultSiteData;
-
-  // Synchronisation directe avec Supabase
-async function fetchRemoteData() {
-    try {
-        const { data, error } = await _supabase
-            .from('site_content')
-            .select('content')
-            .eq('id', 1)
-            .single();
-
-        if (error) throw error;
-
-        if (data && data.content) {
-            // Met à jour vos données locales avec le contenu récupéré de Supabase
-            siteData = Object.assign({}, defaultSiteData, data.content);
-            
-            // Sauvegarde dans le stockage local du navigateur
-            localStorage.setItem('sou_petit_coeur_data', JSON.stringify(siteData));
-            
-            // Rafraîchit l'affichage de la page publique
-            renderSite();
-        }
-    } catch (err) {
-        console.warn("Mode hors ligne ou erreur Supabase :", err);
-    }
-}
-
-        async function saveData() {
-            // Mise à jour immédiate locale pour réactivité instantanée
-            localStorage.setItem('sou_petit_coeur_data', JSON.stringify(siteData));
-            renderSite();
-
-            // Envoi vers le serveur / base de données pour synchroniser tous les appareils
-            try {
-                await fetch('/api/data', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(siteData)
-                });
-            } catch (err) {
-                console.error('Erreur lors de la synchronisation distante:', err);
-            }
-        }
-
-        async function resetDefaultData() {
-            if(confirm("Voulez-vous réinitialiser le contenu avec les données par défaut ?")) {
-                siteData = JSON.parse(JSON.stringify(defaultSiteData));
-                await saveData();
-                showToast("Données réinitialisées avec succès !");
-            }
-        }
-
-        // Écouteur pour actualiser si modifié dans un autre onglet du même appareil
-        window.addEventListener('storage', (e) => {
-            if (e.key === 'sou_petit_coeur_data') {
-                try {
-                    const updated = JSON.parse(e.newValue);
-                    if (updated) {
-                        siteData = updated;
-                        renderSite();
-                    }
-                } catch(err) {}
-            }
-        });
-
-        // RENDU DYNAMIQUE DU SITE PUBLIC
+        // Fonction d'affichage du site
         function renderSite() {
-            // Infos générales
             document.getElementById('header-assoc-name').textContent = siteData.general.assocName;
-            document.getElementById('footer-assoc-name').textContent = siteData.general.assocName;
-            document.getElementById('about-assoc-title').textContent = siteData.general.assocName;
             document.getElementById('header-assoc-sub').textContent = siteData.general.assocSub;
+            document.getElementById('hero-location-tag').textContent = siteData.general.locationTag;
             document.getElementById('hero-title').textContent = siteData.general.heroTitle;
             document.getElementById('hero-description').textContent = siteData.general.heroDesc;
-            document.getElementById('hero-location-tag').textContent = siteData.general.locationTag;
+            document.getElementById('about-assoc-title').textContent = siteData.general.assocName;
             document.getElementById('about-assoc-desc').textContent = siteData.general.heroDesc;
-            document.getElementById('about-bureau-text').textContent = siteData.general.bureauText || defaultSiteData.general.bureauText;
+            document.getElementById('about-bureau-text').textContent = siteData.general.bureauText;
 
             document.getElementById('stat-eleves').textContent = siteData.general.statEleves;
             document.getElementById('stat-events').textContent = siteData.general.statEvents;
             document.getElementById('stat-budget').textContent = siteData.general.statBudget;
 
             // Budget Jauge
-            const currentB = siteData.budget.current;
-            const targetB = siteData.budget.target;
+            const currentB = siteData.budget.current || 0;
+            const targetB = siteData.budget.target || 1;
             const pct = Math.min(100, Math.round((currentB / targetB) * 100));
-
             document.getElementById('budget-current-text').textContent = currentB.toLocaleString('fr-FR') + ' €';
             document.getElementById('budget-target-text').textContent = ' / ' + targetB.toLocaleString('fr-FR') + ' € récoltés';
             document.getElementById('budget-progress-bar').style.width = pct + '%';
@@ -767,14 +345,14 @@ async function fetchRemoteData() {
             // Événements à venir
             const upContainer = document.getElementById('events-upcoming-container');
             upContainer.innerHTML = '';
-            if (siteData.upcomingEvents.length === 0) {
+            if (!siteData.upcomingEvents || siteData.upcomingEvents.length === 0) {
                 upContainer.innerHTML = '<p class="text-gray-500 col-span-3 text-center py-8">Aucun événement à venir pour le moment.</p>';
             } else {
                 siteData.upcomingEvents.forEach(ev => {
                     upContainer.innerHTML += `
-                        <div class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-md border border-amber-100 transition-all flex flex-col">
+                        <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-amber-100 flex flex-col justify-between">
                             <div class="relative bg-brand-yellow p-6 flex justify-between items-start">
-                                <span class="bg-white/90 backdrop-blur-sm text-gray-900 font-title font-bold text-xs px-3 py-1.5 rounded-full">${ev.date}</span>
+                                <span class="bg-white/90 text-gray-900 font-title font-bold text-xs px-3 py-1.5 rounded-full">${ev.date}</span>
                                 <span class="bg-amber-800/20 text-amber-900 text-xs px-2.5 py-1 rounded-md font-semibold">${ev.badge}</span>
                             </div>
                             <div class="p-6 flex-1 flex flex-col justify-between">
@@ -795,7 +373,7 @@ async function fetchRemoteData() {
             // Événements Passés & Photos
             const pastContainer = document.getElementById('past-events-container');
             pastContainer.innerHTML = '';
-            if (siteData.pastEvents.length === 0) {
+            if (!siteData.pastEvents || siteData.pastEvents.length === 0) {
                 pastContainer.innerHTML = '<p class="text-gray-500 text-center py-8">Aucun événement passé enregistré.</p>';
             } else {
                 siteData.pastEvents.forEach(pev => {
@@ -805,16 +383,11 @@ async function fetchRemoteData() {
                         pev.photos.forEach(imgUrl => {
                             photosHTML += `
                                 <div class="relative overflow-hidden rounded-2xl group cursor-pointer h-40 bg-gray-100 border border-gray-100" onclick="openLightbox('${imgUrl}', '${pev.title.replace(/'/g, "\\'")}')">
-                                    <img src="${imgUrl}" alt="${pev.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://placehold.co/400x300/4EA8DE/FFF?text=Photo+Souvenir'">
-                                    <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xl">
-                                        <i class="fa-solid fa-magnifying-glass-plus"></i>
-                                    </div>
+                                    <img src="${imgUrl}" alt="${pev.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                                 </div>
                             `;
                         });
                         photosHTML += `</div>`;
-                    } else {
-                        photosHTML = `<p class="text-xs text-gray-400 italic mt-2">Aucune photo enregistrée.</p>`;
                     }
 
                     pastContainer.innerHTML += `
@@ -833,7 +406,7 @@ async function fetchRemoteData() {
             // Projets
             const projContainer = document.getElementById('projects-container');
             projContainer.innerHTML = '';
-            siteData.projects.forEach(proj => {
+            (siteData.projects || []).forEach(proj => {
                 projContainer.innerHTML += `
                     <div class="bg-white rounded-3xl p-6 shadow-sm border border-amber-100 flex flex-col justify-between">
                         <div>
@@ -848,273 +421,42 @@ async function fetchRemoteData() {
                     </div>
                 `;
             });
-
-            // Mettre à jour les formulaires Admin
-            renderAdminForms();
         }
 
-        // BASCULE DE VUE (PUBLIC / ADMIN CACHÉ)
-        function showPublicView() {
-            document.getElementById('view-admin').classList.add('hidden');
-            document.getElementById('view-public').classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        // Chargement direct depuis Supabase
+        async function fetchRemoteData() {
+            try {
+                const { data, error } = await _supabase
+                    .from('site_content')
+                    .select('content')
+                    .eq('id', 1)
+                    .single();
 
-        function showAdminView() {
-            document.getElementById('view-public').classList.add('hidden');
-            document.getElementById('view-admin').classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+                if (error) throw error;
 
-        // AUTHENTIFICATION ADMIN
-        function openAuthModal() {
-            document.getElementById('modal-admin-auth').classList.remove('hidden');
-            document.getElementById('admin-password-input').focus();
-        }
-
-        function closeAuthModal() {
-            document.getElementById('modal-admin-auth').classList.add('hidden');
-            document.getElementById('auth-error-msg').classList.add('hidden');
-            document.getElementById('admin-password-input').value = '';
-        }
-
-        function verifyAdminPassword(e) {
-            e.preventDefault();
-            const input = document.getElementById('admin-password-input').value;
-            const pass = siteData.adminPassword || "admin123";
-
-            if (input === pass) {
-                closeAuthModal();
-                showAdminView();
-                showToast("Accès administration déverrouillé !");
-            } else {
-                document.getElementById('auth-error-msg').classList.remove('hidden');
-            }
-        }
-
-        function changeAdminPassword(e) {
-            e.preventDefault();
-            const newPass = document.getElementById('new-admin-password').value;
-            if (newPass) {
-                siteData.adminPassword = newPass;
-                saveData();
-                showToast("Mot de passe Admin mis à jour avec succès !");
-                e.target.reset();
-            }
-        }
-
-        // TABS INTERNES ADMIN
-        function switchAdminTab(subTab) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.admin-section').forEach(s => s.classList.add('hidden'));
-
-            document.getElementById('tab-admin-' + subTab).classList.add('active');
-            document.getElementById('admin-sec-' + subTab).classList.remove('hidden');
-        }
-
-        // FORMULAIRES ADMIN
-        function renderAdminForms() {
-            // General
-            document.getElementById('admin-input-assoc-name').value = siteData.general.assocName;
-            document.getElementById('admin-input-assoc-sub').value = siteData.general.assocSub;
-            document.getElementById('admin-input-hero-title').value = siteData.general.heroTitle;
-            document.getElementById('admin-input-hero-desc').value = siteData.general.heroDesc;
-            document.getElementById('admin-input-bureau-text').value = siteData.general.bureauText || defaultSiteData.general.bureauText;
-            document.getElementById('admin-input-stat-eleves').value = siteData.general.statEleves;
-            document.getElementById('admin-input-stat-events').value = siteData.general.statEvents;
-            document.getElementById('admin-input-stat-budget').value = siteData.general.statBudget;
-
-            // Budget
-            document.getElementById('admin-budget-current').value = siteData.budget.current;
-            document.getElementById('admin-budget-target').value = siteData.budget.target;
-
-            // Upcoming Admin
-            const adminUpList = document.getElementById('admin-upcoming-list');
-            adminUpList.innerHTML = '';
-            siteData.upcomingEvents.forEach(ev => {
-                adminUpList.innerHTML += `
-                    <div class="flex justify-between items-center bg-slate-50 p-4 rounded-2xl border border-slate-200">
-                        <div>
-                            <h4 class="font-title font-bold text-gray-900">${ev.title}</h4>
-                            <p class="text-xs text-gray-500">${ev.date} • ${ev.badge}</p>
-                        </div>
-                        <button onclick="deleteUpcomingEvent(${ev.id})" class="text-red-500 hover:text-red-700 text-sm font-bold p-2">
-                            <i class="fa-solid fa-trash-can"></i> Supprimer
-                        </button>
-                    </div>
-                `;
-            });
-
-            // Past Events Admin
-            const adminPastList = document.getElementById('admin-past-list');
-            adminPastList.innerHTML = '';
-            siteData.pastEvents.forEach(pev => {
-                adminPastList.innerHTML += `
-                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h4 class="font-title font-bold text-gray-900">${pev.title}</h4>
-                                <p class="text-xs text-gray-500">${pev.date}</p>
-                            </div>
-                            <button onclick="deletePastEvent(${pev.id})" class="text-red-500 hover:text-red-700 text-sm font-bold p-2">
-                                <i class="fa-solid fa-trash-can"></i> Supprimer
-                            </button>
-                        </div>
-                        <div class="pt-2">
-                            <label class="block text-[11px] font-bold text-gray-600 mb-1">Ajouter une photo à cet album (URL) :</label>
-                            <div class="flex gap-2">
-                                <input type="text" id="add-photo-url-${pev.id}" placeholder="URL d'image" class="flex-1 px-3 py-1.5 rounded-xl border border-gray-300 text-xs">
-                                <button onclick="addPhotoToPastEvent(${pev.id})" class="bg-brand-blue text-white text-xs font-title font-bold px-3 py-1.5 rounded-xl">Ajouter</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-
-            // Projects Admin
-            const adminProjList = document.getElementById('admin-projects-list');
-            adminProjList.innerHTML = '';
-            siteData.projects.forEach(proj => {
-                adminProjList.innerHTML += `
-                    <div class="flex justify-between items-center bg-slate-50 p-4 rounded-2xl border border-slate-200">
-                        <div>
-                            <h4 class="font-title font-bold text-gray-900">${proj.title}</h4>
-                            <p class="text-xs text-gray-500">${proj.category} • ${proj.status}</p>
-                        </div>
-                        <button onclick="deleteProject(${proj.id})" class="text-red-500 hover:text-red-700 text-sm font-bold p-2">
-                            <i class="fa-solid fa-trash-can"></i> Supprimer
-                        </button>
-                    </div>
-                `;
-            });
-        }
-
-        // ACTIONS SAUVEGARDE ADMIN
-        function saveGeneralInfo(e) {
-            e.preventDefault();
-            siteData.general.assocName = document.getElementById('admin-input-assoc-name').value;
-            siteData.general.assocSub = document.getElementById('admin-input-assoc-sub').value;
-            siteData.general.heroTitle = document.getElementById('admin-input-hero-title').value;
-            siteData.general.heroDesc = document.getElementById('admin-input-hero-desc').value;
-            siteData.general.bureauText = document.getElementById('admin-input-bureau-text').value;
-            siteData.general.statEleves = document.getElementById('admin-input-stat-eleves').value;
-            siteData.general.statEvents = document.getElementById('admin-input-stat-events').value;
-            siteData.general.statBudget = document.getElementById('admin-input-stat-budget').value;
-
-            saveData();
-            showToast("Informations enregistrées !");
-        }
-
-        function saveBudgetGoal(e) {
-            e.preventDefault();
-            siteData.budget.current = parseInt(document.getElementById('admin-budget-current').value) || 0;
-            siteData.budget.target = parseInt(document.getElementById('admin-budget-target').value) || 1;
-            saveData();
-            showToast("Budget mis à jour !");
-        }
-
-        function addUpcomingEvent(e) {
-            e.preventDefault();
-            const newEv = {
-                id: Date.now(),
-                title: document.getElementById('new-up-title').value,
-                date: document.getElementById('new-up-date').value,
-                badge: document.getElementById('new-up-badge').value,
-                time: document.getElementById('new-up-time').value,
-                location: document.getElementById('new-up-location').value,
-                desc: document.getElementById('new-up-desc').value
-            };
-            siteData.upcomingEvents.unshift(newEv);
-            saveData();
-            e.target.reset();
-            showToast("Événement ajouté !");
-        }
-
-        function deleteUpcomingEvent(id) {
-            siteData.upcomingEvents = siteData.upcomingEvents.filter(ev => ev.id !== id);
-            saveData();
-            showToast("Événement supprimé.");
-        }
-
-        function addPastEvent(e) {
-            e.preventDefault();
-            const title = document.getElementById('new-past-title').value;
-            const date = document.getElementById('new-past-date').value;
-            const desc = document.getElementById('new-past-desc').value;
-            const urlInput = document.getElementById('new-past-url').value;
-            const fileInput = document.getElementById('new-past-files');
-
-            let photos = [];
-            if (urlInput) photos.push(urlInput);
-
-            const files = Array.from(fileInput.files);
-            if (files.length > 0) {
-                let loaded = 0;
-                files.forEach(file => {
-                    const reader = new FileReader();
-                    reader.onload = function(evt) {
-                        photos.push(evt.target.result);
-                        loaded++;
-                        if (loaded === files.length) {
-                            const newPast = { id: Date.now(), title, date, desc, photos };
-                            siteData.pastEvents.unshift(newPast);
-                            saveData();
-                            e.target.reset();
-                            showToast("Album passé créé avec succès !");
-                        }
-                    };
-                    reader.readAsDataURL(file);
-                });
-            } else {
-                const newPast = { id: Date.now(), title, date, desc, photos };
-                siteData.pastEvents.unshift(newPast);
-                saveData();
-                e.target.reset();
-                showToast("Album passé créé !");
-            }
-        }
-
-        function deletePastEvent(id) {
-            siteData.pastEvents = siteData.pastEvents.filter(pev => pev.id !== id);
-            saveData();
-            showToast("Album supprimé.");
-        }
-
-        function addPhotoToPastEvent(eventId) {
-            const input = document.getElementById('add-photo-url-' + eventId);
-            if (input && input.value) {
-                const pev = siteData.pastEvents.find(p => p.id === eventId);
-                if (pev) {
-                    if (!pev.photos) pev.photos = [];
-                    pev.photos.push(input.value);
-                    saveData();
-                    showToast("Photo ajoutée !");
+                if (data && data.content) {
+                    siteData = Object.assign({}, defaultSiteData, data.content);
+                    localStorage.setItem('sou_petit_coeur_data', JSON.stringify(siteData));
+                    renderSite();
                 }
+            } catch (err) {
+                console.warn("Mode hors ligne ou erreur Supabase, utilisation du cache local :", err);
+                const local = localStorage.getItem('sou_petit_coeur_data');
+                if (local) {
+                    try {
+                        siteData = JSON.parse(local);
+                    } catch(e) {}
+                }
+                renderSite();
             }
         }
 
-        function addProject(e) {
-            e.preventDefault();
-            const newProj = {
-                id: Date.now(),
-                title: document.getElementById('new-proj-title').value,
-                category: document.getElementById('new-proj-category').value,
-                status: document.getElementById('new-proj-status').value,
-                desc: document.getElementById('new-proj-desc').value
-            };
-            siteData.projects.push(newProj);
-            saveData();
-            e.target.reset();
-            showToast("Projet ajouté !");
-        }
+        // Lancement au démarrage
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchRemoteData();
+        });
 
-        function deleteProject(id) {
-            siteData.projects = siteData.projects.filter(p => p.id !== id);
-            saveData();
-            showToast("Projet supprimé.");
-        }
-
-        // LIGHTBOX
+        // Lightbox
         function openLightbox(imgUrl, caption) {
             document.getElementById('lightbox-img').src = imgUrl;
             document.getElementById('lightbox-caption').textContent = caption;
@@ -1125,55 +467,12 @@ async function fetchRemoteData() {
             document.getElementById('modal-lightbox').classList.add('hidden');
         }
 
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-message').textContent = msg;
-            toast.classList.remove('translate-y-32', 'opacity-0');
-            setTimeout(() => {
-                toast.classList.add('translate-y-32', 'opacity-0');
-            }, 3000);
-        }
-
-        // Mobile Menu toggle
+        // Menu mobile
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
-        document.querySelectorAll('.mobile-link').forEach(link => {
-            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
-        });
-
-async function loadDataFromSupabase() {
-    try {
-        const { data, error } = await _supabase
-            .from('site_content')
-            .select('content')
-            .eq('id', 1)
-            .single();
-
-        if (error) throw error;
-
-        if (data && data.content) {
-            // Remplacer vos données locales par celles de Supabase
-            appData = data.content; 
-            
-            // Mettre à jour les textes sur la page d'accueil
-            if (document.getElementById('site-name')) {
-                document.getElementById('site-name').textContent = appData.general.siteName;
-            }
-            if (document.getElementById('site-subtitle')) {
-                document.getElementById('site-subtitle').textContent = appData.general.heroSubtitle;
-            }
-            // (Appelez ici les autres fonctions qui mettent à jour vos textes sur index.html)
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
         }
-    } catch (err) {
-        console.error("Erreur de chargement depuis Supabase :", err);
-    }
-}
-
-// Appeler cette fonction dès que la page est chargée
-window.addEventListener('DOMContentLoaded', () => {
-    loadDataFromSupabase();
-});
     </script>
 </body>
 </html>
