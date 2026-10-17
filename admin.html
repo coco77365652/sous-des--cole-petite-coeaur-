@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administration - Sou des Écoles de Petit-Cœur</title>
+    <title>Administration - APE de Petit-Cœur</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -77,7 +77,7 @@
                     <i class="fas fa-user-shield"></i>
                 </div>
                 <h1 class="font-heading text-2xl font-extrabold text-slate-900">Espace Administration</h1>
-                <p class="text-slate-500 text-sm mt-1">Sou des Écoles de Petit-Cœur</p>
+                <p class="text-slate-500 text-sm mt-1">APE de Petit-Cœur</p>
             </div>
 
             <form id="login-form" onsubmit="handleLogin(event)" class="space-y-5">
@@ -114,7 +114,7 @@
                         <i class="fas fa-heart"></i>
                     </div>
                     <div>
-                        <h2 class="font-heading font-extrabold text-sm leading-tight text-white">Sou Petit-Cœur</h2>
+                        <h2 class="font-heading font-extrabold text-sm leading-tight text-white">APE Petit-Cœur</h2>
                         <span class="text-[10px] uppercase font-bold tracking-wider text-brand-400 bg-brand-500/10 px-2 py-0.5 rounded">Dashboard Admin</span>
                     </div>
                 </div>
@@ -157,7 +157,7 @@
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                 <div>
                     <h1 id="page-title" class="font-heading text-2xl md:text-3xl font-extrabold text-slate-900">Panneau de Configuration</h1>
-                    <p id="page-subtitle" class="text-slate-500 text-sm mt-1">Gérez le contenu publié sur le site officiel du Sou des Écoles.</p>
+                    <p id="page-subtitle" class="text-slate-500 text-sm mt-1">Gérez le contenu publié sur le site officiel de l'APE.</p>
                 </div>
                 <div class="flex items-center gap-2">
                     <button onclick="exportDataJSON()" class="px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs rounded-xl border border-slate-200 shadow-sm transition flex items-center gap-2">
@@ -469,11 +469,11 @@
     <script>
         const DEFAULT_DATA = {
             general: {
-                siteName: "Sou des Écoles",
+                siteName: "APE de Petit-Cœur",
                 siteLocation: "Petit-Cœur",
                 heroTitle: "Ensemble pour les enfants de Petit-Cœur !",
-                heroDesc: "Association de parents bénévoles dédiée au financement des sorties scolaires, projets pédagogiques, équipements et animations des écoles de notre village.",
-                heroSubtitle: "Association de parents bénévoles dédiée au financement des sorties scolaires.",
+                heroDesc: "Association de parents d'élèves (APE) bénévoles dédiée au financement des sorties scolaires, projets pédagogiques, équipements et animations des écoles de notre village.",
+                heroSubtitle: "Association de parents d'élèves dédiée au financement des sorties scolaires.",
                 locationTag: "Savoie - Commune de La Léchère",
                 cardTitle: "100% pour nos écoliers",
                 cardSub: "Activités, découvertes & spectacles",
@@ -482,7 +482,7 @@
                 statStudents: "120+",
                 statEvents: "6",
                 statBudget: "4 500 €",
-                contactEmail: "contact@sou-petitcoeur.fr",
+                contactEmail: "contact@ape-petitcoeur.fr",
                 adminPassword: "admin123"
             },
             project: {
@@ -914,7 +914,7 @@
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
             const downloadAnchor = document.createElement('a');
             downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", "sou_ecoles_data.json");
+            downloadAnchor.setAttribute("download", "ape_ecoles_data.json");
             document.body.appendChild(downloadAnchor);
             downloadAnchor.click();
             downloadAnchor.remove();
