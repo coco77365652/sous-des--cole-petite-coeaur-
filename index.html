@@ -285,109 +285,125 @@
         let siteData = Object.assign({}, defaultSiteData);
 
         function renderSite() {
-            document.getElementById('header-assoc-name').textContent = siteData.general.assocName;
-            document.getElementById('header-assoc-sub').textContent = siteData.general.assocSub;
-            document.getElementById('hero-location-tag').textContent = siteData.general.locationTag;
-            document.getElementById('hero-title').textContent = siteData.general.heroTitle;
-            document.getElementById('hero-description').textContent = siteData.general.heroDesc;
-            document.getElementById('about-assoc-title').textContent = siteData.general.assocName;
-            document.getElementById('about-assoc-desc').textContent = siteData.general.heroDesc;
-            document.getElementById('about-bureau-text').textContent = siteData.general.bureauText;
+    // On sécurise chaque champ pour afficher la donnée ou garder un texte par défaut si c'est vide
+    const gen = siteData.general || {};
+    
+    document.getElementById('header-assoc-name').textContent = gen.assocName || defaultSiteData.general.assocName;
+    document.getElementById('header-assoc-sub').textContent = gen.assocSub || defaultSiteData.general.assocSub;
+    document.getElementById('hero-location-tag').textContent = gen.locationTag || defaultSiteData.general.locationTag;
+    document.getElementById('hero-title').textContent = gen.heroTitle || defaultSiteData.general.heroTitle;
+    document.getElementById('hero-description').textContent = gen.heroDesc || defaultSiteData.general.heroDesc;
+    document.getElementById('about-assoc-title').textContent = gen.assocName || defaultSiteData.general.assocName;
+    document.getElementById('about-assoc-desc').textContent = gen.heroDesc || defaultSiteData.general.heroDesc;
+    document.getElementById('about-bureau-text').textContent = gen.bureauText || defaultSiteData.general.bureauText;
 
-            // Statistiques clés (correction des IDs ciblés)
-            document.getElementById('stat-eleves').textContent = siteData.general.statEleves;
-            document.getElementById('stat-events').textContent = siteData.general.statEvents;
-            document.getElementById('stat-budget').textContent = siteData.general.statBudget;
+    // Statistiques sécurisées
+    document.getElementById('stat-eleves').textContent = gen.statEleves || gen.statStudents || "120+";
+    document.getElementById('stat-events').textContent = gen.statEvents || "6";
+    document.getElementById('stat-budget').textContent = gen.statBudget || "4 500 €";
 
-            // Budget Jauge
-            const currentB = siteData.budget.current || 0;
-            const targetB = siteData.budget.target || 1;
-            const pct = Math.min(100, Math.round((currentB / targetB) * 100));
-            document.getElementById('budget-current-text').textContent = currentB.toLocaleString('fr-FR') + ' €';
-            document.getElementById('budget-target-text').textContent = ' / ' + targetB.toLocaleString('fr-FR') + ' € récoltés';
-            document.getElementById('budget-progress-bar').style.width = pct + '%';
-            document.getElementById('budget-percentage-text').textContent = pct + '%';
+    // Budget Jauge
+    const budget = siteData.budget || {};
+    const currentB = Number(budget.current) || 3800;
+    const targetB = Number(budget.target) || 5000;
+    const pct = Math.min(100, Math.round((currentB / targetB) * 100));
+    
+    document.getElementById('budget-current-text').textContent = currentB.toLocaleString('fr-FR') + ' €';
+    document.getElementById('budget-target-text').textContent = ' / ' + targetB.toLocaleString('fr-FR') + ' € récoltés';
+    document.getElementById('budget-progress-bar').style.width = pct + '%';
+    document.getElementById('budget-percentage-text').textContent = pct + '%';
 
-            // Événements à venir
-            const upContainer = document.getElementById('events-upcoming-container');
-            upContainer.innerHTML = '';
-            if (!siteData.upcomingEvents || siteData.upcomingEvents.length === 0) {
-                upContainer.innerHTML = '<p class="text-gray-500 col-span-3 text-center py-8">Aucun événement à venir pour le moment.</p>';
-            } else {
-                siteData.upcomingEvents.forEach(ev => {
-                    upContainer.innerHTML += `
-                        <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-amber-100 flex flex-col justify-between">
-                            <div class="relative bg-brand-yellow p-6 flex justify-between items-start">
-                                <span class="bg-white/90 text-gray-900 font-title font-bold text-xs px-3 py-1.5 rounded-full">${ev.date}</span>
-                                <span class="bg-amber-800/20 text-amber-900 text-xs px-2.5 py-1 rounded-md font-semibold">${ev.badge}</span>
-                            </div>
-                            <div class="p-6 flex-1 flex flex-col justify-between">
-                                <div>
-                                    <h3 class="font-title font-bold text-xl text-gray-900 mb-2">${ev.title}</h3>
-                                    <p class="text-gray-600 text-sm mb-4">${ev.desc}</p>
-                                    <div class="space-y-2 text-xs text-gray-500">
-                                        <p class="flex items-center gap-2"><i class="fa-regular fa-clock text-brand-blue"></i> ${ev.time || 'Non précisé'}</p>
-                                        <p class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-brand-red"></i> ${ev.location || 'École de Petit-Cœur'}</p>
-                                    </div>
+    // Événements à venir
+    const upContainer = document.getElementById('events-upcoming-container');
+    if (upContainer) {
+        upContainer.innerHTML = '';
+        const upcoming = siteData.upcomingEvents || [];
+        if (upcoming.length === 0) {
+            upContainer.innerHTML = '<p class="text-gray-500 col-span-3 text-center py-8">Aucun événement à venir pour le moment.</p>';
+        } else {
+            upcoming.forEach(ev => {
+                upContainer.innerHTML += `
+                    <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-amber-100 flex flex-col justify-between">
+                        <div class="relative bg-brand-yellow p-6 flex justify-between items-start">
+                            <span class="bg-white/90 text-gray-900 font-title font-bold text-xs px-3 py-1.5 rounded-full">${ev.date || ''}</span>
+                            <span class="bg-amber-800/20 text-amber-900 text-xs px-2.5 py-1 rounded-md font-semibold">${ev.badge || ''}</span>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-title font-bold text-xl text-gray-900 mb-2">${ev.title || ''}</h3>
+                                <p class="text-gray-600 text-sm mb-4">${ev.desc || ''}</p>
+                                <div class="space-y-2 text-xs text-gray-500">
+                                    <p class="flex items-center gap-2"><i class="fa-regular fa-clock text-brand-blue"></i> ${ev.time || 'Non précisé'}</p>
+                                    <p class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-brand-red"></i> ${ev.location || 'École de Petit-Cœur'}</p>
                                 </div>
                             </div>
-                        </div>
-                    `;
-                });
-            }
-
-            // Événements passés & photos
-            const pastContainer = document.getElementById('past-events-container');
-            pastContainer.innerHTML = '';
-            if (!siteData.pastEvents || siteData.pastEvents.length === 0) {
-                pastContainer.innerHTML = '<p class="text-gray-500 text-center py-8">Aucun événement passé enregistré.</p>';
-            } else {
-                siteData.pastEvents.forEach(pev => {
-                    let photosHTML = '';
-                    if (pev.photos && pev.photos.length > 0) {
-                        photosHTML = `<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">`;
-                        pev.photos.forEach(imgUrl => {
-                            photosHTML += `
-                                <div class="relative overflow-hidden rounded-2xl group cursor-pointer h-40 bg-gray-100 border border-gray-100" onclick="openLightbox('${imgUrl}', '${pev.title.replace(/'/g, "\\'")}')">
-                                    <img src="${imgUrl}" alt="${pev.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                                </div>
-                            `;
-                        });
-                        photosHTML += `</div>`;
-                    }
-
-                    pastContainer.innerHTML += `
-                        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-amber-100">
-                            <div class="flex justify-between items-start flex-wrap gap-2 mb-2">
-                                <h3 class="font-title text-2xl font-bold text-gray-900">${pev.title}</h3>
-                                <span class="bg-amber-100 text-amber-800 font-title text-xs font-bold px-3 py-1 rounded-full">${pev.date}</span>
-                            </div>
-                            <p class="text-gray-600 text-sm leading-relaxed">${pev.desc}</p>
-                            ${photosHTML}
-                        </div>
-                    `;
-                });
-            }
-
-            // Projets
-            const projContainer = document.getElementById('projects-container');
-            projContainer.innerHTML = '';
-            (siteData.projects || []).forEach(proj => {
-                projContainer.innerHTML += `
-                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-amber-100 flex flex-col justify-between">
-                        <div>
-                            <span class="bg-sky-100 text-brand-darkblue text-xs font-bold px-2.5 py-1 rounded-md">${proj.category}</span>
-                            <h4 class="font-title font-bold text-lg text-gray-900 mt-2">${proj.title}</h4>
-                            <p class="text-gray-600 text-xs mt-1 mb-4">${proj.desc}</p>
-                        </div>
-                        <div class="flex items-center justify-between text-xs font-semibold pt-2 border-t border-gray-100">
-                            <span class="text-brand-green">${proj.status}</span>
-                            <i class="fa-solid fa-circle-check text-brand-green text-sm"></i>
                         </div>
                     </div>
                 `;
             });
         }
+    }
+
+    // Événements passés
+    const pastContainer = document.getElementById('past-events-container');
+    if (pastContainer) {
+        pastContainer.innerHTML = '';
+        const past = siteData.pastEvents || [];
+        if (past.length === 0) {
+            pastContainer.innerHTML = '<p class="text-gray-500 text-center py-8">Aucun événement passé enregistré.</p>';
+        } else {
+            past.forEach(pev => {
+                let photosHTML = '';
+                if (pev.photos && pev.photos.length > 0) {
+                    photosHTML = `<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">`;
+                    pev.photos.forEach(imgUrl => {
+                        photosHTML += `
+                            <div class="relative overflow-hidden rounded-2xl group cursor-pointer h-40 bg-gray-100 border border-gray-100" onclick="openLightbox('${imgUrl}', '${(pev.title || '').replace(/'/g, "\\'")}')">
+                                <img src="${imgUrl}" alt="${pev.title || ''}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            </div>
+                        `;
+                    });
+                    photosHTML += `</div>`;
+                }
+
+                pastContainer.innerHTML += `
+                    <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-amber-100">
+                        <div class="flex justify-between items-start flex-wrap gap-2 mb-2">
+                            <h3 class="font-title text-2xl font-bold text-gray-900">${pev.title || ''}</h3>
+                            <span class="bg-amber-100 text-amber-800 font-title text-xs font-bold px-3 py-1 rounded-full">${pev.date || ''}</span>
+                        </div>
+                        <p class="text-gray-600 text-sm leading-relaxed">${pev.desc || ''}</p>
+                        ${photosHTML}
+                    </div>
+                `;
+            });
+        }
+    }
+
+    // Projets
+    const projContainer = document.getElementById('projects-container');
+    if (projContainer) {
+        projContainer.innerHTML = '';
+        const projects = siteData.projects || [];
+        projects.forEach(proj => {
+            projContainer.innerHTML += `
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-amber-100 flex flex-col justify-between">
+                    <div>
+                        <span class="bg-sky-100 text-brand-darkblue text-xs font-bold px-2.5 py-1 rounded-md">${proj.category || ''}</span>
+                        <h4 class="font-title font-bold text-lg text-gray-900 mt-2">${proj.title || ''}</h4>
+                        <p class="text-gray-600 text-xs mt-1 mb-4">${proj.desc || ''}</p>
+                    </div>
+                    <div class="flex items-center justify-between text-xs font-semibold pt-2 border-t border-gray-100">
+                        <span class="text-brand-green">${proj.status || ''}</span>
+                        <i class="fa-solid fa-circle-check text-brand-green text-sm"></i>
+                    </div>
+                </div>
+            `;
+        });
+    }
+}
+
+ 
 
         // Chargement initial des données depuis Supabase
         async function fetchRemoteData() {
