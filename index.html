@@ -130,7 +130,7 @@
                     <!-- CARTE IMAGE MODIFIABLE DEPUIS L'ADMIN -->
                     <div class="relative flex justify-center">
                         <div class="relative w-full max-w-md bg-white p-4 rounded-3xl shadow-2xl transform rotate-2">
-                            <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=800&q=80" alt="Enfants à l'école" class="w-full h-72 object-cover rounded-2xl">
+                            <img id="hero-card-img" src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=800&q=80" alt="Enfants à l'école" class="w-full h-72 object-cover rounded-2xl">
                             <div class="mt-4 flex items-center justify-between text-gray-800">
                                 <div>
                                     <p id="card-title" class="font-title font-bold text-lg">100% pour nos écoliers</p>
@@ -276,6 +276,7 @@
                 cardTitle: "100% pour nos écoliers",
                 cardSub: "Activités, découvertes & spectacles",
                 cardBadge: "Écoles de La Léchère",
+                heroImg: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=800&q=80",
                 bureauText: "« Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, ou des spectacles pour nos enfants. Merci à toute l'équipe enseignante et aux familles ! »",
                 statEleves: "120+",
                 statEvents: "6",
@@ -302,10 +303,15 @@
             document.getElementById('about-assoc-desc').textContent = gen.heroDesc || defaultSiteData.general.heroDesc;
             document.getElementById('about-bureau-text').textContent = gen.bureauText || defaultSiteData.general.bureauText;
 
-            // Textes de la carte image
+            // Textes et Image de la carte d'accueil
             if (document.getElementById('card-title')) document.getElementById('card-title').textContent = gen.cardTitle || defaultSiteData.general.cardTitle;
             if (document.getElementById('card-sub')) document.getElementById('card-sub').textContent = gen.cardSub || defaultSiteData.general.cardSub;
             if (document.getElementById('card-badge')) document.getElementById('card-badge').textContent = gen.cardBadge || defaultSiteData.general.cardBadge;
+            
+            const heroCardImg = document.getElementById('hero-card-img');
+            if (heroCardImg && gen.heroImg) {
+                heroCardImg.src = gen.heroImg;
+            }
 
             // Statistiques clés
             document.getElementById('stat-eleves').textContent = gen.statStudents || gen.statEleves || "120+";

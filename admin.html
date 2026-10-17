@@ -230,7 +230,7 @@
                         </div>
                     </div>
 
-                    <!-- NOUVEAUX CHAMPS POUR L'ACCUEIL (HERO SECTION) -->
+                    <!-- PERSONNALISATION DE LA BANNIÈRE D'ACCUEIL (HERO) -->
                     <div class="p-5 bg-amber-50/50 rounded-2xl border border-amber-200/60 space-y-4">
                         <h4 class="font-heading font-bold text-amber-900 text-sm"><i class="fas fa-star text-amber-500 mr-1.5"></i> Personnalisation de la bannière d'accueil (Hero)</h4>
                         
@@ -247,6 +247,18 @@
                         <div>
                             <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Description / Paragraphe d'accueil</label>
                             <textarea id="cfg-heroDesc" rows="2" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500"></textarea>
+                        </div>
+
+                        <!-- MODIFICATION DE L'IMAGE DE LA CARTE D'ACCUEIL -->
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Image de la carte d'accueil (URL ou Fichier)</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="cfg-heroImg" placeholder="https://..." class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                                <label class="cursor-pointer px-4 py-2 bg-slate-800 text-white font-bold text-xs rounded-xl flex items-center gap-2 hover:bg-slate-900 transition shrink-0">
+                                    <i class="fas fa-upload"></i> Uploader
+                                    <input type="file" accept="image/*" class="hidden" onchange="uploadHeroImage(event)">
+                                </label>
+                            </div>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
@@ -466,6 +478,7 @@
                 cardTitle: "100% pour nos écoliers",
                 cardSub: "Activités, découvertes & spectacles",
                 cardBadge: "Écoles de La Léchère",
+                heroImg: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=800&q=80",
                 statStudents: "120+",
                 statEvents: "6",
                 statBudget: "4 500 €",
@@ -504,6 +517,7 @@
                 res.general.cardTitle = data.general.cardTitle || res.general.cardTitle;
                 res.general.cardSub = data.general.cardSub || res.general.cardSub;
                 res.general.cardBadge = data.general.cardBadge || res.general.cardBadge;
+                res.general.heroImg = data.general.heroImg || res.general.heroImg;
                 res.general.statStudents = data.general.statStudents || data.general.statEleves || res.general.statStudents;
                 res.general.statEvents = data.general.statEvents || res.general.statEvents;
                 res.general.statBudget = data.general.statBudget || res.general.statBudget;
@@ -538,6 +552,7 @@
                     cardTitle: app.general.cardTitle,
                     cardSub: app.general.cardSub,
                     cardBadge: app.general.cardBadge,
+                    heroImg: app.general.heroImg,
                     bureauText: "« Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, ou des spectacles pour nos enfants. Merci à toute l'équipe enseignante et aux familles ! »",
                     statEleves: app.general.statStudents,
                     statEvents: app.general.statEvents,
@@ -689,11 +704,23 @@
             document.getElementById('cfg-cardTitle').value = g.cardTitle || '';
             document.getElementById('cfg-cardSub').value = g.cardSub || '';
             document.getElementById('cfg-cardBadge').value = g.cardBadge || '';
+            document.getElementById('cfg-heroImg').value = g.heroImg || '';
             document.getElementById('cfg-statStudents').value = g.statStudents || '';
             document.getElementById('cfg-statEvents').value = g.statEvents || '';
             document.getElementById('cfg-statBudget').value = g.statBudget || '';
             document.getElementById('cfg-contactEmail').value = g.contactEmail || '';
             document.getElementById('cfg-adminPassword').value = '';
+        }
+
+        function uploadHeroImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('cfg-heroImg').value = e.target.result;
+                showToast("Image chargée avec succès !");
+            };
+            reader.readAsDataURL(file);
         }
 
         async function saveGeneralInfo(e) {
@@ -706,6 +733,7 @@
             appData.general.cardTitle = document.getElementById('cfg-cardTitle').value;
             appData.general.cardSub = document.getElementById('cfg-cardSub').value;
             appData.general.cardBadge = document.getElementById('cfg-cardBadge').value;
+            appData.general.heroImg = document.getElementById('cfg-heroImg').value;
             appData.general.statStudents = document.getElementById('cfg-statStudents').value;
             appData.general.statEvents = document.getElementById('cfg-statEvents').value;
             appData.general.statBudget = document.getElementById('cfg-statBudget').value;
