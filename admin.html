@@ -29,10 +29,6 @@
                             500: '#f43f5e',
                             600: '#e11d48',
                             700: '#be123c',
-                        },
-                        amberCustom: {
-                            500: '#f59e0b',
-                            600: '#d97706',
                         }
                     },
                     fontFamily: {
@@ -55,15 +51,12 @@
             background: #cbd5e1;
             border-radius: 4px;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
     </style>
 </head>
 <body class="bg-slate-100 font-sans text-slate-800 antialiased min-h-screen flex flex-col">
 
-    <!-- OVERLAY NOTIFICATION -->
-    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
+    <!-- OVERLAY NOTIFICATION / TOAST -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
         <i id="toast-icon" class="fas fa-check-circle text-emerald-400 text-lg"></i>
         <span id="toast-message" class="text-sm font-semibold">Action réussie !</span>
     </div>
@@ -71,7 +64,6 @@
     <!-- ECRAN DE CONNEXION (LOGIN) -->
     <div id="login-view" class="fixed inset-0 z-50 bg-slate-900 flex items-center justify-center p-4">
         <div class="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8 relative overflow-hidden">
-            <div class="absolute -top-10 -right-10 w-32 h-32 bg-brand-500/10 rounded-full blur-2xl"></div>
             <div class="text-center mb-8">
                 <div class="w-16 h-16 bg-brand-50 rounded-2xl flex items-center justify-center text-brand-600 mx-auto mb-4 text-2xl shadow-inner">
                     <i class="fas fa-user-shield"></i>
@@ -85,12 +77,12 @@
                     <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Mot de passe d'accès</label>
                     <div class="relative">
                         <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                        <input type="password" id="admin-pass-input" placeholder="Mot de passe (par défaut: admin123)" required 
-                            class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all">
+                        <input type="password" id="admin-pass-input" placeholder="admin123" required 
+                            class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500">
                     </div>
                     <p id="login-error" class="text-rose-500 text-xs font-semibold mt-2 hidden"><i class="fas fa-exclamation-circle mr-1"></i> Mot de passe incorrect.</p>
                 </div>
-                <button type="submit" class="w-full py-3.5 px-6 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg shadow-brand-500/30 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+                <button type="submit" class="w-full py-3.5 px-6 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
                     <span>Connexion</span>
                     <i class="fas fa-arrow-right"></i>
                 </button>
@@ -98,7 +90,7 @@
 
             <div class="mt-8 pt-6 border-t border-slate-100 flex justify-between items-center text-xs text-slate-500">
                 <span>Code par défaut : <code class="bg-slate-100 px-2 py-0.5 rounded font-mono text-slate-700">admin123</code></span>
-                <a href="index.html" class="hover:text-brand-600 font-semibold transition"><i class="fas fa-arrow-left mr-1"></i> Site public</a>
+                <a href="index.html" class="hover:text-brand-600 font-semibold transition"><i class="fas fa-arrow-left mr-1"></i> Voir le site</a>
             </div>
         </div>
     </div>
@@ -110,29 +102,29 @@
         <aside class="w-full md:w-64 bg-slate-900 text-white flex-shrink-0 flex flex-col justify-between p-5 border-r border-slate-800">
             <div>
                 <div class="flex items-center gap-3 pb-6 border-b border-slate-800">
-                    <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold shadow-lg shadow-brand-500/30">
+                    <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold shadow-lg">
                         <i class="fas fa-heart"></i>
                     </div>
                     <div>
                         <h2 class="font-heading font-extrabold text-sm leading-tight text-white">APE Petit-Cœur</h2>
-                        <span class="text-[10px] uppercase font-bold tracking-wider text-brand-400 bg-brand-500/10 px-2 py-0.5 rounded">Dashboard Admin</span>
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-brand-400 bg-brand-500/10 px-2 py-0.5 rounded">Dashboard</span>
                     </div>
                 </div>
 
                 <nav class="mt-6 space-y-1">
-                    <button onclick="switchTab('tab-general')" id="nav-tab-general" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
+                    <button type="button" onclick="switchTab('tab-general')" id="nav-tab-general" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
                         <i class="fas fa-sliders w-5 text-emerald-400"></i>
                         <span>Général & Accueil</span>
                     </button>
-                    <button onclick="switchTab('tab-projects')" id="nav-tab-projects" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
+                    <button type="button" onclick="switchTab('tab-projects')" id="nav-tab-projects" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
                         <i class="fas fa-piggy-bank w-5 text-blue-400"></i>
                         <span>Projet & Budget</span>
                     </button>
-                    <button onclick="switchTab('tab-upcoming')" id="nav-tab-upcoming" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
+                    <button type="button" onclick="switchTab('tab-upcoming')" id="nav-tab-upcoming" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
                         <i class="fas fa-calendar-alt w-5 text-purple-400"></i>
                         <span>Événements à Venir</span>
                     </button>
-                    <button onclick="switchTab('tab-past')" id="nav-tab-past" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
+                    <button type="button" onclick="switchTab('tab-past')" id="nav-tab-past" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
                         <i class="fas fa-camera-retro w-5 text-pink-400"></i>
                         <span>Albums & Photos</span>
                     </button>
@@ -140,11 +132,10 @@
             </div>
 
             <div class="pt-6 border-t border-slate-800 space-y-2">
-                <a href="index.html" target="_blank" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold text-slate-300 bg-slate-800/80 hover:bg-slate-800 hover:text-white transition">
+                <a href="index.html" target="_blank" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold text-slate-300 bg-slate-800/80 hover:bg-slate-800 transition">
                     <span><i class="fas fa-external-link-alt mr-2 text-brand-400"></i> Voir le site public</span>
-                    <i class="fas fa-chevron-right text-[10px] opacity-50"></i>
                 </a>
-                <button onclick="logoutAdmin()" class="w-full flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-rose-400 hover:bg-rose-500/10 transition">
+                <button type="button" onclick="logoutAdmin()" class="w-full flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-rose-400 hover:bg-rose-500/10 transition">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Déconnexion</span>
                 </button>
@@ -156,88 +147,35 @@
             
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                 <div>
-                    <h1 id="page-title" class="font-heading text-2xl md:text-3xl font-extrabold text-slate-900">Panneau de Configuration</h1>
-                    <p id="page-subtitle" class="text-slate-500 text-sm mt-1">Gérez le contenu publié sur le site officiel de l'APE.</p>
-                </div>
-                <div class="flex items-center gap-2">
-                    <button onclick="exportDataJSON()" class="px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs rounded-xl border border-slate-200 shadow-sm transition flex items-center gap-2">
-                        <i class="fas fa-download text-slate-400"></i> Exporter JSON
-                    </button>
-                    <button onclick="resetDataDefault()" class="px-3.5 py-2 bg-white hover:bg-rose-50 text-rose-600 font-bold text-xs rounded-xl border border-slate-200 shadow-sm transition flex items-center gap-2">
-                        <i class="fas fa-undo"></i> Réinitialiser
-                    </button>
-                </div>
-            </div>
-
-            <!-- KPI SUMMARY CARDS -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center text-xl font-bold">
-                        <i class="fas fa-coins"></i>
-                    </div>
-                    <div>
-                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Budget Collecté</span>
-                        <h4 id="stat-budget" class="text-xl font-extrabold text-slate-900">0 €</h4>
-                    </div>
-                </div>
-
-                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center text-xl font-bold">
-                        <i class="fas fa-calendar-check"></i>
-                    </div>
-                    <div>
-                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Événements futurs</span>
-                        <h4 id="stat-upcoming" class="text-xl font-extrabold text-slate-900">0</h4>
-                    </div>
-                </div>
-
-                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-500 flex items-center justify-center text-xl font-bold">
-                        <i class="fas fa-images"></i>
-                    </div>
-                    <div>
-                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Albums Passés</span>
-                        <h4 id="stat-past" class="text-xl font-extrabold text-slate-900">0</h4>
-                    </div>
-                </div>
-
-                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center text-xl font-bold">
-                        <i class="fas fa-camera"></i>
-                    </div>
-                    <div>
-                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Total Photos</span>
-                        <h4 id="stat-photos" class="text-xl font-extrabold text-slate-900">0</h4>
-                    </div>
+                    <h1 class="font-heading text-2xl md:text-3xl font-extrabold text-slate-900">Panneau de Configuration</h1>
+                    <p class="text-slate-500 text-sm mt-1">Gérez les informations du site.</p>
                 </div>
             </div>
 
             <!-- TAB 1 : GÉNÉRAL & ACCUEIL -->
             <div id="tab-general" class="tab-content hidden space-y-6">
-                <form id="form-general" onsubmit="saveGeneralInfo(event)" class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm space-y-6">
+                <form id="form-general" class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm space-y-6">
                     <h3 class="font-heading text-lg font-bold text-slate-900 border-b border-slate-100 pb-4">
-                        <i class="fas fa-sliders text-brand-600 mr-2"></i> Configuration de l'En-tête & Bannière d'Accueil (3 Colonnes)
+                        <i class="fas fa-sliders text-brand-600 mr-2"></i> Configuration Générale
                     </h3>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Nom de l'Association</label>
-                            <input type="text" id="cfg-siteName" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
+                            <input type="text" id="cfg-siteName" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500">
                         </div>
                         <div>
                             <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Commune / Localisation</label>
-                            <input type="text" id="cfg-siteLocation" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
+                            <input type="text" id="cfg-siteLocation" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500">
                         </div>
                     </div>
 
                     <!-- 1. GAUCHE : LOGO SOU DES ÉCOLES -->
                     <div class="p-5 bg-rose-50/60 rounded-2xl border border-rose-200/70 space-y-3">
-                        <h4 class="font-heading font-bold text-rose-900 text-sm flex items-center gap-2">
-                            <i class="fas fa-heart text-rose-500"></i> Bloc 1 (Gauche) : Logo Sou des Écoles / APE
-                        </h4>
+                        <h4 class="font-heading font-bold text-rose-900 text-sm">Bloc 1 (Gauche) : Logo Sou des Écoles</h4>
                         <div class="flex gap-2">
-                            <input type="text" id="cfg-logoImg" placeholder="image_736dff.jpg ou URL..." class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
-                            <label class="cursor-pointer px-4 py-2 bg-slate-800 text-white font-bold text-xs rounded-xl flex items-center gap-2 hover:bg-slate-900 transition shrink-0">
+                            <input type="text" id="cfg-logoImg" placeholder="image_736dff.jpg ou URL..." class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm">
+                            <label class="cursor-pointer px-4 py-2 bg-slate-800 text-white font-bold text-xs rounded-xl flex items-center gap-2 shrink-0">
                                 <i class="fas fa-upload"></i> Uploader
                                 <input type="file" accept="image/*" class="hidden" onchange="uploadLogoImage(event)">
                             </label>
@@ -246,37 +184,33 @@
 
                     <!-- 2. MILIEU : TEXTE DE PRÉSENTATION -->
                     <div class="p-5 bg-amber-50/50 rounded-2xl border border-amber-200/60 space-y-4">
-                        <h4 class="font-heading font-bold text-amber-900 text-sm flex items-center gap-2">
-                            <i class="fas fa-font text-amber-500"></i> Bloc 2 (Milieu) : Texte de Présentation
-                        </h4>
+                        <h4 class="font-heading font-bold text-amber-900 text-sm">Bloc 2 (Milieu) : Texte de Présentation</h4>
                         <div>
                             <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Tag du Haut</label>
-                            <input type="text" id="cfg-locationTag" placeholder="Savoie - Commune de La Léchère" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                            <input type="text" id="cfg-locationTag" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm">
                         </div>
                         <div>
                             <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Titre Principal</label>
-                            <input type="text" id="cfg-heroTitle" placeholder="Ensemble pour les enfants de Petit-Cœur !" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold focus:ring-2 focus:ring-brand-500">
+                            <input type="text" id="cfg-heroTitle" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold">
                         </div>
                         <div>
                             <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Paragraphe Descriptif</label>
-                            <textarea id="cfg-heroDesc" rows="2" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500"></textarea>
+                            <textarea id="cfg-heroDesc" rows="2" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm"></textarea>
                         </div>
                     </div>
 
                     <!-- 3. DROITE : AFFICHE DE L'ÉVÉNEMENT -->
                     <div class="p-5 bg-slate-100 rounded-2xl border border-slate-300 space-y-4">
-                        <h4 class="font-heading font-bold text-slate-900 text-sm flex items-center gap-2">
-                            <i class="fas fa-bullhorn text-brand-600"></i> Bloc 3 (Droite) : Affiche du Prochain Événement
-                        </h4>
+                        <h4 class="font-heading font-bold text-slate-900 text-sm">Bloc 3 (Droite) : Affiche du Prochain Événement</h4>
                         <div>
                             <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Titre de l'Affiche</label>
-                            <input type="text" id="cfg-posterHeading" placeholder="À l'Affiche !" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                            <input type="text" id="cfg-posterHeading" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm">
                         </div>
                         <div>
                             <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Image de l'Affiche</label>
                             <div class="flex gap-2">
-                                <input type="text" id="cfg-posterImg" placeholder="image_736dff.jpg ou URL..." class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
-                                <label class="cursor-pointer px-4 py-2 bg-slate-800 text-white font-bold text-xs rounded-xl flex items-center gap-2 hover:bg-slate-900 transition shrink-0">
+                                <input type="text" id="cfg-posterImg" placeholder="image_736dff.jpg ou URL..." class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm">
+                                <label class="cursor-pointer px-4 py-2 bg-slate-800 text-white font-bold text-xs rounded-xl flex items-center gap-2 shrink-0">
                                     <i class="fas fa-upload"></i> Uploader
                                     <input type="file" accept="image/*" class="hidden" onchange="uploadPosterImage(event)">
                                 </label>
@@ -284,23 +218,12 @@
                         </div>
                         <div>
                             <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Légende sous l'Affiche</label>
-                            <input type="text" id="cfg-posterCaption" placeholder="Prochain événement du Sou des Écoles" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-100">
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Email de Contact</label>
-                            <input type="email" id="cfg-contactEmail" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Changer le Mot de passe d'Admin</label>
-                            <input type="password" id="cfg-adminPassword" placeholder="Laissez vide pour conserver" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
+                            <input type="text" id="cfg-posterCaption" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm">
                         </div>
                     </div>
 
                     <div class="pt-4 flex justify-end">
-                        <button type="submit" class="px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg shadow-brand-500/20 transition active:scale-95">
+                        <button type="button" onclick="saveGeneralInfo()" class="px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg transition active:scale-95 cursor-pointer">
                             <i class="fas fa-save mr-2"></i> Enregistrer les modifications
                         </button>
                     </div>
@@ -309,44 +232,18 @@
 
             <!-- TAB 2 : PROJET & BUDGET -->
             <div id="tab-projects" class="tab-content hidden space-y-6">
-                <form id="form-project" onsubmit="saveProjectData(event)" class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm space-y-6">
-                    <h3 class="font-heading text-lg font-bold text-slate-900 border-b border-slate-100 pb-4">
-                        <i class="fas fa-bullseye text-brand-600 mr-2"></i> Projet Annuel et Jauge Budgétaire
-                    </h3>
-
+                <form id="form-project" class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm space-y-6">
+                    <h3 class="font-heading text-lg font-bold text-slate-900 border-b border-slate-100 pb-4">Projet Annuel & Budget</h3>
                     <div>
-                        <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Titre du Grand Projet de l'Année</label>
-                        <input type="text" id="proj-title" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Montant Récolté Actuel (€)</label>
+                        <input type="number" id="proj-current" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-emerald-600">
                     </div>
-
                     <div>
-                        <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Description Détaillée</label>
-                        <textarea id="proj-description" rows="3" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium"></textarea>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Objectif Total (€)</label>
+                        <input type="number" id="proj-target" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-700">
                     </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Montant Récolté Actuel (€)</label>
-                            <input type="number" id="proj-current" oninput="updateJaugePreview()" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-bold text-emerald-600">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Objectif Total à Atteindre (€)</label>
-                            <input type="number" id="proj-target" oninput="updateJaugePreview()" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-bold text-slate-700">
-                        </div>
-                    </div>
-
-                    <div class="p-5 bg-slate-50 rounded-2xl border border-slate-200">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-xs font-bold text-slate-500 uppercase">Aperçu en temps réel de la progression</span>
-                            <span id="jauge-percent" class="text-sm font-extrabold text-brand-600">0%</span>
-                        </div>
-                        <div class="w-full bg-slate-200 h-4 rounded-full overflow-hidden">
-                            <div id="jauge-bar" class="bg-gradient-to-r from-amber-500 to-brand-600 h-full transition-all duration-500" style="width: 0%;"></div>
-                        </div>
-                    </div>
-
                     <div class="pt-4 flex justify-end">
-                        <button type="submit" class="px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg shadow-brand-500/20 transition active:scale-95">
+                        <button type="button" onclick="saveProjectData()" class="px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg transition cursor-pointer">
                             <i class="fas fa-save mr-2"></i> Mettre à jour le Budget
                         </button>
                     </div>
@@ -356,23 +253,20 @@
             <!-- TAB 3 : ÉVÉNEMENTS À VENIR -->
             <div id="tab-upcoming" class="tab-content hidden space-y-6">
                 <div class="flex justify-between items-center">
-                    <h3 class="font-heading text-lg font-bold text-slate-900">Agenda des Événements Futurs</h3>
-                    <button onclick="openUpcomingModal()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center gap-2">
-                        <i class="fas fa-plus"></i> Nouvel Événement
+                    <h3 class="font-heading text-lg font-bold text-slate-900">Événements Futurs</h3>
+                    <button type="button" onclick="openUpcomingModal()" class="px-4 py-2 bg-brand-600 text-white font-bold text-xs rounded-xl shadow">
+                        <i class="fas fa-plus mr-1"></i> Nouvel Événement
                     </button>
                 </div>
                 <div id="upcoming-events-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
             </div>
 
-            <!-- TAB 4 : ALBUMS & ÉVÉNEMENTS PASSÉS -->
+            <!-- TAB 4 : ALBUMS & PASSÉS -->
             <div id="tab-past" class="tab-content hidden space-y-6">
                 <div class="flex justify-between items-center">
-                    <div>
-                        <h3 class="font-heading text-lg font-bold text-slate-900">Galerie Souvenirs & Albums Passés</h3>
-                        <p class="text-xs text-slate-500">Ajoutez des photos d'événements ou des retours en images.</p>
-                    </div>
-                    <button onclick="openPastModal()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center gap-2">
-                        <i class="fas fa-folder-plus"></i> Nouvel Album Passé
+                    <h3 class="font-heading text-lg font-bold text-slate-900">Albums Souvenirs</h3>
+                    <button type="button" onclick="openPastModal()" class="px-4 py-2 bg-brand-600 text-white font-bold text-xs rounded-xl shadow">
+                        <i class="fas fa-folder-plus mr-1"></i> Nouvel Album
                     </button>
                 </div>
                 <div id="past-events-list" class="space-y-6"></div>
@@ -381,113 +275,27 @@
         </main>
     </div>
 
-    <!-- MODAL 1 : ÉVÉNEMENT À VENIR -->
-    <div id="upcoming-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4">
-            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-                <h3 id="upcoming-modal-title" class="font-heading font-extrabold text-slate-900 text-lg">Créer un événement à venir</h3>
-                <button onclick="closeUpcomingModal()" class="text-slate-400 hover:text-slate-600 p-1"><i class="fas fa-times"></i></button>
-            </div>
-            
-            <form id="form-upcoming-event" onsubmit="saveUpcomingEvent(event)" class="space-y-4">
-                <input type="hidden" id="upcoming-edit-id">
-                <div>
-                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Titre de l'événement</label>
-                    <input type="text" id="up-title" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Date</label>
-                        <input type="text" id="up-date" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Horaire</label>
-                        <input type="text" id="up-time" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Lieu</label>
-                    <input type="text" id="up-location" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Description</label>
-                    <textarea id="up-desc" rows="3" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500"></textarea>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Badge / Statut</label>
-                    <input type="text" id="up-badge" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
-                </div>
-                <div class="pt-3 border-t border-slate-100 flex justify-end gap-2">
-                    <button type="button" onclick="closeUpcomingModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition">Annuler</button>
-                    <button type="submit" class="px-5 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-md transition">Enregistrer</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- MODAL 2 : ALBUM ÉVÉNEMENT PASSÉ -->
-    <div id="past-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4">
-            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-                <h3 id="past-modal-title" class="font-heading font-extrabold text-slate-900 text-lg">Créer un album souvenir</h3>
-                <button onclick="closePastModal()" class="text-slate-400 hover:text-slate-600 p-1"><i class="fas fa-times"></i></button>
-            </div>
-            
-            <form id="form-past-event" onsubmit="savePastEvent(event)" class="space-y-4">
-                <input type="hidden" id="past-edit-id">
-                <div>
-                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Nom de l'événement</label>
-                    <input type="text" id="past-title" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Date / Période</label>
-                        <input type="text" id="past-date" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Bénéfices</label>
-                        <input type="text" id="past-raised" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Résumé</label>
-                    <textarea id="past-desc" rows="3" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500"></textarea>
-                </div>
-                <div class="pt-3 border-t border-slate-100 flex justify-end gap-2">
-                    <button type="button" onclick="closePastModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition">Annuler</button>
-                    <button type="submit" class="px-5 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-md transition">Créer l'album</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- SCRIPT DE LOGIQUE ET SAUVEGARDE SECURISEE -->
     <script>
         const DEFAULT_DATA = {
             general: {
                 siteName: "APE de Petit-Cœur",
-                siteLocation: "Petit-Cœur",
+                siteLocation: "Petit-Cœur • La Léchère",
                 locationTag: "Savoie - Commune de La Léchère",
                 heroTitle: "Ensemble pour les enfants de Petit-Cœur !",
-                heroDesc: "Association de parents d'élèves (APE) bénévoles dédiée au financement des sorties scolaires, projets pédagogiques et animations des écoles de notre village.",
+                heroDesc: "Association de parents d'élèves (APE) bénévoles dédiée au financement des sorties scolaires.",
                 logoImg: "image_736dff.jpg",
                 posterImg: "image_736dff.jpg",
                 posterHeading: "À l'Affiche !",
                 posterCaption: "Prochain événement du Sou des Écoles",
-                contactEmail: "contact@ape-petitcoeur.fr",
                 adminPassword: "admin123"
             },
-            project: {
-                title: "Financement de la Classe de Découverte",
-                description: "Nous soutenons cette année la sortie scolaire pour tous les élèves.",
-                currentAmount: 3800,
-                targetAmount: 5000
-            },
+            project: { currentAmount: 3800, targetAmount: 5000 },
             upcomingEvents: [],
             pastEvents: []
         };
 
-        let appData = {};
+        let appData = Object.assign({}, DEFAULT_DATA);
 
         document.addEventListener('DOMContentLoaded', () => {
             loadDataFromStorage();
@@ -495,126 +303,9 @@
             checkSession();
         });
 
-        function normalizeAppData(data) {
-            const res = JSON.parse(JSON.stringify(DEFAULT_DATA));
-            if (!data) return res;
-
-            if (data.general) {
-                res.general.siteName = data.general.siteName || data.general.assocName || res.general.siteName;
-                res.general.siteLocation = data.general.siteLocation || data.general.assocSub || res.general.siteLocation;
-                res.general.locationTag = data.general.locationTag || res.general.locationTag;
-                res.general.heroTitle = data.general.heroTitle || res.general.heroTitle;
-                res.general.heroDesc = data.general.heroDesc || res.general.heroDesc;
-                res.general.logoImg = data.general.logoImg || data.general.heroImg || res.general.logoImg;
-                res.general.posterImg = data.general.posterImg || res.general.posterImg;
-                res.general.posterHeading = data.general.posterHeading || res.general.posterHeading;
-                res.general.posterCaption = data.general.posterCaption || res.general.posterCaption;
-                res.general.contactEmail = data.general.contactEmail || res.general.contactEmail;
-                res.general.adminPassword = data.general.adminPassword || data.adminPassword || res.general.adminPassword;
-            }
-
-            if (data.budget) {
-                res.project.currentAmount = Number(data.budget.current) || res.project.currentAmount;
-                res.project.targetAmount = Number(data.budget.target) || res.project.targetAmount;
-            } else if (data.project) {
-                res.project.currentAmount = Number(data.project.currentAmount) || res.project.currentAmount;
-                res.project.targetAmount = Number(data.project.targetAmount) || res.project.targetAmount;
-            }
-
-            if (Array.isArray(data.upcomingEvents)) res.upcomingEvents = data.upcomingEvents;
-            if (Array.isArray(data.pastEvents)) res.pastEvents = data.pastEvents;
-
-            return res;
-        }
-
-        function toPublicSiteData(app) {
-            return {
-                adminPassword: app.general.adminPassword || "admin123",
-                general: {
-                    assocName: app.general.siteName,
-                    assocSub: app.general.siteLocation,
-                    locationTag: app.general.locationTag,
-                    heroTitle: app.general.heroTitle,
-                    heroDesc: app.general.heroDesc,
-                    logoImg: app.general.logoImg,
-                    posterImg: app.general.posterImg,
-                    posterHeading: app.general.posterHeading,
-                    posterCaption: app.general.posterCaption,
-                    bureauText: "« Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, ou des spectacles pour nos enfants. Merci à toute l'équipe enseignante et aux familles ! »"
-                },
-                budget: {
-                    current: app.project.currentAmount,
-                    target: app.project.targetAmount
-                },
-                upcomingEvents: app.upcomingEvents,
-                pastEvents: app.pastEvents,
-                projects: [
-                    {
-                        id: 201,
-                        title: "Cycle Ski de Fond à Naves",
-                        category: "Sport & Montagne",
-                        status: "Financé à 100%",
-                        desc: "Financement du matériel et du transport pour les élèves."
-                    }
-                ]
-            };
-        }
-
-        async function fetchRemoteData() {
-            try {
-                const { data, error } = await _supabase
-                    .from('site_content')
-                    .select('content')
-                    .eq('id', 1)
-                    .single();
-
-                if (error) throw error;
-
-                if (data && data.content) {
-                    appData = normalizeAppData(data.content);
-                    localStorage.setItem('sou_app_data', JSON.stringify(appData));
-                    localStorage.setItem('sou_petit_coeur_data', JSON.stringify(toPublicSiteData(appData)));
-                    initDashboardUI();
-                }
-            } catch (err) {
-                console.warn("Erreur Supabase :", err);
-            }
-        }
-
-        function loadDataFromStorage() {
-            const stored = localStorage.getItem('sou_app_data');
-            if (stored) {
-                try {
-                    appData = normalizeAppData(JSON.parse(stored));
-                } catch(e) {
-                    appData = JSON.parse(JSON.stringify(DEFAULT_DATA));
-                }
-            } else {
-                appData = JSON.parse(JSON.stringify(DEFAULT_DATA));
-                saveDataToStorage();
-            }
-        }
-
-        async function saveDataToStorage() {
-            localStorage.setItem('sou_app_data', JSON.stringify(appData));
-            const publicData = toPublicSiteData(appData);
-            localStorage.setItem('sou_petit_coeur_data', JSON.stringify(publicData));
-            updateDashboardStats();
-
-            try {
-                const { error } = await _supabase
-                    .from('site_content')
-                    .upsert({ id: 1, content: publicData });
-
-                if (error) throw error;
-            } catch (err) {
-                console.error("Erreur de sauvegarde Supabase :", err);
-            }
-        }
-
         function checkSession() {
-            const loggedIn = sessionStorage.getItem('sou_admin_logged');
-            if (loggedIn === 'true') {
+            const logged = sessionStorage.getItem('sou_admin_logged');
+            if (logged === 'true') {
                 document.getElementById('login-view').classList.add('hidden');
                 document.getElementById('admin-dashboard').classList.remove('hidden');
                 initDashboardUI();
@@ -631,7 +322,6 @@
 
             if (passInput === currentPass) {
                 sessionStorage.setItem('sou_admin_logged', 'true');
-                document.getElementById('login-error').classList.add('hidden');
                 checkSession();
                 showToast("Connexion réussie !");
             } else {
@@ -642,44 +332,26 @@
         function logoutAdmin() {
             sessionStorage.removeItem('sou_admin_logged');
             checkSession();
-            showToast("Déconnexion réussie.", "info");
         }
 
         function initDashboardUI() {
             switchTab('tab-general');
             fillGeneralForm();
             fillProjectForm();
-            renderUpcomingList();
-            renderPastList();
-            updateDashboardStats();
         }
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('bg-brand-600', 'text-white');
-                btn.classList.add('text-slate-400');
-            });
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-brand-600', 'text-white'));
 
-            document.getElementById(tabId).classList.remove('hidden');
-            const activeBtn = document.getElementById('nav-' + tabId);
-            if (activeBtn) {
-                activeBtn.classList.add('bg-brand-600', 'text-white');
-                activeBtn.classList.remove('text-slate-400');
-            }
-        }
-
-        function updateDashboardStats() {
-            document.getElementById('stat-budget').textContent = `${appData.project.currentAmount.toLocaleString()} €`;
-            document.getElementById('stat-upcoming').textContent = appData.upcomingEvents.length;
-            document.getElementById('stat-past').textContent = appData.pastEvents.length;
-            let photoCount = 0;
-            appData.pastEvents.forEach(album => { photoCount += (album.photos ? album.photos.length : 0); });
-            document.getElementById('stat-photos').textContent = photoCount;
+            const target = document.getElementById(tabId);
+            if (target) target.classList.remove('hidden');
+            const btn = document.getElementById('nav-' + tabId);
+            if (btn) btn.classList.add('bg-brand-600', 'text-white');
         }
 
         function fillGeneralForm() {
-            const g = appData.general;
+            const g = appData.general || {};
             document.getElementById('cfg-siteName').value = g.siteName || '';
             document.getElementById('cfg-siteLocation').value = g.siteLocation || '';
             document.getElementById('cfg-logoImg').value = g.logoImg || '';
@@ -689,34 +361,16 @@
             document.getElementById('cfg-posterHeading').value = g.posterHeading || '';
             document.getElementById('cfg-posterImg').value = g.posterImg || '';
             document.getElementById('cfg-posterCaption').value = g.posterCaption || '';
-            document.getElementById('cfg-contactEmail').value = g.contactEmail || '';
-            document.getElementById('cfg-adminPassword').value = '';
         }
 
-        function uploadLogoImage(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('cfg-logoImg').value = e.target.result;
-                showToast("Logo chargé avec succès !");
-            };
-            reader.readAsDataURL(file);
+        function fillProjectForm() {
+            const p = appData.project || {};
+            document.getElementById('proj-current').value = p.currentAmount || 3800;
+            document.getElementById('proj-target').value = p.targetAmount || 5000;
         }
 
-        function uploadPosterImage(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('cfg-posterImg').value = e.target.result;
-                showToast("Affiche chargée avec succès !");
-            };
-            reader.readAsDataURL(file);
-        }
-
-        async function saveGeneralInfo(e) {
-            e.preventDefault();
+        // FONCTION DE SAUVEGARDE PRINCIPALE
+        async function saveGeneralInfo() {
             appData.general.siteName = document.getElementById('cfg-siteName').value;
             appData.general.siteLocation = document.getElementById('cfg-siteLocation').value;
             appData.general.logoImg = document.getElementById('cfg-logoImg').value;
@@ -726,201 +380,125 @@
             appData.general.posterHeading = document.getElementById('cfg-posterHeading').value;
             appData.general.posterImg = document.getElementById('cfg-posterImg').value;
             appData.general.posterCaption = document.getElementById('cfg-posterCaption').value;
-            appData.general.contactEmail = document.getElementById('cfg-contactEmail').value;
-
-            const passEl = document.getElementById('cfg-adminPassword');
-            if (passEl && passEl.value.trim() !== "") {
-                appData.general.adminPassword = passEl.value.trim();
-            }
 
             await saveDataToStorage();
-            showToast("Modifications enregistrées !");
         }
 
-        function fillProjectForm() {
-            const p = appData.project;
-            document.getElementById('proj-title').value = p.title || '';
-            document.getElementById('proj-description').value = p.description || '';
-            document.getElementById('proj-current').value = p.currentAmount || 0;
-            document.getElementById('proj-target').value = p.targetAmount || 100;
-            updateJaugePreview();
-        }
-
-        function updateJaugePreview() {
-            const cur = parseFloat(document.getElementById('proj-current').value) || 0;
-            const tgt = parseFloat(document.getElementById('proj-target').value) || 1;
-            const pct = Math.min(Math.round((cur / tgt) * 100), 100);
-            document.getElementById('jauge-percent').textContent = pct + "%";
-            document.getElementById('jauge-bar').style.width = pct + "%";
-        }
-
-        function saveProjectData(e) {
-            e.preventDefault();
-            appData.project.title = document.getElementById('proj-title').value;
-            appData.project.description = document.getElementById('proj-description').value;
+        async function saveProjectData() {
             appData.project.currentAmount = parseFloat(document.getElementById('proj-current').value) || 0;
             appData.project.targetAmount = parseFloat(document.getElementById('proj-target').value) || 1;
-            saveDataToStorage();
-            showToast("Budget mis à jour !");
+            await saveDataToStorage();
         }
 
-        function renderUpcomingList() {
-            const container = document.getElementById('upcoming-events-list');
-            container.innerHTML = '';
-            if (appData.upcomingEvents.length === 0) {
-                container.innerHTML = `<div class="col-span-2 bg-white rounded-2xl p-8 text-center text-slate-400 border border-slate-200"><p class="text-sm font-semibold">Aucun événement à venir.</p></div>`;
-                return;
-            }
-            appData.upcomingEvents.forEach(item => {
-                const card = document.createElement('div');
-                card.className = "bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between space-y-4";
-                card.innerHTML = `
-                    <div>
-                        <div class="flex items-start justify-between gap-2 mb-2">
-                            <span class="text-[10px] uppercase font-bold px-2.5 py-1 bg-brand-50 text-brand-600 rounded-lg">${item.badge || 'Événement'}</span>
-                            <div class="flex items-center gap-1">
-                                <button onclick="editUpcomingEvent(${item.id})" class="text-slate-400 hover:text-brand-600 p-1.5"><i class="fas fa-edit"></i></button>
-                                <button onclick="deleteUpcomingEvent(${item.id})" class="text-slate-400 hover:text-rose-600 p-1.5"><i class="fas fa-trash-alt"></i></button>
-                            </div>
-                        </div>
-                        <h4 class="font-heading font-extrabold text-slate-900 text-base">${item.title}</h4>
-                        <p class="text-xs text-slate-500 mt-2">${item.desc || item.description || ''}</p>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
+        // ENREGISTREMENT DANS SUPABASE ET LOCALSTORAGE
+        async function saveDataToStorage() {
+            // 1. Toujours enregistrer en local d'abord
+            const publicData = {
+                adminPassword: appData.general.adminPassword || "admin123",
+                general: {
+                    assocName: appData.general.siteName,
+                    assocSub: appData.general.siteLocation,
+                    locationTag: appData.general.locationTag,
+                    heroTitle: appData.general.heroTitle,
+                    heroDesc: appData.general.heroDesc,
+                    logoImg: appData.general.logoImg,
+                    posterImg: appData.general.posterImg,
+                    posterHeading: appData.general.posterHeading,
+                    posterCaption: appData.general.posterCaption,
+                    bureauText: "« Chaque événement organisé est une opportunité de financer un voyage ou des sorties. »"
+                },
+                budget: {
+                    current: appData.project.currentAmount,
+                    target: appData.project.targetAmount
+                },
+                upcomingEvents: appData.upcomingEvents || [],
+                pastEvents: appData.pastEvents || []
+            };
 
-        function openUpcomingModal(editId = null) {
-            document.getElementById('form-upcoming-event').reset();
-            document.getElementById('upcoming-edit-id').value = '';
-            if (editId) {
-                const ev = appData.upcomingEvents.find(e => e.id === editId);
-                if (ev) {
-                    document.getElementById('upcoming-modal-title').textContent = "Modifier l'événement";
-                    document.getElementById('upcoming-edit-id').value = ev.id;
-                    document.getElementById('up-title').value = ev.title;
-                    document.getElementById('up-date').value = ev.date;
-                    document.getElementById('up-time').value = ev.time || '';
-                    document.getElementById('up-location').value = ev.location || '';
-                    document.getElementById('up-desc').value = ev.desc || ev.description || '';
-                    document.getElementById('up-badge').value = ev.badge || '';
+            localStorage.setItem('sou_app_data', JSON.stringify(appData));
+            localStorage.setItem('sou_petit_coeur_data', JSON.stringify(publicData));
+
+            // 2. Tenter l'envoi vers Supabase
+            try {
+                const { error } = await _supabase
+                    .from('site_content')
+                    .upsert({ id: 1, content: publicData });
+
+                if (error) {
+                    console.warn("Erreur Supabase (RLS):", error);
+                    showToast("Modifications enregistrées en local !", "warning");
+                } else {
+                    showToast("Enregistré et publié en direct !");
                 }
+            } catch (err) {
+                console.error("Erreur réseau:", err);
+                showToast("Sauvegardé hors-ligne !", "warning");
             }
-            document.getElementById('upcoming-modal').classList.remove('hidden');
         }
 
-        function closeUpcomingModal() { document.getElementById('upcoming-modal').classList.add('hidden'); }
+        function loadDataFromStorage() {
+            const stored = localStorage.getItem('sou_app_data');
+            if (stored) {
+                try { appData = JSON.parse(stored); } catch(e) {}
+            }
+        }
 
-        function saveUpcomingEvent(e) {
-            e.preventDefault();
-            const editId = document.getElementById('upcoming-edit-id').value;
-            const payload = {
-                id: editId ? parseInt(editId) : Date.now(),
-                title: document.getElementById('up-title').value,
-                date: document.getElementById('up-date').value,
-                time: document.getElementById('up-time').value,
-                location: document.getElementById('up-location').value,
-                desc: document.getElementById('up-desc').value,
-                badge: document.getElementById('up-badge').value
+        async function fetchRemoteData() {
+            try {
+                const { data } = await _supabase
+                    .from('site_content')
+                    .select('content')
+                    .eq('id', 1)
+                    .single();
+
+                if (data && data.content) {
+                    const c = data.content;
+                    if (c.general) {
+                        appData.general.siteName = c.general.assocName || appData.general.siteName;
+                        appData.general.siteLocation = c.general.assocSub || appData.general.siteLocation;
+                        appData.general.logoImg = c.general.logoImg || appData.general.logoImg;
+                        appData.general.posterImg = c.general.posterImg || appData.general.posterImg;
+                        appData.general.posterHeading = c.general.posterHeading || appData.general.posterHeading;
+                        appData.general.posterCaption = c.general.posterCaption || appData.general.posterCaption;
+                    }
+                    fillGeneralForm();
+                }
+            } catch(e) {}
+        }
+
+        function uploadLogoImage(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const r = new FileReader();
+            r.onload = (evt) => {
+                document.getElementById('cfg-logoImg').value = evt.target.result;
+                showToast("Logo prêt à être enregistré !");
             };
-            if (editId) {
-                const idx = appData.upcomingEvents.findIndex(e => e.id === parseInt(editId));
-                if (idx !== -1) appData.upcomingEvents[idx] = payload;
-            } else {
-                appData.upcomingEvents.push(payload);
-            }
-            saveDataToStorage();
-            renderUpcomingList();
-            closeUpcomingModal();
-            showToast("Événement enregistré !");
+            r.readAsDataURL(file);
         }
 
-        function editUpcomingEvent(id) { openUpcomingModal(id); }
-        function deleteUpcomingEvent(id) {
-            if (confirm("Supprimer cet événement ?")) {
-                appData.upcomingEvents = appData.upcomingEvents.filter(e => e.id !== id);
-                saveDataToStorage();
-                renderUpcomingList();
-                showToast("Événement supprimé.", "warning");
-            }
-        }
-
-        function renderPastList() {
-            const container = document.getElementById('past-events-list');
-            container.innerHTML = '';
-            if (appData.pastEvents.length === 0) {
-                container.innerHTML = `<div class="bg-white rounded-2xl p-8 text-center text-slate-400 border border-slate-200"><p class="text-sm font-semibold">Aucun album passé.</p></div>`;
-                return;
-            }
-            appData.pastEvents.forEach(album => {
-                const block = document.createElement('div');
-                block.className = "bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4";
-                block.innerHTML = `
-                    <div class="flex justify-between items-center border-b pb-3">
-                        <div>
-                            <span class="text-xs font-bold text-brand-600 uppercase">${album.date}</span>
-                            <h4 class="font-heading font-extrabold text-slate-900 text-lg">${album.title}</h4>
-                        </div>
-                        <button onclick="deletePastEvent(${album.id})" class="px-3 py-1.5 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold"><i class="fas fa-trash mr-1"></i> Supprimer</button>
-                    </div>
-                    <p class="text-xs text-slate-600">${album.desc || album.description || ''}</p>
-                `;
-                container.appendChild(block);
-            });
-        }
-
-        function openPastModal() { document.getElementById('past-modal').classList.remove('hidden'); }
-        function closePastModal() { document.getElementById('past-modal').classList.add('hidden'); }
-
-        function savePastEvent(e) {
-            e.preventDefault();
-            const newAlbum = {
-                id: Date.now(),
-                title: document.getElementById('past-title').value,
-                date: document.getElementById('past-date').value,
-                raised: document.getElementById('past-raised').value,
-                desc: document.getElementById('past-desc').value,
-                photos: []
+        function uploadPosterImage(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const r = new FileReader();
+            r.onload = (evt) => {
+                document.getElementById('cfg-posterImg').value = evt.target.result;
+                showToast("Affiche prête à être enregistrée !");
             };
-            appData.pastEvents.push(newAlbum);
-            saveDataToStorage();
-            renderPastList();
-            closePastModal();
-            showToast("Album créé !");
+            r.readAsDataURL(file);
         }
 
-        function deletePastEvent(id) {
-            if (confirm("Supprimer cet album ?")) {
-                appData.pastEvents = appData.pastEvents.filter(a => a.id !== id);
-                saveDataToStorage();
-                renderPastList();
-                showToast("Album supprimé.", "warning");
-            }
-        }
-
-        function exportDataJSON() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", "ape_ecoles_data.json");
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
-        }
-
-        function resetDataDefault() {
-            if (confirm("Réinitialiser toutes les données ?")) {
-                appData = JSON.parse(JSON.stringify(DEFAULT_DATA));
-                saveDataToStorage();
-                initDashboardUI();
-                showToast("Données réinitialisées !", "warning");
-            }
-        }
-
-        function showToast(message, type = "success") {
+        function showToast(msg, type = "success") {
             const toast = document.getElementById('toast');
-            document.getElementById('toast-message').textContent = message;
+            const toastIcon = document.getElementById('toast-icon');
+            document.getElementById('toast-message').textContent = msg;
+
+            if (type === "warning") {
+                toastIcon.className = "fas fa-exclamation-triangle text-amber-400 text-lg";
+            } else {
+                toastIcon.className = "fas fa-check-circle text-emerald-400 text-lg";
+            }
+
             toast.classList.remove('translate-y-20', 'opacity-0');
             setTimeout(() => {
                 toast.classList.add('translate-y-20', 'opacity-0');
