@@ -103,12 +103,12 @@
 
     <!-- MAIN SITE PUBLIC VIEW -->
     <main class="flex-grow">
-        <!-- SECTION ACCUEIL : 3 COLONNES SANS FOND BLANC -->
+        <!-- SECTION ACCUEIL : 3 COLONNES -->
         <section id="accueil" class="relative hero-pattern text-white py-12 md:py-20 overflow-hidden">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
                     
-                    <!-- 1. À GAUCHE : LOGO SOU DES ÉCOLES (FOND TRANSPARENT) -->
+                    <!-- 1. À GAUCHE : LOGO SOU DES ÉCOLES -->
                     <div class="flex justify-center">
                         <div class="p-2 max-w-xs transform -rotate-2 hover:rotate-0 transition-all cursor-pointer group hover:scale-105" onclick="openLightbox(document.getElementById('logo-img').src, 'Logo Sou des Écoles - Petit-Cœur')">
                             <img id="logo-img" src="image_736dff.jpg" alt="Logo Sou des Écoles Petit-Cœur" class="w-full h-auto rounded-2xl object-contain drop-shadow-2xl">
@@ -138,7 +138,7 @@
                         </div>
                     </div>
 
-                    <!-- 3. À DROITE : AFFICHE DE L'ÉVÉNEMENT (FOND TRANSPARENT) -->
+                    <!-- 3. À DROITE : AFFICHE DE L'ÉVÉNEMENT -->
                     <div class="flex justify-center">
                         <div class="p-2 max-w-xs transform rotate-2 hover:rotate-0 transition-all w-full text-center hover:scale-105">
                             <h3 class="font-title font-bold text-white text-base mb-3 flex items-center justify-center gap-2 drop-shadow-md">
@@ -237,7 +237,7 @@
         </div>
     </footer>
 
-    <!-- LIGHTBOX / VISIONNEUSE GRAND ÉCRAN (FOND TRANSPARENT ET SORTIE FACILE) -->
+    <!-- LIGHTBOX / VISIONNEUSE GRAND ÉCRAN (AVEC FOND BLANC POUR L'IMAGE) -->
     <div id="modal-lightbox" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex flex-col items-center justify-center p-4 transition-all duration-300" onclick="closeLightbox()">
         
         <!-- Bouton pour quitter / fermer -->
@@ -246,9 +246,11 @@
             <span>Fermer (Échap)</span>
         </button>
 
-        <!-- Image et légende sans cadre noir ni fond blanc -->
+        <!-- Conteneur d'image avec fond blanc -->
         <div class="relative max-w-4xl w-full max-h-[85vh] flex flex-col items-center justify-center p-2" onclick="event.stopPropagation()">
-            <img id="lightbox-img" src="" alt="Agrandissement" class="max-h-[75vh] w-auto max-w-full rounded-2xl drop-shadow-2xl object-contain transition-all">
+            <div class="bg-white p-3 sm:p-4 rounded-3xl shadow-2xl flex items-center justify-center">
+                <img id="lightbox-img" src="" alt="Agrandissement" class="max-h-[70vh] w-auto max-w-full rounded-2xl object-contain transition-all">
+            </div>
             <p id="lightbox-caption" class="text-white font-title text-center mt-4 text-sm sm:text-base bg-black/40 backdrop-blur-md px-6 py-2 rounded-full border border-white/20 shadow-lg"></p>
         </div>
     </div>
