@@ -103,20 +103,11 @@
 
     <!-- MAIN SITE PUBLIC VIEW -->
     <main class="flex-grow">
-        <!-- SECTION ACCUEIL : CARTE IMAGE SEULE -->
+        <!-- SECTION ACCUEIL : IMAGE SEULE -->
         <section id="accueil" class="relative hero-pattern text-white py-16 md:py-20 overflow-hidden">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex justify-center">
                 <div class="relative w-full max-w-md bg-white p-4 rounded-3xl shadow-2xl transform rotate-1 hover:rotate-0 transition-transform">
-                    <img id="hero-card-img" src="image_736dff.jpg" alt="Enfants à l'école" class="w-full h-72 object-cover rounded-2xl">
-                    <div class="mt-4 flex items-center justify-between text-gray-800">
-                        <div>
-                            <p id="card-title" class="font-title font-bold text-lg">100% pour nos écoliers</p>
-                            <p id="card-sub" class="text-xs text-gray-500">Activités, découvertes & spectacles</p>
-                        </div>
-                        <span id="card-badge" class="bg-brand-green/20 text-emerald-700 font-bold px-3 py-1 rounded-full text-xs">
-                            Écoles de La Léchère
-                        </span>
-                    </div>
+                    <img id="hero-card-img" src="image_736dff.jpg" alt="Enfants à l'école" class="w-full h-auto object-cover rounded-2xl">
                 </div>
             </div>
         </section>
@@ -222,9 +213,6 @@
             general: {
                 assocName: "APE de Petit-Cœur",
                 assocSub: "Petit-Cœur • La Léchère",
-                cardTitle: "100% pour nos écoliers",
-                cardSub: "Activités, découvertes & spectacles",
-                cardBadge: "Écoles de La Léchère",
                 heroImg: "image_736dff.jpg",
                 bureauText: "« Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, ou des spectacles pour nos enfants. Merci à toute l'équipe enseignante et aux familles ! »"
             },
@@ -245,11 +233,7 @@
             document.getElementById('about-assoc-title').textContent = gen.assocName || defaultSiteData.general.assocName;
             document.getElementById('about-bureau-text').textContent = gen.bureauText || defaultSiteData.general.bureauText;
 
-            // Textes et Image de la carte d'accueil
-            if (document.getElementById('card-title')) document.getElementById('card-title').textContent = gen.cardTitle || defaultSiteData.general.cardTitle;
-            if (document.getElementById('card-sub')) document.getElementById('card-sub').textContent = gen.cardSub || defaultSiteData.general.cardSub;
-            if (document.getElementById('card-badge')) document.getElementById('card-badge').textContent = gen.cardBadge || defaultSiteData.general.cardBadge;
-            
+            // Image d'accueil seule
             const heroCardImg = document.getElementById('hero-card-img');
             if (heroCardImg && gen.heroImg) {
                 heroCardImg.src = gen.heroImg;

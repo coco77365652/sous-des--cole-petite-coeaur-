@@ -216,7 +216,7 @@
             <div id="tab-general" class="tab-content hidden space-y-6">
                 <form id="form-general" onsubmit="saveGeneralInfo(event)" class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm space-y-6">
                     <h3 class="font-heading text-lg font-bold text-slate-900 border-b border-slate-100 pb-4">
-                        <i class="fas fa-info-circle text-brand-600 mr-2"></i> Informations Principales & Carte d'Accueil
+                        <i class="fas fa-info-circle text-brand-600 mr-2"></i> Informations Principales & Image d'Accueil
                     </h3>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -230,34 +230,18 @@
                         </div>
                     </div>
 
-                    <!-- PERSONNALISATION DE LA CARTE IMAGE D'ACCUEIL -->
+                    <!-- PERSONNALISATION DE L'IMAGE D'ACCUEIL -->
                     <div class="p-5 bg-amber-50/50 rounded-2xl border border-amber-200/60 space-y-4">
-                        <h4 class="font-heading font-bold text-amber-900 text-sm"><i class="fas fa-image text-amber-500 mr-1.5"></i> Personnalisation de la Carte Image d'Accueil</h4>
+                        <h4 class="font-heading font-bold text-amber-900 text-sm"><i class="fas fa-image text-amber-500 mr-1.5"></i> Image d'Accueil Principale</h4>
 
-                        <!-- MODIFICATION DE L'IMAGE DE LA CARTE D'ACCUEIL -->
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Image de la carte d'accueil (URL ou Fichier)</label>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Fichier ou URL de l'image</label>
                             <div class="flex gap-2">
                                 <input type="text" id="cfg-heroImg" placeholder="image_736dff.jpg ou https://..." class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
                                 <label class="cursor-pointer px-4 py-2 bg-slate-800 text-white font-bold text-xs rounded-xl flex items-center gap-2 hover:bg-slate-900 transition shrink-0">
                                     <i class="fas fa-upload"></i> Uploader
                                     <input type="file" accept="image/*" class="hidden" onchange="uploadHeroImage(event)">
                                 </label>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-                            <div>
-                                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Titre de la carte image</label>
-                                <input type="text" id="cfg-cardTitle" placeholder="Ex: 100% pour nos écoliers" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Sous-titre de la carte image</label>
-                                <input type="text" id="cfg-cardSub" placeholder="Ex: Activités, découvertes & spectacles" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Badge de la carte image</label>
-                                <input type="text" id="cfg-cardBadge" placeholder="Ex: Écoles de La Léchère" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
                             </div>
                         </div>
                     </div>
@@ -441,9 +425,6 @@
             general: {
                 siteName: "APE de Petit-Cœur",
                 siteLocation: "Petit-Cœur",
-                cardTitle: "100% pour nos écoliers",
-                cardSub: "Activités, découvertes & spectacles",
-                cardBadge: "Écoles de La Léchère",
                 heroImg: "image_736dff.jpg",
                 contactEmail: "contact@ape-petitcoeur.fr",
                 adminPassword: "admin123"
@@ -473,9 +454,6 @@
             if (data.general) {
                 res.general.siteName = data.general.siteName || data.general.assocName || res.general.siteName;
                 res.general.siteLocation = data.general.siteLocation || data.general.assocSub || res.general.siteLocation;
-                res.general.cardTitle = data.general.cardTitle || res.general.cardTitle;
-                res.general.cardSub = data.general.cardSub || res.general.cardSub;
-                res.general.cardBadge = data.general.cardBadge || res.general.cardBadge;
                 res.general.heroImg = data.general.heroImg || res.general.heroImg;
                 res.general.contactEmail = data.general.contactEmail || res.general.contactEmail;
                 res.general.adminPassword = data.general.adminPassword || data.adminPassword || res.general.adminPassword;
@@ -501,9 +479,6 @@
                 general: {
                     assocName: app.general.siteName,
                     assocSub: app.general.siteLocation,
-                    cardTitle: app.general.cardTitle,
-                    cardSub: app.general.cardSub,
-                    cardBadge: app.general.cardBadge,
                     heroImg: app.general.heroImg,
                     bureauText: "« Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, ou des spectacles pour nos enfants. Merci à toute l'équipe enseignante et aux familles ! »"
                 },
@@ -647,9 +622,6 @@
             const g = appData.general;
             document.getElementById('cfg-siteName').value = g.siteName || '';
             document.getElementById('cfg-siteLocation').value = g.siteLocation || '';
-            document.getElementById('cfg-cardTitle').value = g.cardTitle || '';
-            document.getElementById('cfg-cardSub').value = g.cardSub || '';
-            document.getElementById('cfg-cardBadge').value = g.cardBadge || '';
             document.getElementById('cfg-heroImg').value = g.heroImg || '';
             document.getElementById('cfg-contactEmail').value = g.contactEmail || '';
             document.getElementById('cfg-adminPassword').value = '';
@@ -670,9 +642,6 @@
             e.preventDefault();
             appData.general.siteName = document.getElementById('cfg-siteName').value;
             appData.general.siteLocation = document.getElementById('cfg-siteLocation').value;
-            appData.general.cardTitle = document.getElementById('cfg-cardTitle').value;
-            appData.general.cardSub = document.getElementById('cfg-cardSub').value;
-            appData.general.cardBadge = document.getElementById('cfg-cardBadge').value;
             appData.general.heroImg = document.getElementById('cfg-heroImg').value;
             appData.general.contactEmail = document.getElementById('cfg-contactEmail').value;
 
