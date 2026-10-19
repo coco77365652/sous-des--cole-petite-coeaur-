@@ -103,16 +103,16 @@
 
     <!-- MAIN SITE PUBLIC VIEW -->
     <main class="flex-grow">
-        <!-- SECTION ACCUEIL : 3 COLONNES (LOGO - TEXTE - AFFICHE) -->
+        <!-- SECTION ACCUEIL : 3 COLONNES SANS FOND BLANC -->
         <section id="accueil" class="relative hero-pattern text-white py-12 md:py-20 overflow-hidden">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
                     
-                    <!-- 1. À GAUCHE : LOGO SOU DES ÉCOLES (CLIQUABLE POUR AGRANDIR) -->
+                    <!-- 1. À GAUCHE : LOGO SOU DES ÉCOLES (SANS FOND BLANC) -->
                     <div class="flex justify-center">
-                        <div class="bg-white p-3 rounded-3xl shadow-2xl max-w-xs transform -rotate-2 hover:rotate-0 transition-all cursor-pointer group hover:scale-105" onclick="openLightbox(document.getElementById('logo-img').src, 'Logo Sou des Écoles - Petit-Cœur')">
-                            <img id="logo-img" src="image_736dff.jpg" alt="Logo Sou des Écoles Petit-Cœur" class="w-full h-auto rounded-2xl object-contain">
-                            <p class="text-[10px] text-gray-400 text-center mt-1 group-hover:text-brand-darkblue transition-colors font-medium"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Cliquer pour agrandir</p>
+                        <div class="p-2 max-w-xs transform -rotate-2 hover:rotate-0 transition-all cursor-pointer group hover:scale-105" onclick="openLightbox(document.getElementById('logo-img').src, 'Logo Sou des Écoles - Petit-Cœur')">
+                            <img id="logo-img" src="image_736dff.jpg" alt="Logo Sou des Écoles Petit-Cœur" class="w-full h-auto rounded-2xl object-contain drop-shadow-2xl">
+                            <p class="text-[10px] text-sky-100 text-center mt-2 group-hover:text-brand-yellow transition-colors font-medium"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Cliquer pour agrandir</p>
                         </div>
                     </div>
 
@@ -138,18 +138,18 @@
                         </div>
                     </div>
 
-                    <!-- 3. À DROITE : AFFICHE DE MANIFESTATION (CLIQUABLE POUR AGRANDIR) -->
+                    <!-- 3. À DROITE : AFFICHE DE L'ÉVÉNEMENT (SANS FOND BLANC) -->
                     <div class="flex justify-center">
-                        <div class="bg-white/10 backdrop-blur-md border border-white/30 p-4 rounded-3xl shadow-2xl max-w-xs transform rotate-2 hover:rotate-0 transition-all w-full text-center hover:scale-105">
-                            <h3 class="font-title font-bold text-white text-base mb-3 flex items-center justify-center gap-2">
+                        <div class="p-2 max-w-xs transform rotate-2 hover:rotate-0 transition-all w-full text-center hover:scale-105">
+                            <h3 class="font-title font-bold text-white text-base mb-3 flex items-center justify-center gap-2 drop-shadow-md">
                                 <i class="fa-solid fa-bullhorn text-brand-yellow"></i>
                                 <span id="poster-heading">À l'Affiche !</span>
                             </h3>
-                            <div class="bg-white p-2 rounded-2xl overflow-hidden shadow-inner cursor-pointer group" onclick="openLightbox(document.getElementById('poster-img').src, document.getElementById('poster-caption').textContent || 'Affiche officielle')">
-                                <img id="poster-img" src="image_736dff.jpg" alt="Affiche événement" class="w-full h-64 object-cover rounded-xl group-hover:scale-105 transition-transform">
+                            <div class="overflow-hidden cursor-pointer group rounded-2xl" onclick="openLightbox(document.getElementById('poster-img').src, document.getElementById('poster-caption').textContent || 'Affiche officielle')">
+                                <img id="poster-img" src="image_736dff.jpg" alt="Affiche événement" class="w-full h-64 object-cover rounded-2xl group-hover:scale-105 transition-transform drop-shadow-2xl">
                             </div>
-                            <p id="poster-caption" class="text-xs text-sky-100 mt-3 font-medium">Prochaine manifestation du Sou des Écoles</p>
-                            <p class="text-[10px] text-amber-200 mt-1 font-semibold cursor-pointer" onclick="openLightbox(document.getElementById('poster-img').src, document.getElementById('poster-caption').textContent)"><i class="fa-solid fa-expand mr-1"></i> Voir l'affiche en plein écran</p>
+                            <p id="poster-caption" class="text-xs text-sky-100 mt-3 font-medium">Prochain événement du Sou des Écoles</p>
+                            <p class="text-[10px] text-amber-200 mt-1 font-semibold cursor-pointer hover:underline" onclick="openLightbox(document.getElementById('poster-img').src, document.getElementById('poster-caption').textContent)"><i class="fa-solid fa-expand mr-1"></i> Voir l'affiche en plein écran</p>
                         </div>
                     </div>
 
@@ -237,13 +237,15 @@
         </div>
     </footer>
 
-    <!-- LIGHTBOX / VISIONNEUSE GRAND ÉCRAN -->
+    <!-- LIGHTBOX / VISIONNEUSE AVEC BOUTON POUR QUITTER -->
     <div id="modal-lightbox" class="fixed inset-0 z-50 hidden bg-black/95 backdrop-blur-md flex items-center justify-center p-4 transition-all duration-300" onclick="closeLightbox()">
         <div class="relative max-w-5xl w-full max-h-screen flex flex-col items-center justify-center p-2" onclick="event.stopPropagation()">
-            <button onclick="closeLightbox()" class="absolute -top-12 right-2 text-white hover:text-brand-yellow text-3xl font-bold transition-colors">
-                <i class="fa-solid fa-xmark"></i>
+            <!-- BOUTON QUITTER / FERMER -->
+            <button onclick="closeLightbox()" class="absolute -top-14 right-0 bg-brand-red hover:bg-rose-700 text-white text-sm font-bold px-4 py-2 rounded-full shadow-lg flex items-center gap-2 transition-all">
+                <i class="fa-solid fa-xmark text-lg"></i>
+                <span>Quitter</span>
             </button>
-            <img id="lightbox-img" src="" alt="Agrandissement" class="max-h-[85vh] w-auto max-w-full rounded-2xl shadow-2xl object-contain border-2 border-white/20">
+            <img id="lightbox-img" src="" alt="Agrandissement" class="max-h-[80vh] w-auto max-w-full rounded-2xl shadow-2xl object-contain border-2 border-white/20">
             <p id="lightbox-caption" class="text-white font-title text-center mt-4 text-base bg-black/60 px-6 py-2.5 rounded-full border border-white/10 shadow-lg"></p>
         </div>
     </div>
@@ -264,7 +266,7 @@
                 logoImg: "image_736dff.jpg",
                 posterImg: "image_736dff.jpg",
                 posterHeading: "À l'Affiche !",
-                posterCaption: "Prochaine manifestation du Sou des Écoles",
+                posterCaption: "Prochain événement du Sou des Écoles",
                 bureauText: "« Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, ou des spectacles pour nos enfants. Merci à toute l'équipe enseignante et aux familles ! »"
             },
             budget: { current: 3800, target: 5000 },
