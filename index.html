@@ -103,44 +103,19 @@
 
     <!-- MAIN SITE PUBLIC VIEW -->
     <main class="flex-grow">
-        <section id="accueil" class="relative hero-pattern text-white py-16 md:py-24 overflow-hidden">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div class="grid md:grid-cols-2 gap-12 items-center">
-                    <div class="space-y-6 text-center md:text-left">
-                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-white text-sm font-medium border border-white/30">
-                            <i class="fa-solid fa-mountain-sun text-brand-yellow"></i>
-                            <span id="hero-location-tag">Savoie - Commune de La Léchère</span>
+        <!-- SECTION ACCUEIL : CARTE IMAGE SEULE -->
+        <section id="accueil" class="relative hero-pattern text-white py-16 md:py-20 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex justify-center">
+                <div class="relative w-full max-w-md bg-white p-4 rounded-3xl shadow-2xl transform rotate-1 hover:rotate-0 transition-transform">
+                    <img id="hero-card-img" src="image_736dff.jpg" alt="Enfants à l'école" class="w-full h-72 object-cover rounded-2xl">
+                    <div class="mt-4 flex items-center justify-between text-gray-800">
+                        <div>
+                            <p id="card-title" class="font-title font-bold text-lg">100% pour nos écoliers</p>
+                            <p id="card-sub" class="text-xs text-gray-500">Activités, découvertes & spectacles</p>
                         </div>
-                        <h1 id="hero-title" class="font-title text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-md">
-                            Ensemble pour les enfants de Petit-Cœur !
-                        </h1>
-                        <p id="hero-description" class="text-lg md:text-xl text-sky-50 font-light leading-relaxed max-w-xl">
-                            Association de parents d'élèves (APE) bénévoles dédiée au financement des sorties scolaires, projets pédagogiques et animations des écoles de notre village.
-                        </p>
-                        <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start pt-4">
-                            <a href="#evenements" class="bg-brand-yellow hover:bg-amber-300 text-gray-900 font-title font-semibold px-6 py-3.5 rounded-2xl shadow-lg transition-all text-center flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-calendar-star text-brand-red"></i> Prochains Événements
-                            </a>
-                            <a href="#evenements-passes" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/40 text-white font-title font-semibold px-6 py-3.5 rounded-2xl transition-all text-center flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-camera text-brand-yellow"></i> Galerie & Souvenirs
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- CARTE IMAGE MODIFIABLE DEPUIS L'ADMIN -->
-                    <div class="relative flex justify-center">
-                        <div class="relative w-full max-w-md bg-white p-4 rounded-3xl shadow-2xl transform rotate-2">
-                            <img id="hero-card-img" src="image_736dff.jpg" alt="Enfants à l'école" class="w-full h-72 object-cover rounded-2xl">
-                            <div class="mt-4 flex items-center justify-between text-gray-800">
-                                <div>
-                                    <p id="card-title" class="font-title font-bold text-lg">100% pour nos écoliers</p>
-                                    <p id="card-sub" class="text-xs text-gray-500">Activités, découvertes & spectacles</p>
-                                </div>
-                                <span id="card-badge" class="bg-brand-green/20 text-emerald-700 font-bold px-3 py-1 rounded-full text-xs">
-                                    Écoles de La Léchère
-                                </span>
-                            </div>
-                        </div>
+                        <span id="card-badge" class="bg-brand-green/20 text-emerald-700 font-bold px-3 py-1 rounded-full text-xs">
+                            Écoles de La Léchère
+                        </span>
                     </div>
                 </div>
             </div>
@@ -247,10 +222,6 @@
             general: {
                 assocName: "APE de Petit-Cœur",
                 assocSub: "Petit-Cœur • La Léchère",
-                heroTitle: "Ensemble pour les enfants de Petit-Cœur !",
-                heroDesc: "Association de parents d'élèves (APE) bénévoles dédiée au financement des sorties scolaires, projets pédagogiques et animations des écoles de notre village.",
-                heroSubtitle: "Association de parents d'élèves dédiée au financement des sorties scolaires.",
-                locationTag: "Savoie - Commune de La Léchère",
                 cardTitle: "100% pour nos écoliers",
                 cardSub: "Activités, découvertes & spectacles",
                 cardBadge: "Écoles de La Léchère",
@@ -270,12 +241,8 @@
             
             document.getElementById('header-assoc-name').textContent = gen.assocName || defaultSiteData.general.assocName;
             document.getElementById('header-assoc-sub').textContent = gen.assocSub || defaultSiteData.general.assocSub;
-            document.getElementById('hero-location-tag').textContent = gen.locationTag || defaultSiteData.general.locationTag;
-            document.getElementById('hero-title').textContent = gen.heroTitle || defaultSiteData.general.heroTitle;
-            document.getElementById('hero-description').textContent = gen.heroDesc || gen.heroSubtitle || defaultSiteData.general.heroDesc;
             
             document.getElementById('about-assoc-title').textContent = gen.assocName || defaultSiteData.general.assocName;
-            document.getElementById('about-assoc-desc').textContent = gen.heroDesc || defaultSiteData.general.heroDesc;
             document.getElementById('about-bureau-text').textContent = gen.bureauText || defaultSiteData.general.bureauText;
 
             // Textes et Image de la carte d'accueil

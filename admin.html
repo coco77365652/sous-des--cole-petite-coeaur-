@@ -216,7 +216,7 @@
             <div id="tab-general" class="tab-content hidden space-y-6">
                 <form id="form-general" onsubmit="saveGeneralInfo(event)" class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm space-y-6">
                     <h3 class="font-heading text-lg font-bold text-slate-900 border-b border-slate-100 pb-4">
-                        <i class="fas fa-info-circle text-brand-600 mr-2"></i> Informations Principales & En-tête du Site
+                        <i class="fas fa-info-circle text-brand-600 mr-2"></i> Informations Principales & Carte d'Accueil
                     </h3>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -230,30 +230,15 @@
                         </div>
                     </div>
 
-                    <!-- PERSONNALISATION DE LA BANNIÈRE D'ACCUEIL (HERO) -->
+                    <!-- PERSONNALISATION DE LA CARTE IMAGE D'ACCUEIL -->
                     <div class="p-5 bg-amber-50/50 rounded-2xl border border-amber-200/60 space-y-4">
-                        <h4 class="font-heading font-bold text-amber-900 text-sm"><i class="fas fa-star text-amber-500 mr-1.5"></i> Personnalisation de la bannière d'accueil (Hero)</h4>
-                        
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Tag de Localisation (Haut de page)</label>
-                            <input type="text" id="cfg-locationTag" placeholder="Ex: Savoie - Commune de La Léchère" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Titre Principal de la Page</label>
-                            <input type="text" id="cfg-heroTitle" placeholder="Ex: Ensemble pour les enfants de Petit-Cœur !" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 font-semibold">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Description / Paragraphe d'accueil</label>
-                            <textarea id="cfg-heroDesc" rows="2" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500"></textarea>
-                        </div>
+                        <h4 class="font-heading font-bold text-amber-900 text-sm"><i class="fas fa-image text-amber-500 mr-1.5"></i> Personnalisation de la Carte Image d'Accueil</h4>
 
                         <!-- MODIFICATION DE L'IMAGE DE LA CARTE D'ACCUEIL -->
                         <div>
                             <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Image de la carte d'accueil (URL ou Fichier)</label>
                             <div class="flex gap-2">
-                                <input type="text" id="cfg-heroImg" placeholder="https://..." class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                                <input type="text" id="cfg-heroImg" placeholder="image_736dff.jpg ou https://..." class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
                                 <label class="cursor-pointer px-4 py-2 bg-slate-800 text-white font-bold text-xs rounded-xl flex items-center gap-2 hover:bg-slate-900 transition shrink-0">
                                     <i class="fas fa-upload"></i> Uploader
                                     <input type="file" accept="image/*" class="hidden" onchange="uploadHeroImage(event)">
@@ -274,21 +259,6 @@
                                 <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Badge de la carte image</label>
                                 <input type="text" id="cfg-cardBadge" placeholder="Ex: Écoles de La Léchère" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-slate-100">
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Statistique : Élèves soutenus</label>
-                            <input type="text" id="cfg-statStudents" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Statistique : Événements / an</label>
-                            <input type="text" id="cfg-statEvents" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Statistique : Financement / an</label>
-                            <input type="text" id="cfg-statBudget" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 font-medium">
                         </div>
                     </div>
 
@@ -471,17 +441,10 @@
             general: {
                 siteName: "APE de Petit-Cœur",
                 siteLocation: "Petit-Cœur",
-                heroTitle: "Ensemble pour les enfants de Petit-Cœur !",
-                heroDesc: "Association de parents d'élèves (APE) bénévoles dédiée au financement des sorties scolaires, projets pédagogiques, équipements et animations des écoles de notre village.",
-                heroSubtitle: "Association de parents d'élèves dédiée au financement des sorties scolaires.",
-                locationTag: "Savoie - Commune de La Léchère",
                 cardTitle: "100% pour nos écoliers",
                 cardSub: "Activités, découvertes & spectacles",
                 cardBadge: "Écoles de La Léchère",
-                heroImg: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=800&q=80",
-                statStudents: "120+",
-                statEvents: "6",
-                statBudget: "4 500 €",
+                heroImg: "image_736dff.jpg",
                 contactEmail: "contact@ape-petitcoeur.fr",
                 adminPassword: "admin123"
             },
@@ -510,17 +473,10 @@
             if (data.general) {
                 res.general.siteName = data.general.siteName || data.general.assocName || res.general.siteName;
                 res.general.siteLocation = data.general.siteLocation || data.general.assocSub || res.general.siteLocation;
-                res.general.heroTitle = data.general.heroTitle || res.general.heroTitle;
-                res.general.heroDesc = data.general.heroDesc || res.general.heroDesc;
-                res.general.heroSubtitle = data.general.heroSubtitle || data.general.heroDesc || res.general.heroSubtitle;
-                res.general.locationTag = data.general.locationTag || res.general.locationTag;
                 res.general.cardTitle = data.general.cardTitle || res.general.cardTitle;
                 res.general.cardSub = data.general.cardSub || res.general.cardSub;
                 res.general.cardBadge = data.general.cardBadge || res.general.cardBadge;
                 res.general.heroImg = data.general.heroImg || res.general.heroImg;
-                res.general.statStudents = data.general.statStudents || data.general.statEleves || res.general.statStudents;
-                res.general.statEvents = data.general.statEvents || res.general.statEvents;
-                res.general.statBudget = data.general.statBudget || res.general.statBudget;
                 res.general.contactEmail = data.general.contactEmail || res.general.contactEmail;
                 res.general.adminPassword = data.general.adminPassword || data.adminPassword || res.general.adminPassword;
             }
@@ -545,18 +501,11 @@
                 general: {
                     assocName: app.general.siteName,
                     assocSub: app.general.siteLocation,
-                    heroTitle: app.general.heroTitle,
-                    heroDesc: app.general.heroDesc,
-                    heroSubtitle: app.general.heroSubtitle,
-                    locationTag: app.general.locationTag,
                     cardTitle: app.general.cardTitle,
                     cardSub: app.general.cardSub,
                     cardBadge: app.general.cardBadge,
                     heroImg: app.general.heroImg,
-                    bureauText: "« Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, ou des spectacles pour nos enfants. Merci à toute l'équipe enseignante et aux familles ! »",
-                    statEleves: app.general.statStudents,
-                    statEvents: app.general.statEvents,
-                    statBudget: app.general.statBudget
+                    bureauText: "« Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, ou des spectacles pour nos enfants. Merci à toute l'équipe enseignante et aux familles ! »"
                 },
                 budget: {
                     current: app.project.currentAmount,
@@ -698,16 +647,10 @@
             const g = appData.general;
             document.getElementById('cfg-siteName').value = g.siteName || '';
             document.getElementById('cfg-siteLocation').value = g.siteLocation || '';
-            document.getElementById('cfg-heroTitle').value = g.heroTitle || '';
-            document.getElementById('cfg-heroDesc').value = g.heroDesc || '';
-            document.getElementById('cfg-locationTag').value = g.locationTag || '';
             document.getElementById('cfg-cardTitle').value = g.cardTitle || '';
             document.getElementById('cfg-cardSub').value = g.cardSub || '';
             document.getElementById('cfg-cardBadge').value = g.cardBadge || '';
             document.getElementById('cfg-heroImg').value = g.heroImg || '';
-            document.getElementById('cfg-statStudents').value = g.statStudents || '';
-            document.getElementById('cfg-statEvents').value = g.statEvents || '';
-            document.getElementById('cfg-statBudget').value = g.statBudget || '';
             document.getElementById('cfg-contactEmail').value = g.contactEmail || '';
             document.getElementById('cfg-adminPassword').value = '';
         }
@@ -727,16 +670,10 @@
             e.preventDefault();
             appData.general.siteName = document.getElementById('cfg-siteName').value;
             appData.general.siteLocation = document.getElementById('cfg-siteLocation').value;
-            appData.general.heroTitle = document.getElementById('cfg-heroTitle').value;
-            appData.general.heroDesc = document.getElementById('cfg-heroDesc').value;
-            appData.general.locationTag = document.getElementById('cfg-locationTag').value;
             appData.general.cardTitle = document.getElementById('cfg-cardTitle').value;
             appData.general.cardSub = document.getElementById('cfg-cardSub').value;
             appData.general.cardBadge = document.getElementById('cfg-cardBadge').value;
             appData.general.heroImg = document.getElementById('cfg-heroImg').value;
-            appData.general.statStudents = document.getElementById('cfg-statStudents').value;
-            appData.general.statEvents = document.getElementById('cfg-statEvents').value;
-            appData.general.statBudget = document.getElementById('cfg-statBudget').value;
             appData.general.contactEmail = document.getElementById('cfg-contactEmail').value;
 
             const passEl = document.getElementById('cfg-adminPassword');
@@ -745,7 +682,7 @@
             }
 
             await saveDataToStorage();
-            showToast("Informations d'accueil enregistrées !");
+            showToast("Modifications de l'accueil enregistrées !");
         }
 
         function fillProjectForm() {
