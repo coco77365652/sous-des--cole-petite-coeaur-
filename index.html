@@ -130,7 +130,7 @@
                     <!-- CARTE IMAGE MODIFIABLE DEPUIS L'ADMIN -->
                     <div class="relative flex justify-center">
                         <div class="relative w-full max-w-md bg-white p-4 rounded-3xl shadow-2xl transform rotate-2">
-                            <img id="hero-card-img" src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=800&q=80" alt="Enfants à l'école" class="w-full h-72 object-cover rounded-2xl">
+                            <img id="hero-card-img" src="image_736dff.jpg" alt="Enfants à l'école" class="w-full h-72 object-cover rounded-2xl">
                             <div class="mt-4 flex items-center justify-between text-gray-800">
                                 <div>
                                     <p id="card-title" class="font-title font-bold text-lg">100% pour nos écoliers</p>
@@ -142,28 +142,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CHIFFRES CLÉS -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-                <div class="bg-white p-6 rounded-2xl shadow-lg border border-amber-100 text-center">
-                    <div id="stat-eleves" class="text-3xl sm:text-4xl font-title font-bold text-brand-blue mb-1">120+</div>
-                    <div class="text-xs sm:text-sm text-gray-600 font-medium">Élèves soutenus</div>
-                </div>
-                <div class="bg-white p-6 rounded-2xl shadow-lg border border-amber-100 text-center">
-                    <div id="stat-events" class="text-3xl sm:text-4xl font-title font-bold text-brand-red mb-1">6</div>
-                    <div class="text-xs sm:text-sm text-gray-600 font-medium">Événements par an</div>
-                </div>
-                <div class="bg-white p-6 rounded-2xl shadow-lg border border-amber-100 text-center">
-                    <div class="text-3xl sm:text-4xl font-title font-bold text-brand-green mb-1">100%</div>
-                    <div class="text-xs sm:text-sm text-gray-600 font-medium">Bénévolat engagé</div>
-                </div>
-                <div class="bg-white p-6 rounded-2xl shadow-lg border border-amber-100 text-center">
-                    <div id="stat-budget" class="text-3xl sm:text-4xl font-title font-bold text-brand-yellow mb-1">4 500 €</div>
-                    <div class="text-xs sm:text-sm text-gray-600 font-medium">Financés l'an dernier</div>
                 </div>
             </div>
         </section>
@@ -276,11 +254,8 @@
                 cardTitle: "100% pour nos écoliers",
                 cardSub: "Activités, découvertes & spectacles",
                 cardBadge: "Écoles de La Léchère",
-                heroImg: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=800&q=80",
-                bureauText: "« Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, ou des spectacles pour nos enfants. Merci à toute l'équipe enseignante et aux familles ! »",
-                statEleves: "120+",
-                statEvents: "6",
-                statBudget: "4 500 €"
+                heroImg: "image_736dff.jpg",
+                bureauText: "« Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, ou des spectacles pour nos enfants. Merci à toute l'équipe enseignante et aux familles ! »"
             },
             budget: { current: 3800, target: 5000 },
             upcomingEvents: [],
@@ -312,11 +287,6 @@
             if (heroCardImg && gen.heroImg) {
                 heroCardImg.src = gen.heroImg;
             }
-
-            // Statistiques clés
-            document.getElementById('stat-eleves').textContent = gen.statStudents || gen.statEleves || "120+";
-            document.getElementById('stat-events').textContent = gen.statEvents || "6";
-            document.getElementById('stat-budget').textContent = gen.statBudget || "4 500 €";
 
             // Budget Jauge
             const budget = siteData.budget || {};
