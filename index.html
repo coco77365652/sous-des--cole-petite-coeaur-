@@ -103,11 +103,54 @@
 
     <!-- MAIN SITE PUBLIC VIEW -->
     <main class="flex-grow">
-        <!-- SECTION ACCUEIL : IMAGE SEULE -->
-        <section id="accueil" class="relative hero-pattern text-white py-16 md:py-20 overflow-hidden">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex justify-center">
-                <div class="relative w-full max-w-md bg-white p-4 rounded-3xl shadow-2xl transform rotate-1 hover:rotate-0 transition-transform">
-                    <img id="hero-card-img" src="image_736dff.jpg" alt="Enfants à l'école" class="w-full h-auto object-cover rounded-2xl">
+        <!-- SECTION ACCUEIL : 3 COLONNES (LOGO - TEXTE - AFFICHE) -->
+        <section id="accueil" class="relative hero-pattern text-white py-12 md:py-20 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                    
+                    <!-- 1. À GAUCHE : LOGO SOU DES ÉCOLES -->
+                    <div class="flex justify-center">
+                        <div class="bg-white p-3 rounded-3xl shadow-2xl max-w-xs transform -rotate-2 hover:rotate-0 transition-transform">
+                            <img id="logo-img" src="image_736dff.jpg" alt="Logo Sou des Écoles Petit-Cœur" class="w-full h-auto rounded-2xl object-contain">
+                        </div>
+                    </div>
+
+                    <!-- 2. AU MILIEU : TEXTE DE PRÉSENTATION -->
+                    <div class="text-center space-y-6">
+                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-white text-sm font-medium border border-white/30">
+                            <i class="fa-solid fa-mountain-sun text-brand-yellow"></i>
+                            <span id="hero-location-tag">Savoie - Commune de La Léchère</span>
+                        </div>
+                        <h1 id="hero-title" class="font-title text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight drop-shadow-md">
+                            Ensemble pour les enfants de Petit-Cœur !
+                        </h1>
+                        <p id="hero-description" class="text-base sm:text-lg text-sky-50 font-light leading-relaxed">
+                            Association de parents d'élèves (APE) bénévoles dédiée au financement des sorties scolaires, projets pédagogiques et animations des écoles de notre village.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+                            <a href="#evenements" class="bg-brand-yellow hover:bg-amber-300 text-gray-900 font-title font-semibold px-5 py-3 rounded-2xl shadow-lg transition-all text-center flex items-center justify-center gap-2 text-sm">
+                                <i class="fa-solid fa-calendar-star text-brand-red"></i> Prochains Événements
+                            </a>
+                            <a href="#evenements-passes" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/40 text-white font-title font-semibold px-5 py-3 rounded-2xl transition-all text-center flex items-center justify-center gap-2 text-sm">
+                                <i class="fa-solid fa-camera text-brand-yellow"></i> Galerie & Souvenirs
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 3. À DROITE : AFFICHE DE MANIFESTATION -->
+                    <div class="flex justify-center">
+                        <div class="bg-white/10 backdrop-blur-md border border-white/30 p-4 rounded-3xl shadow-2xl max-w-xs transform rotate-2 hover:rotate-0 transition-transform w-full text-center">
+                            <h3 class="font-title font-bold text-white text-base mb-3 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-bullhorn text-brand-yellow"></i>
+                                <span id="poster-heading">À l'Affiche !</span>
+                            </h3>
+                            <div class="bg-white p-2 rounded-2xl overflow-hidden shadow-inner cursor-pointer" onclick="openLightbox(document.getElementById('poster-img').src, 'Affiche officielle')">
+                                <img id="poster-img" src="image_736dff.jpg" alt="Affiche événement" class="w-full h-64 object-cover rounded-xl hover:scale-105 transition-transform">
+                            </div>
+                            <p id="poster-caption" class="text-xs text-sky-100 mt-3 font-medium">Prochaine manifestation du Sou des Écoles</p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -213,7 +256,13 @@
             general: {
                 assocName: "APE de Petit-Cœur",
                 assocSub: "Petit-Cœur • La Léchère",
-                heroImg: "image_736dff.jpg",
+                locationTag: "Savoie - Commune de La Léchère",
+                heroTitle: "Ensemble pour les enfants de Petit-Cœur !",
+                heroDesc: "Association de parents d'élèves (APE) bénévoles dédiée au financement des sorties scolaires, projets pédagogiques et animations des écoles de notre village.",
+                logoImg: "image_736dff.jpg",
+                posterImg: "image_736dff.jpg",
+                posterHeading: "À l'Affiche !",
+                posterCaption: "Prochaine manifestation du Sou des Écoles",
                 bureauText: "« Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, ou des spectacles pour nos enfants. Merci à toute l'équipe enseignante et aux familles ! »"
             },
             budget: { current: 3800, target: 5000 },
@@ -230,14 +279,22 @@
             document.getElementById('header-assoc-name').textContent = gen.assocName || defaultSiteData.general.assocName;
             document.getElementById('header-assoc-sub').textContent = gen.assocSub || defaultSiteData.general.assocSub;
             
+            if (document.getElementById('hero-location-tag')) document.getElementById('hero-location-tag').textContent = gen.locationTag || defaultSiteData.general.locationTag;
+            if (document.getElementById('hero-title')) document.getElementById('hero-title').textContent = gen.heroTitle || defaultSiteData.general.heroTitle;
+            if (document.getElementById('hero-description')) document.getElementById('hero-description').textContent = gen.heroDesc || defaultSiteData.general.heroDesc;
+
             document.getElementById('about-assoc-title').textContent = gen.assocName || defaultSiteData.general.assocName;
             document.getElementById('about-bureau-text').textContent = gen.bureauText || defaultSiteData.general.bureauText;
 
-            // Image d'accueil seule
-            const heroCardImg = document.getElementById('hero-card-img');
-            if (heroCardImg && gen.heroImg) {
-                heroCardImg.src = gen.heroImg;
-            }
+            // 1. Logo à gauche
+            const logoImg = document.getElementById('logo-img');
+            if (logoImg) logoImg.src = gen.logoImg || gen.heroImg || defaultSiteData.general.logoImg;
+
+            // 3. Affiche à droite
+            const posterImg = document.getElementById('poster-img');
+            if (posterImg) posterImg.src = gen.posterImg || defaultSiteData.general.posterImg;
+            if (document.getElementById('poster-heading')) document.getElementById('poster-heading').textContent = gen.posterHeading || defaultSiteData.general.posterHeading;
+            if (document.getElementById('poster-caption')) document.getElementById('poster-caption').textContent = gen.posterCaption || defaultSiteData.general.posterCaption;
 
             // Budget Jauge
             const budget = siteData.budget || {};

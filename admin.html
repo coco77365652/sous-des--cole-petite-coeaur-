@@ -122,7 +122,7 @@
                 <nav class="mt-6 space-y-1">
                     <button onclick="switchTab('tab-general')" id="nav-tab-general" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
                         <i class="fas fa-sliders w-5 text-emerald-400"></i>
-                        <span>Général & Infos</span>
+                        <span>Général & Accueil</span>
                     </button>
                     <button onclick="switchTab('tab-projects')" id="nav-tab-projects" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
                         <i class="fas fa-piggy-bank w-5 text-blue-400"></i>
@@ -212,11 +212,11 @@
                 </div>
             </div>
 
-            <!-- TAB 1 : GÉNÉRAL & INFOS -->
+            <!-- TAB 1 : GÉNÉRAL & ACCUEIL -->
             <div id="tab-general" class="tab-content hidden space-y-6">
                 <form id="form-general" onsubmit="saveGeneralInfo(event)" class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm space-y-6">
                     <h3 class="font-heading text-lg font-bold text-slate-900 border-b border-slate-100 pb-4">
-                        <i class="fas fa-info-circle text-brand-600 mr-2"></i> Informations Principales & Image d'Accueil
+                        <i class="fas fa-sliders text-brand-600 mr-2"></i> Configuration de l'En-tête & Bannière d'Accueil (3 Colonnes)
                     </h3>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -230,19 +230,61 @@
                         </div>
                     </div>
 
-                    <!-- PERSONNALISATION DE L'IMAGE D'ACCUEIL -->
-                    <div class="p-5 bg-amber-50/50 rounded-2xl border border-amber-200/60 space-y-4">
-                        <h4 class="font-heading font-bold text-amber-900 text-sm"><i class="fas fa-image text-amber-500 mr-1.5"></i> Image d'Accueil Principale</h4>
+                    <!-- 1. GAUCHE : LOGO SOU DES ÉCOLES -->
+                    <div class="p-5 bg-rose-50/60 rounded-2xl border border-rose-200/70 space-y-3">
+                        <h4 class="font-heading font-bold text-rose-900 text-sm flex items-center gap-2">
+                            <i class="fas fa-heart text-rose-500"></i> Bloc 1 (Gauche) : Logo Sou des Écoles / APE
+                        </h4>
+                        <div class="flex gap-2">
+                            <input type="text" id="cfg-logoImg" placeholder="image_736dff.jpg ou URL..." class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                            <label class="cursor-pointer px-4 py-2 bg-slate-800 text-white font-bold text-xs rounded-xl flex items-center gap-2 hover:bg-slate-900 transition shrink-0">
+                                <i class="fas fa-upload"></i> Uploader
+                                <input type="file" accept="image/*" class="hidden" onchange="uploadLogoImage(event)">
+                            </label>
+                        </div>
+                    </div>
 
+                    <!-- 2. MILIEU : TEXTE DE PRÉSENTATION -->
+                    <div class="p-5 bg-amber-50/50 rounded-2xl border border-amber-200/60 space-y-4">
+                        <h4 class="font-heading font-bold text-amber-900 text-sm flex items-center gap-2">
+                            <i class="fas fa-font text-amber-500"></i> Bloc 2 (Milieu) : Texte de Présentation
+                        </h4>
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Fichier ou URL de l'image</label>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Tag du Haut</label>
+                            <input type="text" id="cfg-locationTag" placeholder="Savoie - Commune de La Léchère" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Titre Principal</label>
+                            <input type="text" id="cfg-heroTitle" placeholder="Ensemble pour les enfants de Petit-Cœur !" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold focus:ring-2 focus:ring-brand-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Paragraphe Descriptif</label>
+                            <textarea id="cfg-heroDesc" rows="2" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 3. DROITE : AFFICHE MANIFESTATION -->
+                    <div class="p-5 bg-slate-100 rounded-2xl border border-slate-300 space-y-4">
+                        <h4 class="font-heading font-bold text-slate-900 text-sm flex items-center gap-2">
+                            <i class="fas fa-bullhorn text-brand-600"></i> Bloc 3 (Droite) : Affiche de la Prochaine Manifestation
+                        </h4>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Titre de l'Affiche</label>
+                            <input type="text" id="cfg-posterHeading" placeholder="À l'Affiche !" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Image de l'Affiche</label>
                             <div class="flex gap-2">
-                                <input type="text" id="cfg-heroImg" placeholder="image_736dff.jpg ou https://..." class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                                <input type="text" id="cfg-posterImg" placeholder="image_736dff.jpg ou URL..." class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
                                 <label class="cursor-pointer px-4 py-2 bg-slate-800 text-white font-bold text-xs rounded-xl flex items-center gap-2 hover:bg-slate-900 transition shrink-0">
                                     <i class="fas fa-upload"></i> Uploader
-                                    <input type="file" accept="image/*" class="hidden" onchange="uploadHeroImage(event)">
+                                    <input type="file" accept="image/*" class="hidden" onchange="uploadPosterImage(event)">
                                 </label>
                             </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Légende sous l'Affiche</label>
+                            <input type="text" id="cfg-posterCaption" placeholder="Prochaine manifestation du Sou des Écoles" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
                         </div>
                     </div>
 
@@ -425,7 +467,13 @@
             general: {
                 siteName: "APE de Petit-Cœur",
                 siteLocation: "Petit-Cœur",
-                heroImg: "image_736dff.jpg",
+                locationTag: "Savoie - Commune de La Léchère",
+                heroTitle: "Ensemble pour les enfants de Petit-Cœur !",
+                heroDesc: "Association de parents d'élèves (APE) bénévoles dédiée au financement des sorties scolaires, projets pédagogiques et animations des écoles de notre village.",
+                logoImg: "image_736dff.jpg",
+                posterImg: "image_736dff.jpg",
+                posterHeading: "À l'Affiche !",
+                posterCaption: "Prochaine manifestation du Sou des Écoles",
                 contactEmail: "contact@ape-petitcoeur.fr",
                 adminPassword: "admin123"
             },
@@ -454,7 +502,13 @@
             if (data.general) {
                 res.general.siteName = data.general.siteName || data.general.assocName || res.general.siteName;
                 res.general.siteLocation = data.general.siteLocation || data.general.assocSub || res.general.siteLocation;
-                res.general.heroImg = data.general.heroImg || res.general.heroImg;
+                res.general.locationTag = data.general.locationTag || res.general.locationTag;
+                res.general.heroTitle = data.general.heroTitle || res.general.heroTitle;
+                res.general.heroDesc = data.general.heroDesc || res.general.heroDesc;
+                res.general.logoImg = data.general.logoImg || data.general.heroImg || res.general.logoImg;
+                res.general.posterImg = data.general.posterImg || res.general.posterImg;
+                res.general.posterHeading = data.general.posterHeading || res.general.posterHeading;
+                res.general.posterCaption = data.general.posterCaption || res.general.posterCaption;
                 res.general.contactEmail = data.general.contactEmail || res.general.contactEmail;
                 res.general.adminPassword = data.general.adminPassword || data.adminPassword || res.general.adminPassword;
             }
@@ -479,7 +533,13 @@
                 general: {
                     assocName: app.general.siteName,
                     assocSub: app.general.siteLocation,
-                    heroImg: app.general.heroImg,
+                    locationTag: app.general.locationTag,
+                    heroTitle: app.general.heroTitle,
+                    heroDesc: app.general.heroDesc,
+                    logoImg: app.general.logoImg,
+                    posterImg: app.general.posterImg,
+                    posterHeading: app.general.posterHeading,
+                    posterCaption: app.general.posterCaption,
                     bureauText: "« Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, ou des spectacles pour nos enfants. Merci à toute l'équipe enseignante et aux familles ! »"
                 },
                 budget: {
@@ -622,18 +682,35 @@
             const g = appData.general;
             document.getElementById('cfg-siteName').value = g.siteName || '';
             document.getElementById('cfg-siteLocation').value = g.siteLocation || '';
-            document.getElementById('cfg-heroImg').value = g.heroImg || '';
+            document.getElementById('cfg-logoImg').value = g.logoImg || '';
+            document.getElementById('cfg-locationTag').value = g.locationTag || '';
+            document.getElementById('cfg-heroTitle').value = g.heroTitle || '';
+            document.getElementById('cfg-heroDesc').value = g.heroDesc || '';
+            document.getElementById('cfg-posterHeading').value = g.posterHeading || '';
+            document.getElementById('cfg-posterImg').value = g.posterImg || '';
+            document.getElementById('cfg-posterCaption').value = g.posterCaption || '';
             document.getElementById('cfg-contactEmail').value = g.contactEmail || '';
             document.getElementById('cfg-adminPassword').value = '';
         }
 
-        function uploadHeroImage(event) {
+        function uploadLogoImage(event) {
             const file = event.target.files[0];
             if (!file) return;
             const reader = new FileReader();
             reader.onload = function(e) {
-                document.getElementById('cfg-heroImg').value = e.target.result;
-                showToast("Image chargée avec succès !");
+                document.getElementById('cfg-logoImg').value = e.target.result;
+                showToast("Logo chargé avec succès !");
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function uploadPosterImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('cfg-posterImg').value = e.target.result;
+                showToast("Affiche chargée avec succès !");
             };
             reader.readAsDataURL(file);
         }
@@ -642,7 +719,13 @@
             e.preventDefault();
             appData.general.siteName = document.getElementById('cfg-siteName').value;
             appData.general.siteLocation = document.getElementById('cfg-siteLocation').value;
-            appData.general.heroImg = document.getElementById('cfg-heroImg').value;
+            appData.general.logoImg = document.getElementById('cfg-logoImg').value;
+            appData.general.locationTag = document.getElementById('cfg-locationTag').value;
+            appData.general.heroTitle = document.getElementById('cfg-heroTitle').value;
+            appData.general.heroDesc = document.getElementById('cfg-heroDesc').value;
+            appData.general.posterHeading = document.getElementById('cfg-posterHeading').value;
+            appData.general.posterImg = document.getElementById('cfg-posterImg').value;
+            appData.general.posterCaption = document.getElementById('cfg-posterCaption').value;
             appData.general.contactEmail = document.getElementById('cfg-contactEmail').value;
 
             const passEl = document.getElementById('cfg-adminPassword');
@@ -651,7 +734,7 @@
             }
 
             await saveDataToStorage();
-            showToast("Modifications de l'accueil enregistrées !");
+            showToast("Modifications enregistrées !");
         }
 
         function fillProjectForm() {
