@@ -142,20 +142,28 @@
                         </div>
                     </div>
 
-                    <!-- 3. À DROITE : AFFICHE -->
+                    <!-- 3. À DROITE : AFFICHE ET BOUTON TÉLÉCHARGER -->
                     <div class="flex justify-center">
-                        <div class="p-2 max-w-xs transform rotate-2 hover:rotate-0 transition-all w-full text-center hover:scale-105">
+                        <div class="p-2 max-w-xs transform rotate-2 hover:rotate-0 transition-all w-full text-center">
                             <h3 class="font-title font-bold text-white text-base mb-3 flex items-center justify-center gap-2 drop-shadow-md">
                                 <i class="fa-solid fa-bullhorn text-brand-yellow"></i>
                                 <span id="poster-heading">À l'Affiche !</span>
                             </h3>
-                            <div class="overflow-hidden cursor-pointer group rounded-2xl aspect-square bg-white shadow-2xl flex items-center justify-center p-2 border border-white/20" onclick="openLightbox(document.getElementById('poster-img').src, document.getElementById('poster-caption').textContent || 'Affiche événement')">
+                            <div class="overflow-hidden cursor-pointer group rounded-2xl aspect-square bg-white shadow-2xl flex items-center justify-center p-2 border border-white/20 hover:scale-105 transition-transform" onclick="openLightbox(document.getElementById('poster-img').src, document.getElementById('poster-caption').textContent || 'Affiche événement')">
                                 <img id="poster-img" 
                                      src="image_736dff.jpg" 
                                      alt="Affiche événement" 
-                                     class="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform duration-300">
+                                     class="w-full h-full object-contain rounded-xl">
                             </div>
-                            <p id="poster-caption" class="text-xs text-sky-100 mt-3 font-medium">Prochain événement du Sou des Écoles</p>
+                            <p id="poster-caption" class="text-xs text-sky-100 mt-2 font-medium">Prochain événement du Sou des Écoles</p>
+                            
+                            <!-- BOUTON TÉLÉCHARGER / OUVRIR L'AFFICHE -->
+                            <div class="mt-3">
+                                <a id="poster-download-btn" href="#" target="_blank" download class="inline-flex items-center gap-2 bg-brand-yellow hover:bg-amber-300 text-gray-900 font-title font-bold text-xs px-4 py-2 rounded-xl shadow-md transition-all">
+                                    <i class="fa-solid fa-download"></i>
+                                    <span>Télécharger l'affiche</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
 
@@ -198,7 +206,6 @@
                         </div>
                     </div>
 
-                    <!-- LIEN STATUTS / DOCUMENT -->
                     <div id="about-file-box" class="pt-4 border-t border-amber-100 hidden">
                         <a id="about-file-link" href="#" target="_blank" class="inline-flex items-center gap-2 bg-brand-red hover:bg-rose-600 text-white font-title font-semibold text-sm px-5 py-3 rounded-2xl shadow-md transition-all">
                             <i class="fa-solid fa-file-pdf"></i>
@@ -389,7 +396,6 @@
             if (document.getElementById('about-block2-title')) document.getElementById('about-block2-title').innerHTML = `<i class="fa-solid fa-heart text-brand-red"></i> ${ab.block2Title || defaultSiteData.about.block2Title}`;
             if (document.getElementById('about-block2-text')) document.getElementById('about-block2-text').innerHTML = parseTextLinks(ab.block2Text || defaultSiteData.about.block2Text);
 
-            // GESTION DU LIEN DES STATUTS (OUVERTURE DANS UN NOUVEL ONGLET)
             const fileBox = document.getElementById('about-file-box');
             const fileLink = document.getElementById('about-file-link');
             const fileBtnText = document.getElementById('about-file-btn-text');
@@ -431,9 +437,11 @@
             }
 
             const posterImg = document.getElementById('poster-img');
+            const posterDownloadBtn = document.getElementById('poster-download-btn');
             if (posterImg) {
                 const targetPoster = gen.posterImg || defaultSiteData.general.posterImg;
                 if (targetPoster && posterImg.src !== targetPoster) posterImg.src = targetPoster;
+                if (posterDownloadBtn) posterDownloadBtn.href = targetPoster;
             }
 
             if (document.getElementById('poster-heading')) document.getElementById('poster-heading').textContent = gen.posterHeading || defaultSiteData.general.posterHeading;
