@@ -178,17 +178,23 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch mb-12">
+                <!-- BLOC 1 : NOTRE MISSION AVEC PHOTO -->
                 <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-sm space-y-4 flex flex-col justify-between">
                     <div class="space-y-4">
                         <h3 id="about-block1-title" class="font-title text-2xl font-bold text-gray-900 flex items-center gap-3">
                             <i class="fa-solid fa-users text-brand-blue"></i> Notre Mission
                         </h3>
+                        <!-- PHOTO BLOC 1 -->
+                        <div id="about-block1-img-box" class="hidden overflow-hidden rounded-2xl my-3 cursor-pointer group border border-amber-100/60 shadow-sm" onclick="openLightbox(document.getElementById('about-block1-img').src, 'Photo - Notre Mission')">
+                            <img id="about-block1-img" src="" alt="Notre Mission" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                        </div>
                         <p id="about-block1-text" class="text-gray-600 leading-relaxed text-base">
                             Organiser des manifestations tout au long de l'année afin de financer les projets éducatifs, sorties scolaires, achats de matériel et spectacles pour nos enfants.
                         </p>
                     </div>
                 </div>
 
+                <!-- BLOC 2 : LE MOT DU BUREAU -->
                 <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-sm space-y-4 flex flex-col justify-between">
                     <div class="space-y-4">
                         <h3 id="about-block2-title" class="font-title text-2xl font-bold text-gray-900 flex items-center gap-3">
@@ -318,6 +324,7 @@
                 desc: "Une équipe de parents bénévoles et enthousiastes dédiée aux enfants des écoles de Petit-Cœur.",
                 block1Title: "Notre Mission",
                 block1Text: "Organiser des manifestations tout au long de l'année afin de financer les projets éducatifs, sorties scolaires, achats de matériel et spectacles pour nos enfants.",
+                block1Img: "",
                 block2Title: "Le Mot du Bureau",
                 block2Text: "« Chaque événement est une belle aventure humaine. Un grand merci à tous les parents, enseignants et partenaires de la commune de La Léchère pour leur précieux soutien ! »",
                 fileUrl: "",
@@ -355,6 +362,17 @@
             if (document.getElementById('about-desc')) document.getElementById('about-desc').textContent = ab.desc || defaultSiteData.about.desc;
             if (document.getElementById('about-block1-title')) document.getElementById('about-block1-title').innerHTML = `<i class="fa-solid fa-users text-brand-blue"></i> ${ab.block1Title || defaultSiteData.about.block1Title}`;
             if (document.getElementById('about-block1-text')) document.getElementById('about-block1-text').textContent = ab.block1Text || defaultSiteData.about.block1Text;
+            
+            // GESTION DE LA PHOTO DU BLOC 1
+            const b1ImgBox = document.getElementById('about-block1-img-box');
+            const b1Img = document.getElementById('about-block1-img');
+            if (ab.block1Img && ab.block1Img.trim() !== '') {
+                b1Img.src = ab.block1Img;
+                b1ImgBox.classList.remove('hidden');
+            } else {
+                b1ImgBox.classList.add('hidden');
+            }
+
             if (document.getElementById('about-block2-title')) document.getElementById('about-block2-title').innerHTML = `<i class="fa-solid fa-heart text-brand-red"></i> ${ab.block2Title || defaultSiteData.about.block2Title}`;
             if (document.getElementById('about-block2-text')) document.getElementById('about-block2-text').textContent = ab.block2Text || defaultSiteData.about.block2Text;
 

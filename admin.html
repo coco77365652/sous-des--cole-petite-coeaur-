@@ -241,9 +241,9 @@
                         <textarea id="cfg-aboutDesc" rows="2" class="w-full px-4 py-3 glass-input rounded-2xl text-sm"></textarea>
                     </div>
 
-                    <!-- BLOC 1 : NOTRE MISSION -->
-                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-3">
-                        <h4 class="font-title font-bold text-white text-sm"><i class="fas fa-bullseye text-cyber-cyan mr-2"></i> Bloc 1 (Gauche)</h4>
+                    <!-- BLOC 1 : NOTRE MISSION ET PHOTO -->
+                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
+                        <h4 class="font-title font-bold text-white text-sm"><i class="fas fa-bullseye text-cyber-cyan mr-2"></i> Bloc 1 (Gauche - Notre Mission)</h4>
                         <div>
                             <label class="block text-[10px] font-bold text-slate-400 mb-1">Titre du bloc 1</label>
                             <input type="text" id="cfg-aboutBlock1Title" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-bold mb-2">
@@ -251,6 +251,24 @@
                         <div>
                             <label class="block text-[10px] font-bold text-slate-400 mb-1">Texte du bloc 1</label>
                             <textarea id="cfg-aboutBlock1Text" rows="3" class="w-full px-3 py-2 glass-input rounded-xl text-xs"></textarea>
+                        </div>
+
+                        <!-- AJOUT PHOTO BLOC 1 -->
+                        <div class="pt-3 border-t border-cyber-border/60 space-y-3">
+                            <h5 class="font-title font-bold text-xs text-cyber-cyan flex items-center gap-2">
+                                <i class="fas fa-image"></i> Photo d'illustration Bloc 1
+                            </h5>
+                            <div class="flex flex-col sm:flex-row gap-3">
+                                <input type="text" id="cfg-aboutBlock1Img" placeholder="URL ou image encodée..." class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                                <label class="cursor-pointer px-4 py-2 bg-cyber-cyan hover:bg-cyan-400 text-slate-900 font-title font-bold text-xs rounded-xl flex items-center justify-center gap-2 shrink-0 transition-all glow-cyan">
+                                    <i class="fas fa-cloud-arrow-up"></i> Importer une Photo
+                                    <input type="file" accept="image/*" class="hidden" onchange="processImage(event, 'cfg-aboutBlock1Img', 'preview-b1')">
+                                </label>
+                            </div>
+                            <div id="preview-b1-box" class="mt-2 hidden">
+                                <p class="text-[10px] text-slate-400 mb-1">Aperçu Photo Bloc 1 :</p>
+                                <img id="preview-b1" src="" class="h-24 w-auto object-cover bg-white/10 p-1 rounded-xl">
+                            </div>
                         </div>
                     </div>
 
@@ -445,6 +463,7 @@
                 desc: "Une équipe de parents bénévoles et enthousiastes dédiée aux enfants des écoles de Petit-Cœur.",
                 block1Title: "Notre Mission",
                 block1Text: "Organiser des manifestations tout au long de l'année afin de financer les projets éducatifs, sorties scolaires, achats de matériel et spectacles pour nos enfants.",
+                block1Img: "",
                 block2Title: "Le Mot du Bureau",
                 block2Text: "« Chaque événement est une belle aventure humaine. Un grand merci à tous les parents, enseignants et partenaires de la commune de La Léchère pour leur précieux soutien ! »",
                 fileUrl: "",
@@ -532,6 +551,17 @@
             document.getElementById('cfg-aboutDesc').value = ab.desc || DEFAULT_DATA.about.desc;
             document.getElementById('cfg-aboutBlock1Title').value = ab.block1Title || DEFAULT_DATA.about.block1Title;
             document.getElementById('cfg-aboutBlock1Text').value = ab.block1Text || DEFAULT_DATA.about.block1Text;
+            document.getElementById('cfg-aboutBlock1Img').value = ab.block1Img || '';
+            
+            if (ab.block1Img && ab.block1Img.trim() !== '') {
+                const prevB1 = document.getElementById('preview-b1');
+                const prevB1Box = document.getElementById('preview-b1-box');
+                if (prevB1 && prevB1Box) {
+                    prevB1.src = ab.block1Img;
+                    prevB1Box.classList.remove('hidden');
+                }
+            }
+
             document.getElementById('cfg-aboutBlock2Title').value = ab.block2Title || DEFAULT_DATA.about.block2Title;
             document.getElementById('cfg-aboutBlock2Text').value = ab.block2Text || DEFAULT_DATA.about.block2Text;
             document.getElementById('cfg-aboutFileUrl').value = ab.fileUrl || '';
@@ -727,6 +757,7 @@
             appData.about.desc = document.getElementById('cfg-aboutDesc').value;
             appData.about.block1Title = document.getElementById('cfg-aboutBlock1Title').value;
             appData.about.block1Text = document.getElementById('cfg-aboutBlock1Text').value;
+            appData.about.block1Img = document.getElementById('cfg-aboutBlock1Img').value;
             appData.about.block2Title = document.getElementById('cfg-aboutBlock2Title').value;
             appData.about.block2Text = document.getElementById('cfg-aboutBlock2Text').value;
             appData.about.fileUrl = document.getElementById('cfg-aboutFileUrl').value;
