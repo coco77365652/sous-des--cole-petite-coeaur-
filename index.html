@@ -186,7 +186,7 @@
                         </h3>
                         <!-- PHOTO BLOC 1 -->
                         <div id="about-block1-img-box" class="hidden overflow-hidden rounded-2xl my-3 cursor-pointer group border border-amber-100/60 shadow-sm" onclick="openLightbox(document.getElementById('about-block1-img').src, 'Photo - Notre Mission')">
-                            <img id="about-block1-img" src="" alt="Notre Mission" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                            <img id="about-block1-img" src="" alt="Notre Mission" class="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-300">
                         </div>
                         <p id="about-block1-text" class="text-gray-600 leading-relaxed text-base">
                             Organiser des manifestations tout au long de l'année afin de financer les projets éducatifs, sorties scolaires, achats de matériel et spectacles pour nos enfants.
@@ -363,11 +363,13 @@
             if (document.getElementById('about-block1-title')) document.getElementById('about-block1-title').innerHTML = `<i class="fa-solid fa-users text-brand-blue"></i> ${ab.block1Title || defaultSiteData.about.block1Title}`;
             if (document.getElementById('about-block1-text')) document.getElementById('about-block1-text').textContent = ab.block1Text || defaultSiteData.about.block1Text;
             
-            // GESTION DE LA PHOTO DU BLOC 1
+            // GESTION CORRIGÉE DE LA PHOTO DU BLOC 1
             const b1ImgBox = document.getElementById('about-block1-img-box');
             const b1Img = document.getElementById('about-block1-img');
-            if (ab.block1Img && ab.block1Img.trim() !== '') {
-                b1Img.src = ab.block1Img;
+            const block1Photo = ab.block1Img || ab.block1Photo || "";
+            
+            if (block1Photo && block1Photo.trim() !== '') {
+                b1Img.src = block1Photo;
                 b1ImgBox.classList.remove('hidden');
             } else {
                 b1ImgBox.classList.add('hidden');
@@ -495,9 +497,9 @@
         }
 
         function loadInitialData() {
-            const localPublic = localStorage.getItem('sou_petit_coeur_data');
-            if (localPublic) {
-                try { siteData = Object.assign({}, defaultSiteData, JSON.parse(localPublic)); } catch(e){}
+            const rawData = localStorage.getItem('sou_petit_coeur_data') || localStorage.getItem('sou_app_data');
+            if (rawData) {
+                try { siteData = Object.assign({}, defaultSiteData, JSON.parse(rawData)); } catch(e){}
             }
             renderSite();
         }
@@ -518,6 +520,13 @@
                 }
             } catch (err) {}
         }
+
+        // ÉCOUTEUR AUTOMATIQUE DES MODIFICATIONS ENTRE ONGLETS
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'sou_petit_coeur_data' || e.key === 'sou_app_data') {
+                loadInitialData();
+            }
+        });
 
         window.addEventListener('DOMContentLoaded', () => {
             loadInitialData();

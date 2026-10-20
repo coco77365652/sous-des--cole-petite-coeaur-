@@ -253,7 +253,7 @@
                             <textarea id="cfg-aboutBlock1Text" rows="3" class="w-full px-3 py-2 glass-input rounded-xl text-xs"></textarea>
                         </div>
 
-                        <!-- AJOUT PHOTO BLOC 1 -->
+                        <!-- AJOUT PHOTO BLOC 1 COMPRESSÉE -->
                         <div class="pt-3 border-t border-cyber-border/60 space-y-3">
                             <h5 class="font-title font-bold text-xs text-cyber-cyan flex items-center gap-2">
                                 <i class="fas fa-image"></i> Photo d'illustration Bloc 1
@@ -262,7 +262,7 @@
                                 <input type="text" id="cfg-aboutBlock1Img" placeholder="URL ou image encodée..." class="w-full px-3 py-2 glass-input rounded-xl text-xs">
                                 <label class="cursor-pointer px-4 py-2 bg-cyber-cyan hover:bg-cyan-400 text-slate-900 font-title font-bold text-xs rounded-xl flex items-center justify-center gap-2 shrink-0 transition-all glow-cyan">
                                     <i class="fas fa-cloud-arrow-up"></i> Importer une Photo
-                                    <input type="file" accept="image/*" class="hidden" onchange="processImage(event, 'cfg-aboutBlock1Img', 'preview-b1')">
+                                    <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-aboutBlock1Img', 'preview-b1')">
                                 </label>
                             </div>
                             <div id="preview-b1-box" class="mt-2 hidden">
@@ -319,7 +319,7 @@
                             <input type="text" id="cfg-logoImg" placeholder="image_736dff.jpg ou URL..." class="w-full px-4 py-3 glass-input rounded-2xl text-xs">
                             <label class="cursor-pointer px-5 py-3 bg-cyber-pink hover:bg-rose-600 text-white font-title font-bold text-xs rounded-2xl flex items-center justify-center gap-2 shrink-0 transition-all glow-pink">
                                 <i class="fas fa-cloud-arrow-up"></i> Choisir une Image
-                                <input type="file" accept="image/*" class="hidden" onchange="processImage(event, 'cfg-logoImg', 'preview-logo')">
+                                <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-logoImg', 'preview-logo')">
                             </label>
                         </div>
                         <div id="preview-logo-box" class="mt-2 hidden">
@@ -342,7 +342,7 @@
                             <input type="text" id="cfg-posterImg" placeholder="image_736dff.jpg ou URL de l'affiche..." class="w-full px-4 py-3 glass-input rounded-2xl text-xs">
                             <label class="cursor-pointer px-5 py-3 bg-cyber-cyan hover:bg-cyan-400 text-slate-900 font-title font-bold text-xs rounded-2xl flex items-center justify-center gap-2 shrink-0 transition-all glow-cyan">
                                 <i class="fas fa-file-image"></i> Uploader l'Affiche
-                                <input type="file" accept="image/*" class="hidden" onchange="processImage(event, 'cfg-posterImg', 'preview-poster')">
+                                <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-posterImg', 'preview-poster')">
                             </label>
                         </div>
                         <div>
@@ -551,13 +551,15 @@
             document.getElementById('cfg-aboutDesc').value = ab.desc || DEFAULT_DATA.about.desc;
             document.getElementById('cfg-aboutBlock1Title').value = ab.block1Title || DEFAULT_DATA.about.block1Title;
             document.getElementById('cfg-aboutBlock1Text').value = ab.block1Text || DEFAULT_DATA.about.block1Text;
-            document.getElementById('cfg-aboutBlock1Img').value = ab.block1Img || '';
             
-            if (ab.block1Img && ab.block1Img.trim() !== '') {
+            const b1ImgVal = ab.block1Img || ab.block1Photo || '';
+            document.getElementById('cfg-aboutBlock1Img').value = b1ImgVal;
+            
+            if (b1ImgVal && b1ImgVal.trim() !== '') {
                 const prevB1 = document.getElementById('preview-b1');
                 const prevB1Box = document.getElementById('preview-b1-box');
                 if (prevB1 && prevB1Box) {
-                    prevB1.src = ab.block1Img;
+                    prevB1.src = b1ImgVal;
                     prevB1Box.classList.remove('hidden');
                 }
             }
@@ -705,7 +707,7 @@
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 900;
+                    const MAX_WIDTH = 800;
                     let width = img.width;
                     let height = img.height;
 
@@ -719,7 +721,7 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
 
-                    const resizedBase64 = canvas.toDataURL('image/jpeg', 0.75);
+                    const resizedBase64 = canvas.toDataURL('image/jpeg', 0.7);
                     if (!appData.pastEvents[albumIndex].photos) appData.pastEvents[albumIndex].photos = [];
                     appData.pastEvents[albumIndex].photos.push(resizedBase64);
                     renderPastEvents();
@@ -757,7 +759,11 @@
             appData.about.desc = document.getElementById('cfg-aboutDesc').value;
             appData.about.block1Title = document.getElementById('cfg-aboutBlock1Title').value;
             appData.about.block1Text = document.getElementById('cfg-aboutBlock1Text').value;
-            appData.about.block1Img = document.getElementById('cfg-aboutBlock1Img').value;
+            
+            const b1PhotoVal = document.getElementById('cfg-aboutBlock1Img').value;
+            appData.about.block1Img = b1PhotoVal;
+            appData.about.block1Photo = b1PhotoVal;
+
             appData.about.block2Title = document.getElementById('cfg-aboutBlock2Title').value;
             appData.about.block2Text = document.getElementById('cfg-aboutBlock2Text').value;
             appData.about.fileUrl = document.getElementById('cfg-aboutFileUrl').value;
@@ -775,8 +781,9 @@
             let localSuccess = false;
 
             try {
-                localStorage.setItem('sou_petit_coeur_data', JSON.stringify(appData));
-                localStorage.setItem('sou_app_data', JSON.stringify(appData));
+                const serialized = JSON.stringify(appData);
+                localStorage.setItem('sou_petit_coeur_data', serialized);
+                localStorage.setItem('sou_app_data', serialized);
                 localSuccess = true;
             } catch (err) {
                 localSuccess = false;
@@ -794,7 +801,7 @@
             if (localSuccess) {
                 showStatusToast("OUI ! Enregistré avec succès !", "success");
             } else {
-                showStatusToast("NON ! Erreur lors de la sauvegarde.", "error");
+                showStatusToast("ATTENTION : Image trop lourde ! Utilisez un lien d'image.", "error");
             }
         }
 
@@ -817,7 +824,7 @@
             reader.readAsDataURL(file);
         }
 
-        function processImage(e, targetId, previewId) {
+        function processImageCompressed(e, targetId, previewId) {
             const file = e.target.files[0];
             if (!file) return;
 
@@ -826,7 +833,7 @@
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 1000;
+                    const MAX_WIDTH = 700;
                     let width = img.width;
                     let height = img.height;
 
@@ -840,7 +847,7 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
 
-                    const resizedBase64 = canvas.toDataURL('image/jpeg', 0.8);
+                    const resizedBase64 = canvas.toDataURL('image/jpeg', 0.65);
                     document.getElementById(targetId).value = resizedBase64;
 
                     if (previewId) {
