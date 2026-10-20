@@ -1,513 +1,222 @@
 <!DOCTYPE html>
-<html lang="fr" class="scroll-smooth">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APE de Petit-Cœur - La Léchère</title>
-
-    <!-- Tailwind CSS CDN -->
+    <title>Administration - APE de Petit-Cœur</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            yellow: '#FFD166',
-                            blue: '#4EA8DE',
-                            darkblue: '#2B6CB0',
-                            green: '#06D6A0',
-                            red: '#EF476F',
-                            cream: '#FFF9F2',
-                            text: '#2D3748'
-                        }
-                    },
-                    fontFamily: {
-                        title: ['Fredoka', 'sans-serif'],
-                        body: ['Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            color: #2D3748;
-            background-color: #FFF9F2;
-        }
-        h1, h2, h3, h4, .font-title {
-            font-family: 'Fredoka', cursive, sans-serif;
-        }
-        .hero-pattern {
-            background-color: #4EA8DE;
-            background-image: radial-gradient(#FFD166 2px, transparent 2px), radial-gradient(#06D6A0 2px, #4EA8DE 2px);
-            background-size: 80px 80px;
-            background-position: 0 0, 40px 40px;
-            opacity: 0.95;
-        }
-    </style>
-</head>
-<body class="antialiased flex flex-col min-h-screen">
-
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-32 opacity-0 transition-all duration-300 bg-emerald-600 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3">
-        <i class="fa-solid fa-circle-check text-2xl"></i>
-        <span id="toast-message">Mise à jour en direct !</span>
-    </div>
-
-    <!-- HEADER / NAVIGATION PUBLIQUE -->
-    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md shadow-sm border-b border-amber-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <a href="#accueil" class="flex items-center gap-3 group">
-                    <div class="w-12 h-12 bg-brand-yellow rounded-2xl flex items-center justify-center text-brand-red text-2xl font-bold shadow-md transform group-hover:rotate-6 transition-transform">
-                        <i class="fa-solid fa-heart text-brand-red"></i>
-                    </div>
-                    <div>
-                        <span id="header-assoc-name" class="font-title font-bold text-xl text-gray-800 tracking-wide block leading-none">APE de Petit-Cœur</span>
-                        <span id="header-assoc-sub" class="text-xs font-semibold text-brand-darkblue tracking-wider uppercase">Petit-Cœur • La Léchère</span>
-                    </div>
-                </a>
-
-                <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-gray-700">
-                    <a href="#accueil" class="hover:text-brand-blue transition-colors">Accueil</a>
-                    <a href="#evenements" class="hover:text-brand-blue transition-colors">Événements à Venir</a>
-                    <a href="#evenements-passes" class="hover:text-brand-blue transition-colors">Événements Passés</a>
-                    <a href="#projets" class="hover:text-brand-blue transition-colors">Nos Projets Financés</a>
-                </nav>
-
-                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none">
-                    <i class="fa-solid fa-bars text-2xl"></i>
-                </button>
-            </div>
-        </div>
-
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-200 px-4 pt-2 pb-6 space-y-3">
-            <a href="#accueil" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Accueil</a>
-            <a href="#evenements" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Événements à Venir</a>
-            <a href="#evenements-passes" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Événements Passés</a>
-            <a href="#projets" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Nos Projets Financés</a>
-        </div>
-    </header>
-
-    <!-- MAIN SITE PUBLIC VIEW -->
-    <main class="flex-grow">
-        <!-- SECTION ACCUEIL -->
-        <section id="accueil" class="relative hero-pattern text-white py-12 md:py-20 overflow-hidden">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-                    
-                    <!-- 1. À GAUCHE : LOGO SOU DES ÉCOLES -->
-                    <div class="flex justify-center">
-                        <div class="p-2 max-w-xs transform -rotate-2 hover:rotate-0 transition-all cursor-pointer group hover:scale-105" onclick="openLightbox(document.getElementById('logo-img').src, 'Logo Sou des Écoles - Petit-Cœur')">
-                            <img id="logo-img" 
-                                 src="image_736dff.jpg" 
-                                 alt="Logo Sou des Écoles Petit-Cœur" 
-                                 class="w-full h-auto rounded-2xl object-contain drop-shadow-2xl">
-                            <p class="text-[10px] text-sky-100 text-center mt-2 group-hover:text-brand-yellow transition-colors font-medium"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Cliquer pour agrandir</p>
-                        </div>
-                    </div>
-
-                    <!-- 2. AU MILIEU : TEXTE -->
-                    <div class="text-center space-y-6">
-                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-white text-sm font-medium border border-white/30">
-                            <i class="fa-solid fa-mountain-sun text-brand-yellow"></i>
-                            <span id="hero-location-tag">Savoie - Commune de La Léchère</span>
-                        </div>
-                        <h1 id="hero-title" class="font-title text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight drop-shadow-md">
-                            Ensemble pour les enfants de Petit-Cœur !
-                        </h1>
-                        <p id="hero-description" class="text-base sm:text-lg text-sky-50 font-light leading-relaxed">
-                            Association de parents d'élèves (APE) bénévoles dédiée au financement des sorties scolaires, projets pédagogiques et animations des écoles de notre village.
-                        </p>
-                        <div class="flex flex-col sm:flex-row gap-3 justify-center pt-2">
-                            <a href="#evenements" class="bg-brand-yellow hover:bg-amber-300 text-gray-900 font-title font-semibold px-5 py-3 rounded-2xl shadow-lg transition-all text-center flex items-center justify-center gap-2 text-sm">
-                                <i class="fa-solid fa-calendar-star text-brand-red"></i> Prochains Événements
-                            </a>
-                            <a href="#evenements-passes" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/40 text-white font-title font-semibold px-5 py-3 rounded-2xl transition-all text-center flex items-center justify-center gap-2 text-sm">
-                                <i class="fa-solid fa-camera text-brand-yellow"></i> Galerie & Souvenirs
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- 3. À DROITE : AFFICHE DE L'ÉVÉNEMENT -->
-                    <div class="flex justify-center">
-                        <div class="p-2 max-w-xs transform rotate-2 hover:rotate-0 transition-all w-full text-center hover:scale-105">
-                            <h3 class="font-title font-bold text-white text-base mb-3 flex items-center justify-center gap-2 drop-shadow-md">
-                                <i class="fa-solid fa-bullhorn text-brand-yellow"></i>
-                                <span id="poster-heading">À l'Affiche !</span>
-                            </h3>
-                            <div class="overflow-hidden cursor-pointer group rounded-2xl" onclick="openLightbox(document.getElementById('poster-img').src, document.getElementById('poster-caption').textContent || 'Affiche officielle')">
-                                <img id="poster-img" 
-                                     src="image_736dff.jpg" 
-                                     alt="Affiche événement" 
-                                     class="w-full h-64 object-cover rounded-2xl group-hover:scale-105 transition-transform drop-shadow-2xl">
-                            </div>
-                            <p id="poster-caption" class="text-xs text-sky-100 mt-3 font-medium">Prochain événement du Sou des Écoles</p>
-                            <p class="text-[10px] text-amber-200 mt-1 font-semibold cursor-pointer hover:underline" onclick="openLightbox(document.getElementById('poster-img').src, document.getElementById('poster-caption').textContent)"><i class="fa-solid fa-expand mr-1"></i> Voir l'affiche en plein écran</p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION PRÉSENTATION -->
-        <section id="a-propos" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <span class="text-brand-blue font-title font-bold text-sm tracking-wider uppercase bg-blue-50 px-4 py-1.5 rounded-full">Présentation</span>
-                <h2 id="about-assoc-title" class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">L'APE de Petit-Cœur</h2>
-                <p id="about-assoc-desc" class="text-gray-600 mt-4 text-lg">
-                    Une association de parents d'élèves dynamique et investie dont le seul objectif est d'offrir aux enfants des écoles de Petit-Cœur des moments inoubliables.
-                </p>
-            </div>
-
-            <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-sm mb-12 flex flex-col md:flex-row items-center gap-8">
-                <div class="w-20 h-20 bg-brand-yellow/30 text-amber-800 rounded-3xl flex items-center justify-center text-4xl shrink-0 font-title font-bold">
-                    <i class="fa-solid fa-quote-left"></i>
-                </div>
-                <div>
-                    <h3 class="font-title text-2xl font-bold text-gray-900 mb-2">Le Mot du Bureau de l'APE</h3>
-                    <p id="about-bureau-text" class="text-gray-600 italic leading-relaxed text-base">
-                        « Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, ou des spectacles pour nos enfants. »
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ÉVÉNEMENTS À VENIR -->
-        <section id="evenements" class="py-20 bg-amber-50/50 border-y border-amber-100">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="mb-12 text-center md:text-left">
-                    <span class="text-brand-red font-title font-bold text-sm tracking-wider uppercase bg-rose-100/60 px-4 py-1.5 rounded-full">Agenda des écoliers</span>
-                    <h2 class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Prochains Événements</h2>
-                </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="events-upcoming-container"></div>
-            </div>
-        </section>
-
-        <!-- ÉVÉNEMENTS PASSÉS -->
-        <section id="evenements-passes" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="mb-12 text-center md:text-left">
-                <span class="text-brand-yellow font-title font-bold text-sm tracking-wider uppercase bg-amber-100/60 px-4 py-1.5 rounded-full text-amber-900">Souvenirs</span>
-                <h2 class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Événements Passés & Galerie Photos</h2>
-            </div>
-            <div class="space-y-12" id="past-events-container"></div>
-        </section>
-
-        <!-- PROJETS & BUDGET -->
-        <section id="projets" class="py-20 bg-amber-50/50 border-t border-amber-100">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center max-w-3xl mx-auto mb-16">
-                    <span class="text-brand-green font-title font-bold text-sm tracking-wider uppercase bg-emerald-50 px-4 py-1.5 rounded-full">Transparence & Impact</span>
-                    <h2 class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Nos Projets Financés</h2>
-                </div>
-
-                <div class="bg-white rounded-3xl p-8 shadow-sm border border-amber-100 mb-12">
-                    <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
-                        <div>
-                            <h3 class="font-title text-xl font-bold text-gray-900">Objectif de Financement Annuel</h3>
-                            <p class="text-sm text-gray-500">Avancement du budget pour les activités scolaires</p>
-                        </div>
-                        <div class="text-right">
-                            <span id="budget-current-text" class="font-title text-2xl font-bold text-brand-green">3 800 €</span>
-                            <span id="budget-target-text" class="text-gray-500 text-sm"> / 5 000 € récoltés</span>
-                        </div>
-                    </div>
-                    <div class="w-full bg-gray-100 rounded-full h-5 overflow-hidden p-1 border border-gray-200">
-                        <div id="budget-progress-bar" class="bg-gradient-to-r from-brand-yellow via-brand-green to-brand-blue h-full rounded-full transition-all duration-1000 relative" style="width: 76%;">
-                            <span id="budget-percentage-text" class="absolute right-2 top-0 text-[10px] text-white font-bold leading-3">76%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-8" id="projects-container"></div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="bg-gray-900 text-white py-12 border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-400">
-            <p>&copy; 2026 APE de Petit-Cœur (La Léchère). Tous droits réservés.</p>
-        </div>
-    </footer>
-
-    <!-- LIGHTBOX / VISIONNEUSE -->
-    <div id="modal-lightbox" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex flex-col items-center justify-center p-4 transition-all duration-300" onclick="closeLightbox()">
-        <button onclick="closeLightbox()" class="absolute top-5 right-5 z-10 bg-white/20 hover:bg-brand-red text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-lg border border-white/30 backdrop-blur-md flex items-center gap-2 transition-all active:scale-95 cursor-pointer">
-            <i class="fa-solid fa-xmark text-lg"></i>
-            <span>Fermer (Échap)</span>
-        </button>
-
-        <div class="relative max-w-4xl w-full max-h-[85vh] flex flex-col items-center justify-center p-2" onclick="event.stopPropagation()">
-            <div class="bg-white p-3 sm:p-4 rounded-3xl shadow-2xl flex items-center justify-center">
-                <img id="lightbox-img" src="" alt="Agrandissement" class="max-h-[70vh] w-auto max-w-full rounded-2xl object-contain transition-all">
-            </div>
-            <p id="lightbox-caption" class="text-white font-title text-center mt-4 text-sm sm:text-base bg-black/40 backdrop-blur-md px-6 py-2 rounded-full border border-white/20 shadow-lg"></p>
-        </div>
-    </div>
-
-    <!-- SCRIPTS SUPABASE ET LOCALSTORAGE RESILIENT -->
     <script>
         const SUPABASE_URL = 'https://gdbktvxramksondbobns.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_6Q9vML3WwH7_8n5Ipvo-3g_DRZx_VPK';
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let _supabase = null;
+        try {
+            _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        } catch(e) {}
+    </script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen p-4 md:p-8">
 
-        const defaultSiteData = {
+    <div id="status-box" class="fixed top-5 right-5 z-50 hidden px-6 py-4 rounded-2xl shadow-2xl font-bold text-white transition-all"></div>
+
+    <div class="max-w-4xl mx-auto bg-slate-800 rounded-3xl p-6 border border-slate-700 shadow-2xl">
+        <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-700">
+            <h1 class="text-2xl font-bold text-rose-500"><i class="fas fa-cog mr-2"></i> Administration APE Petit-Cœur</h1>
+            <a href="index.html" target="_blank" class="text-xs bg-slate-700 hover:bg-slate-600 px-3 py-2 rounded-xl text-slate-200 transition">
+                <i class="fas fa-external-link-alt mr-1"></i> Voir le site
+            </a>
+        </div>
+
+        <form onsubmit="forceSave(event)" class="space-y-6">
+            <div class="space-y-4 bg-slate-900/50 p-4 rounded-2xl border border-slate-700">
+                <h2 class="text-sm font-bold text-amber-400 uppercase tracking-wider">1. Textes d'Accueil</h2>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Nom de l'Association</label>
+                    <input type="text" id="cfg-siteName" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-sm focus:border-rose-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Titre Principal</label>
+                    <input type="text" id="cfg-heroTitle" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-sm focus:border-rose-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Description</label>
+                    <textarea id="cfg-heroDesc" rows="2" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-sm focus:border-rose-500 outline-none"></textarea>
+                </div>
+            </div>
+
+            <div class="space-y-4 bg-slate-900/50 p-4 rounded-2xl border border-slate-700">
+                <h2 class="text-sm font-bold text-amber-400 uppercase tracking-wider">2. Images (Logo et Affiche)</h2>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">URL / Base64 du Logo</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="cfg-logoImg" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-sm focus:border-rose-500 outline-none">
+                        <label class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs px-4 py-2 rounded-xl cursor-pointer flex items-center shrink-0">
+                            Choisir
+                            <input type="file" accept="image/*" class="hidden" onchange="processImage(event, 'cfg-logoImg')">
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">URL / Base64 de l'Affiche</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="cfg-posterImg" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-sm focus:border-rose-500 outline-none">
+                        <label class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs px-4 py-2 rounded-xl cursor-pointer flex items-center shrink-0">
+                            Choisir
+                            <input type="file" accept="image/*" class="hidden" onchange="processImage(event, 'cfg-posterImg')">
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-4 bg-slate-900/50 p-4 rounded-2xl border border-slate-700">
+                <h2 class="text-sm font-bold text-amber-400 uppercase tracking-wider">3. Budget</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Récolté (€)</label>
+                        <input type="number" id="proj-current" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-sm focus:border-rose-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Objectif (€)</label>
+                        <input type="number" id="proj-target" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-sm focus:border-rose-500 outline-none">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" id="save-btn" class="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-lg rounded-2xl shadow-xl transition active:scale-98 flex items-center justify-center gap-2 cursor-pointer">
+                <i class="fas fa-save"></i>
+                <span>ENREGISTRER LES MODIFICATIONS</span>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const DEFAULT_DATA = {
             general: {
                 assocName: "APE de Petit-Cœur",
                 assocSub: "Petit-Cœur • La Léchère",
                 locationTag: "Savoie - Commune de La Léchère",
                 heroTitle: "Ensemble pour les enfants de Petit-Cœur !",
-                heroDesc: "Association de parents d'élèves (APE) bénévoles dédiée au financement des sorties scolaires, projets pédagogiques et animations des écoles de notre village.",
+                heroDesc: "Association de parents d'élèves (APE) bénévoles dédiée au financement des sorties scolaires.",
                 logoImg: "image_736dff.jpg",
                 posterImg: "image_736dff.jpg",
                 posterHeading: "À l'Affiche !",
-                posterCaption: "Prochain événement du Sou des Écoles",
-                bureauText: "« Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, ou des spectacles pour nos enfants. Merci à toute l'équipe enseignante et aux familles ! »"
+                posterCaption: "Prochain événement du Sou des Écoles"
             },
             budget: { current: 3800, target: 5000 },
-            upcomingEvents: [],
-            pastEvents: [],
-            projects: []
+            pastEvents: []
         };
 
-        let siteData = Object.assign({}, defaultSiteData);
+        document.addEventListener('DOMContentLoaded', () => {
+            loadForm();
+        });
 
-        function renderSite() {
-            const gen = siteData.general || {};
-            
-            if (document.getElementById('header-assoc-name')) document.getElementById('header-assoc-name').textContent = gen.assocName || defaultSiteData.general.assocName;
-            if (document.getElementById('header-assoc-sub')) document.getElementById('header-assoc-sub').textContent = gen.assocSub || defaultSiteData.general.assocSub;
-            
-            if (document.getElementById('hero-location-tag')) document.getElementById('hero-location-tag').textContent = gen.locationTag || defaultSiteData.general.locationTag;
-            if (document.getElementById('hero-title')) document.getElementById('hero-title').textContent = gen.heroTitle || defaultSiteData.general.heroTitle;
-            if (document.getElementById('hero-description')) document.getElementById('hero-description').textContent = gen.heroDesc || defaultSiteData.general.heroDesc;
-
-            if (document.getElementById('about-assoc-title')) document.getElementById('about-assoc-title').textContent = gen.assocName || defaultSiteData.general.assocName;
-            if (document.getElementById('about-bureau-text')) document.getElementById('about-bureau-text').textContent = gen.bureauText || defaultSiteData.general.bureauText;
-
-            // 1. Mise à jour fiable du Logo
-            const logoImg = document.getElementById('logo-img');
-            if (logoImg) {
-                const targetSrc = gen.logoImg || gen.heroImg || defaultSiteData.general.logoImg;
-                if (targetSrc && logoImg.src !== targetSrc) {
-                    logoImg.src = targetSrc;
-                }
+        function loadForm() {
+            const raw = localStorage.getItem('sou_petit_coeur_data');
+            let data = DEFAULT_DATA;
+            if (raw) {
+                try { data = JSON.parse(raw); } catch(e){}
             }
+            const g = data.general || DEFAULT_DATA.general;
+            const b = data.budget || DEFAULT_DATA.budget;
 
-            // 2. Mise à jour fiable de l'Affiche
-            const posterImg = document.getElementById('poster-img');
-            if (posterImg) {
-                const targetPoster = gen.posterImg || defaultSiteData.general.posterImg;
-                if (targetPoster && posterImg.src !== targetPoster) {
-                    posterImg.src = targetPoster;
-                }
-            }
-
-            if (document.getElementById('poster-heading')) document.getElementById('poster-heading').textContent = gen.posterHeading || defaultSiteData.general.posterHeading;
-            if (document.getElementById('poster-caption')) document.getElementById('poster-caption').textContent = gen.posterCaption || defaultSiteData.general.posterCaption;
-
-            // Budget Jauge
-            const budget = siteData.budget || {};
-            const currentB = Number(budget.current) || 3800;
-            const targetB = Number(budget.target) || 5000;
-            const pct = Math.min(100, Math.round((currentB / targetB) * 100));
-            if (document.getElementById('budget-current-text')) document.getElementById('budget-current-text').textContent = currentB.toLocaleString('fr-FR') + ' €';
-            if (document.getElementById('budget-target-text')) document.getElementById('budget-target-text').textContent = ' / ' + targetB.toLocaleString('fr-FR') + ' € récoltés';
-            if (document.getElementById('budget-progress-bar')) document.getElementById('budget-progress-bar').style.width = pct + '%';
-            if (document.getElementById('budget-percentage-text')) document.getElementById('budget-percentage-text').textContent = pct + '%';
-
-            // Événements à venir
-            const upContainer = document.getElementById('events-upcoming-container');
-            if (upContainer) {
-                upContainer.innerHTML = '';
-                const upcoming = siteData.upcomingEvents || [];
-                if (upcoming.length === 0) {
-                    upContainer.innerHTML = '<p class="text-gray-500 col-span-3 text-center py-8">Aucun événement à venir pour le moment.</p>';
-                } else {
-                    upcoming.forEach(ev => {
-                        upContainer.innerHTML += `
-                            <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-amber-100 flex flex-col justify-between">
-                                <div class="relative bg-brand-yellow p-6 flex justify-between items-start">
-                                    <span class="bg-white/90 text-gray-900 font-title font-bold text-xs px-3 py-1.5 rounded-full">${ev.date || ''}</span>
-                                    <span class="bg-amber-800/20 text-amber-900 text-xs px-2.5 py-1 rounded-md font-semibold">${ev.badge || 'Événement'}</span>
-                                </div>
-                                <div class="p-6 flex-1 flex flex-col justify-between">
-                                    <div>
-                                        <h3 class="font-title font-bold text-xl text-gray-900 mb-2">${ev.title || ''}</h3>
-                                        <p class="text-gray-600 text-sm mb-4">${ev.desc || ev.description || ''}</p>
-                                        <div class="space-y-2 text-xs text-gray-500">
-                                            <p class="flex items-center gap-2"><i class="fa-regular fa-clock text-brand-blue"></i> ${ev.time || 'Non précisé'}</p>
-                                            <p class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-brand-red"></i> ${ev.location || 'École de Petit-Cœur'}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                    });
-                }
-            }
-
-            // Événements passés & Galerie
-            const pastContainer = document.getElementById('past-events-container');
-            if (pastContainer) {
-                pastContainer.innerHTML = '';
-                const past = siteData.pastEvents || [];
-                if (past.length === 0) {
-                    pastContainer.innerHTML = '<p class="text-gray-500 text-center py-8">Aucun événement passé enregistré.</p>';
-                } else {
-                    past.forEach(pev => {
-                        let photosHTML = '';
-                        if (pev.photos && pev.photos.length > 0) {
-                            photosHTML = `<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">`;
-                            pev.photos.forEach(imgUrl => {
-                                photosHTML += `
-                                    <div class="relative overflow-hidden rounded-2xl group cursor-pointer h-40 bg-gray-100 border border-gray-100" onclick="openLightbox('${imgUrl}', '${(pev.title || '').replace(/'/g, "\\'")}')">
-                                        <img src="${imgUrl}" alt="${pev.title || ''}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                                        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-lg"><i class="fa-solid fa-expand"></i></div>
-                                    </div>
-                                `;
-                            });
-                            photosHTML += `</div>`;
-                        }
-
-                        pastContainer.innerHTML += `
-                            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-amber-100">
-                                <div class="flex justify-between items-start flex-wrap gap-2 mb-2">
-                                    <h3 class="font-title text-2xl font-bold text-gray-900">${pev.title || ''}</h3>
-                                    <span class="bg-amber-100 text-amber-800 font-title text-xs font-bold px-3 py-1 rounded-full">${pev.date || ''}</span>
-                                </div>
-                                <p class="text-gray-600 text-sm leading-relaxed">${pev.desc || pev.description || ''}</p>
-                                ${photosHTML}
-                            </div>
-                        `;
-                    });
-                }
-            }
-
-            // Projets
-            const projContainer = document.getElementById('projects-container');
-            if (projContainer) {
-                projContainer.innerHTML = '';
-                const projects = siteData.projects || [];
-                projects.forEach(proj => {
-                    projContainer.innerHTML += `
-                        <div class="bg-white rounded-3xl p-6 shadow-sm border border-amber-100 flex flex-col justify-between">
-                            <div>
-                                <span class="bg-sky-100 text-brand-darkblue text-xs font-bold px-2.5 py-1 rounded-md">${proj.category || ''}</span>
-                                <h4 class="font-title font-bold text-lg text-gray-900 mt-2">${proj.title || ''}</h4>
-                                <p class="text-gray-600 text-xs mt-1 mb-4">${proj.desc || ''}</p>
-                            </div>
-                            <div class="flex items-center justify-between text-xs font-semibold pt-2 border-t border-gray-100">
-                                <span class="text-brand-green">${proj.status || ''}</span>
-                                <i class="fa-solid fa-circle-check text-brand-green text-sm"></i>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
+            document.getElementById('cfg-siteName').value = g.assocName || '';
+            document.getElementById('cfg-heroTitle').value = g.heroTitle || '';
+            document.getElementById('cfg-heroDesc').value = g.heroDesc || '';
+            document.getElementById('cfg-logoImg').value = g.logoImg || '';
+            document.getElementById('cfg-posterImg').value = g.posterImg || '';
+            document.getElementById('proj-current').value = b.current || 3800;
+            document.getElementById('proj-target').value = b.target || 5000;
         }
 
-        // Chargement immédiat depuis le stockage local puis synchronisation distante
-        function loadInitialData() {
-            const localPublic = localStorage.getItem('sou_petit_coeur_data');
-            const localApp = localStorage.getItem('sou_app_data');
-            
-            if (localPublic) {
-                try { siteData = Object.assign({}, defaultSiteData, JSON.parse(localPublic)); } catch(e){}
-            } else if (localApp) {
-                try {
-                    const parsed = JSON.parse(localApp);
-                    if (parsed.general) {
-                        siteData.general.logoImg = parsed.general.logoImg || siteData.general.logoImg;
-                        siteData.general.posterImg = parsed.general.posterImg || siteData.general.posterImg;
-                    }
-                } catch(e){}
-            }
-            renderSite();
-        }
+        async function forceSave(e) {
+            e.preventDefault();
+            const btn = document.getElementById('save-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement en cours...';
 
-        async function fetchRemoteData() {
+            const payload = {
+                general: {
+                    assocName: document.getElementById('cfg-siteName').value,
+                    assocSub: "Petit-Cœur • La Léchère",
+                    locationTag: "Savoie - Commune de La Léchère",
+                    heroTitle: document.getElementById('cfg-heroTitle').value,
+                    heroDesc: document.getElementById('cfg-heroDesc').value,
+                    logoImg: document.getElementById('cfg-logoImg').value,
+                    posterImg: document.getElementById('cfg-posterImg').value,
+                    posterHeading: "À l'Affiche !",
+                    posterCaption: "Prochain événement"
+                },
+                budget: {
+                    current: parseFloat(document.getElementById('proj-current').value) || 0,
+                    target: parseFloat(document.getElementById('proj-target').value) || 5000
+                },
+                pastEvents: []
+            };
+
+            let saveSuccess = false;
+            let errorMsg = "";
+
             try {
-                const { data, error } = await _supabase
-                    .from('site_content')
-                    .select('content')
-                    .eq('id', 1)
-                    .single();
-
-                if (error) throw error;
-
-                if (data && data.content) {
-                    siteData = Object.assign({}, defaultSiteData, data.content);
-                    localStorage.setItem('sou_petit_coeur_data', JSON.stringify(siteData));
-                    renderSite();
-                }
+                localStorage.setItem('sou_petit_coeur_data', JSON.stringify(payload));
+                saveSuccess = true;
             } catch (err) {
-                console.warn("Utilisation des données locales.");
+                saveSuccess = false;
+                errorMsg = "L'image est trop lourde pour le stockage local.";
             }
+
+            if (_supabase) {
+                try {
+                    await _supabase.from('site_content').upsert({ id: 1, content: payload });
+                } catch(err) {}
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-save"></i> <span>ENREGISTRER LES MODIFICATIONS</span>';
+
+            const statusBox = document.getElementById('status-box');
+            statusBox.classList.remove('hidden', 'bg-emerald-600', 'bg-rose-600');
+
+            if (saveSuccess) {
+                statusBox.classList.add('bg-emerald-600');
+                statusBox.innerHTML = '<i class="fas fa-check-circle mr-2"></i> OUI ! Les modifications sont enregistrées !';
+            } else {
+                statusBox.classList.add('bg-rose-600');
+                statusBox.innerHTML = `<i class="fas fa-exclamation-triangle mr-2"></i> NON ! ${errorMsg}`;
+            }
+
+            setTimeout(() => { statusBox.classList.add('hidden'); }, 4000);
         }
 
-        function setupRealtimeSubscription() {
-            _supabase
-                .channel('public:site_content')
-                .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'site_content' }, payload => {
-                    if (payload.new && payload.new.content) {
-                        siteData = Object.assign({}, defaultSiteData, payload.new.content);
-                        localStorage.setItem('sou_petit_coeur_data', JSON.stringify(siteData));
-                        renderSite();
-                        showToast("Site mis à jour en direct !");
+        function processImage(e, targetId) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 800;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
                     }
-                })
-                .subscribe();
-        }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            loadInitialData();
-            fetchRemoteData();
-            setupRealtimeSubscription();
-        });
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
 
-        function openLightbox(imgUrl, caption) {
-            if (!imgUrl) return;
-            document.getElementById('lightbox-img').src = imgUrl;
-            document.getElementById('lightbox-caption').textContent = caption || '';
-            document.getElementById('modal-lightbox').classList.remove('hidden');
-        }
-
-        function closeLightbox() {
-            document.getElementById('modal-lightbox').classList.add('hidden');
-        }
-
-        document.addEventListener('keydown', function(event) {
-            if (event.key === "Escape") {
-                closeLightbox();
-            }
-        });
-
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-message').textContent = msg;
-            toast.classList.remove('translate-y-32', 'opacity-0');
-            setTimeout(() => {
-                toast.classList.add('translate-y-32', 'opacity-0');
-            }, 3000);
-        }
-
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        if (mobileMenuBtn && mobileMenu) {
-            mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+                    const resizedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                    document.getElementById(targetId).value = resizedBase64;
+                };
+                img.src = evt.target.result;
+            };
+            reader.readAsDataURL(file);
         }
     </script>
 </body>
