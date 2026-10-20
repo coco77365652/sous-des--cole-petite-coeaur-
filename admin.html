@@ -60,10 +60,10 @@
 </head>
 <body class="bg-slate-100 font-sans text-slate-800 antialiased min-h-screen flex flex-col">
 
-    <!-- OVERLAY NOTIFICATION / TOAST -->
-    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 pointer-events-none">
-        <i id="toast-icon" class="fas fa-check-circle text-emerald-400 text-lg"></i>
-        <span id="toast-message" class="text-sm font-semibold">Action réussie !</span>
+    <!-- OVERLAY NOTIFICATION / TOAST VISUEL OUI / NON -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-28 opacity-0 transition-all duration-300 px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 text-white">
+        <i id="toast-icon" class="fas fa-check-circle text-2xl"></i>
+        <span id="toast-message" class="text-base font-bold">Action réussie !</span>
     </div>
 
     <!-- ECRAN DE CONNEXION (LOGIN) -->
@@ -252,7 +252,7 @@
         </main>
     </div>
 
-    <!-- SCRIPT LOGIQUE SANS ERREUR -->
+    <!-- SCRIPT AVEC VERIFICATION DE L'ENREGISTREMENT -->
     <script>
         const DEFAULT_DATA = {
             general: {
@@ -302,7 +302,7 @@
             if (passInput === currentPass) {
                 sessionStorage.setItem('sou_admin_logged', 'true');
                 checkSession();
-                showToast("Connexion réussie !");
+                showToast("Connexion réussie !", "success");
             } else {
                 document.getElementById('login-error').classList.remove('hidden');
             }
@@ -342,29 +342,38 @@
             document.getElementById('proj-target').value = p.targetAmount || 5000;
         }
 
-        // ACTIONS DE SAUVEGARDE DIRECTES
+        // ACTIONS DE SAUVEGARDE GENERALES
         async function saveGeneralInfo() {
-            appData.general.siteName = document.getElementById('cfg-siteName').value;
-            appData.general.siteLocation = document.getElementById('cfg-siteLocation').value;
-            appData.general.logoImg = document.getElementById('cfg-logoImg').value;
-            appData.general.locationTag = document.getElementById('cfg-locationTag').value;
-            appData.general.heroTitle = document.getElementById('cfg-heroTitle').value;
-            appData.general.heroDesc = document.getElementById('cfg-heroDesc').value;
-            appData.general.posterHeading = document.getElementById('cfg-posterHeading').value;
-            appData.general.posterImg = document.getElementById('cfg-posterImg').value;
-            appData.general.posterCaption = document.getElementById('cfg-posterCaption').value;
+            try {
+                appData.general.siteName = document.getElementById('cfg-siteName').value;
+                appData.general.siteLocation = document.getElementById('cfg-siteLocation').value;
+                appData.general.logoImg = document.getElementById('cfg-logoImg').value;
+                appData.general.locationTag = document.getElementById('cfg-locationTag').value;
+                appData.general.heroTitle = document.getElementById('cfg-heroTitle').value;
+                appData.general.heroDesc = document.getElementById('cfg-heroDesc').value;
+                appData.general.posterHeading = document.getElementById('cfg-posterHeading').value;
+                appData.general.posterImg = document.getElementById('cfg-posterImg').value;
+                appData.general.posterCaption = document.getElementById('cfg-posterCaption').value;
 
-            await saveDataToStorage();
+                await saveDataToStorage();
+            } catch (err) {
+                showToast("Non, ce n'est pas enregistré ! (Erreur interne)", "error");
+            }
         }
 
+        // ACTIONS DE SAUVEGARDE BUDGET
         async function saveProjectData() {
-            appData.project.currentAmount = parseFloat(document.getElementById('proj-current').value) || 0;
-            appData.project.targetAmount = parseFloat(document.getElementById('proj-target').value) || 1;
+            try {
+                appData.project.currentAmount = parseFloat(document.getElementById('proj-current').value) || 0;
+                appData.project.targetAmount = parseFloat(document.getElementById('proj-target').value) || 1;
 
-            await saveDataToStorage();
+                await saveDataToStorage();
+            } catch (err) {
+                showToast("Non, ce n'est pas enregistré ! (Erreur budget)", "error");
+            }
         }
 
-        // SAUVEGARDE EN LOCAL ET ENVOI SUPABASE
+        // SAUVEGARDE AVEC AFFICHAGE OUI / NON CLAIR
         async function saveDataToStorage() {
             const publicData = {
                 adminPassword: appData.general.adminPassword || "admin123",
@@ -388,21 +397,38 @@
                 pastEvents: appData.pastEvents || []
             };
 
-            // 1. Sauvegarde locale garantie
-            localStorage.setItem('sou_app_data', JSON.stringify(appData));
-            localStorage.setItem('sou_petit_coeur_data', JSON.stringify(publicData));
+            let localSuccess = false;
+            let remoteSuccess = false;
 
-            showToast("Modifications enregistrées !");
+            // 1. Enregistrement Local
+            try {
+                localStorage.setItem('sou_app_data', JSON.stringify(appData));
+                localStorage.setItem('sou_petit_coeur_data', JSON.stringify(publicData));
+                localSuccess = true;
+            } catch (e) {
+                localSuccess = false;
+            }
 
-            // 2. Tentative Supabase
+            // 2. Enregistrement Distant Supabase
             if (_supabase) {
                 try {
-                    await _supabase
+                    const { error } = await _supabase
                         .from('site_content')
                         .upsert({ id: 1, content: publicData });
+
+                    if (!error) {
+                        remoteSuccess = true;
+                    }
                 } catch (err) {
-                    console.warn("Supabase non synchronisé.");
+                    remoteSuccess = false;
                 }
+            }
+
+            // Affichage du message OUI / NON selon le résultat
+            if (localSuccess) {
+                showToast("Oui, c'est enregistré avec succès !", "success");
+            } else {
+                showToast("Non, ce n'est pas enregistré ! Erreur de stockage.", "error");
             }
         }
 
@@ -445,7 +471,7 @@
             const r = new FileReader();
             r.onload = (evt) => {
                 document.getElementById('cfg-logoImg').value = evt.target.result;
-                showToast("Logo chargé ! Cliquez sur enregistrer.");
+                showToast("Logo chargé ! Cliquez sur enregistrer.", "success");
             };
             r.readAsDataURL(file);
         }
@@ -456,26 +482,30 @@
             const r = new FileReader();
             r.onload = (evt) => {
                 document.getElementById('cfg-posterImg').value = evt.target.result;
-                showToast("Affiche chargée ! Cliquez sur enregistrer.");
+                showToast("Affiche chargée ! Cliquez sur enregistrer.", "success");
             };
             r.readAsDataURL(file);
         }
 
+        // GESTION DU MESSAGE VISUEL OUI / NON
         function showToast(msg, type = "success") {
             const toast = document.getElementById('toast');
             const toastIcon = document.getElementById('toast-icon');
-            document.getElementById('toast-message').textContent = msg;
+            const toastMessage = document.getElementById('toast-message');
 
-            if (type === "warning") {
-                toastIcon.className = "fas fa-exclamation-triangle text-amber-400 text-lg";
+            toastMessage.textContent = msg;
+
+            if (type === "error") {
+                toast.className = "fixed bottom-5 right-5 z-50 transform translate-y-0 opacity-100 transition-all duration-300 bg-rose-600 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3";
+                toastIcon.className = "fas fa-circle-xmark text-2xl text-white";
             } else {
-                toastIcon.className = "fas fa-check-circle text-emerald-400 text-lg";
+                toast.className = "fixed bottom-5 right-5 z-50 transform translate-y-0 opacity-100 transition-all duration-300 bg-emerald-600 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3";
+                toastIcon.className = "fas fa-circle-check text-2xl text-white";
             }
 
-            toast.classList.remove('translate-y-20', 'opacity-0');
             setTimeout(() => {
-                toast.classList.add('translate-y-20', 'opacity-0');
-            }, 3000);
+                toast.className = "fixed bottom-5 right-5 z-50 transform translate-y-28 opacity-0 transition-all duration-300 px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 text-white";
+            }, 3500);
         }
     </script>
 </body>
