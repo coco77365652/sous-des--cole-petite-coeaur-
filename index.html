@@ -140,27 +140,29 @@
                         </div>
                     </div>
 
-<!-- 3. À DROITE : AFFICHE DE L'ÉVÉNEMENT (NETTE & FORMAT CARRÉ) -->
-<div class="flex justify-center">
-    <div class="p-2 max-w-xs transform rotate-2 hover:rotate-0 transition-all w-full text-center hover:scale-105">
-        <h3 class="font-title font-bold text-white text-base mb-3 flex items-center justify-center gap-2 drop-shadow-md">
-            <i class="fa-solid fa-bullhorn text-brand-yellow"></i>
-            <span id="poster-heading">À l'Affiche !</span>
-        </h3>
-        <!-- Conteneur carré propre sans déformation -->
-        <div class="overflow-hidden cursor-pointer group rounded-2xl aspect-square bg-white shadow-2xl flex items-center justify-center p-2 border border-white/20" onclick="openLightbox(document.getElementById('poster-img').src, document.getElementById('poster-caption').textContent || 'Affiche officielle')">
-            <img id="poster-img" 
-                 src="image_736dff.jpg" 
-                 alt="Affiche événement" 
-                 class="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform duration-300"
-                 style="image-rendering: -webkit-optimize-contrast; crisp-edges;">
-        </div>
-        <p id="poster-caption" class="text-xs text-sky-100 mt-3 font-medium">Prochain événement du Sou des Écoles</p>
-        <p class="text-[10px] text-amber-200 mt-1 font-semibold cursor-pointer hover:underline" onclick="openLightbox(document.getElementById('poster-img').src, document.getElementById('poster-caption').textContent)">
-            <i class="fa-solid fa-expand mr-1"></i> Voir l'affiche en plein écran
-        </p>
-    </div>
-</div>
+                    <!-- 3. À DROITE : AFFICHE PROCHAIN ÉVÉNEMENT (FORMAT CARRÉ & OUVERTURE AU CLIC) -->
+                    <div class="flex justify-center">
+                        <div class="p-2 max-w-xs transform rotate-2 hover:rotate-0 transition-all w-full text-center hover:scale-105">
+                            <h3 class="font-title font-bold text-white text-base mb-3 flex items-center justify-center gap-2 drop-shadow-md">
+                                <i class="fa-solid fa-bullhorn text-brand-yellow"></i>
+                                <span id="poster-heading">À l'Affiche !</span>
+                            </h3>
+                            <div class="overflow-hidden cursor-pointer group rounded-2xl aspect-square bg-white shadow-2xl flex items-center justify-center p-2 border border-white/20" onclick="openLightbox(document.getElementById('poster-img').src, document.getElementById('poster-caption').textContent || 'Affiche événement')">
+                                <img id="poster-img" 
+                                     src="image_736dff.jpg" 
+                                     alt="Affiche événement" 
+                                     class="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform duration-300"
+                                     style="image-rendering: -webkit-optimize-contrast; crisp-edges;">
+                            </div>
+                            <p id="poster-caption" class="text-xs text-sky-100 mt-3 font-medium">Prochain événement du Sou des Écoles</p>
+                            <p class="text-[10px] text-amber-200 mt-1 font-semibold cursor-pointer hover:underline" onclick="openLightbox(document.getElementById('poster-img').src, document.getElementById('poster-caption').textContent)">
+                                <i class="fa-solid fa-expand mr-1"></i> Cliquer pour voir l'affiche en grand
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </section>
 
         <!-- SECTION PRÉSENTATION -->
@@ -197,7 +199,7 @@
             </div>
         </section>
 
-        <!-- GALERIE (REMPLACE ÉVÉNEMENTS PASSÉS) -->
+        <!-- GALERIE -->
         <section id="galerie" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mb-12 text-center md:text-left">
                 <span class="text-brand-yellow font-title font-bold text-sm tracking-wider uppercase bg-amber-100/60 px-4 py-1.5 rounded-full text-amber-900">Souvenirs</span>
@@ -243,8 +245,8 @@
         </div>
     </footer>
 
-    <!-- LIGHTBOX / VISIONNEUSE -->
-    <div id="modal-lightbox" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex flex-col items-center justify-center p-4 transition-all duration-300" onclick="closeLightbox()">
+    <!-- LIGHTBOX / VISIONNEUSE GRAND ÉCRAN -->
+    <div id="modal-lightbox" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex flex-col items-center justify-center p-4 transition-all duration-300" onclick="closeLightbox()">
         <button onclick="closeLightbox()" class="absolute top-5 right-5 z-10 bg-white/20 hover:bg-brand-red text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-lg border border-white/30 backdrop-blur-md flex items-center gap-2 transition-all active:scale-95 cursor-pointer">
             <i class="fa-solid fa-xmark text-lg"></i>
             <span>Fermer (Échap)</span>
@@ -252,13 +254,13 @@
 
         <div class="relative max-w-4xl w-full max-h-[85vh] flex flex-col items-center justify-center p-2" onclick="event.stopPropagation()">
             <div class="bg-white p-3 sm:p-4 rounded-3xl shadow-2xl flex items-center justify-center">
-                <img id="lightbox-img" src="" alt="Agrandissement" class="max-h-[70vh] w-auto max-w-full rounded-2xl object-contain transition-all">
+                <img id="lightbox-img" src="" alt="Agrandissement" class="max-h-[75vh] w-auto max-w-full rounded-2xl object-contain shadow-md">
             </div>
-            <p id="lightbox-caption" class="text-white font-title text-center mt-4 text-sm sm:text-base bg-black/40 backdrop-blur-md px-6 py-2 rounded-full border border-white/20 shadow-lg"></p>
+            <p id="lightbox-caption" class="text-white font-title text-center mt-4 text-sm sm:text-base bg-black/50 backdrop-blur-md px-6 py-2 rounded-full border border-white/20 shadow-lg"></p>
         </div>
     </div>
 
-    <!-- SCRIPTS -->
+    <!-- SCRIPTS DE SYNCHRONISATION -->
     <script>
         const SUPABASE_URL = 'https://gdbktvxramksondbobns.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_6Q9vML3WwH7_8n5Ipvo-3g_DRZx_VPK';

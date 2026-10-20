@@ -77,7 +77,7 @@
 </head>
 <body class="font-sans text-slate-200 antialiased min-h-screen flex flex-col">
 
-    <!-- STATUS NOTIFICATION / TOAST FUTURISTE -->
+    <!-- NOTIFICATION TOAST -->
     <div id="status-toast" class="fixed top-6 right-6 z-50 transform translate-x-full opacity-0 transition-all duration-500 px-6 py-4 rounded-2xl glass-card flex items-center gap-4 border text-white font-title font-bold text-sm">
         <div id="status-icon-bg" class="w-10 h-10 rounded-xl flex items-center justify-center text-lg">
             <i id="status-icon" class="fas"></i>
@@ -91,7 +91,6 @@
     <!-- CONNEXION ADMIN -->
     <div id="login-view" class="fixed inset-0 z-50 bg-[#0B0F19]/95 backdrop-blur-2xl flex items-center justify-center p-4">
         <div class="max-w-md w-full glass-card rounded-3xl p-8 border border-white/10 relative overflow-hidden shadow-2xl">
-            <div class="absolute -top-24 -right-24 w-48 h-48 bg-cyber-pink/20 rounded-full blur-3xl"></div>
             <div class="text-center mb-8 relative z-10">
                 <div class="w-16 h-16 bg-gradient-to-tr from-cyber-pink to-cyber-purple rounded-2xl flex items-center justify-center text-white mx-auto mb-4 text-2xl shadow-lg glow-pink">
                     <i class="fas fa-bolt"></i>
@@ -121,7 +120,7 @@
     <!-- DASHBOARD ADMIN FUTURISTE -->
     <div id="admin-dashboard" class="hidden min-h-screen flex flex-col md:flex-row">
         
-        <!-- SIDEBAR BARRE LATÉRALE -->
+        <!-- SIDEBAR -->
         <aside class="w-full md:w-72 bg-cyber-card/80 backdrop-blur-xl border-r border-cyber-border flex-shrink-0 flex flex-col justify-between p-6">
             <div>
                 <div class="flex items-center gap-3 pb-6 border-b border-cyber-border">
@@ -137,11 +136,11 @@
                 <nav class="mt-8 space-y-2">
                     <button type="button" onclick="switchTab('tab-general')" id="nav-tab-general" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
                         <i class="fas fa-sliders w-5 text-cyber-cyan"></i>
-                        <span>Textes & Héros</span>
+                        <span>Textes & Présentation</span>
                     </button>
                     <button type="button" onclick="switchTab('tab-images')" id="nav-tab-images" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
                         <i class="fas fa-image w-5 text-cyber-pink"></i>
-                        <span>Logo & Affiche</span>
+                        <span>Logo & Affiche Événement</span>
                     </button>
                     <button type="button" onclick="switchTab('tab-budget')" id="nav-tab-budget" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
                         <i class="fas fa-chart-pie w-5 text-cyber-green"></i>
@@ -150,10 +149,6 @@
                     <button type="button" onclick="switchTab('tab-events')" id="nav-tab-events" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
                         <i class="fas fa-calendar-star w-5 text-amber-400"></i>
                         <span>Prochains Événements</span>
-                    </button>
-                    <button type="button" onclick="switchTab('tab-gallery')" id="nav-tab-gallery" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
-                        <i class="fas fa-photo-film w-5 text-cyber-purple"></i>
-                        <span>Galerie Photos</span>
                     </button>
                 </nav>
             </div>
@@ -170,13 +165,13 @@
             </div>
         </aside>
 
-        <!-- MAIN CONTENT -->
+        <!-- CONTENU PRINCIPAL -->
         <main class="flex-1 p-6 md:p-10 overflow-y-auto">
             
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                 <div>
                     <h1 class="font-title text-3xl font-black text-white tracking-wide">TABLEAU DE BORD</h1>
-                    <p class="text-slate-400 text-xs mt-1">Personnalisez tout l'écosystème de <code class="text-cyber-cyan">index.html</code></p>
+                    <p class="text-slate-400 text-xs mt-1">Gérez le contenu publié sur <code class="text-cyber-cyan">index.html</code></p>
                 </div>
             </div>
 
@@ -184,7 +179,7 @@
             <div id="tab-general" class="tab-content hidden space-y-6">
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
                     <h3 class="font-title text-lg font-bold text-white flex items-center gap-2 border-b border-cyber-border pb-4">
-                        <i class="fas fa-pen-nib text-cyber-cyan"></i> Textes de la Bannière d'Accueil
+                        <i class="fas fa-pen-nib text-cyber-cyan"></i> Textes d'Accueil
                     </h3>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -193,7 +188,7 @@
                             <input type="text" id="cfg-siteName" class="w-full px-4 py-3 glass-input rounded-2xl font-semibold text-sm">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Sous-titre / Localisation Header</label>
+                            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Sous-titre Localisation</label>
                             <input type="text" id="cfg-siteLocation" class="w-full px-4 py-3 glass-input rounded-2xl font-semibold text-sm">
                         </div>
                     </div>
@@ -204,11 +199,11 @@
                             <input type="text" id="cfg-locationTag" class="w-full px-4 py-3 glass-input rounded-2xl font-semibold text-sm">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Grand Titre Principal (Hero Title)</label>
+                            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Grand Titre Principal</label>
                             <input type="text" id="cfg-heroTitle" class="w-full px-4 py-3 glass-input rounded-2xl font-bold text-base text-cyber-cyan">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Description de présentation</label>
+                            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Description</label>
                             <textarea id="cfg-heroDesc" rows="3" class="w-full px-4 py-3 glass-input rounded-2xl text-sm leading-relaxed"></textarea>
                         </div>
                     </div>
@@ -219,44 +214,49 @@
             <div id="tab-images" class="tab-content hidden space-y-6">
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
                     <h3 class="font-title text-lg font-bold text-white flex items-center gap-2 border-b border-cyber-border pb-4">
-                        <i class="fas fa-icons text-cyber-pink"></i> Images du Haut de Page
+                        <i class="fas fa-icons text-cyber-pink"></i> Images Principales
                     </h3>
 
                     <!-- BLOC LOGO GAUCHE -->
                     <div class="p-6 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
-                        <div class="flex justify-between items-center">
-                            <h4 class="font-title font-bold text-white text-sm"><i class="fas fa-heart text-cyber-pink mr-2"></i> Bloc Gauche : Logo Sou des Écoles</h4>
-                            <span class="text-[10px] text-slate-400 bg-white/5 px-2.5 py-1 rounded-full">Redimensionnement auto</span>
-                        </div>
+                        <h4 class="font-title font-bold text-white text-sm"><i class="fas fa-heart text-cyber-pink mr-2"></i> Logo de l'APE (Gauche)</h4>
                         <div class="flex flex-col sm:flex-row gap-3">
                             <input type="text" id="cfg-logoImg" placeholder="image_736dff.jpg ou URL..." class="w-full px-4 py-3 glass-input rounded-2xl text-xs">
                             <label class="cursor-pointer px-5 py-3 bg-cyber-pink hover:bg-rose-600 text-white font-title font-bold text-xs rounded-2xl flex items-center justify-center gap-2 shrink-0 transition-all glow-pink">
-                                <i class="fas fa-cloud-arrow-up"></i> Uploader
-                                <input type="file" accept="image/*" class="hidden" onchange="processImage(event, 'cfg-logoImg')">
+                                <i class="fas fa-cloud-arrow-up"></i> Choisir une Image
+                                <input type="file" accept="image/*" class="hidden" onchange="processImage(event, 'cfg-logoImg', 'preview-logo')">
                             </label>
+                        </div>
+                        <div id="preview-logo-box" class="mt-2 hidden">
+                            <p class="text-[10px] text-slate-400 mb-1">Aperçu du Logo :</p>
+                            <img id="preview-logo" src="" class="h-20 w-auto object-contain bg-white/10 p-2 rounded-xl">
                         </div>
                     </div>
 
-                    <!-- BLOC AFFICHE DROITE -->
+                    <!-- BLOC AFFICHE PROCHAIN ÉVÉNEMENT -->
                     <div class="p-6 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
                         <div class="flex justify-between items-center">
-                            <h4 class="font-title font-bold text-white text-sm"><i class="fas fa-bullhorn text-amber-400 mr-2"></i> Bloc Droite : Affiche de l'Événement</h4>
-                            <span class="text-[10px] text-slate-400 bg-white/5 px-2.5 py-1 rounded-full">Plein écran Lightbox</span>
+                            <h4 class="font-title font-bold text-white text-sm"><i class="fas fa-bullhorn text-amber-400 mr-2"></i> Affiche du Prochain Événement (Droite)</h4>
+                            <span class="text-[10px] text-cyber-cyan bg-cyber-cyan/10 px-2.5 py-1 rounded-full border border-cyber-cyan/20">Ouverture Lightbox au clic</span>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Titre au-dessus de l'Affiche</label>
+                            <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Titre du bloc</label>
                             <input type="text" id="cfg-posterHeading" class="w-full px-4 py-2.5 glass-input rounded-xl text-xs mb-3">
                         </div>
                         <div class="flex flex-col sm:flex-row gap-3">
-                            <input type="text" id="cfg-posterImg" placeholder="image_736dff.jpg ou URL..." class="w-full px-4 py-3 glass-input rounded-2xl text-xs">
+                            <input type="text" id="cfg-posterImg" placeholder="image_736dff.jpg ou URL de l'affiche..." class="w-full px-4 py-3 glass-input rounded-2xl text-xs">
                             <label class="cursor-pointer px-5 py-3 bg-cyber-cyan hover:bg-cyan-400 text-slate-900 font-title font-bold text-xs rounded-2xl flex items-center justify-center gap-2 shrink-0 transition-all glow-cyan">
-                                <i class="fas fa-cloud-arrow-up"></i> Uploader
-                                <input type="file" accept="image/*" class="hidden" onchange="processImage(event, 'cfg-posterImg')">
+                                <i class="fas fa-file-image"></i> Uploader l'Affiche
+                                <input type="file" accept="image/*" class="hidden" onchange="processImage(event, 'cfg-posterImg', 'preview-poster')">
                             </label>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Légende sous l'Affiche</label>
+                            <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Légende sous l'affiche</label>
                             <input type="text" id="cfg-posterCaption" class="w-full px-4 py-2.5 glass-input rounded-xl text-xs">
+                        </div>
+                        <div id="preview-poster-box" class="mt-3 hidden">
+                            <p class="text-[10px] text-slate-400 mb-1">Aperçu de l'Affiche :</p>
+                            <img id="preview-poster" src="" class="h-32 w-auto object-contain bg-white/10 p-2 rounded-xl">
                         </div>
                     </div>
                 </div>
@@ -266,7 +266,7 @@
             <div id="tab-budget" class="tab-content hidden space-y-6">
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
                     <h3 class="font-title text-lg font-bold text-white flex items-center gap-2 border-b border-cyber-border pb-4">
-                        <i class="fas fa-chart-line text-cyber-green"></i> Jauge du Budget Annuel
+                        <i class="fas fa-chart-line text-cyber-green"></i> Budget & Avancement
                     </h3>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -287,7 +287,7 @@
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
                     <div class="flex justify-between items-center border-b border-cyber-border pb-4">
                         <h3 class="font-title text-lg font-bold text-white flex items-center gap-2">
-                            <i class="fas fa-calendar-star text-amber-400"></i> Événements à Venir
+                            <i class="fas fa-calendar-star text-amber-400"></i> Prochains Événements
                         </h3>
                         <button type="button" onclick="addUpcomingEvent()" class="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-900 font-title font-bold text-xs rounded-xl transition-all flex items-center gap-2">
                             <i class="fas fa-plus"></i> Ajouter un Événement
@@ -298,23 +298,7 @@
                 </div>
             </div>
 
-            <!-- ONGLET 5 : GALERIE ET ALBUMS -->
-            <div id="tab-gallery" class="tab-content hidden space-y-6">
-                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
-                    <div class="flex justify-between items-center border-b border-cyber-border pb-4">
-                        <h3 class="font-title text-lg font-bold text-white flex items-center gap-2">
-                            <i class="fas fa-images text-cyber-purple"></i> Galerie & Albums Souvenirs
-                        </h3>
-                        <button type="button" onclick="addPastEvent()" class="px-4 py-2 bg-cyber-purple hover:bg-purple-600 text-white font-title font-bold text-xs rounded-xl transition-all flex items-center gap-2">
-                            <i class="fas fa-folder-plus"></i> Nouvel Album
-                        </button>
-                    </div>
-
-                    <div id="past-events-container" class="space-y-6"></div>
-                </div>
-            </div>
-
-            <!-- PANNEAU D'ACTION RECAPITULATIF (BOUTON ENREGISTRER GLOBAL) -->
+            <!-- BOUTON D'ENREGISTREMENT EN BAS -->
             <div class="mt-8 pt-6 border-t border-cyber-border flex justify-end">
                 <button type="button" onclick="globalSaveData()" id="save-btn" class="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-cyber-cyan via-brand-blue to-cyber-pink text-slate-900 font-title font-black text-sm tracking-wider uppercase rounded-2xl shadow-2xl transition-all duration-300 hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3 cursor-pointer">
                     <i class="fas fa-floppy-disk text-base"></i>
@@ -340,8 +324,7 @@
                 adminPassword: "admin123"
             },
             budget: { current: 3800, target: 5000 },
-            upcomingEvents: [],
-            pastEvents: []
+            upcomingEvents: []
         };
 
         let appData = Object.assign({}, DEFAULT_DATA);
@@ -411,7 +394,6 @@
             document.getElementById('proj-target').value = b.target || 5000;
 
             renderUpcomingEvents();
-            renderPastEvents();
         }
 
         function renderUpcomingEvents() {
@@ -420,7 +402,7 @@
             const upcoming = appData.upcomingEvents || [];
 
             if (upcoming.length === 0) {
-                container.innerHTML = '<p class="text-slate-500 text-xs italic">Aucun événement à venir. Cliquez sur Ajouter pour créer un événement.</p>';
+                container.innerHTML = '<p class="text-slate-500 text-xs italic">Aucun événement à venir pour le moment.</p>';
                 return;
             }
 
@@ -436,18 +418,8 @@
                                 <input type="text" value="${ev.title || ''}" onchange="appData.upcomingEvents[${index}].title = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Date (Ex: Samedi 12 Avril)</label>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Date</label>
                                 <input type="text" value="${ev.date || ''}" onchange="appData.upcomingEvents[${index}].date = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Heure & Info (Ex: 14h00)</label>
-                                <input type="text" value="${ev.time || ''}" onchange="appData.upcomingEvents[${index}].time = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Lieu</label>
-                                <input type="text" value="${ev.location || ''}" onchange="appData.upcomingEvents[${index}].location = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
                             </div>
                         </div>
                     </div>
@@ -464,52 +436,6 @@
         function removeUpcomingEvent(index) {
             appData.upcomingEvents.splice(index, 1);
             renderUpcomingEvents();
-        }
-
-        function renderPastEvents() {
-            const container = document.getElementById('past-events-container');
-            container.innerHTML = '';
-            const past = appData.pastEvents || [];
-
-            if (past.length === 0) {
-                container.innerHTML = '<p class="text-slate-500 text-xs italic">Aucun album photo. Cliquez sur Nouvel Album pour en ajouter un.</p>';
-                return;
-            }
-
-            past.forEach((pev, index) => {
-                container.innerHTML += `
-                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-4 relative">
-                        <button type="button" onclick="removePastEvent(${index})" class="absolute top-4 right-4 text-cyber-pink hover:text-rose-400 text-xs font-bold">
-                            <i class="fas fa-trash-can mr-1"></i> Supprimer Album
-                        </button>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-24">
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Titre de l'Album</label>
-                                <input type="text" value="${pev.title || ''}" onchange="appData.pastEvents[${index}].title = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-bold">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Date / Année</label>
-                                <input type="text" value="${pev.date || ''}" onchange="appData.pastEvents[${index}].date = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-400 mb-1">Description Souvenir</label>
-                            <input type="text" value="${pev.desc || ''}" onchange="appData.pastEvents[${index}].desc = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function addPastEvent() {
-            if (!appData.pastEvents) appData.pastEvents = [];
-            appData.pastEvents.push({ title: "Nouvel Album Souvenir", date: "2026", desc: "Souvenirs de l'événement.", photos: [] });
-            renderPastEvents();
-        }
-
-        function removePastEvent(index) {
-            appData.pastEvents.splice(index, 1);
-            renderPastEvents();
         }
 
         async function globalSaveData() {
@@ -550,9 +476,9 @@
             btn.innerHTML = '<i class="fas fa-floppy-disk text-base"></i> <span>ENREGISTRER TOUTES LES MODIFICATIONS</span>';
 
             if (localSuccess) {
-                showStatusToast("OUI ! Enregistrement réussi et publié !", "success");
+                showStatusToast("OUI ! Enregistré avec succès !", "success");
             } else {
-                showStatusToast("NON ! Erreur de mémoire lors de la sauvegarde.", "error");
+                showStatusToast("NON ! Erreur lors de la sauvegarde.", "error");
             }
         }
 
@@ -563,7 +489,8 @@
             }
         }
 
-        function processImage(e, targetId) {
+        // Redimensionnement optimisé des images
+        function processImage(e, targetId, previewId) {
             const file = e.target.files[0];
             if (!file) return;
 
@@ -572,7 +499,7 @@
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 800;
+                    const MAX_WIDTH = 1000;
                     let width = img.width;
                     let height = img.height;
 
@@ -586,9 +513,19 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
 
-                    const resizedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                    const resizedBase64 = canvas.toDataURL('image/jpeg', 0.8);
                     document.getElementById(targetId).value = resizedBase64;
-                    showStatusToast("Image prête ! Cliquez sur enregistrer.", "success");
+
+                    if (previewId) {
+                        const prevImg = document.getElementById(previewId);
+                        const prevBox = document.getElementById(previewId + '-box');
+                        if (prevImg && prevBox) {
+                            prevImg.src = resizedBase64;
+                            prevBox.classList.remove('hidden');
+                        }
+                    }
+
+                    showStatusToast("Image chargée et optimisée !", "success");
                 };
                 img.src = evt.target.result;
             };
