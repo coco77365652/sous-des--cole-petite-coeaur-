@@ -84,6 +84,7 @@
                     <a href="#qui-sommes-nous" class="hover:text-brand-blue transition-colors">Qui sommes-nous ?</a>
                     <a href="#evenements" class="hover:text-brand-blue transition-colors">Événements à Venir</a>
                     <a href="#galerie" class="hover:text-brand-blue transition-colors">Galerie</a>
+                    <a href="#contact" class="hover:text-brand-blue transition-colors">Nous Contacter</a>
                 </nav>
 
                 <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none">
@@ -97,6 +98,7 @@
             <a href="#qui-sommes-nous" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Qui sommes-nous ?</a>
             <a href="#evenements" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Événements à Venir</a>
             <a href="#galerie" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Galerie</a>
+            <a href="#contact" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Nous Contacter</a>
         </div>
     </header>
 
@@ -227,6 +229,89 @@
             </div>
             <div class="space-y-12" id="past-events-container"></div>
         </section>
+
+        <!-- SECTION NOUS CONTACTER -->
+        <section id="contact" class="py-20 bg-amber-50/50 border-t border-amber-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <span id="contact-tag" class="text-brand-green font-title font-bold text-sm tracking-wider uppercase bg-emerald-100/60 px-4 py-1.5 rounded-full text-emerald-900">Formulaire & Coordonnées</span>
+                    <h2 id="contact-title" class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Nous Contacter</h2>
+                    <p id="contact-desc" class="text-gray-600 mt-4 text-lg leading-relaxed">
+                        Une question, une suggestion ou l'envie de rejoindre l'équipe ? N'hésitez pas à nous envoyer un message !
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                    <!-- COORDONNÉES ET INFOS DE CONTACT -->
+                    <div class="bg-white rounded-3xl p-8 border border-amber-100 shadow-sm space-y-6">
+                        <h3 class="font-title text-2xl font-bold text-gray-900 border-b border-amber-100 pb-4">
+                            Nos Coordonnées
+                        </h3>
+                        
+                        <div id="contact-email-box" class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-2xl bg-brand-blue/20 text-brand-darkblue flex items-center justify-center shrink-0 text-lg">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold uppercase text-gray-400">Email</p>
+                                <a id="contact-email-link" href="mailto:ape.petitcoeur@gmail.com" class="font-semibold text-gray-800 hover:text-brand-blue transition-colors text-sm break-all">ape.petitcoeur@gmail.com</a>
+                            </div>
+                        </div>
+
+                        <div id="contact-phone-box" class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-2xl bg-brand-green/20 text-emerald-800 flex items-center justify-center shrink-0 text-lg">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold uppercase text-gray-400">Téléphone</p>
+                                <a id="contact-phone-link" href="tel:0600000000" class="font-semibold text-gray-800 hover:text-brand-blue transition-colors text-sm">06 00 00 00 00</a>
+                            </div>
+                        </div>
+
+                        <div id="contact-address-box" class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-2xl bg-brand-yellow/30 text-amber-900 flex items-center justify-center shrink-0 text-lg">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold uppercase text-gray-400">Adresse / École</p>
+                                <p id="contact-address-text" class="font-semibold text-gray-800 text-sm leading-relaxed">École Primaire de Petit-Cœur, 73260 La Léchère</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FORMULAIRE DE CONTACT -->
+                    <div class="lg:col-span-2 bg-white rounded-3xl p-8 border border-amber-100 shadow-sm space-y-6">
+                        <h3 class="font-title text-2xl font-bold text-gray-900 border-b border-amber-100 pb-4">
+                            Envoyer un message
+                        </h3>
+                        <form onsubmit="handlePublicContactSubmit(event)" class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Votre Nom & Prénom</label>
+                                    <input type="text" id="contact-form-name" required placeholder="Ex: Marie Dupont" class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-brand-blue focus:outline-none text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Votre Email</label>
+                                    <input type="email" id="contact-form-email" required placeholder="Ex: marie@gmail.com" class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-brand-blue focus:outline-none text-sm">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Sujet</label>
+                                <input type="text" id="contact-form-subject" required placeholder="Ex: Inscription, demande d'information..." class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-brand-blue focus:outline-none text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Votre Message</label>
+                                <textarea id="contact-form-message" rows="4" required placeholder="Écrivez votre message ici..." class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-brand-blue focus:outline-none text-sm"></textarea>
+                            </div>
+                            <button type="submit" class="bg-brand-blue hover:bg-sky-600 text-white font-title font-bold text-sm px-8 py-3.5 rounded-2xl shadow-lg transition-all cursor-pointer flex items-center gap-2">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>Envoyer le Message</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer class="bg-gray-900 text-white py-12 border-t border-gray-800">
@@ -279,6 +364,14 @@
                 fileUrl: "",
                 fileBtnText: "Télécharger le document"
             },
+            contact: {
+                tag: "Formulaire & Coordonnées",
+                title: "Nous Contacter",
+                desc: "Une question, une suggestion ou l'envie de rejoindre l'équipe ? N'hésitez pas à nous envoyer un message !",
+                email: "ape.petitcoeur@gmail.com",
+                phone: "06 00 00 00 00",
+                address: "École Primaire de Petit-Cœur, 73260 La Léchère"
+            },
             upcomingEvents: [],
             pastEvents: []
         };
@@ -288,6 +381,7 @@
         function renderSite() {
             const gen = siteData.general || {};
             const ab = siteData.about || {};
+            const ct = siteData.contact || {};
             
             if (document.getElementById('header-assoc-name')) document.getElementById('header-assoc-name').textContent = gen.assocName || defaultSiteData.general.assocName;
             if (document.getElementById('header-assoc-sub')) document.getElementById('header-assoc-sub').textContent = gen.assocSub || defaultSiteData.general.assocSub;
@@ -316,6 +410,29 @@
                 fileBox.classList.remove('hidden');
             } else {
                 fileBox.classList.add('hidden');
+            }
+
+            // SECTION NOUS CONTACTER
+            if (document.getElementById('contact-tag')) document.getElementById('contact-tag').textContent = ct.tag || defaultSiteData.contact.tag;
+            if (document.getElementById('contact-title')) document.getElementById('contact-title').textContent = ct.title || defaultSiteData.contact.title;
+            if (document.getElementById('contact-desc')) document.getElementById('contact-desc').textContent = ct.desc || defaultSiteData.contact.desc;
+
+            const contactEmailLink = document.getElementById('contact-email-link');
+            if (contactEmailLink) {
+                const em = ct.email || defaultSiteData.contact.email;
+                contactEmailLink.textContent = em;
+                contactEmailLink.href = `mailto:${em}`;
+            }
+
+            const contactPhoneLink = document.getElementById('contact-phone-link');
+            if (contactPhoneLink) {
+                const ph = ct.phone || defaultSiteData.contact.phone;
+                contactPhoneLink.textContent = ph;
+                contactPhoneLink.href = `tel:${ph.replace(/\s+/g, '')}`;
+            }
+
+            if (document.getElementById('contact-address-text')) {
+                document.getElementById('contact-address-text').textContent = ct.address || defaultSiteData.contact.address;
             }
 
             const logoImg = document.getElementById('logo-img');
@@ -398,6 +515,18 @@
                     });
                 }
             }
+        }
+
+        function handlePublicContactSubmit(e) {
+            e.preventDefault();
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.textContent = "Merci ! Votre message a bien été envoyé.";
+            toast.classList.remove('translate-y-32', 'opacity-0');
+            e.target.reset();
+            setTimeout(() => {
+                toast.classList.add('translate-y-32', 'opacity-0');
+            }, 4000);
         }
 
         function loadInitialData() {

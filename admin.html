@@ -154,6 +154,10 @@
                         <i class="fas fa-photo-film w-5 text-cyber-purple"></i>
                         <span>Galerie Photos</span>
                     </button>
+                    <button type="button" onclick="switchTab('tab-contact')" id="nav-tab-contact" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
+                        <i class="fas fa-envelope w-5 text-sky-400"></i>
+                        <span>Nous Contacter</span>
+                    </button>
                 </nav>
             </div>
 
@@ -367,6 +371,49 @@
                 </div>
             </div>
 
+            <!-- ONGLET 6 : NOUS CONTACTER -->
+            <div id="tab-contact" class="tab-content hidden space-y-6">
+                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+                    <h3 class="font-title text-lg font-bold text-white flex items-center gap-2 border-b border-cyber-border pb-4">
+                        <i class="fas fa-envelope text-sky-400"></i> Section "Nous Contacter"
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Tag Supérieur (Badge)</label>
+                            <input type="text" id="cfg-contactTag" class="w-full px-4 py-3 glass-input rounded-2xl font-semibold text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Titre de la Section</label>
+                            <input type="text" id="cfg-contactTitle" class="w-full px-4 py-3 glass-input rounded-2xl font-bold text-sm text-sky-400">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Description / Intro</label>
+                        <textarea id="cfg-contactDesc" rows="2" class="w-full px-4 py-3 glass-input rounded-2xl text-sm"></textarea>
+                    </div>
+
+                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
+                        <h4 class="font-title font-bold text-white text-sm"><i class="fas fa-address-book text-sky-400 mr-2"></i> Coordonnées de l'association</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Adresse Email</label>
+                                <input type="email" id="cfg-contactEmail" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Téléphone</label>
+                                <input type="text" id="cfg-contactPhone" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 mb-1">Adresse Physique / École</label>
+                            <input type="text" id="cfg-contactAddress" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- BOUTON D'ENREGISTREMENT EN BAS -->
             <div class="mt-8 pt-6 border-t border-cyber-border flex justify-end">
                 <button type="button" onclick="globalSaveData()" id="save-btn" class="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-cyber-cyan via-brand-blue to-cyber-pink text-slate-900 font-title font-black text-sm tracking-wider uppercase rounded-2xl shadow-2xl transition-all duration-300 hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3 cursor-pointer">
@@ -402,6 +449,14 @@
                 block2Text: "« Chaque événement est une belle aventure humaine. Un grand merci à tous les parents, enseignants et partenaires de la commune de La Léchère pour leur précieux soutien ! »",
                 fileUrl: "",
                 fileBtnText: "Télécharger le document"
+            },
+            contact: {
+                tag: "Formulaire & Coordonnées",
+                title: "Nous Contacter",
+                desc: "Une question, une suggestion ou l'envie de rejoindre l'équipe ? N'hésitez pas à nous envoyer un message !",
+                email: "ape.petitcoeur@gmail.com",
+                phone: "06 00 00 00 00",
+                address: "École Primaire de Petit-Cœur, 73260 La Léchère"
             },
             upcomingEvents: [],
             pastEvents: []
@@ -459,6 +514,7 @@
         function renderUI() {
             const g = appData.general || {};
             const ab = appData.about || {};
+            const ct = appData.contact || {};
 
             document.getElementById('cfg-siteName').value = g.assocName || '';
             document.getElementById('cfg-siteLocation').value = g.assocSub || '';
@@ -480,6 +536,14 @@
             document.getElementById('cfg-aboutBlock2Text').value = ab.block2Text || DEFAULT_DATA.about.block2Text;
             document.getElementById('cfg-aboutFileUrl').value = ab.fileUrl || '';
             document.getElementById('cfg-aboutFileBtnText').value = ab.fileBtnText || 'Télécharger le document';
+
+            // CHARGEMENT NOUS CONTACTER
+            document.getElementById('cfg-contactTag').value = ct.tag || DEFAULT_DATA.contact.tag;
+            document.getElementById('cfg-contactTitle').value = ct.title || DEFAULT_DATA.contact.title;
+            document.getElementById('cfg-contactDesc').value = ct.desc || DEFAULT_DATA.contact.desc;
+            document.getElementById('cfg-contactEmail').value = ct.email || DEFAULT_DATA.contact.email;
+            document.getElementById('cfg-contactPhone').value = ct.phone || DEFAULT_DATA.contact.phone;
+            document.getElementById('cfg-contactAddress').value = ct.address || DEFAULT_DATA.contact.address;
 
             renderUpcomingEvents();
             renderPastEvents();
@@ -667,6 +731,15 @@
             appData.about.block2Text = document.getElementById('cfg-aboutBlock2Text').value;
             appData.about.fileUrl = document.getElementById('cfg-aboutFileUrl').value;
             appData.about.fileBtnText = document.getElementById('cfg-aboutFileBtnText').value;
+
+            // SAUVEGARDE NOUS CONTACTER
+            if (!appData.contact) appData.contact = {};
+            appData.contact.tag = document.getElementById('cfg-contactTag').value;
+            appData.contact.title = document.getElementById('cfg-contactTitle').value;
+            appData.contact.desc = document.getElementById('cfg-contactDesc').value;
+            appData.contact.email = document.getElementById('cfg-contactEmail').value;
+            appData.contact.phone = document.getElementById('cfg-contactPhone').value;
+            appData.contact.address = document.getElementById('cfg-contactAddress').value;
 
             let localSuccess = false;
 
