@@ -232,83 +232,42 @@
 
         <!-- SECTION NOUS CONTACTER -->
         <section id="contact" class="py-20 bg-amber-50/50 border-t border-amber-100">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-12">
-                    <span id="contact-tag" class="text-brand-green font-title font-bold text-sm tracking-wider uppercase bg-emerald-100/60 px-4 py-1.5 rounded-full text-emerald-900">Formulaire & Coordonnées</span>
+                    <span id="contact-tag" class="text-brand-green font-title font-bold text-sm tracking-wider uppercase bg-emerald-100/60 px-4 py-1.5 rounded-full text-emerald-900">Coordonnées</span>
                     <h2 id="contact-title" class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Nous Contacter</h2>
                     <p id="contact-desc" class="text-gray-600 mt-4 text-lg leading-relaxed">
-                        Une question, une suggestion ou l'envie de rejoindre l'équipe ? N'hésitez pas à nous envoyer un message !
+                        Pour toute question, information ou proposition, vous pouvez nous joindre directement via nos coordonnées ci-dessous.
                     </p>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-                    <!-- COORDONNÉES ET INFOS DE CONTACT -->
-                    <div class="bg-white rounded-3xl p-8 border border-amber-100 shadow-sm space-y-6">
-                        <h3 class="font-title text-2xl font-bold text-gray-900 border-b border-amber-100 pb-4">
-                            Nos Coordonnées
-                        </h3>
-                        
-                        <div id="contact-email-box" class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-2xl bg-brand-blue/20 text-brand-darkblue flex items-center justify-center shrink-0 text-lg">
-                                <i class="fa-solid fa-envelope"></i>
-                            </div>
-                            <div>
-                                <p class="text-xs font-bold uppercase text-gray-400">Email</p>
-                                <a id="contact-email-link" href="mailto:ape.petitcoeur@gmail.com" class="font-semibold text-gray-800 hover:text-brand-blue transition-colors text-sm break-all">ape.petitcoeur@gmail.com</a>
-                            </div>
+                <!-- COORDONNÉES ET INFOS DE CONTACT -->
+                <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-sm grid grid-cols-1 md:grid-cols-3 gap-8">
+                    
+                    <div id="contact-email-box" class="flex flex-col items-center text-center p-4 rounded-2xl bg-amber-50/50 border border-amber-100/60">
+                        <div class="w-12 h-12 rounded-2xl bg-brand-blue/20 text-brand-darkblue flex items-center justify-center text-xl mb-3">
+                            <i class="fa-solid fa-envelope"></i>
                         </div>
-
-                        <div id="contact-phone-box" class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-2xl bg-brand-green/20 text-emerald-800 flex items-center justify-center shrink-0 text-lg">
-                                <i class="fa-solid fa-phone"></i>
-                            </div>
-                            <div>
-                                <p class="text-xs font-bold uppercase text-gray-400">Téléphone</p>
-                                <a id="contact-phone-link" href="tel:0600000000" class="font-semibold text-gray-800 hover:text-brand-blue transition-colors text-sm">06 00 00 00 00</a>
-                            </div>
-                        </div>
-
-                        <div id="contact-address-box" class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-2xl bg-brand-yellow/30 text-amber-900 flex items-center justify-center shrink-0 text-lg">
-                                <i class="fa-solid fa-location-dot"></i>
-                            </div>
-                            <div>
-                                <p class="text-xs font-bold uppercase text-gray-400">Adresse / École</p>
-                                <p id="contact-address-text" class="font-semibold text-gray-800 text-sm leading-relaxed">École Primaire de Petit-Cœur, 73260 La Léchère</p>
-                            </div>
-                        </div>
+                        <p class="text-xs font-bold uppercase text-gray-400 mb-1">Email</p>
+                        <a id="contact-email-link" href="mailto:ape.petitcoeur@gmail.com" class="font-semibold text-gray-800 hover:text-brand-blue transition-colors text-sm break-all">ape.petitcoeur@gmail.com</a>
                     </div>
 
-                    <!-- FORMULAIRE DE CONTACT -->
-                    <div class="lg:col-span-2 bg-white rounded-3xl p-8 border border-amber-100 shadow-sm space-y-6">
-                        <h3 class="font-title text-2xl font-bold text-gray-900 border-b border-amber-100 pb-4">
-                            Envoyer un message
-                        </h3>
-                        <form onsubmit="handlePublicContactSubmit(event)" class="space-y-4">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Votre Nom & Prénom</label>
-                                    <input type="text" id="contact-form-name" required placeholder="Ex: Marie Dupont" class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-brand-blue focus:outline-none text-sm">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Votre Email</label>
-                                    <input type="email" id="contact-form-email" required placeholder="Ex: marie@gmail.com" class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-brand-blue focus:outline-none text-sm">
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Sujet</label>
-                                <input type="text" id="contact-form-subject" required placeholder="Ex: Inscription, demande d'information..." class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-brand-blue focus:outline-none text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Votre Message</label>
-                                <textarea id="contact-form-message" rows="4" required placeholder="Écrivez votre message ici..." class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-brand-blue focus:outline-none text-sm"></textarea>
-                            </div>
-                            <button type="submit" class="bg-brand-blue hover:bg-sky-600 text-white font-title font-bold text-sm px-8 py-3.5 rounded-2xl shadow-lg transition-all cursor-pointer flex items-center gap-2">
-                                <i class="fa-solid fa-paper-plane"></i>
-                                <span>Envoyer le Message</span>
-                            </button>
-                        </form>
+                    <div id="contact-phone-box" class="flex flex-col items-center text-center p-4 rounded-2xl bg-amber-50/50 border border-amber-100/60">
+                        <div class="w-12 h-12 rounded-2xl bg-brand-green/20 text-emerald-800 flex items-center justify-center text-xl mb-3">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <p class="text-xs font-bold uppercase text-gray-400 mb-1">Téléphone</p>
+                        <a id="contact-phone-link" href="tel:0600000000" class="font-semibold text-gray-800 hover:text-brand-blue transition-colors text-sm">06 00 00 00 00</a>
                     </div>
+
+                    <div id="contact-address-box" class="flex flex-col items-center text-center p-4 rounded-2xl bg-amber-50/50 border border-amber-100/60">
+                        <div class="w-12 h-12 rounded-2xl bg-brand-yellow/30 text-amber-900 flex items-center justify-center text-xl mb-3">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <p class="text-xs font-bold uppercase text-gray-400 mb-1">Adresse / École</p>
+                        <p id="contact-address-text" class="font-semibold text-gray-800 text-sm leading-relaxed">École Primaire de Petit-Cœur, 73260 La Léchère</p>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -365,9 +324,9 @@
                 fileBtnText: "Télécharger le document"
             },
             contact: {
-                tag: "Formulaire & Coordonnées",
+                tag: "Coordonnées",
                 title: "Nous Contacter",
-                desc: "Une question, une suggestion ou l'envie de rejoindre l'équipe ? N'hésitez pas à nous envoyer un message !",
+                desc: "Pour toute question, information ou proposition, vous pouvez nous joindre directement via nos coordonnées ci-dessous.",
                 email: "ape.petitcoeur@gmail.com",
                 phone: "06 00 00 00 00",
                 address: "École Primaire de Petit-Cœur, 73260 La Léchère"
@@ -515,18 +474,6 @@
                     });
                 }
             }
-        }
-
-        function handlePublicContactSubmit(e) {
-            e.preventDefault();
-            const toast = document.getElementById('toast');
-            const toastMsg = document.getElementById('toast-message');
-            toastMsg.textContent = "Merci ! Votre message a bien été envoyé.";
-            toast.classList.remove('translate-y-32', 'opacity-0');
-            e.target.reset();
-            setTimeout(() => {
-                toast.classList.add('translate-y-32', 'opacity-0');
-            }, 4000);
         }
 
         function loadInitialData() {
