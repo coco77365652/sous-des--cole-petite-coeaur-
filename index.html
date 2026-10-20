@@ -82,7 +82,8 @@
                 <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-gray-700">
                     <a href="#accueil" class="hover:text-brand-blue transition-colors">Accueil</a>
                     <a href="#qui-sommes-nous" class="hover:text-brand-blue transition-colors">Qui sommes-nous ?</a>
-                    <a href="#evenements" class="hover:text-brand-blue transition-colors">Événements à Venir</a>
+                    <a href="#documents" class="hover:text-brand-blue transition-colors">Documents</a>
+                    <a href="#evenements" class="hover:text-brand-blue transition-colors">Événements</a>
                     <a href="#galerie" class="hover:text-brand-blue transition-colors">Galerie</a>
                     <a href="#contact" class="hover:text-brand-blue transition-colors">Nous Contacter</a>
                 </nav>
@@ -96,7 +97,8 @@
         <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-200 px-4 pt-2 pb-6 space-y-3">
             <a href="#accueil" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Accueil</a>
             <a href="#qui-sommes-nous" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Qui sommes-nous ?</a>
-            <a href="#evenements" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Événements à Venir</a>
+            <a href="#documents" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Documents</a>
+            <a href="#evenements" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Événements</a>
             <a href="#galerie" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Galerie</a>
             <a href="#contact" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Nous Contacter</a>
         </div>
@@ -109,7 +111,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
                     
-                    <!-- 1. À GAUCHE : LOGO SOU DES ÉCOLES -->
+                    <!-- 1. À GAUCHE : LOGO -->
                     <div class="flex justify-center">
                         <div class="p-2 max-w-xs transform -rotate-2 hover:rotate-0 transition-all cursor-pointer group hover:scale-105" onclick="openLightbox(document.getElementById('logo-img').src, 'Logo Sou des Écoles - Petit-Cœur')">
                             <img id="logo-img" 
@@ -136,13 +138,13 @@
                             <a href="#evenements" class="bg-brand-yellow hover:bg-amber-300 text-gray-900 font-title font-semibold px-5 py-3 rounded-2xl shadow-lg transition-all text-center flex items-center justify-center gap-2 text-sm">
                                 <i class="fa-solid fa-calendar-star text-brand-red"></i> Prochains Événements
                             </a>
-                            <a href="#galerie" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/40 text-white font-title font-semibold px-5 py-3 rounded-2xl transition-all text-center flex items-center justify-center gap-2 text-sm">
-                                <i class="fa-solid fa-camera text-brand-yellow"></i> Galerie & Souvenirs
+                            <a href="#documents" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/40 text-white font-title font-semibold px-5 py-3 rounded-2xl transition-all text-center flex items-center justify-center gap-2 text-sm">
+                                <i class="fa-solid fa-file-pdf text-brand-yellow"></i> Statuts & Documents
                             </a>
                         </div>
                     </div>
 
-                    <!-- 3. À DROITE : AFFICHE PROCHAIN ÉVÉNEMENT -->
+                    <!-- 3. À DROITE : AFFICHE -->
                     <div class="flex justify-center">
                         <div class="p-2 max-w-xs transform rotate-2 hover:rotate-0 transition-all w-full text-center hover:scale-105">
                             <h3 class="font-title font-bold text-white text-base mb-3 flex items-center justify-center gap-2 drop-shadow-md">
@@ -153,13 +155,9 @@
                                 <img id="poster-img" 
                                      src="image_736dff.jpg" 
                                      alt="Affiche événement" 
-                                     class="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform duration-300"
-                                     style="image-rendering: -webkit-optimize-contrast; crisp-edges;">
+                                     class="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform duration-300">
                             </div>
                             <p id="poster-caption" class="text-xs text-sky-100 mt-3 font-medium">Prochain événement du Sou des Écoles</p>
-                            <p class="text-[10px] text-amber-200 mt-1 font-semibold cursor-pointer hover:underline" onclick="openLightbox(document.getElementById('poster-img').src, document.getElementById('poster-caption').textContent)">
-                                <i class="fa-solid fa-expand mr-1"></i> Cliquer pour voir l'affiche en grand
-                            </p>
                         </div>
                     </div>
 
@@ -178,25 +176,20 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch mb-12">
-                <!-- BLOC 1 : NOTRE MISSION AVEC PHOTO AJUSTÉE -->
                 <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-sm space-y-4 flex flex-col justify-between">
                     <div class="space-y-4">
                         <h3 id="about-block1-title" class="font-title text-2xl font-bold text-gray-900 flex items-center gap-3">
                             <i class="fa-solid fa-users text-brand-blue"></i> Notre Mission
                         </h3>
-                        
-                        <!-- PHOTO BLOC 1 : COMPORTEMENT ET DIMENTIONS AJUSTÉS -->
-                        <div id="about-block1-img-box" class="hidden overflow-hidden rounded-2xl my-3 cursor-pointer group border border-amber-100/60 bg-amber-50/40 p-2 shadow-inner" onclick="openLightbox(document.getElementById('about-block1-img').src, 'Photo - Notre Mission')">
+                        <div id="about-block1-img-box" class="hidden overflow-hidden rounded-2xl my-3 cursor-pointer group border border-amber-100/60 bg-amber-50/40 p-2" onclick="openLightbox(document.getElementById('about-block1-img').src, 'Photo - Notre Mission')">
                             <img id="about-block1-img" src="" alt="Notre Mission" class="w-full h-auto max-h-64 object-contain mx-auto group-hover:scale-105 transition-transform duration-300 rounded-xl">
                         </div>
-
                         <p id="about-block1-text" class="text-gray-600 leading-relaxed text-base">
                             Organiser des manifestations tout au long de l'année afin de financer les projets éducatifs, sorties scolaires, achats de matériel et spectacles pour nos enfants.
                         </p>
                     </div>
                 </div>
 
-                <!-- BLOC 2 : LE MOT DU BUREAU -->
                 <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-sm space-y-4 flex flex-col justify-between">
                     <div class="space-y-4">
                         <h3 id="about-block2-title" class="font-title text-2xl font-bold text-gray-900 flex items-center gap-3">
@@ -207,19 +200,32 @@
                         </p>
                     </div>
 
-                    <!-- BOUTON TÉLÉCHARGEMENT DU MOT DU BUREAU -->
+                    <!-- LIEN D'OUVERTURE DU DOCUMENT (SANS ATTRIBUT DOWNLOAD POUR S'OUVRIR DANS LE NAVIGATEUR) -->
                     <div id="about-file-box" class="pt-4 border-t border-amber-100 hidden">
-                        <a id="about-file-link" href="#" download target="_blank" class="inline-flex items-center gap-2 bg-brand-red hover:bg-rose-600 text-white font-title font-semibold text-sm px-5 py-3 rounded-2xl shadow-md transition-all">
-                            <i class="fa-solid fa-file-arrow-down"></i>
-                            <span id="about-file-btn-text">Télécharger le document</span>
+                        <a id="about-file-link" href="#" target="_blank" class="inline-flex items-center gap-2 bg-brand-red hover:bg-rose-600 text-white font-title font-semibold text-sm px-5 py-3 rounded-2xl shadow-md transition-all">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            <span id="about-file-btn-text">Consulter le document</span>
                         </a>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- SECTION DOCUMENTS & TÉLÉCHARGEMENTS -->
+        <section id="documents" class="py-20 bg-amber-50/50 border-y border-amber-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <span class="text-brand-darkblue font-title font-bold text-sm tracking-wider uppercase bg-blue-100/60 px-4 py-1.5 rounded-full text-brand-darkblue">Transparence & Statuts</span>
+                    <h2 class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Documents Officiels</h2>
+                    <p class="text-gray-600 mt-4 text-base">Cliquez sur un document ci-dessous pour le consulter directement dans votre navigateur.</p>
+                </div>
+
+                <div id="documents-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </div>
+        </section>
+
         <!-- ÉVÉNEMENTS À VENIR -->
-        <section id="evenements" class="py-20 bg-amber-50/50 border-y border-amber-100">
+        <section id="evenements" class="py-20">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="mb-12 text-center md:text-left">
                     <span class="text-brand-red font-title font-bold text-sm tracking-wider uppercase bg-rose-100/60 px-4 py-1.5 rounded-full">Agenda des écoliers</span>
@@ -230,16 +236,18 @@
         </section>
 
         <!-- GALERIE -->
-        <section id="galerie" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="mb-12 text-center md:text-left">
-                <span class="text-brand-yellow font-title font-bold text-sm tracking-wider uppercase bg-amber-100/60 px-4 py-1.5 rounded-full text-amber-900">Souvenirs</span>
-                <h2 class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Galerie & Photos</h2>
+        <section id="galerie" class="py-20 bg-amber-50/50 border-t border-amber-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12 text-center md:text-left">
+                    <span class="text-brand-yellow font-title font-bold text-sm tracking-wider uppercase bg-amber-100/60 px-4 py-1.5 rounded-full text-amber-900">Souvenirs</span>
+                    <h2 class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Galerie & Photos</h2>
+                </div>
+                <div class="space-y-12" id="past-events-container"></div>
             </div>
-            <div class="space-y-12" id="past-events-container"></div>
         </section>
 
         <!-- SECTION NOUS CONTACTER -->
-        <section id="contact" class="py-20 bg-amber-50/50 border-t border-amber-100">
+        <section id="contact" class="py-20 border-t border-amber-100">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-12">
                     <span id="contact-tag" class="text-brand-green font-title font-bold text-sm tracking-wider uppercase bg-emerald-100/60 px-4 py-1.5 rounded-full text-emerald-900">Coordonnées</span>
@@ -249,9 +257,7 @@
                     </p>
                 </div>
 
-                <!-- COORDONNÉES ET INFOS DE CONTACT -->
                 <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-sm grid grid-cols-1 md:grid-cols-3 gap-8">
-                    
                     <div id="contact-email-box" class="flex flex-col items-center text-center p-4 rounded-2xl bg-amber-50/50 border border-amber-100/60">
                         <div class="w-12 h-12 rounded-2xl bg-brand-blue/20 text-brand-darkblue flex items-center justify-center text-xl mb-3">
                             <i class="fa-solid fa-envelope"></i>
@@ -275,7 +281,6 @@
                         <p class="text-xs font-bold uppercase text-gray-400 mb-1">Adresse / École</p>
                         <p id="contact-address-text" class="font-semibold text-gray-800 text-sm leading-relaxed">École Primaire de Petit-Cœur, 73260 La Léchère</p>
                     </div>
-
                 </div>
             </div>
         </section>
@@ -330,8 +335,15 @@
                 block2Title: "Le Mot du Bureau",
                 block2Text: "« Chaque événement est une belle aventure humaine. Un grand merci à tous les parents, enseignants et partenaires de la commune de La Léchère pour leur précieux soutien ! »",
                 fileUrl: "",
-                fileBtnText: "Télécharger le document"
+                fileBtnText: "Consulter les Statuts (PDF)"
             },
+            documents: [
+                {
+                    title: "Statuts du Sou des Écoles Petit-Cœur",
+                    desc: "Statuts officiels régissant l'association (Loi 1901).",
+                    url: "image_736dff.jpg"
+                }
+            ],
             contact: {
                 tag: "Coordonnées",
                 title: "Nous Contacter",
@@ -365,7 +377,6 @@
             if (document.getElementById('about-block1-title')) document.getElementById('about-block1-title').innerHTML = `<i class="fa-solid fa-users text-brand-blue"></i> ${ab.block1Title || defaultSiteData.about.block1Title}`;
             if (document.getElementById('about-block1-text')) document.getElementById('about-block1-text').textContent = ab.block1Text || defaultSiteData.about.block1Text;
             
-            // GESTION AJUSTÉE DE LA PHOTO DU BLOC 1
             const b1ImgBox = document.getElementById('about-block1-img-box');
             const b1Img = document.getElementById('about-block1-img');
             const block1Photo = ab.block1Img || ab.block1Photo || "";
@@ -380,17 +391,47 @@
             if (document.getElementById('about-block2-title')) document.getElementById('about-block2-title').innerHTML = `<i class="fa-solid fa-heart text-brand-red"></i> ${ab.block2Title || defaultSiteData.about.block2Title}`;
             if (document.getElementById('about-block2-text')) document.getElementById('about-block2-text').textContent = ab.block2Text || defaultSiteData.about.block2Text;
 
-            // GESTION DU FICHIER TÉLÉCHARGEABLE MOT DU BUREAU
+            // FICHIER QUI S'OUVRE DANS LE NAVIGATEUR (SANS ATTRIBUT DOWNLOAD)
             const fileBox = document.getElementById('about-file-box');
             const fileLink = document.getElementById('about-file-link');
             const fileBtnText = document.getElementById('about-file-btn-text');
             
             if (ab.fileUrl && ab.fileUrl.trim() !== '') {
                 fileLink.href = ab.fileUrl;
-                fileBtnText.textContent = ab.fileBtnText || "Télécharger le document";
+                fileBtnText.textContent = ab.fileBtnText || "Consulter le document";
                 fileBox.classList.remove('hidden');
             } else {
                 fileBox.classList.add('hidden');
+            }
+
+            // RENDU DES DOCUMENTS PUBLICS
+            const docContainer = document.getElementById('documents-list-container');
+            if (docContainer) {
+                docContainer.innerHTML = '';
+                const docs = siteData.documents || defaultSiteData.documents;
+                if (docs.length === 0) {
+                    docContainer.innerHTML = '<p class="text-gray-500 col-span-3 text-center py-6">Aucun document disponible pour le moment.</p>';
+                } else {
+                    docs.forEach(doc => {
+                        docContainer.innerHTML += `
+                            <div class="bg-white rounded-3xl p-6 border border-amber-100 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                                <div class="space-y-3">
+                                    <div class="w-12 h-12 rounded-2xl bg-red-100 text-brand-red flex items-center justify-center text-xl">
+                                        <i class="fa-solid fa-file-pdf"></i>
+                                    </div>
+                                    <h3 class="font-title font-bold text-lg text-gray-900">${doc.title || 'Document PDF'}</h3>
+                                    <p class="text-xs text-gray-500 leading-relaxed">${doc.desc || ''}</p>
+                                </div>
+                                <div class="pt-5 mt-4 border-t border-amber-50">
+                                    <a href="${doc.url || '#'}" target="_blank" class="w-full py-3 px-4 bg-amber-100 hover:bg-brand-yellow text-gray-900 font-title font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-colors">
+                                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                        <span>Ouvrir le document</span>
+                                    </a>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
             }
 
             // SECTION NOUS CONTACTER
@@ -523,7 +564,6 @@
             } catch (err) {}
         }
 
-        // SYNCHRONISATION ENTRE ONGLETS
         window.addEventListener('storage', (e) => {
             if (e.key === 'sou_petit_coeur_data' || e.key === 'sou_app_data') {
                 loadInitialData();
