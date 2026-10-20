@@ -81,6 +81,7 @@
 
                 <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-gray-700">
                     <a href="#accueil" class="hover:text-brand-blue transition-colors">Accueil</a>
+                    <a href="#qui-sommes-nous" class="hover:text-brand-blue transition-colors">Qui sommes-nous ?</a>
                     <a href="#evenements" class="hover:text-brand-blue transition-colors">Événements à Venir</a>
                     <a href="#galerie" class="hover:text-brand-blue transition-colors">Galerie</a>
                 </nav>
@@ -93,6 +94,7 @@
 
         <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-200 px-4 pt-2 pb-6 space-y-3">
             <a href="#accueil" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Accueil</a>
+            <a href="#qui-sommes-nous" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Qui sommes-nous ?</a>
             <a href="#evenements" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Événements à Venir</a>
             <a href="#galerie" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Galerie</a>
         </div>
@@ -163,24 +165,32 @@
             </div>
         </section>
 
-        <!-- SECTION PRÉSENTATION -->
-        <section id="a-propos" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <span class="text-brand-blue font-title font-bold text-sm tracking-wider uppercase bg-blue-50 px-4 py-1.5 rounded-full">Présentation</span>
-                <h2 id="about-assoc-title" class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">L'APE de Petit-Cœur</h2>
-                <p id="about-assoc-desc" class="text-gray-600 mt-4 text-lg">
-                    Une association de parents d'élèves dynamique et investie dont le seul objectif est d'offrir aux enfants des écoles de Petit-Cœur des moments inoubliables.
+        <!-- SECTION QUI SOMMES-NOUS ? -->
+        <section id="qui-sommes-nous" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span id="about-tag" class="text-brand-blue font-title font-bold text-sm tracking-wider uppercase bg-blue-50 px-4 py-1.5 rounded-full">Présentation</span>
+                <h2 id="about-title" class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Qui sommes-nous ?</h2>
+                <p id="about-desc" class="text-gray-600 mt-4 text-lg leading-relaxed">
+                    Une équipe de parents bénévoles et enthousiastes dédiée aux enfants des écoles de Petit-Cœur.
                 </p>
             </div>
 
-            <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-sm mb-12 flex flex-col md:flex-row items-center gap-8">
-                <div class="w-20 h-20 bg-brand-yellow/30 text-amber-800 rounded-3xl flex items-center justify-center text-4xl shrink-0 font-title font-bold">
-                    <i class="fa-solid fa-quote-left"></i>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-12">
+                <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-sm space-y-4">
+                    <h3 id="about-block1-title" class="font-title text-2xl font-bold text-gray-900 flex items-center gap-3">
+                        <i class="fa-solid fa-users text-brand-blue"></i> Notre Mission
+                    </h3>
+                    <p id="about-block1-text" class="text-gray-600 leading-relaxed text-base">
+                        Organiser des manifestations tout au long de l'année afin de financer les projets éducatifs, sorties scolaires, achats de matériel et spectacles pour nos enfants.
+                    </p>
                 </div>
-                <div>
-                    <h3 class="font-title text-2xl font-bold text-gray-900 mb-2">Le Mot du Bureau de l'APE</h3>
-                    <p id="about-bureau-text" class="text-gray-600 italic leading-relaxed text-base">
-                        « Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, ou des spectacles pour nos enfants. »
+
+                <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-sm space-y-4">
+                    <h3 id="about-block2-title" class="font-title text-2xl font-bold text-gray-900 flex items-center gap-3">
+                        <i class="fa-solid fa-heart text-brand-red"></i> Le Mot du Bureau
+                    </h3>
+                    <p id="about-block2-text" class="text-gray-600 italic leading-relaxed text-base">
+                        « Chaque événement est une belle aventure humaine. Un grand merci à tous les parents, enseignants et partenaires de la commune de La Léchère pour leur précieux soutien ! »
                     </p>
                 </div>
             </div>
@@ -244,8 +254,16 @@
                 logoImg: "image_736dff.jpg",
                 posterImg: "image_736dff.jpg",
                 posterHeading: "À l'Affiche !",
-                posterCaption: "Prochain événement du Sou des Écoles",
-                bureauText: "« Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, ou des spectacles pour nos enfants. Merci à toute l'équipe enseignante et aux familles ! »"
+                posterCaption: "Prochain événement du Sou des Écoles"
+            },
+            about: {
+                tag: "Présentation",
+                title: "Qui sommes-nous ?",
+                desc: "Une équipe de parents bénévoles et enthousiastes dédiée aux enfants des écoles de Petit-Cœur.",
+                block1Title: "Notre Mission",
+                block1Text: "Organiser des manifestations tout au long de l'année afin de financer les projets éducatifs, sorties scolaires, achats de matériel et spectacles pour nos enfants.",
+                block2Title: "Le Mot du Bureau",
+                block2Text: "« Chaque événement est une belle aventure humaine. Un grand merci à tous les parents, enseignants et partenaires de la commune de La Léchère pour leur précieux soutien ! »"
             },
             upcomingEvents: [],
             pastEvents: []
@@ -255,6 +273,7 @@
 
         function renderSite() {
             const gen = siteData.general || {};
+            const ab = siteData.about || {};
             
             if (document.getElementById('header-assoc-name')) document.getElementById('header-assoc-name').textContent = gen.assocName || defaultSiteData.general.assocName;
             if (document.getElementById('header-assoc-sub')) document.getElementById('header-assoc-sub').textContent = gen.assocSub || defaultSiteData.general.assocSub;
@@ -263,8 +282,14 @@
             if (document.getElementById('hero-title')) document.getElementById('hero-title').textContent = gen.heroTitle || defaultSiteData.general.heroTitle;
             if (document.getElementById('hero-description')) document.getElementById('hero-description').textContent = gen.heroDesc || defaultSiteData.general.heroDesc;
 
-            if (document.getElementById('about-assoc-title')) document.getElementById('about-assoc-title').textContent = gen.assocName || defaultSiteData.general.assocName;
-            if (document.getElementById('about-bureau-text')) document.getElementById('about-bureau-text').textContent = gen.bureauText || defaultSiteData.general.bureauText;
+            // SECTION QUI SOMMES NOUS
+            if (document.getElementById('about-tag')) document.getElementById('about-tag').textContent = ab.tag || defaultSiteData.about.tag;
+            if (document.getElementById('about-title')) document.getElementById('about-title').textContent = ab.title || defaultSiteData.about.title;
+            if (document.getElementById('about-desc')) document.getElementById('about-desc').textContent = ab.desc || defaultSiteData.about.desc;
+            if (document.getElementById('about-block1-title')) document.getElementById('about-block1-title').innerHTML = `<i class="fa-solid fa-users text-brand-blue"></i> ${ab.block1Title || defaultSiteData.about.block1Title}`;
+            if (document.getElementById('about-block1-text')) document.getElementById('about-block1-text').textContent = ab.block1Text || defaultSiteData.about.block1Text;
+            if (document.getElementById('about-block2-title')) document.getElementById('about-block2-title').innerHTML = `<i class="fa-solid fa-heart text-brand-red"></i> ${ab.block2Title || defaultSiteData.about.block2Title}`;
+            if (document.getElementById('about-block2-text')) document.getElementById('about-block2-text').textContent = ab.block2Text || defaultSiteData.about.block2Text;
 
             const logoImg = document.getElementById('logo-img');
             if (logoImg) {
