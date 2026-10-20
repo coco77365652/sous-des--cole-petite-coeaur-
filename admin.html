@@ -120,7 +120,7 @@
     <!-- DASHBOARD ADMIN FUTURISTE -->
     <div id="admin-dashboard" class="hidden min-h-screen flex flex-col md:flex-row">
         
-        <!-- SIDEBAR AVEC NOUVEL ONGLET DOCUMENTS -->
+        <!-- SIDEBAR -->
         <aside class="w-full md:w-72 bg-cyber-card/80 backdrop-blur-xl border-r border-cyber-border flex-shrink-0 flex flex-col justify-between p-6">
             <div>
                 <div class="flex items-center gap-3 pb-6 border-b border-cyber-border">
@@ -134,31 +134,27 @@
                 </div>
 
                 <nav class="mt-8 space-y-2">
-                    <button type="button" onclick="switchTab('tab-general')" id="nav-tab-general" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
+                    <button type="button" onclick="switchTab('tab-general')" id="nav-tab-general" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
                         <i class="fas fa-sliders w-5 text-cyber-cyan"></i>
                         <span>Textes Accueil</span>
                     </button>
-                    <button type="button" onclick="switchTab('tab-about')" id="nav-tab-about" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
+                    <button type="button" onclick="switchTab('tab-about')" id="nav-tab-about" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
                         <i class="fas fa-users w-5 text-cyber-green"></i>
                         <span>Qui sommes-nous ?</span>
                     </button>
-                    <button type="button" onclick="switchTab('tab-docs')" id="nav-tab-docs" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
-                        <i class="fas fa-file-pdf w-5 text-rose-400"></i>
-                        <span>PDF & Documents</span>
-                    </button>
-                    <button type="button" onclick="switchTab('tab-images')" id="nav-tab-images" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
+                    <button type="button" onclick="switchTab('tab-images')" id="nav-tab-images" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
                         <i class="fas fa-image w-5 text-cyber-pink"></i>
-                        <span>Logo & Affiche</span>
+                        <span>Logo & Affiche Événement</span>
                     </button>
-                    <button type="button" onclick="switchTab('tab-events')" id="nav-tab-events" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
+                    <button type="button" onclick="switchTab('tab-events')" id="nav-tab-events" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
                         <i class="fas fa-calendar-star w-5 text-amber-400"></i>
-                        <span>Événements</span>
+                        <span>Prochains Événements</span>
                     </button>
-                    <button type="button" onclick="switchTab('tab-gallery')" id="nav-tab-gallery" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
+                    <button type="button" onclick="switchTab('tab-gallery')" id="nav-tab-gallery" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
                         <i class="fas fa-photo-film w-5 text-cyber-purple"></i>
                         <span>Galerie Photos</span>
                     </button>
-                    <button type="button" onclick="switchTab('tab-contact')" id="nav-tab-contact" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
+                    <button type="button" onclick="switchTab('tab-contact')" id="nav-tab-contact" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
                         <i class="fas fa-envelope w-5 text-sky-400"></i>
                         <span>Nous Contacter</span>
                     </button>
@@ -257,6 +253,7 @@
                             <textarea id="cfg-aboutBlock1Text" rows="3" class="w-full px-3 py-2 glass-input rounded-xl text-xs"></textarea>
                         </div>
 
+                        <!-- AJOUT PHOTO BLOC 1 COMPRESSÉE -->
                         <div class="pt-3 border-t border-cyber-border/60 space-y-3">
                             <h5 class="font-title font-bold text-xs text-cyber-cyan flex items-center gap-2">
                                 <i class="fas fa-image"></i> Photo d'illustration Bloc 1
@@ -290,17 +287,17 @@
                         <!-- AJOUT FICHIER TÉLÉCHARGEABLE MOT DU BUREAU -->
                         <div class="pt-3 border-t border-cyber-border/60 space-y-3">
                             <h5 class="font-title font-bold text-xs text-cyber-pink flex items-center gap-2">
-                                <i class="fas fa-file-pdf"></i> Document à ouvrir dans le navigateur
+                                <i class="fas fa-file-arrow-down"></i> Document téléchargeable joint
                             </h5>
                             <div>
                                 <label class="block text-[10px] font-bold text-slate-400 mb-1">Texte du bouton</label>
-                                <input type="text" id="cfg-aboutFileBtnText" placeholder="Consulter les Statuts (PDF)..." class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                                <input type="text" id="cfg-aboutFileBtnText" placeholder="Télécharger le document (PDF)..." class="w-full px-3 py-2 glass-input rounded-xl text-xs">
                             </div>
                             <div class="flex flex-col sm:flex-row gap-3">
-                                <input type="text" id="cfg-aboutFileUrl" placeholder="URL ou PDF encodé..." class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                                <input type="text" id="cfg-aboutFileUrl" placeholder="URL ou fichier encodé..." class="w-full px-3 py-2 glass-input rounded-xl text-xs">
                                 <label class="cursor-pointer px-4 py-2 bg-cyber-pink hover:bg-rose-600 text-white font-title font-bold text-xs rounded-xl flex items-center justify-center gap-2 shrink-0 transition-all glow-pink">
-                                    <i class="fas fa-upload"></i> Choisir Fichier (PDF)
-                                    <input type="file" accept="application/pdf" class="hidden" onchange="processGenericFile(event, 'cfg-aboutFileUrl')">
+                                    <i class="fas fa-upload"></i> Choisir Fichier (PDF/Doc)
+                                    <input type="file" class="hidden" onchange="processGenericFile(event, 'cfg-aboutFileUrl')">
                                 </label>
                             </div>
                         </div>
@@ -308,25 +305,7 @@
                 </div>
             </div>
 
-            <!-- ONGLET 3 : GESTION DES DOCUMENTS & PDF (NOUVEAU) -->
-            <div id="tab-docs" class="tab-content hidden space-y-6">
-                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
-                    <div class="flex justify-between items-center border-b border-cyber-border pb-4">
-                        <h3 class="font-title text-lg font-bold text-white flex items-center gap-2">
-                            <i class="fas fa-file-pdf text-rose-400"></i> Gestion des Documents et PDF
-                        </h3>
-                        <button type="button" onclick="addDocumentItem()" class="px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white font-title font-bold text-xs rounded-xl transition-all flex items-center gap-2">
-                            <i class="fas fa-plus"></i> Ajouter un Document
-                        </button>
-                    </div>
-
-                    <p class="text-xs text-slate-400">Les documents ajoutés ici s'ouvriront directement dans la visionneuse PDF intégrée du navigateur lorsqu'un visiteur clique dessus.</p>
-
-                    <div id="documents-admin-container" class="space-y-4"></div>
-                </div>
-            </div>
-
-            <!-- ONGLET 4 : LOGO ET AFFICHE -->
+            <!-- ONGLET 3 : LOGO ET AFFICHE -->
             <div id="tab-images" class="tab-content hidden space-y-6">
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
                     <h3 class="font-title text-lg font-bold text-white flex items-center gap-2 border-b border-cyber-border pb-4">
@@ -378,7 +357,7 @@
                 </div>
             </div>
 
-            <!-- ONGLET 5 : PROCHAINS EVENEMENTS -->
+            <!-- ONGLET 4 : PROCHAINS EVENEMENTS -->
             <div id="tab-events" class="tab-content hidden space-y-6">
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
                     <div class="flex justify-between items-center border-b border-cyber-border pb-4">
@@ -394,7 +373,7 @@
                 </div>
             </div>
 
-            <!-- ONGLET 6 : GALERIE ET PHOTOS -->
+            <!-- ONGLET 5 : GALERIE ET PHOTOS -->
             <div id="tab-gallery" class="tab-content hidden space-y-6">
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
                     <div class="flex justify-between items-center border-b border-cyber-border pb-4">
@@ -410,7 +389,7 @@
                 </div>
             </div>
 
-            <!-- ONGLET 7 : NOUS CONTACTER -->
+            <!-- ONGLET 6 : NOUS CONTACTER -->
             <div id="tab-contact" class="tab-content hidden space-y-6">
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
                     <h3 class="font-title text-lg font-bold text-white flex items-center gap-2 border-b border-cyber-border pb-4">
@@ -453,7 +432,7 @@
                 </div>
             </div>
 
-            <!-- BOUTON D'ENREGISTREMENT -->
+            <!-- BOUTON D'ENREGISTREMENT EN BAS -->
             <div class="mt-8 pt-6 border-t border-cyber-border flex justify-end">
                 <button type="button" onclick="globalSaveData()" id="save-btn" class="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-cyber-cyan via-brand-blue to-cyber-pink text-slate-900 font-title font-black text-sm tracking-wider uppercase rounded-2xl shadow-2xl transition-all duration-300 hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3 cursor-pointer">
                     <i class="fas fa-floppy-disk text-base"></i>
@@ -488,15 +467,8 @@
                 block2Title: "Le Mot du Bureau",
                 block2Text: "« Chaque événement est une belle aventure humaine. Un grand merci à tous les parents, enseignants et partenaires de la commune de La Léchère pour leur précieux soutien ! »",
                 fileUrl: "",
-                fileBtnText: "Consulter les Statuts (PDF)"
+                fileBtnText: "Télécharger le document"
             },
-            documents: [
-                {
-                    title: "Statuts du Sou des Écoles Petit-Cœur",
-                    desc: "Statuts officiels régissant l'association (Loi 1901).",
-                    url: "image_736dff.jpg"
-                }
-            ],
             contact: {
                 tag: "Coordonnées",
                 title: "Nous Contacter",
@@ -595,7 +567,7 @@
             document.getElementById('cfg-aboutBlock2Title').value = ab.block2Title || DEFAULT_DATA.about.block2Title;
             document.getElementById('cfg-aboutBlock2Text').value = ab.block2Text || DEFAULT_DATA.about.block2Text;
             document.getElementById('cfg-aboutFileUrl').value = ab.fileUrl || '';
-            document.getElementById('cfg-aboutFileBtnText').value = ab.fileBtnText || 'Consulter les Statuts (PDF)';
+            document.getElementById('cfg-aboutFileBtnText').value = ab.fileBtnText || 'Télécharger le document';
 
             // CHARGEMENT NOUS CONTACTER
             document.getElementById('cfg-contactTag').value = ct.tag || DEFAULT_DATA.contact.tag;
@@ -605,74 +577,8 @@
             document.getElementById('cfg-contactPhone').value = ct.phone || DEFAULT_DATA.contact.phone;
             document.getElementById('cfg-contactAddress').value = ct.address || DEFAULT_DATA.contact.address;
 
-            renderDocumentsAdmin();
             renderUpcomingEvents();
             renderPastEvents();
-        }
-
-        // GESTION DES DOCUMENTS DANS L'ADMIN
-        function renderDocumentsAdmin() {
-            const container = document.getElementById('documents-admin-container');
-            container.innerHTML = '';
-            const docs = appData.documents || DEFAULT_DATA.documents;
-
-            if (docs.length === 0) {
-                container.innerHTML = '<p class="text-slate-500 text-xs italic">Aucun document ajouté. Cliquez sur Ajouter un Document.</p>';
-                return;
-            }
-
-            docs.forEach((doc, index) => {
-                container.innerHTML += `
-                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-4 relative">
-                        <button type="button" onclick="removeDocumentItem(${index})" class="absolute top-4 right-4 text-cyber-pink hover:text-rose-400 text-xs font-bold">
-                            <i class="fas fa-trash-can mr-1"></i> Supprimer
-                        </button>
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-24">
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Titre du document</label>
-                                <input type="text" value="${doc.title || ''}" onchange="appData.documents[${index}].title = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-bold">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Description courte</label>
-                                <input type="text" value="${doc.desc || ''}" onchange="appData.documents[${index}].desc = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
-                            </div>
-                        </div>
-
-                        <div class="flex flex-col sm:flex-row gap-3">
-                            <input type="text" id="doc-url-${index}" value="${doc.url || ''}" onchange="appData.documents[${index}].url = this.value" placeholder="Lien du PDF ou fichier encodé..." class="w-full px-3 py-2 glass-input rounded-xl text-xs">
-                            <label class="cursor-pointer px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white font-title font-bold text-xs rounded-xl flex items-center justify-center gap-2 shrink-0 transition-all shadow-md">
-                                <i class="fas fa-file-arrow-up"></i> Importer le PDF
-                                <input type="file" accept="application/pdf" class="hidden" onchange="processDocumentFile(event, ${index})">
-                            </label>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function addDocumentItem() {
-            if (!appData.documents) appData.documents = [];
-            appData.documents.push({ title: "Nouveau Document", desc: "Description du document PDF.", url: "" });
-            renderDocumentsAdmin();
-        }
-
-        function removeDocumentItem(index) {
-            appData.documents.splice(index, 1);
-            renderDocumentsAdmin();
-        }
-
-        function processDocumentFile(e, index) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                appData.documents[index].url = evt.target.result;
-                document.getElementById(`doc-url-${index}`).value = evt.target.result;
-                showStatusToast("Document PDF importé avec succès !", "success");
-            };
-            reader.readAsDataURL(file);
         }
 
         function renderUpcomingEvents() {
@@ -895,7 +801,7 @@
             if (localSuccess) {
                 showStatusToast("OUI ! Enregistré avec succès !", "success");
             } else {
-                showStatusToast("ATTENTION : Erreur d'enregistrement.", "error");
+                showStatusToast("ATTENTION : Image trop lourde ! Utilisez un lien d'image.", "error");
             }
         }
 
@@ -913,7 +819,7 @@
             const reader = new FileReader();
             reader.onload = function(evt) {
                 document.getElementById(targetId).value = evt.target.result;
-                showStatusToast("Fichier PDF prêt et chargé !", "success");
+                showStatusToast("Fichier prêt et encodé !", "success");
             };
             reader.readAsDataURL(file);
         }
