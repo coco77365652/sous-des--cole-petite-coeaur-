@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APE de Petit-Cœur - La Léchère</title>
 
-    <!-- PRELOAD ULTRA-RAPIDE DU LOGO ET DE L'AFFICHE -->
-    <link rel="preload" as="image" href="image_736dff.jpg" fetchpriority="high">
-
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome icons -->
@@ -110,17 +107,12 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
                     
-                    <!-- 1. À GAUCHE : LOGO OPTIMISÉ -->
+                    <!-- 1. À GAUCHE : LOGO SOU DES ÉCOLES -->
                     <div class="flex justify-center">
                         <div class="p-2 max-w-xs transform -rotate-2 hover:rotate-0 transition-all cursor-pointer group hover:scale-105" onclick="openLightbox(document.getElementById('logo-img').src, 'Logo Sou des Écoles - Petit-Cœur')">
                             <img id="logo-img" 
                                  src="image_736dff.jpg" 
                                  alt="Logo Sou des Écoles Petit-Cœur" 
-                                 loading="eager" 
-                                 fetchpriority="high" 
-                                 decoding="async"
-                                 width="300"
-                                 height="300"
                                  class="w-full h-auto rounded-2xl object-contain drop-shadow-2xl">
                             <p class="text-[10px] text-sky-100 text-center mt-2 group-hover:text-brand-yellow transition-colors font-medium"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Cliquer pour agrandir</p>
                         </div>
@@ -148,7 +140,7 @@
                         </div>
                     </div>
 
-                    <!-- 3. À DROITE : AFFICHE OPTIMISÉE -->
+                    <!-- 3. À DROITE : AFFICHE DE L'ÉVÉNEMENT -->
                     <div class="flex justify-center">
                         <div class="p-2 max-w-xs transform rotate-2 hover:rotate-0 transition-all w-full text-center hover:scale-105">
                             <h3 class="font-title font-bold text-white text-base mb-3 flex items-center justify-center gap-2 drop-shadow-md">
@@ -159,11 +151,6 @@
                                 <img id="poster-img" 
                                      src="image_736dff.jpg" 
                                      alt="Affiche événement" 
-                                     loading="eager" 
-                                     fetchpriority="high"
-                                     decoding="async"
-                                     width="300"
-                                     height="256"
                                      class="w-full h-64 object-cover rounded-2xl group-hover:scale-105 transition-transform drop-shadow-2xl">
                             </div>
                             <p id="poster-caption" class="text-xs text-sky-100 mt-3 font-medium">Prochain événement du Sou des Écoles</p>
@@ -270,7 +257,7 @@
         </div>
     </div>
 
-    <!-- SCRIPTS SUPABASE -->
+    <!-- SCRIPTS SUPABASE ET LOCALSTORAGE RESILIENT -->
     <script>
         const SUPABASE_URL = 'https://gdbktvxramksondbobns.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_6Q9vML3WwH7_8n5Ipvo-3g_DRZx_VPK';
@@ -300,33 +287,48 @@
         function renderSite() {
             const gen = siteData.general || {};
             
-            document.getElementById('header-assoc-name').textContent = gen.assocName || defaultSiteData.general.assocName;
-            document.getElementById('header-assoc-sub').textContent = gen.assocSub || defaultSiteData.general.assocSub;
+            if (document.getElementById('header-assoc-name')) document.getElementById('header-assoc-name').textContent = gen.assocName || defaultSiteData.general.assocName;
+            if (document.getElementById('header-assoc-sub')) document.getElementById('header-assoc-sub').textContent = gen.assocSub || defaultSiteData.general.assocSub;
             
             if (document.getElementById('hero-location-tag')) document.getElementById('hero-location-tag').textContent = gen.locationTag || defaultSiteData.general.locationTag;
             if (document.getElementById('hero-title')) document.getElementById('hero-title').textContent = gen.heroTitle || defaultSiteData.general.heroTitle;
             if (document.getElementById('hero-description')) document.getElementById('hero-description').textContent = gen.heroDesc || defaultSiteData.general.heroDesc;
 
-            document.getElementById('about-assoc-title').textContent = gen.assocName || defaultSiteData.general.assocName;
-            document.getElementById('about-bureau-text').textContent = gen.bureauText || defaultSiteData.general.bureauText;
+            if (document.getElementById('about-assoc-title')) document.getElementById('about-assoc-title').textContent = gen.assocName || defaultSiteData.general.assocName;
+            if (document.getElementById('about-bureau-text')) document.getElementById('about-bureau-text').textContent = gen.bureauText || defaultSiteData.general.bureauText;
 
+            // 1. Mise à jour fiable du Logo
             const logoImg = document.getElementById('logo-img');
-            if (logoImg) logoImg.src = gen.logoImg || gen.heroImg || defaultSiteData.general.logoImg;
+            if (logoImg) {
+                const targetSrc = gen.logoImg || gen.heroImg || defaultSiteData.general.logoImg;
+                if (targetSrc && logoImg.src !== targetSrc) {
+                    logoImg.src = targetSrc;
+                }
+            }
 
+            // 2. Mise à jour fiable de l'Affiche
             const posterImg = document.getElementById('poster-img');
-            if (posterImg) posterImg.src = gen.posterImg || defaultSiteData.general.posterImg;
+            if (posterImg) {
+                const targetPoster = gen.posterImg || defaultSiteData.general.posterImg;
+                if (targetPoster && posterImg.src !== targetPoster) {
+                    posterImg.src = targetPoster;
+                }
+            }
+
             if (document.getElementById('poster-heading')) document.getElementById('poster-heading').textContent = gen.posterHeading || defaultSiteData.general.posterHeading;
             if (document.getElementById('poster-caption')) document.getElementById('poster-caption').textContent = gen.posterCaption || defaultSiteData.general.posterCaption;
 
+            // Budget Jauge
             const budget = siteData.budget || {};
             const currentB = Number(budget.current) || 3800;
             const targetB = Number(budget.target) || 5000;
             const pct = Math.min(100, Math.round((currentB / targetB) * 100));
-            document.getElementById('budget-current-text').textContent = currentB.toLocaleString('fr-FR') + ' €';
-            document.getElementById('budget-target-text').textContent = ' / ' + targetB.toLocaleString('fr-FR') + ' € récoltés';
-            document.getElementById('budget-progress-bar').style.width = pct + '%';
-            document.getElementById('budget-percentage-text').textContent = pct + '%';
+            if (document.getElementById('budget-current-text')) document.getElementById('budget-current-text').textContent = currentB.toLocaleString('fr-FR') + ' €';
+            if (document.getElementById('budget-target-text')) document.getElementById('budget-target-text').textContent = ' / ' + targetB.toLocaleString('fr-FR') + ' € récoltés';
+            if (document.getElementById('budget-progress-bar')) document.getElementById('budget-progress-bar').style.width = pct + '%';
+            if (document.getElementById('budget-percentage-text')) document.getElementById('budget-percentage-text').textContent = pct + '%';
 
+            // Événements à venir
             const upContainer = document.getElementById('events-upcoming-container');
             if (upContainer) {
                 upContainer.innerHTML = '';
@@ -357,6 +359,7 @@
                 }
             }
 
+            // Événements passés & Galerie
             const pastContainer = document.getElementById('past-events-container');
             if (pastContainer) {
                 pastContainer.innerHTML = '';
@@ -371,7 +374,7 @@
                             pev.photos.forEach(imgUrl => {
                                 photosHTML += `
                                     <div class="relative overflow-hidden rounded-2xl group cursor-pointer h-40 bg-gray-100 border border-gray-100" onclick="openLightbox('${imgUrl}', '${(pev.title || '').replace(/'/g, "\\'")}')">
-                                        <img src="${imgUrl}" alt="${pev.title || ''}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                        <img src="${imgUrl}" alt="${pev.title || ''}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                                         <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-lg"><i class="fa-solid fa-expand"></i></div>
                                     </div>
                                 `;
@@ -393,6 +396,7 @@
                 }
             }
 
+            // Projets
             const projContainer = document.getElementById('projects-container');
             if (projContainer) {
                 projContainer.innerHTML = '';
@@ -415,6 +419,25 @@
             }
         }
 
+        // Chargement immédiat depuis le stockage local puis synchronisation distante
+        function loadInitialData() {
+            const localPublic = localStorage.getItem('sou_petit_coeur_data');
+            const localApp = localStorage.getItem('sou_app_data');
+            
+            if (localPublic) {
+                try { siteData = Object.assign({}, defaultSiteData, JSON.parse(localPublic)); } catch(e){}
+            } else if (localApp) {
+                try {
+                    const parsed = JSON.parse(localApp);
+                    if (parsed.general) {
+                        siteData.general.logoImg = parsed.general.logoImg || siteData.general.logoImg;
+                        siteData.general.posterImg = parsed.general.posterImg || siteData.general.posterImg;
+                    }
+                } catch(e){}
+            }
+            renderSite();
+        }
+
         async function fetchRemoteData() {
             try {
                 const { data, error } = await _supabase
@@ -427,15 +450,11 @@
 
                 if (data && data.content) {
                     siteData = Object.assign({}, defaultSiteData, data.content);
+                    localStorage.setItem('sou_petit_coeur_data', JSON.stringify(siteData));
                     renderSite();
                 }
             } catch (err) {
-                console.warn("Erreur Supabase, utilisation du cache local :", err);
-                const local = localStorage.getItem('sou_petit_coeur_data');
-                if (local) {
-                    try { siteData = JSON.parse(local); } catch(e) {}
-                }
-                renderSite();
+                console.warn("Utilisation des données locales.");
             }
         }
 
@@ -445,14 +464,16 @@
                 .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'site_content' }, payload => {
                     if (payload.new && payload.new.content) {
                         siteData = Object.assign({}, defaultSiteData, payload.new.content);
+                        localStorage.setItem('sou_petit_coeur_data', JSON.stringify(siteData));
                         renderSite();
-                        showToast("Le site a été mis à jour en direct !");
+                        showToast("Site mis à jour en direct !");
                     }
                 })
                 .subscribe();
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            loadInitialData();
             fetchRemoteData();
             setupRealtimeSubscription();
         });
