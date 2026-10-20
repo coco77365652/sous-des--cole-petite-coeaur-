@@ -4,14 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administration - APE de Petit-Cœur</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
-   
-    <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SUPABASE_URL = 'https://gdbktvxramksondbobns.supabase.co';
@@ -19,493 +13,218 @@
         let _supabase = null;
         try {
             _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        } catch(e) {
-            console.warn("Supabase non disponible :", e);
-        }
+        } catch(e) {}
     </script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#fff1f2',
-                            100: '#ffe4e6',
-                            500: '#f43f5e',
-                            600: '#e11d48',
-                            700: '#be123c',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        heading: ['Outfit', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-    </style>
 </head>
-<body class="bg-slate-100 font-sans text-slate-800 antialiased min-h-screen flex flex-col">
+<body class="bg-slate-900 text-slate-100 min-h-screen p-4 md:p-8">
 
-    <!-- OVERLAY NOTIFICATION / TOAST VISUEL OUI / NON -->
-    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-28 opacity-0 transition-all duration-300 px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 text-white">
-        <i id="toast-icon" class="fas fa-check-circle text-2xl"></i>
-        <span id="toast-message" class="text-base font-bold">Action réussie !</span>
-    </div>
+    <!-- TOAST STATUS -->
+    <div id="status-box" class="fixed top-5 right-5 z-50 hidden px-6 py-4 rounded-2xl shadow-2xl font-bold text-white transition-all"></div>
 
-    <!-- ECRAN DE CONNEXION (LOGIN) -->
-    <div id="login-view" class="fixed inset-0 z-50 bg-slate-900 flex items-center justify-center p-4">
-        <div class="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8 relative overflow-hidden">
-            <div class="text-center mb-8">
-                <div class="w-16 h-16 bg-brand-50 rounded-2xl flex items-center justify-center text-brand-600 mx-auto mb-4 text-2xl shadow-inner">
-                    <i class="fas fa-user-shield"></i>
-                </div>
-                <h1 class="font-heading text-2xl font-extrabold text-slate-900">Espace Administration</h1>
-                <p class="text-slate-500 text-sm mt-1">APE de Petit-Cœur</p>
-            </div>
-
-            <form onsubmit="handleLogin(event)" class="space-y-5">
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Mot de passe d'accès</label>
-                    <div class="relative">
-                        <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                        <input type="password" id="admin-pass-input" placeholder="admin123" required 
-                            class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500">
-                    </div>
-                    <p id="login-error" class="text-rose-500 text-xs font-semibold mt-2 hidden"><i class="fas fa-exclamation-circle mr-1"></i> Mot de passe incorrect.</p>
-                </div>
-                <button type="submit" class="w-full py-3.5 px-6 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
-                    <span>Connexion</span>
-                    <i class="fas fa-arrow-right"></i>
-                </button>
-            </form>
-
-            <div class="mt-8 pt-6 border-t border-slate-100 flex justify-between items-center text-xs text-slate-500">
-                <span>Code par défaut : <code class="bg-slate-100 px-2 py-0.5 rounded font-mono text-slate-700">admin123</code></span>
-                <a href="index.html" class="hover:text-brand-600 font-semibold transition"><i class="fas fa-arrow-left mr-1"></i> Voir le site</a>
-            </div>
+    <div class="max-w-4xl mx-auto bg-slate-800 rounded-3xl p-6 border border-slate-700 shadow-2xl">
+        <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-700">
+            <h1 class="text-2xl font-bold text-rose-500"><i class="fas fa-cog mr-2"></i> Administration APE Petit-Cœur</h1>
+            <a href="index.html" target="_blank" class="text-xs bg-slate-700 hover:bg-slate-600 px-3 py-2 rounded-xl text-slate-200 transition">
+                <i class="fas fa-external-link-alt mr-1"></i> Voir le site
+            </a>
         </div>
-    </div>
 
-    <!-- INTERFACE ADMIN -->
-    <div id="admin-dashboard" class="hidden min-h-screen flex flex-col md:flex-row">
-        
-        <!-- SIDEBAR -->
-        <aside class="w-full md:w-64 bg-slate-900 text-white flex-shrink-0 flex flex-col justify-between p-5 border-r border-slate-800">
-            <div>
-                <div class="flex items-center gap-3 pb-6 border-b border-slate-800">
-                    <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold shadow-lg">
-                        <i class="fas fa-heart"></i>
-                    </div>
-                    <div>
-                        <h2 class="font-heading font-extrabold text-sm leading-tight text-white">APE Petit-Cœur</h2>
-                        <span class="text-[10px] uppercase font-bold tracking-wider text-brand-400 bg-brand-500/10 px-2 py-0.5 rounded">Dashboard</span>
-                    </div>
-                </div>
-
-                <nav class="mt-6 space-y-1">
-                    <button type="button" onclick="switchTab('tab-general')" id="nav-tab-general" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
-                        <i class="fas fa-sliders w-5 text-emerald-400"></i>
-                        <span>Général & Accueil</span>
-                    </button>
-                    <button type="button" onclick="switchTab('tab-projects')" id="nav-tab-projects" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
-                        <i class="fas fa-piggy-bank w-5 text-blue-400"></i>
-                        <span>Projet & Budget</span>
-                    </button>
-                </nav>
-            </div>
-
-            <div class="pt-6 border-t border-slate-800 space-y-2">
-                <a href="index.html" target="_blank" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold text-slate-300 bg-slate-800/80 hover:bg-slate-800 transition">
-                    <span><i class="fas fa-external-link-alt mr-2 text-brand-400"></i> Voir le site public</span>
-                </a>
-                <button type="button" onclick="logoutAdmin()" class="w-full flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-rose-400 hover:bg-rose-500/10 transition">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Déconnexion</span>
-                </button>
-            </div>
-        </aside>
-
-        <!-- CONTENU PRINCIPAL -->
-        <main class="flex-1 bg-slate-100 p-4 md:p-8 overflow-y-auto custom-scrollbar">
-            
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+        <form id="admin-form" onsubmit="forceSave(event)" class="space-y-6">
+            <!-- TITRES ET TEXTES -->
+            <div class="space-y-4 bg-slate-900/50 p-4 rounded-2xl border border-slate-700">
+                <h2 class="text-sm font-bold text-amber-400 uppercase tracking-wider">1. Textes d'Accueil</h2>
                 <div>
-                    <h1 class="font-heading text-2xl md:text-3xl font-extrabold text-slate-900">Panneau de Configuration</h1>
-                    <p class="text-slate-500 text-sm mt-1">Gérez facilement les informations de votre site.</p>
+                    <label class="block text-xs text-slate-400 mb-1">Nom de l'Association</label>
+                    <input type="text" id="cfg-siteName" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-sm focus:border-rose-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Titre Principal</label>
+                    <input type="text" id="cfg-heroTitle" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-sm focus:border-rose-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Description</label>
+                    <textarea id="cfg-heroDesc" rows="2" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-sm focus:border-rose-500 outline-none"></textarea>
                 </div>
             </div>
 
-            <!-- TAB 1 : GÉNÉRAL & ACCUEIL -->
-            <div id="tab-general" class="tab-content hidden space-y-6">
-                <div class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm space-y-6">
-                    <h3 class="font-heading text-lg font-bold text-slate-900 border-b border-slate-100 pb-4">
-                        <i class="fas fa-sliders text-brand-600 mr-2"></i> Configuration Générale
-                    </h3>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Nom de l'Association</label>
-                            <input type="text" id="cfg-siteName" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Commune / Localisation</label>
-                            <input type="text" id="cfg-siteLocation" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 outline-none">
-                        </div>
+            <!-- IMAGES -->
+            <div class="space-y-4 bg-slate-900/50 p-4 rounded-2xl border border-slate-700">
+                <h2 class="text-sm font-bold text-amber-400 uppercase tracking-wider">2. Images (Logo et Affiche)</h2>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">URL / Base64 du Logo</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="cfg-logoImg" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-sm focus:border-rose-500 outline-none">
+                        <label class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs px-4 py-2 rounded-xl cursor-pointer flex items-center shrink-0">
+                            Choisir
+                            <input type="file" accept="image/*" class="hidden" onchange="processImage(event, 'cfg-logoImg')">
+                        </label>
                     </div>
-
-                    <!-- 1. GAUCHE : LOGO SOU DES ÉCOLES -->
-                    <div class="p-5 bg-rose-50/60 rounded-2xl border border-rose-200/70 space-y-3">
-                        <h4 class="font-heading font-bold text-rose-900 text-sm">Bloc 1 (Gauche) : Logo Sou des Écoles</h4>
-                        <div class="flex gap-2">
-                            <input type="text" id="cfg-logoImg" placeholder="image_736dff.jpg ou URL..." class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none">
-                            <label class="cursor-pointer px-4 py-2 bg-slate-800 text-white font-bold text-xs rounded-xl flex items-center gap-2 shrink-0 hover:bg-slate-900 transition">
-                                <i class="fas fa-upload"></i> Uploader
-                                <input type="file" accept="image/*" class="hidden" onchange="uploadLogoImage(event)">
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- 2. MILIEU : TEXTE DE PRÉSENTATION -->
-                    <div class="p-5 bg-amber-50/50 rounded-2xl border border-amber-200/60 space-y-4">
-                        <h4 class="font-heading font-bold text-amber-900 text-sm">Bloc 2 (Milieu) : Texte de Présentation</h4>
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Tag du Haut</label>
-                            <input type="text" id="cfg-locationTag" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Titre Principal</label>
-                            <input type="text" id="cfg-heroTitle" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Paragraphe Descriptif</label>
-                            <textarea id="cfg-heroDesc" rows="2" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none"></textarea>
-                        </div>
-                    </div>
-
-                    <!-- 3. DROITE : AFFICHE DE L'ÉVÉNEMENT -->
-                    <div class="p-5 bg-slate-100 rounded-2xl border border-slate-300 space-y-4">
-                        <h4 class="font-heading font-bold text-slate-900 text-sm">Bloc 3 (Droite) : Affiche du Prochain Événement</h4>
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Titre de l'Affiche</label>
-                            <input type="text" id="cfg-posterHeading" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Image de l'Affiche</label>
-                            <div class="flex gap-2">
-                                <input type="text" id="cfg-posterImg" placeholder="image_736dff.jpg ou URL..." class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none">
-                                <label class="cursor-pointer px-4 py-2 bg-slate-800 text-white font-bold text-xs rounded-xl flex items-center gap-2 shrink-0 hover:bg-slate-900 transition">
-                                    <i class="fas fa-upload"></i> Uploader
-                                    <input type="file" accept="image/*" class="hidden" onchange="uploadPosterImage(event)">
-                                </label>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Légende sous l'Affiche</label>
-                            <input type="text" id="cfg-posterCaption" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none">
-                        </div>
-                    </div>
-
-                    <div class="pt-4 flex justify-end">
-                        <button type="button" onclick="saveGeneralInfo()" class="px-8 py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg transition active:scale-95 cursor-pointer flex items-center gap-2">
-                            <i class="fas fa-save"></i>
-                            <span>Enregistrer les modifications</span>
-                        </button>
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">URL / Base64 de l'Affiche</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="cfg-posterImg" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-sm focus:border-rose-500 outline-none">
+                        <label class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs px-4 py-2 rounded-xl cursor-pointer flex items-center shrink-0">
+                            Choisir
+                            <input type="file" accept="image/*" class="hidden" onchange="processImage(event, 'cfg-posterImg')">
+                        </label>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 2 : PROJET & BUDGET -->
-            <div id="tab-projects" class="tab-content hidden space-y-6">
-                <div class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm space-y-6">
-                    <h3 class="font-heading text-lg font-bold text-slate-900 border-b border-slate-100 pb-4">Projet Annuel & Budget</h3>
+            <!-- BUDGET -->
+            <div class="space-y-4 bg-slate-900/50 p-4 rounded-2xl border border-slate-700">
+                <h2 class="text-sm font-bold text-amber-400 uppercase tracking-wider">3. Budget</h2>
+                <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Montant Récolté Actuel (€)</label>
-                        <input type="number" id="proj-current" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-emerald-600 outline-none">
+                        <label class="block text-xs text-slate-400 mb-1">Récolté (€)</label>
+                        <input type="number" id="proj-current" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-sm focus:border-rose-500 outline-none">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Objectif Total (€)</label>
-                        <input type="number" id="proj-target" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-700 outline-none">
-                    </div>
-                    <div class="pt-4 flex justify-end">
-                        <button type="button" onclick="saveProjectData()" class="px-8 py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg transition active:scale-95 cursor-pointer flex items-center gap-2">
-                            <i class="fas fa-save"></i>
-                            <span>Mettre à jour le Budget</span>
-                        </button>
+                        <label class="block text-xs font-bold text-slate-400 mb-1">Objectif (€)</label>
+                        <input type="number" id="proj-target" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-sm focus:border-rose-500 outline-none">
                     </div>
                 </div>
             </div>
 
-        </main>
+            <!-- BOUTON D'ENREGISTREMENT -->
+            <button type="submit" id="save-btn" class="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-lg rounded-2xl shadow-xl transition active:scale-98 flex items-center justify-center gap-2 cursor-pointer">
+                <i class="fas fa-save"></i>
+                <span>ENREGISTRER LES MODIFICATIONS</span>
+            </button>
+        </form>
     </div>
 
-    <!-- SCRIPT AVEC VERIFICATION DE L'ENREGISTREMENT -->
     <script>
         const DEFAULT_DATA = {
             general: {
-                siteName: "APE de Petit-Cœur",
-                siteLocation: "Petit-Cœur • La Léchère",
+                assocName: "APE de Petit-Cœur",
+                assocSub: "Petit-Cœur • La Léchère",
                 locationTag: "Savoie - Commune de La Léchère",
                 heroTitle: "Ensemble pour les enfants de Petit-Cœur !",
                 heroDesc: "Association de parents d'élèves (APE) bénévoles dédiée au financement des sorties scolaires.",
                 logoImg: "image_736dff.jpg",
                 posterImg: "image_736dff.jpg",
                 posterHeading: "À l'Affiche !",
-                posterCaption: "Prochain événement du Sou des Écoles",
-                adminPassword: "admin123"
+                posterCaption: "Prochain événement du Sou des Écoles"
             },
-            project: { currentAmount: 3800, targetAmount: 5000 },
-            upcomingEvents: [],
-            pastEvents: []
+            budget: { current: 3800, target: 5000 }
         };
 
-        let appData = Object.assign({}, DEFAULT_DATA);
-
         document.addEventListener('DOMContentLoaded', () => {
-            loadDataFromStorage();
-            fetchRemoteData();
-            checkSession();
+            loadForm();
         });
 
-        function checkSession() {
-            const logged = sessionStorage.getItem('sou_admin_logged');
-            if (logged === 'true') {
-                document.getElementById('login-view').classList.add('hidden');
-                document.getElementById('admin-dashboard').classList.remove('hidden');
-                switchTab('tab-general');
-                fillGeneralForm();
-                fillProjectForm();
-            } else {
-                document.getElementById('login-view').classList.remove('hidden');
-                document.getElementById('admin-dashboard').classList.add('hidden');
+        function loadForm() {
+            const raw = localStorage.getItem('sou_petit_coeur_data');
+            let data = DEFAULT_DATA;
+            if (raw) {
+                try { data = JSON.parse(raw); } catch(e){}
             }
-        }
+            const g = data.general || DEFAULT_DATA.general;
+            const b = data.budget || DEFAULT_DATA.budget;
 
-        function handleLogin(e) {
-            e.preventDefault();
-            const passInput = document.getElementById('admin-pass-input').value;
-            const currentPass = appData.general.adminPassword || "admin123";
-
-            if (passInput === currentPass) {
-                sessionStorage.setItem('sou_admin_logged', 'true');
-                checkSession();
-                showToast("Connexion réussie !", "success");
-            } else {
-                document.getElementById('login-error').classList.remove('hidden');
-            }
-        }
-
-        function logoutAdmin() {
-            sessionStorage.removeItem('sou_admin_logged');
-            checkSession();
-        }
-
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-brand-600', 'text-white'));
-
-            const target = document.getElementById(tabId);
-            if (target) target.classList.remove('hidden');
-            const btn = document.getElementById('nav-' + tabId);
-            if (btn) btn.classList.add('bg-brand-600', 'text-white');
-        }
-
-        function fillGeneralForm() {
-            const g = appData.general || {};
-            document.getElementById('cfg-siteName').value = g.siteName || '';
-            document.getElementById('cfg-siteLocation').value = g.siteLocation || '';
-            document.getElementById('cfg-logoImg').value = g.logoImg || '';
-            document.getElementById('cfg-locationTag').value = g.locationTag || '';
+            document.getElementById('cfg-siteName').value = g.assocName || '';
             document.getElementById('cfg-heroTitle').value = g.heroTitle || '';
             document.getElementById('cfg-heroDesc').value = g.heroDesc || '';
-            document.getElementById('cfg-posterHeading').value = g.posterHeading || '';
+            document.getElementById('cfg-logoImg').value = g.logoImg || '';
             document.getElementById('cfg-posterImg').value = g.posterImg || '';
-            document.getElementById('cfg-posterCaption').value = g.posterCaption || '';
+            document.getElementById('proj-current').value = b.current || 3800;
+            document.getElementById('proj-target').value = b.target || 5000;
         }
 
-        function fillProjectForm() {
-            const p = appData.project || {};
-            document.getElementById('proj-current').value = p.currentAmount || 3800;
-            document.getElementById('proj-target').value = p.targetAmount || 5000;
-        }
+        async function forceSave(e) {
+            e.preventDefault();
+            const btn = document.getElementById('save-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement en cours...';
 
-        // ACTIONS DE SAUVEGARDE GENERALES
-        async function saveGeneralInfo() {
-            try {
-                appData.general.siteName = document.getElementById('cfg-siteName').value;
-                appData.general.siteLocation = document.getElementById('cfg-siteLocation').value;
-                appData.general.logoImg = document.getElementById('cfg-logoImg').value;
-                appData.general.locationTag = document.getElementById('cfg-locationTag').value;
-                appData.general.heroTitle = document.getElementById('cfg-heroTitle').value;
-                appData.general.heroDesc = document.getElementById('cfg-heroDesc').value;
-                appData.general.posterHeading = document.getElementById('cfg-posterHeading').value;
-                appData.general.posterImg = document.getElementById('cfg-posterImg').value;
-                appData.general.posterCaption = document.getElementById('cfg-posterCaption').value;
-
-                await saveDataToStorage();
-            } catch (err) {
-                showToast("Non, ce n'est pas enregistré ! (Erreur interne)", "error");
-            }
-        }
-
-        // ACTIONS DE SAUVEGARDE BUDGET
-        async function saveProjectData() {
-            try {
-                appData.project.currentAmount = parseFloat(document.getElementById('proj-current').value) || 0;
-                appData.project.targetAmount = parseFloat(document.getElementById('proj-target').value) || 1;
-
-                await saveDataToStorage();
-            } catch (err) {
-                showToast("Non, ce n'est pas enregistré ! (Erreur budget)", "error");
-            }
-        }
-
-        // SAUVEGARDE AVEC AFFICHAGE OUI / NON CLAIR
-        async function saveDataToStorage() {
-            const publicData = {
-                adminPassword: appData.general.adminPassword || "admin123",
+            const payload = {
                 general: {
-                    assocName: appData.general.siteName,
-                    assocSub: appData.general.siteLocation,
-                    locationTag: appData.general.locationTag,
-                    heroTitle: appData.general.heroTitle,
-                    heroDesc: appData.general.heroDesc,
-                    logoImg: appData.general.logoImg,
-                    posterImg: appData.general.posterImg,
-                    posterHeading: appData.general.posterHeading,
-                    posterCaption: appData.general.posterCaption,
-                    bureauText: "« Chaque événement organisé est une opportunité de financer un voyage ou des sorties. »"
+                    assocName: document.getElementById('cfg-siteName').value,
+                    assocSub: "Petit-Cœur • La Léchère",
+                    locationTag: "Savoie - Commune de La Léchère",
+                    heroTitle: document.getElementById('cfg-heroTitle').value,
+                    heroDesc: document.getElementById('cfg-heroDesc').value,
+                    logoImg: document.getElementById('cfg-logoImg').value,
+                    posterImg: document.getElementById('cfg-posterImg').value,
+                    posterHeading: "À l'Affiche !",
+                    posterCaption: "Prochain événement"
                 },
                 budget: {
-                    current: appData.project.currentAmount,
-                    target: appData.project.targetAmount
-                },
-                upcomingEvents: appData.upcomingEvents || [],
-                pastEvents: appData.pastEvents || []
+                    current: parseFloat(document.getElementById('proj-current').value) || 0,
+                    target: parseFloat(document.getElementById('proj-target').value) || 5000
+                }
             };
 
-            let localSuccess = false;
-            let remoteSuccess = false;
+            let saveSuccess = false;
+            let errorMsg = "";
 
-            // 1. Enregistrement Local
+            // 1. Sauvegarde dans localStorage
             try {
-                localStorage.setItem('sou_app_data', JSON.stringify(appData));
-                localStorage.setItem('sou_petit_coeur_data', JSON.stringify(publicData));
-                localSuccess = true;
-            } catch (e) {
-                localSuccess = false;
+                localStorage.setItem('sou_petit_coeur_data', JSON.stringify(payload));
+                saveSuccess = true;
+            } catch (err) {
+                saveSuccess = false;
+                errorMsg = "L'image est trop lourde pour le stockage local. Utilisez une image plus petite.";
             }
 
-            // 2. Enregistrement Distant Supabase
+            // 2. Synchronisation Supabase si disponible
             if (_supabase) {
                 try {
-                    const { error } = await _supabase
-                        .from('site_content')
-                        .upsert({ id: 1, content: publicData });
-
-                    if (!error) {
-                        remoteSuccess = true;
-                    }
-                } catch (err) {
-                    remoteSuccess = false;
+                    await _supabase.from('site_content').upsert({ id: 1, content: payload });
+                } catch(err) {
+                    console.warn("Erreur Supabase ignorée pour privilégier le local.");
                 }
             }
 
-            // Affichage du message OUI / NON selon le résultat
-            if (localSuccess) {
-                showToast("Oui, c'est enregistré avec succès !", "success");
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-save"></i> <span>ENREGISTRER LES MODIFICATIONS</span>';
+
+            const statusBox = document.getElementById('status-box');
+            statusBox.classList.remove('hidden', 'bg-emerald-600', 'bg-rose-600');
+
+            if (saveSuccess) {
+                statusBox.classList.add('bg-emerald-600');
+                statusBox.innerHTML = '<i class="fas fa-check-circle mr-2"></i> OUI ! Les modifications sont enregistrées !';
             } else {
-                showToast("Non, ce n'est pas enregistré ! Erreur de stockage.", "error");
+                statusBox.classList.add('bg-rose-600');
+                statusBox.innerHTML = `<i class="fas fa-exclamation-triangle mr-2"></i> NON ! ${errorMsg}`;
             }
+
+            setTimeout(() => { statusBox.classList.add('hidden'); }, 4000);
         }
 
-        function loadDataFromStorage() {
-            const stored = localStorage.getItem('sou_app_data');
-            if (stored) {
-                try { appData = JSON.parse(stored); } catch(e) {}
-            }
-        }
+        // Redimensionnement automatique des images chargées localement pour éviter les blocages de mémoire
+        function processImage(e, targetId) {
+            const file = e.target.files[0];
+            if (!file) return;
 
-        async function fetchRemoteData() {
-            if (!_supabase) return;
-            try {
-                const { data } = await _supabase
-                    .from('site_content')
-                    .select('content')
-                    .eq('id', 1)
-                    .single();
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 800;
+                    let width = img.width;
+                    let height = img.height;
 
-                if (data && data.content) {
-                    const c = data.content;
-                    if (c.general) {
-                        appData.general.siteName = c.general.assocName || appData.general.siteName;
-                        appData.general.siteLocation = c.general.assocSub || appData.general.siteLocation;
-                        appData.general.logoImg = c.general.logoImg || appData.general.logoImg;
-                        appData.general.posterImg = c.general.posterImg || appData.general.posterImg;
-                        appData.general.heroTitle = c.general.heroTitle || appData.general.heroTitle;
-                        appData.general.heroDesc = c.general.heroDesc || appData.general.heroDesc;
-                        appData.general.posterHeading = c.general.posterHeading || appData.general.posterHeading;
-                        appData.general.posterCaption = c.general.posterCaption || appData.general.posterCaption;
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
                     }
-                    fillGeneralForm();
-                }
-            } catch(e) {}
-        }
 
-        function uploadLogoImage(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const r = new FileReader();
-            r.onload = (evt) => {
-                document.getElementById('cfg-logoImg').value = evt.target.result;
-                showToast("Logo chargé ! Cliquez sur enregistrer.", "success");
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const resizedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                    document.getElementById(targetId).value = resizedBase64;
+                };
+                img.src = evt.target.result;
             };
-            r.readAsDataURL(file);
-        }
-
-        function uploadPosterImage(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const r = new FileReader();
-            r.onload = (evt) => {
-                document.getElementById('cfg-posterImg').value = evt.target.result;
-                showToast("Affiche chargée ! Cliquez sur enregistrer.", "success");
-            };
-            r.readAsDataURL(file);
-        }
-
-        // GESTION DU MESSAGE VISUEL OUI / NON
-        function showToast(msg, type = "success") {
-            const toast = document.getElementById('toast');
-            const toastIcon = document.getElementById('toast-icon');
-            const toastMessage = document.getElementById('toast-message');
-
-            toastMessage.textContent = msg;
-
-            if (type === "error") {
-                toast.className = "fixed bottom-5 right-5 z-50 transform translate-y-0 opacity-100 transition-all duration-300 bg-rose-600 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3";
-                toastIcon.className = "fas fa-circle-xmark text-2xl text-white";
-            } else {
-                toast.className = "fixed bottom-5 right-5 z-50 transform translate-y-0 opacity-100 transition-all duration-300 bg-emerald-600 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3";
-                toastIcon.className = "fas fa-circle-check text-2xl text-white";
-            }
-
-            setTimeout(() => {
-                toast.className = "fixed bottom-5 right-5 z-50 transform translate-y-28 opacity-0 transition-all duration-300 px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 text-white";
-            }, 3500);
+            reader.readAsDataURL(file);
         }
     </script>
 </body>
