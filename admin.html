@@ -142,10 +142,6 @@
                         <i class="fas fa-image w-5 text-cyber-pink"></i>
                         <span>Logo & Affiche Événement</span>
                     </button>
-                    <button type="button" onclick="switchTab('tab-budget')" id="nav-tab-budget" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
-                        <i class="fas fa-chart-pie w-5 text-cyber-green"></i>
-                        <span>Budget & Jauge</span>
-                    </button>
                     <button type="button" onclick="switchTab('tab-events')" id="nav-tab-events" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
                         <i class="fas fa-calendar-star w-5 text-amber-400"></i>
                         <span>Prochains Événements</span>
@@ -266,27 +262,7 @@
                 </div>
             </div>
 
-            <!-- ONGLET 3 : BUDGET ET JAUGE -->
-            <div id="tab-budget" class="tab-content hidden space-y-6">
-                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
-                    <h3 class="font-title text-lg font-bold text-white flex items-center gap-2 border-b border-cyber-border pb-4">
-                        <i class="fas fa-chart-line text-cyber-green"></i> Budget & Avancement
-                    </h3>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Montant Actuel Récolté (€)</label>
-                            <input type="number" id="proj-current" class="w-full px-4 py-3.5 glass-input rounded-2xl font-bold text-cyber-green text-lg">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Objectif Total (€)</label>
-                            <input type="number" id="proj-target" class="w-full px-4 py-3.5 glass-input rounded-2xl font-bold text-white text-lg">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ONGLET 4 : PROCHAINS EVENEMENTS -->
+            <!-- ONGLET 3 : PROCHAINS EVENEMENTS -->
             <div id="tab-events" class="tab-content hidden space-y-6">
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
                     <div class="flex justify-between items-center border-b border-cyber-border pb-4">
@@ -302,7 +278,7 @@
                 </div>
             </div>
 
-            <!-- ONGLET 5 : GALERIE ET PHOTOS (ACTIVÉ) -->
+            <!-- ONGLET 4 : GALERIE ET PHOTOS -->
             <div id="tab-gallery" class="tab-content hidden space-y-6">
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
                     <div class="flex justify-between items-center border-b border-cyber-border pb-4">
@@ -343,7 +319,6 @@
                 posterCaption: "Prochain événement du Sou des Écoles",
                 adminPassword: "admin123"
             },
-            budget: { current: 3800, target: 5000 },
             upcomingEvents: [],
             pastEvents: []
         };
@@ -399,7 +374,6 @@
 
         function renderUI() {
             const g = appData.general || {};
-            const b = appData.budget || {};
 
             document.getElementById('cfg-siteName').value = g.assocName || '';
             document.getElementById('cfg-siteLocation').value = g.assocSub || '';
@@ -410,9 +384,6 @@
             document.getElementById('cfg-posterImg').value = g.posterImg || '';
             document.getElementById('cfg-posterHeading').value = g.posterHeading || '';
             document.getElementById('cfg-posterCaption').value = g.posterCaption || '';
-
-            document.getElementById('proj-current').value = b.current || 3800;
-            document.getElementById('proj-target').value = b.target || 5000;
 
             renderUpcomingEvents();
             renderPastEvents();
@@ -460,7 +431,6 @@
             renderUpcomingEvents();
         }
 
-        // GESTION DE LA GALERIE PHOTO / ALBUMS
         function renderPastEvents() {
             const container = document.getElementById('past-events-container');
             container.innerHTML = '';
@@ -508,7 +478,6 @@
                             <textarea onchange="appData.pastEvents[${index}].desc = this.value" rows="2" class="w-full px-3 py-2 glass-input rounded-xl text-xs">${pev.desc || pev.description || ''}</textarea>
                         </div>
 
-                        <!-- LISTE DES PHOTOS DE L'ALBUM -->
                         <div>
                             <div class="flex justify-between items-center mb-2">
                                 <label class="block text-[10px] font-bold text-cyber-purple uppercase">Photos de l'album (${(pev.photos || []).length})</label>
@@ -590,9 +559,6 @@
             appData.general.posterImg = document.getElementById('cfg-posterImg').value;
             appData.general.posterHeading = document.getElementById('cfg-posterHeading').value;
             appData.general.posterCaption = document.getElementById('cfg-posterCaption').value;
-
-            appData.budget.current = parseFloat(document.getElementById('proj-current').value) || 0;
-            appData.budget.target = parseFloat(document.getElementById('proj-target').value) || 5000;
 
             let localSuccess = false;
 

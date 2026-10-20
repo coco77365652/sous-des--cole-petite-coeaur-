@@ -83,7 +83,6 @@
                     <a href="#accueil" class="hover:text-brand-blue transition-colors">Accueil</a>
                     <a href="#evenements" class="hover:text-brand-blue transition-colors">Événements à Venir</a>
                     <a href="#galerie" class="hover:text-brand-blue transition-colors">Galerie</a>
-                    <a href="#projets" class="hover:text-brand-blue transition-colors">Nos Projets Financés</a>
                 </nav>
 
                 <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none">
@@ -96,7 +95,6 @@
             <a href="#accueil" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Accueil</a>
             <a href="#evenements" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Événements à Venir</a>
             <a href="#galerie" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Galerie</a>
-            <a href="#projets" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Nos Projets Financés</a>
         </div>
     </header>
 
@@ -140,7 +138,7 @@
                         </div>
                     </div>
 
-                    <!-- 3. À DROITE : AFFICHE PROCHAIN ÉVÉNEMENT (FORMAT CARRÉ & OUVERTURE AU CLIC) -->
+                    <!-- 3. À DROITE : AFFICHE PROCHAIN ÉVÉNEMENT -->
                     <div class="flex justify-center">
                         <div class="p-2 max-w-xs transform rotate-2 hover:rotate-0 transition-all w-full text-center hover:scale-105">
                             <h3 class="font-title font-bold text-white text-base mb-3 flex items-center justify-center gap-2 drop-shadow-md">
@@ -207,36 +205,6 @@
             </div>
             <div class="space-y-12" id="past-events-container"></div>
         </section>
-
-        <!-- PROJETS & BUDGET -->
-        <section id="projets" class="py-20 bg-amber-50/50 border-t border-amber-100">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center max-w-3xl mx-auto mb-16">
-                    <span class="text-brand-green font-title font-bold text-sm tracking-wider uppercase bg-emerald-50 px-4 py-1.5 rounded-full">Transparence & Impact</span>
-                    <h2 class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Nos Projets Financés</h2>
-                </div>
-
-                <div class="bg-white rounded-3xl p-8 shadow-sm border border-amber-100 mb-12">
-                    <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
-                        <div>
-                            <h3 class="font-title text-xl font-bold text-gray-900">Objectif de Financement Annuel</h3>
-                            <p class="text-sm text-gray-500">Avancement du budget pour les activités scolaires</p>
-                        </div>
-                        <div class="text-right">
-                            <span id="budget-current-text" class="font-title text-2xl font-bold text-brand-green">3 800 €</span>
-                            <span id="budget-target-text" class="text-gray-500 text-sm"> / 5 000 € récoltés</span>
-                        </div>
-                    </div>
-                    <div class="w-full bg-gray-100 rounded-full h-5 overflow-hidden p-1 border border-gray-200">
-                        <div id="budget-progress-bar" class="bg-gradient-to-r from-brand-yellow via-brand-green to-brand-blue h-full rounded-full transition-all duration-1000 relative" style="width: 76%;">
-                            <span id="budget-percentage-text" class="absolute right-2 top-0 text-[10px] text-white font-bold leading-3">76%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-8" id="projects-container"></div>
-            </div>
-        </section>
     </main>
 
     <footer class="bg-gray-900 text-white py-12 border-t border-gray-800">
@@ -279,10 +247,8 @@
                 posterCaption: "Prochain événement du Sou des Écoles",
                 bureauText: "« Chaque événement organisé est une opportunité de financer un voyage, des sorties de ski, ou des spectacles pour nos enfants. Merci à toute l'équipe enseignante et aux familles ! »"
             },
-            budget: { current: 3800, target: 5000 },
             upcomingEvents: [],
-            pastEvents: [],
-            projects: []
+            pastEvents: []
         };
 
         let siteData = Object.assign({}, defaultSiteData);
@@ -314,15 +280,6 @@
 
             if (document.getElementById('poster-heading')) document.getElementById('poster-heading').textContent = gen.posterHeading || defaultSiteData.general.posterHeading;
             if (document.getElementById('poster-caption')) document.getElementById('poster-caption').textContent = gen.posterCaption || defaultSiteData.general.posterCaption;
-
-            const budget = siteData.budget || {};
-            const currentB = Number(budget.current) || 3800;
-            const targetB = Number(budget.target) || 5000;
-            const pct = Math.min(100, Math.round((currentB / targetB) * 100));
-            if (document.getElementById('budget-current-text')) document.getElementById('budget-current-text').textContent = currentB.toLocaleString('fr-FR') + ' €';
-            if (document.getElementById('budget-target-text')) document.getElementById('budget-target-text').textContent = ' / ' + targetB.toLocaleString('fr-FR') + ' € récoltés';
-            if (document.getElementById('budget-progress-bar')) document.getElementById('budget-progress-bar').style.width = pct + '%';
-            if (document.getElementById('budget-percentage-text')) document.getElementById('budget-percentage-text').textContent = pct + '%';
 
             const upContainer = document.getElementById('events-upcoming-container');
             if (upContainer) {
