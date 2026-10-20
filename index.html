@@ -140,26 +140,27 @@
                         </div>
                     </div>
 
-                    <!-- 3. À DROITE : AFFICHE DE L'ÉVÉNEMENT -->
-                    <div class="flex justify-center">
-                        <div class="p-2 max-w-xs transform rotate-2 hover:rotate-0 transition-all w-full text-center hover:scale-105">
-                            <h3 class="font-title font-bold text-white text-base mb-3 flex items-center justify-center gap-2 drop-shadow-md">
-                                <i class="fa-solid fa-bullhorn text-brand-yellow"></i>
-                                <span id="poster-heading">À l'Affiche !</span>
-                            </h3>
-                            <div class="overflow-hidden cursor-pointer group rounded-2xl" onclick="openLightbox(document.getElementById('poster-img').src, document.getElementById('poster-caption').textContent || 'Affiche officielle')">
-                                <img id="poster-img" 
-                                     src="image_736dff.jpg" 
-                                     alt="Affiche événement" 
-                                     class="w-full h-64 object-cover rounded-2xl group-hover:scale-105 transition-transform drop-shadow-2xl">
-                            </div>
-                            <p id="poster-caption" class="text-xs text-sky-100 mt-3 font-medium">Prochain événement du Sou des Écoles</p>
-                            <p class="text-[10px] text-amber-200 mt-1 font-semibold cursor-pointer hover:underline" onclick="openLightbox(document.getElementById('poster-img').src, document.getElementById('poster-caption').textContent)"><i class="fa-solid fa-expand mr-1"></i> Voir l'affiche en plein écran</p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+<!-- 3. À DROITE : AFFICHE DE L'ÉVÉNEMENT (NETTE & FORMAT CARRÉ) -->
+<div class="flex justify-center">
+    <div class="p-2 max-w-xs transform rotate-2 hover:rotate-0 transition-all w-full text-center hover:scale-105">
+        <h3 class="font-title font-bold text-white text-base mb-3 flex items-center justify-center gap-2 drop-shadow-md">
+            <i class="fa-solid fa-bullhorn text-brand-yellow"></i>
+            <span id="poster-heading">À l'Affiche !</span>
+        </h3>
+        <!-- Conteneur carré propre sans déformation -->
+        <div class="overflow-hidden cursor-pointer group rounded-2xl aspect-square bg-white shadow-2xl flex items-center justify-center p-2 border border-white/20" onclick="openLightbox(document.getElementById('poster-img').src, document.getElementById('poster-caption').textContent || 'Affiche officielle')">
+            <img id="poster-img" 
+                 src="image_736dff.jpg" 
+                 alt="Affiche événement" 
+                 class="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform duration-300"
+                 style="image-rendering: -webkit-optimize-contrast; crisp-edges;">
+        </div>
+        <p id="poster-caption" class="text-xs text-sky-100 mt-3 font-medium">Prochain événement du Sou des Écoles</p>
+        <p class="text-[10px] text-amber-200 mt-1 font-semibold cursor-pointer hover:underline" onclick="openLightbox(document.getElementById('poster-img').src, document.getElementById('poster-caption').textContent)">
+            <i class="fa-solid fa-expand mr-1"></i> Voir l'affiche en plein écran
+        </p>
+    </div>
+</div>
         </section>
 
         <!-- SECTION PRÉSENTATION -->
