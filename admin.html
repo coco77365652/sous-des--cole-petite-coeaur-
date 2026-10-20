@@ -150,12 +150,16 @@
                         <i class="fas fa-calendar-star w-5 text-amber-400"></i>
                         <span>Prochains Événements</span>
                     </button>
+                    <button type="button" onclick="switchTab('tab-gallery')" id="nav-tab-gallery" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
+                        <i class="fas fa-photo-film w-5 text-cyber-purple"></i>
+                        <span>Galerie Photos</span>
+                    </button>
                 </nav>
             </div>
 
             <div class="pt-6 border-t border-cyber-border space-y-3">
                 <a href="index.html" target="_blank" class="w-full flex items-center justify-between px-4 py-3 rounded-2xl text-xs font-title font-bold text-slate-300 glass-card hover:border-cyber-cyan/50 transition-all group">
-                    <span class="group-hover:text-cyber-cyan transition-colors"><i class="fas fa-globe mr-2"></i> Prévisualiser le site</span>
+                    <span class="group-hover:text-cyber-cyan transition-colors"><i class="fas fa-globe mr-2"></i> Voir le site public</span>
                     <i class="fas fa-arrow-up-right-from-square text-[10px] text-slate-500"></i>
                 </a>
                 <button type="button" onclick="logoutAdmin()" class="w-full flex items-center gap-2 px-4 py-3 rounded-2xl text-xs font-title font-bold text-cyber-pink hover:bg-cyber-pink/10 transition-all">
@@ -170,7 +174,7 @@
             
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                 <div>
-                    <h1 class="font-title text-3xl font-black text-white tracking-wide">TABLEAU DE BORD</h1>
+                    <h1 class="font-title text-3xl font-black text-white tracking-wide">PANNEAU DE CONFIGURATION</h1>
                     <p class="text-slate-400 text-xs mt-1">Gérez le contenu publié sur <code class="text-cyber-cyan">index.html</code></p>
                 </div>
             </div>
@@ -298,6 +302,22 @@
                 </div>
             </div>
 
+            <!-- ONGLET 5 : GALERIE ET PHOTOS (ACTIVÉ) -->
+            <div id="tab-gallery" class="tab-content hidden space-y-6">
+                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+                    <div class="flex justify-between items-center border-b border-cyber-border pb-4">
+                        <h3 class="font-title text-lg font-bold text-white flex items-center gap-2">
+                            <i class="fas fa-photo-film text-cyber-purple"></i> Galerie & Albums Photos
+                        </h3>
+                        <button type="button" onclick="addPastEvent()" class="px-4 py-2 bg-cyber-purple hover:bg-purple-600 text-white font-title font-bold text-xs rounded-xl transition-all flex items-center gap-2">
+                            <i class="fas fa-folder-plus"></i> Créer un Album
+                        </button>
+                    </div>
+
+                    <div id="past-events-container" class="space-y-6"></div>
+                </div>
+            </div>
+
             <!-- BOUTON D'ENREGISTREMENT EN BAS -->
             <div class="mt-8 pt-6 border-t border-cyber-border flex justify-end">
                 <button type="button" onclick="globalSaveData()" id="save-btn" class="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-cyber-cyan via-brand-blue to-cyber-pink text-slate-900 font-title font-black text-sm tracking-wider uppercase rounded-2xl shadow-2xl transition-all duration-300 hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3 cursor-pointer">
@@ -324,7 +344,8 @@
                 adminPassword: "admin123"
             },
             budget: { current: 3800, target: 5000 },
-            upcomingEvents: []
+            upcomingEvents: [],
+            pastEvents: []
         };
 
         let appData = Object.assign({}, DEFAULT_DATA);
@@ -394,6 +415,7 @@
             document.getElementById('proj-target').value = b.target || 5000;
 
             renderUpcomingEvents();
+            renderPastEvents();
         }
 
         function renderUpcomingEvents() {
@@ -436,6 +458,122 @@
         function removeUpcomingEvent(index) {
             appData.upcomingEvents.splice(index, 1);
             renderUpcomingEvents();
+        }
+
+        // GESTION DE LA GALERIE PHOTO / ALBUMS
+        function renderPastEvents() {
+            const container = document.getElementById('past-events-container');
+            container.innerHTML = '';
+            const past = appData.pastEvents || [];
+
+            if (past.length === 0) {
+                container.innerHTML = '<p class="text-slate-500 text-xs italic">Aucun album photo. Cliquez sur Créer un Album pour ajouter une galerie.</p>';
+                return;
+            }
+
+            past.forEach((pev, index) => {
+                let photosGridHTML = '';
+                if (pev.photos && pev.photos.length > 0) {
+                    pev.photos.forEach((photoUrl, pIndex) => {
+                        photosGridHTML += `
+                            <div class="relative group bg-white/5 rounded-xl p-1 border border-white/10 flex flex-col items-center">
+                                <img src="${photoUrl}" class="h-20 w-full object-cover rounded-lg">
+                                <button type="button" onclick="removePhotoFromAlbum(${index}, ${pIndex})" class="absolute top-2 right-2 bg-rose-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-[10px] shadow-lg">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        `;
+                    });
+                }
+
+                container.innerHTML += `
+                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-4 relative">
+                        <button type="button" onclick="removePastEvent(${index})" class="absolute top-4 right-4 text-cyber-pink hover:text-rose-400 text-xs font-bold">
+                            <i class="fas fa-trash-can mr-1"></i> Supprimer l'Album
+                        </button>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-28">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Titre de l'Album</label>
+                                <input type="text" value="${pev.title || ''}" onchange="appData.pastEvents[${index}].title = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Date / Année</label>
+                                <input type="text" value="${pev.date || ''}" onchange="appData.pastEvents[${index}].date = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 mb-1">Texte de description sous le titre</label>
+                            <textarea onchange="appData.pastEvents[${index}].desc = this.value" rows="2" class="w-full px-3 py-2 glass-input rounded-xl text-xs">${pev.desc || pev.description || ''}</textarea>
+                        </div>
+
+                        <!-- LISTE DES PHOTOS DE L'ALBUM -->
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="block text-[10px] font-bold text-cyber-purple uppercase">Photos de l'album (${(pev.photos || []).length})</label>
+                                <label class="cursor-pointer px-3 py-1 bg-cyber-purple hover:bg-purple-600 text-white font-title font-bold text-[10px] rounded-lg transition-all">
+                                    <i class="fas fa-plus mr-1"></i> Ajouter une photo
+                                    <input type="file" accept="image/*" class="hidden" onchange="addPhotoToAlbum(event, ${index})">
+                                </label>
+                            </div>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-2">
+                                ${photosGridHTML}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function addPastEvent() {
+            if (!appData.pastEvents) appData.pastEvents = [];
+            appData.pastEvents.push({ title: "Nouvel Album Souvenir", date: "2026", desc: "Souvenirs de l'événement.", photos: [] });
+            renderPastEvents();
+        }
+
+        function removePastEvent(index) {
+            appData.pastEvents.splice(index, 1);
+            renderPastEvents();
+        }
+
+        function addPhotoToAlbum(e, albumIndex) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 900;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const resizedBase64 = canvas.toDataURL('image/jpeg', 0.75);
+                    if (!appData.pastEvents[albumIndex].photos) appData.pastEvents[albumIndex].photos = [];
+                    appData.pastEvents[albumIndex].photos.push(resizedBase64);
+                    renderPastEvents();
+                    showStatusToast("Photo ajoutée à l'album !", "success");
+                };
+                img.src = evt.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removePhotoFromAlbum(albumIndex, photoIndex) {
+            appData.pastEvents[albumIndex].photos.splice(photoIndex, 1);
+            renderPastEvents();
         }
 
         async function globalSaveData() {
@@ -489,7 +627,6 @@
             }
         }
 
-        // Redimensionnement optimisé des images
         function processImage(e, targetId, previewId) {
             const file = e.target.files[0];
             if (!file) return;
@@ -525,7 +662,7 @@
                         }
                     }
 
-                    showStatusToast("Image chargée et optimisée !", "success");
+                    showStatusToast("Image optimisée !", "success");
                 };
                 img.src = evt.target.result;
             };
