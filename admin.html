@@ -148,7 +148,7 @@
                     </button>
                     <button type="button" onclick="switchTab('tab-images')" id="nav-tab-images" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
                         <i class="fas fa-image w-5 text-cyber-pink"></i>
-                        <span>Logo & Affiche</span>
+                        <span>Logo & Affiches</span>
                     </button>
                     <button type="button" onclick="switchTab('tab-events')" id="nav-tab-events" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
                         <i class="fas fa-calendar-star w-5 text-amber-400"></i>
@@ -323,13 +323,14 @@
                 </div>
             </div>
 
-            <!-- ONGLET 4 : LOGO ET AFFICHE -->
+            <!-- ONGLET 4 : LOGO ET AFFICHES MULTIPLES -->
             <div id="tab-images" class="tab-content hidden space-y-6">
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
                     <h3 class="font-title text-lg font-bold text-white flex items-center gap-2 border-b border-cyber-border pb-4">
-                        <i class="fas fa-icons text-cyber-pink"></i> Images Principales & Affiche
+                        <i class="fas fa-icons text-cyber-pink"></i> Logo & Gestion des Affiches (Droites)
                     </h3>
 
+                    <!-- LOGO -->
                     <div class="p-6 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
                         <h4 class="font-title font-bold text-white text-sm"><i class="fas fa-heart text-cyber-pink mr-2"></i> Logo de l'APE (Gauche)</h4>
                         <div class="flex flex-col sm:flex-row gap-3">
@@ -345,30 +346,21 @@
                         </div>
                     </div>
 
-                    <div class="p-6 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
-                        <div class="flex justify-between items-center">
-                            <h4 class="font-title font-bold text-white text-sm"><i class="fas fa-bullhorn text-amber-400 mr-2"></i> Affiche du Prochain Événement (Droite)</h4>
-                            <span class="text-[10px] text-cyber-cyan bg-cyber-cyan/10 px-2.5 py-1 rounded-full border border-cyber-cyan/20">Avec bouton de téléchargement</span>
+                    <!-- GESTION DYNAMIQUE DES AFFICHES -->
+                    <div class="p-6 bg-cyber-card rounded-2xl border border-cyber-border space-y-6">
+                        <div class="flex justify-between items-center border-b border-cyber-border pb-3">
+                            <h4 class="font-title font-bold text-white text-sm"><i class="fas fa-bullhorn text-amber-400 mr-2"></i> Section « À l'Affiche ! » (Affiches & Boutons)</h4>
+                            <button type="button" onclick="addPosterItem()" class="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-900 font-title font-bold text-xs rounded-xl transition-all flex items-center gap-2">
+                                <i class="fas fa-plus"></i> Ajouter une Affiche
+                            </button>
                         </div>
+
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Titre du bloc</label>
-                            <input type="text" id="cfg-posterHeading" class="w-full px-4 py-2.5 glass-input rounded-xl text-xs mb-3">
+                            <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Titre du bloc haut</label>
+                            <input type="text" id="cfg-posterHeading" placeholder="À l'Affiche !" class="w-full px-4 py-2.5 glass-input rounded-xl text-xs mb-3">
                         </div>
-                        <div class="flex flex-col sm:flex-row gap-3">
-                            <input type="text" id="cfg-posterImg" placeholder="image_736dff.jpg ou URL..." class="w-full px-4 py-3 glass-input rounded-2xl text-xs">
-                            <label class="cursor-pointer px-5 py-3 bg-cyber-cyan hover:bg-cyan-400 text-slate-900 font-title font-bold text-xs rounded-2xl flex items-center justify-center gap-2 shrink-0 transition-all glow-cyan">
-                                <i class="fas fa-file-image"></i> Uploader l'Affiche
-                                <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-posterImg', 'preview-poster')">
-                            </label>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Légende</label>
-                            <input type="text" id="cfg-posterCaption" class="w-full px-4 py-2.5 glass-input rounded-xl text-xs">
-                        </div>
-                        <div id="preview-poster-box" class="mt-3 hidden">
-                            <p class="text-[10px] text-slate-400 mb-1">Aperçu :</p>
-                            <img id="preview-poster" src="" class="h-32 w-auto object-contain bg-white/10 p-2 rounded-xl">
-                        </div>
+
+                        <div id="posters-admin-container" class="space-y-4"></div>
                     </div>
                 </div>
             </div>
@@ -468,9 +460,14 @@
                 heroTitle: "Ensemble pour les enfants de Petit-Cœur !",
                 heroDesc: "Association de parents d'élèves (APE) bénévoles dédiée au financement des sorties scolaires, projets pédagogiques et animations des écoles de notre village.",
                 logoImg: "image_736dff.jpg",
-                posterImg: "image_736dff.jpg",
                 posterHeading: "À l'Affiche !",
-                posterCaption: "Prochain événement du Sou des Écoles",
+                postersList: [
+                    {
+                        title: "Prochain événement du Sou des Écoles",
+                        imgUrl: "image_736dff.jpg",
+                        btnText: "Télécharger l'affiche"
+                    }
+                ],
                 adminPassword: "admin123"
             },
             about: {
@@ -565,9 +562,7 @@
             document.getElementById('cfg-heroTitle').value = g.heroTitle || '';
             document.getElementById('cfg-heroDesc').value = g.heroDesc || '';
             document.getElementById('cfg-logoImg').value = g.logoImg || '';
-            document.getElementById('cfg-posterImg').value = g.posterImg || '';
-            document.getElementById('cfg-posterHeading').value = g.posterHeading || '';
-            document.getElementById('cfg-posterCaption').value = g.posterCaption || '';
+            document.getElementById('cfg-posterHeading').value = g.posterHeading || 'À l\'Affiche !';
 
             document.getElementById('cfg-aboutTag').value = ab.tag || DEFAULT_DATA.about.tag;
             document.getElementById('cfg-aboutTitle').value = ab.title || DEFAULT_DATA.about.title;
@@ -599,9 +594,92 @@
             document.getElementById('cfg-contactPhone').value = ct.phone || DEFAULT_DATA.contact.phone;
             document.getElementById('cfg-contactAddress').value = ct.address || DEFAULT_DATA.contact.address;
 
+            renderPostersAdmin();
             renderDocumentsAdmin();
             renderUpcomingEvents();
             renderPastEvents();
+        }
+
+        // GESTION DES AFFICHES MULTIPLES DANS L'ADMIN
+        function renderPostersAdmin() {
+            const container = document.getElementById('posters-admin-container');
+            container.innerHTML = '';
+            
+            if (!appData.general.postersList) {
+                if (appData.general.posterImg) {
+                    appData.general.postersList = [{
+                        title: appData.general.posterCaption || "Affiche de l'événement",
+                        imgUrl: appData.general.posterImg,
+                        btnText: "Télécharger l'affiche"
+                    }];
+                } else {
+                    appData.general.postersList = [];
+                }
+            }
+
+            const list = appData.general.postersList;
+
+            if (list.length === 0) {
+                container.innerHTML = '<p class="text-slate-500 text-xs italic">Aucune affiche configurée. Cliquez sur "Ajouter une Affiche".</p>';
+                return;
+            }
+
+            list.forEach((p, index) => {
+                container.innerHTML += `
+                    <div class="p-4 bg-cyber-bg rounded-2xl border border-cyber-border space-y-3 relative">
+                        <button type="button" onclick="removePosterItem(${index})" class="absolute top-4 right-4 text-cyber-pink hover:text-rose-400 text-xs font-bold">
+                            <i class="fas fa-trash-can mr-1"></i> Supprimer
+                        </button>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-20">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Description / Légende</label>
+                                <input type="text" value="${p.title || ''}" onchange="appData.general.postersList[${index}].title = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Texte du bouton télécharger</label>
+                                <input type="text" value="${p.btnText || 'Télécharger'}" onchange="appData.general.postersList[${index}].btnText = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <input type="text" id="poster-url-${index}" value="${p.imgUrl || ''}" onchange="appData.general.postersList[${index}].imgUrl = this.value" placeholder="URL ou fichier encodé..." class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                            <label class="cursor-pointer px-4 py-2 bg-cyber-cyan hover:bg-cyan-400 text-slate-900 font-title font-bold text-xs rounded-xl flex items-center justify-center gap-2 shrink-0 transition-all glow-cyan">
+                                <i class="fas fa-file-image"></i> Importer Image / PDF
+                                <input type="file" accept="image/*,application/pdf" class="hidden" onchange="processPosterFile(event, ${index})">
+                            </label>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function addPosterItem() {
+            if (!appData.general.postersList) appData.general.postersList = [];
+            appData.general.postersList.push({
+                title: "Nouvelle Affiche",
+                imgUrl: "image_736dff.jpg",
+                btnText: "Télécharger l'affiche"
+            });
+            renderPostersAdmin();
+        }
+
+        function removePosterItem(index) {
+            appData.general.postersList.splice(index, 1);
+            renderPostersAdmin();
+        }
+
+        function processPosterFile(e, index) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                appData.general.postersList[index].imgUrl = evt.target.result;
+                document.getElementById(`poster-url-${index}`).value = evt.target.result;
+                showStatusToast("Affiche chargée avec succès !", "success");
+            };
+            reader.readAsDataURL(file);
         }
 
         function renderDocumentsAdmin() {
@@ -853,9 +931,7 @@
             appData.general.heroTitle = document.getElementById('cfg-heroTitle').value;
             appData.general.heroDesc = document.getElementById('cfg-heroDesc').value;
             appData.general.logoImg = document.getElementById('cfg-logoImg').value;
-            appData.general.posterImg = document.getElementById('cfg-posterImg').value;
             appData.general.posterHeading = document.getElementById('cfg-posterHeading').value;
-            appData.general.posterCaption = document.getElementById('cfg-posterCaption').value;
 
             if (!appData.about) appData.about = {};
             appData.about.tag = document.getElementById('cfg-aboutTag').value;

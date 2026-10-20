@@ -142,29 +142,15 @@
                         </div>
                     </div>
 
-                    <!-- 3. À DROITE : AFFICHE ET BOUTON TÉLÉCHARGER -->
-                    <div class="flex justify-center">
-                        <div class="p-2 max-w-xs transform rotate-2 hover:rotate-0 transition-all w-full text-center">
-                            <h3 class="font-title font-bold text-white text-base mb-3 flex items-center justify-center gap-2 drop-shadow-md">
-                                <i class="fa-solid fa-bullhorn text-brand-yellow"></i>
-                                <span id="poster-heading">À l'Affiche !</span>
-                            </h3>
-                            <div class="overflow-hidden cursor-pointer group rounded-2xl aspect-square bg-white shadow-2xl flex items-center justify-center p-2 border border-white/20 hover:scale-105 transition-transform" onclick="openLightbox(document.getElementById('poster-img').src, document.getElementById('poster-caption').textContent || 'Affiche événement')">
-                                <img id="poster-img" 
-                                     src="image_736dff.jpg" 
-                                     alt="Affiche événement" 
-                                     class="w-full h-full object-contain rounded-xl">
-                            </div>
-                            <p id="poster-caption" class="text-xs text-sky-100 mt-2 font-medium">Prochain événement du Sou des Écoles</p>
-                            
-                            <!-- BOUTON TÉLÉCHARGER / OUVRIR L'AFFICHE -->
-                            <div class="mt-3">
-                                <a id="poster-download-btn" href="#" target="_blank" download class="inline-flex items-center gap-2 bg-brand-yellow hover:bg-amber-300 text-gray-900 font-title font-bold text-xs px-4 py-2 rounded-xl shadow-md transition-all">
-                                    <i class="fa-solid fa-download"></i>
-                                    <span>Télécharger l'affiche</span>
-                                </a>
-                            </div>
-                        </div>
+                    <!-- 3. À DROITE : À L'AFFICHE (LISTE DYNAMIQUE) -->
+                    <div class="flex flex-col items-center">
+                        <h3 class="font-title font-bold text-white text-base mb-3 flex items-center justify-center gap-2 drop-shadow-md">
+                            <i class="fa-solid fa-bullhorn text-brand-yellow"></i>
+                            <span id="poster-heading">À l'Affiche !</span>
+                        </h3>
+                        
+                        <!-- CONTENEUR DES AFFICHES / BOUTONS -->
+                        <div id="posters-list-container" class="w-full max-w-xs space-y-4"></div>
                     </div>
 
                 </div>
@@ -311,9 +297,14 @@
                 heroTitle: "Ensemble pour les enfants de Petit-Cœur !",
                 heroDesc: "Association de parents d'élèves (APE) bénévoles dédiée au financement des sorties scolaires, projets pédagogiques et animations des écoles de notre village.",
                 logoImg: "image_736dff.jpg",
-                posterImg: "image_736dff.jpg",
                 posterHeading: "À l'Affiche !",
-                posterCaption: "Prochain événement du Sou des Écoles"
+                postersList: [
+                    {
+                        title: "Prochain événement du Sou des Écoles",
+                        imgUrl: "image_736dff.jpg",
+                        btnText: "Télécharger l'affiche"
+                    }
+                ]
             },
             about: {
                 tag: "Présentation",
@@ -376,6 +367,54 @@
             if (document.getElementById('hero-title')) document.getElementById('hero-title').textContent = gen.heroTitle || defaultSiteData.general.heroTitle;
             if (document.getElementById('hero-description')) document.getElementById('hero-description').innerHTML = parseTextLinks(gen.heroDesc || defaultSiteData.general.heroDesc);
 
+            // GESTION DU LOGO
+            const logoImg = document.getElementById('logo-img');
+            if (logoImg) {
+                const targetSrc = gen.logoImg || gen.heroImg || defaultSiteData.general.logoImg;
+                if (targetSrc && logoImg.src !== targetSrc) logoImg.src = targetSrc;
+            }
+
+            // GESTION DYNAMIQUE DES AFFICHES / BOUTONS
+            if (document.getElementById('poster-heading')) document.getElementById('poster-heading').textContent = gen.posterHeading || defaultSiteData.general.posterHeading;
+            
+            const postersContainer = document.getElementById('posters-list-container');
+            if (postersContainer) {
+                postersContainer.innerHTML = '';
+                let posters = gen.postersList;
+                
+                // Rétrocompatibilité si ancienne structure
+                if (!posters || posters.length === 0) {
+                    if (gen.posterImg) {
+                        posters = [{
+                            title: gen.posterCaption || "Affiche de l'événement",
+                            imgUrl: gen.posterImg,
+                            btnText: "Télécharger l'affiche"
+                        }];
+                    } else {
+                        posters = defaultSiteData.general.postersList;
+                    }
+                }
+
+                posters.forEach(p => {
+                    const posterTitle = p.title || 'Affiche événement';
+                    const imgUrl = p.imgUrl || 'image_736dff.jpg';
+                    const btnLabel = p.btnText || 'Télécharger';
+
+                    postersContainer.innerHTML += `
+                        <div class="bg-white/10 backdrop-blur-md p-3 rounded-2xl border border-white/20 shadow-xl flex flex-col items-center text-center">
+                            <div class="overflow-hidden cursor-pointer group rounded-xl aspect-square w-full bg-white flex items-center justify-center p-2 mb-2 hover:scale-[1.02] transition-transform" onclick="openLightbox('${imgUrl}', '${posterTitle.replace(/'/g, "\\'")}')">
+                                <img src="${imgUrl}" alt="${posterTitle}" class="w-full h-full object-contain rounded-lg">
+                            </div>
+                            <p class="text-xs text-sky-100 font-medium mb-3">${posterTitle}</p>
+                            <a href="${imgUrl}" target="_blank" download class="w-full inline-flex items-center justify-center gap-2 bg-brand-yellow hover:bg-amber-300 text-gray-900 font-title font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition-all active:scale-95">
+                                <i class="fa-solid fa-download"></i>
+                                <span>${btnLabel}</span>
+                            </a>
+                        </div>
+                    `;
+                });
+            }
+
             if (document.getElementById('about-tag')) document.getElementById('about-tag').textContent = ab.tag || defaultSiteData.about.tag;
             if (document.getElementById('about-title')) document.getElementById('about-title').textContent = ab.title || defaultSiteData.about.title;
             if (document.getElementById('about-desc')) document.getElementById('about-desc').innerHTML = parseTextLinks(ab.desc || defaultSiteData.about.desc);
@@ -429,23 +468,6 @@
             if (document.getElementById('contact-address-text')) {
                 document.getElementById('contact-address-text').textContent = ct.address || defaultSiteData.contact.address;
             }
-
-            const logoImg = document.getElementById('logo-img');
-            if (logoImg) {
-                const targetSrc = gen.logoImg || gen.heroImg || defaultSiteData.general.logoImg;
-                if (targetSrc && logoImg.src !== targetSrc) logoImg.src = targetSrc;
-            }
-
-            const posterImg = document.getElementById('poster-img');
-            const posterDownloadBtn = document.getElementById('poster-download-btn');
-            if (posterImg) {
-                const targetPoster = gen.posterImg || defaultSiteData.general.posterImg;
-                if (targetPoster && posterImg.src !== targetPoster) posterImg.src = targetPoster;
-                if (posterDownloadBtn) posterDownloadBtn.href = targetPoster;
-            }
-
-            if (document.getElementById('poster-heading')) document.getElementById('poster-heading').textContent = gen.posterHeading || defaultSiteData.general.posterHeading;
-            if (document.getElementById('poster-caption')) document.getElementById('poster-caption').textContent = gen.posterCaption || defaultSiteData.general.posterCaption;
 
             const upContainer = document.getElementById('events-upcoming-container');
             if (upContainer) {
