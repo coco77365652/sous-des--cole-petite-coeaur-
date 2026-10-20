@@ -134,27 +134,31 @@
                 </div>
 
                 <nav class="mt-8 space-y-2">
-                    <button type="button" onclick="switchTab('tab-general')" id="nav-tab-general" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
+                    <button type="button" onclick="switchTab('tab-general')" id="nav-tab-general" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
                         <i class="fas fa-sliders w-5 text-cyber-cyan"></i>
                         <span>Textes Accueil</span>
                     </button>
-                    <button type="button" onclick="switchTab('tab-about')" id="nav-tab-about" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
+                    <button type="button" onclick="switchTab('tab-about')" id="nav-tab-about" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
                         <i class="fas fa-users w-5 text-cyber-green"></i>
                         <span>Qui sommes-nous ?</span>
                     </button>
-                    <button type="button" onclick="switchTab('tab-images')" id="nav-tab-images" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
+                    <button type="button" onclick="switchTab('tab-docs')" id="nav-tab-docs" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
+                        <i class="fas fa-link w-5 text-rose-400"></i>
+                        <span>Liens & Documents PDF</span>
+                    </button>
+                    <button type="button" onclick="switchTab('tab-images')" id="nav-tab-images" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
                         <i class="fas fa-image w-5 text-cyber-pink"></i>
-                        <span>Logo & Affiche Événement</span>
+                        <span>Logo & Affiche</span>
                     </button>
-                    <button type="button" onclick="switchTab('tab-events')" id="nav-tab-events" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
+                    <button type="button" onclick="switchTab('tab-events')" id="nav-tab-events" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
                         <i class="fas fa-calendar-star w-5 text-amber-400"></i>
-                        <span>Prochains Événements</span>
+                        <span>Événements</span>
                     </button>
-                    <button type="button" onclick="switchTab('tab-gallery')" id="nav-tab-gallery" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
+                    <button type="button" onclick="switchTab('tab-gallery')" id="nav-tab-gallery" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
                         <i class="fas fa-photo-film w-5 text-cyber-purple"></i>
                         <span>Galerie Photos</span>
                     </button>
-                    <button type="button" onclick="switchTab('tab-contact')" id="nav-tab-contact" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
+                    <button type="button" onclick="switchTab('tab-contact')" id="nav-tab-contact" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
                         <i class="fas fa-envelope w-5 text-sky-400"></i>
                         <span>Nous Contacter</span>
                     </button>
@@ -211,7 +215,7 @@
                             <input type="text" id="cfg-heroTitle" class="w-full px-4 py-3 glass-input rounded-2xl font-bold text-base text-cyber-cyan">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Description</label>
+                            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Description (Vous pouvez y coller vos codes [LIEN:...])</label>
                             <textarea id="cfg-heroDesc" rows="3" class="w-full px-4 py-3 glass-input rounded-2xl text-sm leading-relaxed"></textarea>
                         </div>
                     </div>
@@ -249,11 +253,10 @@
                             <input type="text" id="cfg-aboutBlock1Title" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-bold mb-2">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-400 mb-1">Texte du bloc 1</label>
+                            <label class="block text-[10px] font-bold text-slate-400 mb-1">Texte du bloc 1 (Supporte les liens [LIEN:...])</label>
                             <textarea id="cfg-aboutBlock1Text" rows="3" class="w-full px-3 py-2 glass-input rounded-xl text-xs"></textarea>
                         </div>
 
-                        <!-- AJOUT PHOTO BLOC 1 COMPRESSÉE -->
                         <div class="pt-3 border-t border-cyber-border/60 space-y-3">
                             <h5 class="font-title font-bold text-xs text-cyber-cyan flex items-center gap-2">
                                 <i class="fas fa-image"></i> Photo d'illustration Bloc 1
@@ -284,20 +287,19 @@
                             <textarea id="cfg-aboutBlock2Text" rows="3" class="w-full px-3 py-2 glass-input rounded-xl text-xs italic"></textarea>
                         </div>
 
-                        <!-- AJOUT FICHIER TÉLÉCHARGEABLE MOT DU BUREAU -->
                         <div class="pt-3 border-t border-cyber-border/60 space-y-3">
                             <h5 class="font-title font-bold text-xs text-cyber-pink flex items-center gap-2">
-                                <i class="fas fa-file-arrow-down"></i> Document téléchargeable joint
+                                <i class="fas fa-file-pdf"></i> Document à ouvrir dans le navigateur
                             </h5>
                             <div>
                                 <label class="block text-[10px] font-bold text-slate-400 mb-1">Texte du bouton</label>
-                                <input type="text" id="cfg-aboutFileBtnText" placeholder="Télécharger le document (PDF)..." class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                                <input type="text" id="cfg-aboutFileBtnText" placeholder="Consulter les Statuts (PDF)..." class="w-full px-3 py-2 glass-input rounded-xl text-xs">
                             </div>
                             <div class="flex flex-col sm:flex-row gap-3">
-                                <input type="text" id="cfg-aboutFileUrl" placeholder="URL ou fichier encodé..." class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                                <input type="text" id="cfg-aboutFileUrl" placeholder="URL ou PDF encodé..." class="w-full px-3 py-2 glass-input rounded-xl text-xs">
                                 <label class="cursor-pointer px-4 py-2 bg-cyber-pink hover:bg-rose-600 text-white font-title font-bold text-xs rounded-xl flex items-center justify-center gap-2 shrink-0 transition-all glow-pink">
-                                    <i class="fas fa-upload"></i> Choisir Fichier (PDF/Doc)
-                                    <input type="file" class="hidden" onchange="processGenericFile(event, 'cfg-aboutFileUrl')">
+                                    <i class="fas fa-upload"></i> Choisir Fichier (PDF)
+                                    <input type="file" accept="application/pdf" class="hidden" onchange="processGenericFile(event, 'cfg-aboutFileUrl')">
                                 </label>
                             </div>
                         </div>
@@ -305,14 +307,38 @@
                 </div>
             </div>
 
-            <!-- ONGLET 3 : LOGO ET AFFICHE -->
+            <!-- ONGLET 3 : GESTION DES DOCUMENTS & GÉNÉRATEUR DE LIENS -->
+            <div id="tab-docs" class="tab-content hidden space-y-6">
+                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+                    <div class="flex justify-between items-center border-b border-cyber-border pb-4">
+                        <h3 class="font-title text-lg font-bold text-white flex items-center gap-2">
+                            <i class="fas fa-link text-rose-400"></i> Générateur de LiensTéléchargeables / PDF
+                        </h3>
+                        <button type="button" onclick="addDocumentItem()" class="px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white font-title font-bold text-xs rounded-xl transition-all flex items-center gap-2">
+                            <i class="fas fa-plus"></i> Ajouter un Document
+                        </button>
+                    </div>
+
+                    <div class="bg-rose-500/10 border border-rose-500/30 p-4 rounded-2xl text-xs text-slate-300 space-y-2">
+                        <p class="font-bold text-rose-300 flex items-center gap-2"><i class="fas fa-lightbulb"></i> Comment insérer un lien dans un texte ?</p>
+                        <ol class="list-decimal list-inside space-y-1 text-slate-400">
+                            <li>Créez votre document ci-dessous et donnez-lui un <strong>Identifiant court (ex: statuts)</strong>.</li>
+                            <li>Copiez le code généré : <code class="text-cyber-cyan bg-black/40 px-2 py-0.5 rounded font-mono">[LIEN:statuts|Consulter les Statuts]</code></li>
+                            <li>Collez ce code dans <strong>n'importe quel texte du site</strong> (Accueil, Présentation, Événements...). Il se transformera en un bouton cliquable qui ouvre le PDF !</li>
+                        </ol>
+                    </div>
+
+                    <div id="documents-admin-container" class="space-y-4"></div>
+                </div>
+            </div>
+
+            <!-- ONGLET 4 : LOGO ET AFFICHE -->
             <div id="tab-images" class="tab-content hidden space-y-6">
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
                     <h3 class="font-title text-lg font-bold text-white flex items-center gap-2 border-b border-cyber-border pb-4">
                         <i class="fas fa-icons text-cyber-pink"></i> Images Principales
                     </h3>
 
-                    <!-- BLOC LOGO GAUCHE -->
                     <div class="p-6 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
                         <h4 class="font-title font-bold text-white text-sm"><i class="fas fa-heart text-cyber-pink mr-2"></i> Logo de l'APE (Gauche)</h4>
                         <div class="flex flex-col sm:flex-row gap-3">
@@ -328,7 +354,6 @@
                         </div>
                     </div>
 
-                    <!-- BLOC AFFICHE PROCHAIN ÉVÉNEMENT -->
                     <div class="p-6 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
                         <div class="flex justify-between items-center">
                             <h4 class="font-title font-bold text-white text-sm"><i class="fas fa-bullhorn text-amber-400 mr-2"></i> Affiche du Prochain Événement (Droite)</h4>
@@ -357,7 +382,7 @@
                 </div>
             </div>
 
-            <!-- ONGLET 4 : PROCHAINS EVENEMENTS -->
+            <!-- ONGLET 5 : PROCHAINS EVENEMENTS -->
             <div id="tab-events" class="tab-content hidden space-y-6">
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
                     <div class="flex justify-between items-center border-b border-cyber-border pb-4">
@@ -373,7 +398,7 @@
                 </div>
             </div>
 
-            <!-- ONGLET 5 : GALERIE ET PHOTOS -->
+            <!-- ONGLET 6 : GALERIE ET PHOTOS -->
             <div id="tab-gallery" class="tab-content hidden space-y-6">
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
                     <div class="flex justify-between items-center border-b border-cyber-border pb-4">
@@ -389,7 +414,7 @@
                 </div>
             </div>
 
-            <!-- ONGLET 6 : NOUS CONTACTER -->
+            <!-- ONGLET 7 : NOUS CONTACTER -->
             <div id="tab-contact" class="tab-content hidden space-y-6">
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
                     <h3 class="font-title text-lg font-bold text-white flex items-center gap-2 border-b border-cyber-border pb-4">
@@ -432,7 +457,7 @@
                 </div>
             </div>
 
-            <!-- BOUTON D'ENREGISTREMENT EN BAS -->
+            <!-- BOUTON D'ENREGISTREMENT -->
             <div class="mt-8 pt-6 border-t border-cyber-border flex justify-end">
                 <button type="button" onclick="globalSaveData()" id="save-btn" class="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-cyber-cyan via-brand-blue to-cyber-pink text-slate-900 font-title font-black text-sm tracking-wider uppercase rounded-2xl shadow-2xl transition-all duration-300 hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3 cursor-pointer">
                     <i class="fas fa-floppy-disk text-base"></i>
@@ -467,8 +492,16 @@
                 block2Title: "Le Mot du Bureau",
                 block2Text: "« Chaque événement est une belle aventure humaine. Un grand merci à tous les parents, enseignants et partenaires de la commune de La Léchère pour leur précieux soutien ! »",
                 fileUrl: "",
-                fileBtnText: "Télécharger le document"
+                fileBtnText: "Consulter les Statuts (PDF)"
             },
+            documents: [
+                {
+                    key: "statuts",
+                    title: "Statuts du Sou des Écoles Petit-Cœur",
+                    desc: "Statuts officiels régissant l'association (Loi 1901).",
+                    url: "image_736dff.jpg"
+                }
+            ],
             contact: {
                 tag: "Coordonnées",
                 title: "Nous Contacter",
@@ -545,7 +578,6 @@
             document.getElementById('cfg-posterHeading').value = g.posterHeading || '';
             document.getElementById('cfg-posterCaption').value = g.posterCaption || '';
 
-            // CHARGEMENT QUI SOMMES NOUS
             document.getElementById('cfg-aboutTag').value = ab.tag || DEFAULT_DATA.about.tag;
             document.getElementById('cfg-aboutTitle').value = ab.title || DEFAULT_DATA.about.title;
             document.getElementById('cfg-aboutDesc').value = ab.desc || DEFAULT_DATA.about.desc;
@@ -567,9 +599,8 @@
             document.getElementById('cfg-aboutBlock2Title').value = ab.block2Title || DEFAULT_DATA.about.block2Title;
             document.getElementById('cfg-aboutBlock2Text').value = ab.block2Text || DEFAULT_DATA.about.block2Text;
             document.getElementById('cfg-aboutFileUrl').value = ab.fileUrl || '';
-            document.getElementById('cfg-aboutFileBtnText').value = ab.fileBtnText || 'Télécharger le document';
+            document.getElementById('cfg-aboutFileBtnText').value = ab.fileBtnText || 'Consulter les Statuts (PDF)';
 
-            // CHARGEMENT NOUS CONTACTER
             document.getElementById('cfg-contactTag').value = ct.tag || DEFAULT_DATA.contact.tag;
             document.getElementById('cfg-contactTitle').value = ct.title || DEFAULT_DATA.contact.title;
             document.getElementById('cfg-contactDesc').value = ct.desc || DEFAULT_DATA.contact.desc;
@@ -577,8 +608,93 @@
             document.getElementById('cfg-contactPhone').value = ct.phone || DEFAULT_DATA.contact.phone;
             document.getElementById('cfg-contactAddress').value = ct.address || DEFAULT_DATA.contact.address;
 
+            renderDocumentsAdmin();
             renderUpcomingEvents();
             renderPastEvents();
+        }
+
+        // GESTION DES DOCUMENTS DANS L'ADMIN AVEC CODE À COPIER
+        function renderDocumentsAdmin() {
+            const container = document.getElementById('documents-admin-container');
+            container.innerHTML = '';
+            const docs = appData.documents || DEFAULT_DATA.documents;
+
+            if (docs.length === 0) {
+                container.innerHTML = '<p class="text-slate-500 text-xs italic">Aucun document ajouté. Cliquez sur Ajouter un Document.</p>';
+                return;
+            }
+
+            docs.forEach((doc, index) => {
+                const keyClean = (doc.key || 'doc' + (index + 1)).toLowerCase().replace(/[^a-z0-9_\-]/g, '');
+                const codeSnippet = `[LIEN:${keyClean}|${doc.title || 'Consulter le document'}]`;
+
+                container.innerHTML += `
+                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-4 relative">
+                        <button type="button" onclick="removeDocumentItem(${index})" class="absolute top-4 right-4 text-cyber-pink hover:text-rose-400 text-xs font-bold">
+                            <i class="fas fa-trash-can mr-1"></i> Supprimer
+                        </button>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pr-24">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Identifiant unique (ex: statuts)</label>
+                                <input type="text" value="${keyClean}" onchange="appData.documents[${index}].key = this.value; renderDocumentsAdmin();" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-mono font-bold text-cyber-cyan">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Titre du document</label>
+                                <input type="text" value="${doc.title || ''}" onchange="appData.documents[${index}].title = this.value; renderDocumentsAdmin();" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Description courte</label>
+                                <input type="text" value="${doc.desc || ''}" onchange="appData.documents[${index}].desc = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <input type="text" id="doc-url-${index}" value="${doc.url || ''}" onchange="appData.documents[${index}].url = this.value" placeholder="Lien du PDF ou fichier encodé..." class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                            <label class="cursor-pointer px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white font-title font-bold text-xs rounded-xl flex items-center justify-center gap-2 shrink-0 transition-all shadow-md">
+                                <i class="fas fa-file-arrow-up"></i> Importer le PDF
+                                <input type="file" accept="application/pdf" class="hidden" onchange="processDocumentFile(event, ${index})">
+                            </label>
+                        </div>
+
+                        <!-- BLOC CODE À COPIER POUR L'INSÉRER DANS LE TEXTE -->
+                        <div class="p-3 bg-black/40 rounded-xl border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <span class="text-[11px] text-slate-400">Code à coller dans vos textes :</span>
+                            <div class="flex items-center gap-2">
+                                <code class="text-xs text-cyber-cyan font-mono font-bold px-2.5 py-1 bg-cyber-bg rounded-lg border border-cyber-border">${codeSnippet}</code>
+                                <button type="button" onclick="navigator.clipboard.writeText('${codeSnippet}'); showStatusToast('Code copié ! Collez-le dans votre texte.', 'success');" class="px-3 py-1 bg-cyber-cyan text-slate-900 font-title font-bold text-[11px] rounded-lg hover:bg-cyan-300 transition-colors">
+                                    <i class="fas fa-copy mr-1"></i> Copier
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function addDocumentItem() {
+            if (!appData.documents) appData.documents = [];
+            const newKey = "doc" + (appData.documents.length + 1);
+            appData.documents.push({ key: newKey, title: "Nouveau Document", desc: "Description du document PDF.", url: "" });
+            renderDocumentsAdmin();
+        }
+
+        function removeDocumentItem(index) {
+            appData.documents.splice(index, 1);
+            renderDocumentsAdmin();
+        }
+
+        function processDocumentFile(e, index) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                appData.documents[index].url = evt.target.result;
+                document.getElementById(`doc-url-${index}`).value = evt.target.result;
+                showStatusToast("Document PDF importé avec succès !", "success");
+            };
+            reader.readAsDataURL(file);
         }
 
         function renderUpcomingEvents() {
@@ -607,6 +723,10 @@
                                 <input type="text" value="${ev.date || ''}" onchange="appData.upcomingEvents[${index}].date = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
                             </div>
                         </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 mb-1">Description (Supporte les liens [LIEN:...])</label>
+                            <textarea onchange="appData.upcomingEvents[${index}].desc = this.value" rows="2" class="w-full px-3 py-2 glass-input rounded-xl text-xs">${ev.desc || ev.description || ''}</textarea>
+                        </div>
                     </div>
                 `;
             });
@@ -614,7 +734,7 @@
 
         function addUpcomingEvent() {
             if (!appData.upcomingEvents) appData.upcomingEvents = [];
-            appData.upcomingEvents.push({ title: "Nouvel Événement", date: "Prochainement", time: "14h00", location: "École de Petit-Cœur" });
+            appData.upcomingEvents.push({ title: "Nouvel Événement", date: "Prochainement", time: "14h00", location: "École de Petit-Cœur", desc: "" });
             renderUpcomingEvents();
         }
 
@@ -666,7 +786,7 @@
                         </div>
 
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-400 mb-1">Texte de description sous le titre</label>
+                            <label class="block text-[10px] font-bold text-slate-400 mb-1">Texte de description (Supporte les liens [LIEN:...])</label>
                             <textarea onchange="appData.pastEvents[${index}].desc = this.value" rows="2" class="w-full px-3 py-2 glass-input rounded-xl text-xs">${pev.desc || pev.description || ''}</textarea>
                         </div>
 
@@ -752,7 +872,6 @@
             appData.general.posterHeading = document.getElementById('cfg-posterHeading').value;
             appData.general.posterCaption = document.getElementById('cfg-posterCaption').value;
 
-            // SAUVEGARDE QUI SOMMES NOUS ET DOCUMENT
             if (!appData.about) appData.about = {};
             appData.about.tag = document.getElementById('cfg-aboutTag').value;
             appData.about.title = document.getElementById('cfg-aboutTitle').value;
@@ -769,7 +888,6 @@
             appData.about.fileUrl = document.getElementById('cfg-aboutFileUrl').value;
             appData.about.fileBtnText = document.getElementById('cfg-aboutFileBtnText').value;
 
-            // SAUVEGARDE NOUS CONTACTER
             if (!appData.contact) appData.contact = {};
             appData.contact.tag = document.getElementById('cfg-contactTag').value;
             appData.contact.title = document.getElementById('cfg-contactTitle').value;
@@ -801,7 +919,7 @@
             if (localSuccess) {
                 showStatusToast("OUI ! Enregistré avec succès !", "success");
             } else {
-                showStatusToast("ATTENTION : Image trop lourde ! Utilisez un lien d'image.", "error");
+                showStatusToast("ATTENTION : Erreur d'enregistrement.", "error");
             }
         }
 
@@ -819,7 +937,7 @@
             const reader = new FileReader();
             reader.onload = function(evt) {
                 document.getElementById(targetId).value = evt.target.result;
-                showStatusToast("Fichier prêt et encodé !", "success");
+                showStatusToast("Fichier PDF prêt et chargé !", "success");
             };
             reader.readAsDataURL(file);
         }
