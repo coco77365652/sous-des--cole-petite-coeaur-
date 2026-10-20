@@ -178,16 +178,18 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch mb-12">
-                <!-- BLOC 1 : NOTRE MISSION AVEC PHOTO -->
+                <!-- BLOC 1 : NOTRE MISSION AVEC PHOTO AJUSTÉE -->
                 <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-sm space-y-4 flex flex-col justify-between">
                     <div class="space-y-4">
                         <h3 id="about-block1-title" class="font-title text-2xl font-bold text-gray-900 flex items-center gap-3">
                             <i class="fa-solid fa-users text-brand-blue"></i> Notre Mission
                         </h3>
-                        <!-- PHOTO BLOC 1 -->
-                        <div id="about-block1-img-box" class="hidden overflow-hidden rounded-2xl my-3 cursor-pointer group border border-amber-100/60 shadow-sm" onclick="openLightbox(document.getElementById('about-block1-img').src, 'Photo - Notre Mission')">
-                            <img id="about-block1-img" src="" alt="Notre Mission" class="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-300">
+                        
+                        <!-- PHOTO BLOC 1 : COMPORTEMENT ET DIMENTIONS AJUSTÉS -->
+                        <div id="about-block1-img-box" class="hidden overflow-hidden rounded-2xl my-3 cursor-pointer group border border-amber-100/60 bg-amber-50/40 p-2 shadow-inner" onclick="openLightbox(document.getElementById('about-block1-img').src, 'Photo - Notre Mission')">
+                            <img id="about-block1-img" src="" alt="Notre Mission" class="w-full h-auto max-h-64 object-contain mx-auto group-hover:scale-105 transition-transform duration-300 rounded-xl">
                         </div>
+
                         <p id="about-block1-text" class="text-gray-600 leading-relaxed text-base">
                             Organiser des manifestations tout au long de l'année afin de financer les projets éducatifs, sorties scolaires, achats de matériel et spectacles pour nos enfants.
                         </p>
@@ -363,7 +365,7 @@
             if (document.getElementById('about-block1-title')) document.getElementById('about-block1-title').innerHTML = `<i class="fa-solid fa-users text-brand-blue"></i> ${ab.block1Title || defaultSiteData.about.block1Title}`;
             if (document.getElementById('about-block1-text')) document.getElementById('about-block1-text').textContent = ab.block1Text || defaultSiteData.about.block1Text;
             
-            // GESTION CORRIGÉE DE LA PHOTO DU BLOC 1
+            // GESTION AJUSTÉE DE LA PHOTO DU BLOC 1
             const b1ImgBox = document.getElementById('about-block1-img-box');
             const b1Img = document.getElementById('about-block1-img');
             const block1Photo = ab.block1Img || ab.block1Photo || "";
@@ -521,7 +523,7 @@
             } catch (err) {}
         }
 
-        // ÉCOUTEUR AUTOMATIQUE DES MODIFICATIONS ENTRE ONGLETS
+        // SYNCHRONISATION ENTRE ONGLETS
         window.addEventListener('storage', (e) => {
             if (e.key === 'sou_petit_coeur_data' || e.key === 'sou_app_data') {
                 loadInitialData();
