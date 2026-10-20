@@ -1,19 +1,15 @@
 <!DOCTYPE html>
-<html lang="fr" class="h-full bg-slate-900">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administration Ultra Modern - APE Petit-Cœur</title>
-    
+    <title>Administration - APE de Petit-Cœur</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
@@ -21,493 +17,192 @@
         const SUPABASE_ANON_KEY = 'sb_publishable_6Q9vML3WwH7_8n5Ipvo-3g_DRZx_VPK';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     </script>
-
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#fff1f2',
-                            100: '#ffe4e6',
-                            500: '#f43f5e',
-                            600: '#e11d48',
-                            700: '#be123c',
-                            blue: '#3b82f6',
-                            purple: '#8b5cf6',
-                            emerald: '#10b981',
-                            amber: '#f59e0b'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        heading: ['Outfit', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #475569; }
-        
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        
-        .glass-card {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .glow-effect {
-            box-shadow: 0 0 25px -5px rgba(225, 29, 72, 0.25);
-        }
-    </style>
 </head>
-<body class="h-full font-sans text-slate-100 bg-slate-950 antialiased selection:bg-brand-500 selection:text-white custom-scrollbar overflow-x-hidden">
+<body class="bg-slate-100 font-sans text-slate-800 antialiased min-h-screen flex flex-col">
 
-    <!-- TOAST NOTIFICATION CONTAINER -->
-    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-32 opacity-0 transition-all duration-300 pointer-events-none">
-        <div class="glass-panel text-white px-5 py-4 rounded-2xl shadow-2xl border border-white/10 flex items-center gap-4 min-w-[320px]">
-            <div id="toast-icon-bg" class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
-                <i id="toast-icon" class="fas fa-check text-lg"></i>
-            </div>
-            <div>
-                <h4 id="toast-title" class="font-heading font-bold text-sm text-white">Notification</h4>
-                <p id="toast-message" class="text-xs text-slate-300">Action exécutée avec succès.</p>
-            </div>
-        </div>
+    <!-- OVERLAY NOTIFICATION -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3">
+        <i id="toast-icon" class="fas fa-check-circle text-emerald-400 text-xl"></i>
+        <span id="toast-message" class="text-sm font-semibold">Action réussie !</span>
     </div>
 
     <!-- ECRAN DE CONNEXION (LOGIN) -->
-    <div id="login-view" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-xl flex items-center justify-center p-4">
-        <div class="max-w-md w-full glass-panel rounded-3xl p-8 shadow-2xl relative overflow-hidden border border-white/10 glow-effect">
-            <div class="absolute -top-24 -right-24 w-48 h-48 bg-brand-600/30 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
-
-            <div class="text-center mb-8 relative z-10">
-                <div class="w-20 h-20 bg-gradient-to-tr from-brand-600 to-amber-500 rounded-2xl flex items-center justify-center text-white mx-auto mb-4 text-3xl shadow-lg shadow-brand-600/30 transform hover:scale-105 transition-transform duration-300">
-                    <i class="fas fa-shield-halved"></i>
+    <div id="login-view" class="fixed inset-0 z-50 bg-slate-900 flex items-center justify-center p-4">
+        <div class="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8 relative overflow-hidden">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-rose-50 rounded-2xl flex items-center justify-center text-rose-600 mx-auto mb-4 text-2xl shadow-inner">
+                    <i class="fas fa-user-shield"></i>
                 </div>
-                <h1 class="font-heading text-2xl font-extrabold text-white tracking-wide">Espace Administration</h1>
-                <p class="text-slate-400 text-xs font-medium mt-1">APE de Petit-Cœur (La Léchère)</p>
+                <h1 class="font-bold text-2xl text-slate-900">Espace Administration</h1>
+                <p class="text-slate-500 text-sm mt-1">APE de Petit-Cœur</p>
             </div>
 
-            <form id="login-form" onsubmit="handleLogin(event)" class="space-y-5 relative z-10">
+            <form onsubmit="handleLogin(event)" class="space-y-5">
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Mot de passe d'accès</label>
-                    <div class="relative">
-                        <i class="fas fa-key absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                        <input type="password" id="admin-pass-input" placeholder="••••••••" required 
-                            class="w-full pl-11 pr-4 py-3.5 bg-slate-900/80 border border-slate-700/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent text-white placeholder-slate-500 text-sm font-medium transition">
-                    </div>
-                    <p id="login-error" class="text-rose-400 text-xs font-semibold mt-2 hidden flex items-center gap-1.5"><i class="fas fa-circle-exclamation"></i> Mot de passe incorrect.</p>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Mot de passe</label>
+                    <input type="password" id="admin-pass-input" placeholder="admin123" required 
+                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-rose-500 outline-none">
+                    <p id="login-error" class="text-rose-500 text-xs font-semibold mt-2 hidden"><i class="fas fa-exclamation-circle mr-1"></i> Mot de passe incorrect.</p>
                 </div>
-                <button type="submit" class="w-full py-4 px-6 bg-gradient-to-r from-brand-600 to-rose-500 hover:from-brand-700 hover:to-rose-600 text-white font-bold rounded-xl shadow-lg shadow-brand-600/25 transition-all transform active:scale-98 flex items-center justify-center gap-2 cursor-pointer">
-                    <span>Accéder au Dashboard</span>
-                    <i class="fas fa-arrow-right text-xs"></i>
+                <button type="submit" class="w-full py-3.5 px-6 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl shadow-lg transition-all">
+                    Connexion
                 </button>
             </form>
-
-            <div class="mt-8 pt-6 border-t border-slate-800/80 flex justify-between items-center text-xs text-slate-400 relative z-10">
-                <span>Pass par défaut : <code class="bg-slate-800 px-2 py-1 rounded text-amber-300 font-mono">admin123</code></span>
-                <a href="index.html" class="hover:text-brand-500 font-semibold transition flex items-center gap-1"><i class="fas fa-globe text-xs"></i> Voir le site</a>
-            </div>
         </div>
     </div>
 
-    <!-- INTERFACE DASHBOARD ADMIN -->
+    <!-- INTERFACE ADMIN -->
     <div id="admin-dashboard" class="hidden min-h-screen flex flex-col md:flex-row">
         
         <!-- SIDEBAR -->
-        <aside class="w-full md:w-72 bg-slate-900/90 border-r border-slate-800 flex-shrink-0 flex flex-col justify-between p-6 glass-panel z-30">
+        <aside class="w-full md:w-64 bg-slate-900 text-white flex-shrink-0 flex flex-col justify-between p-5 border-r border-slate-800">
             <div>
-                <!-- BRAND HEADER -->
-                <div class="flex items-center gap-3.5 pb-6 border-b border-slate-800/80">
-                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-600 to-amber-500 flex items-center justify-center text-white font-bold shadow-lg shadow-brand-600/30">
-                        <i class="fas fa-heart text-xl"></i>
+                <div class="flex items-center gap-3 pb-6 border-b border-slate-800">
+                    <div class="w-10 h-10 rounded-xl bg-rose-600 flex items-center justify-center text-white font-bold shadow-lg">
+                        <i class="fas fa-heart"></i>
                     </div>
                     <div>
-                        <h2 class="font-heading font-extrabold text-base leading-tight text-white">APE Petit-Cœur</h2>
-                        <span class="text-[10px] uppercase font-extrabold tracking-widest text-brand-400 bg-brand-500/10 border border-brand-500/20 px-2 py-0.5 rounded-full">Dashboard Ultra</span>
+                        <h2 class="font-bold text-sm text-white">APE Petit-Cœur</h2>
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-rose-400">Panneau Admin</span>
                     </div>
                 </div>
 
-                <!-- NAV MENU -->
                 <nav class="mt-6 space-y-2">
-                    <button type="button" onclick="switchTab('tab-overview')" id="nav-tab-overview" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 text-slate-400 hover:bg-slate-800/80 hover:text-white">
-                        <i class="fas fa-chart-pie w-5 text-indigo-400"></i>
-                        <span>Aperçu & KPIs</span>
-                    </button>
-                    <button type="button" onclick="switchTab('tab-general')" id="nav-tab-general" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 text-slate-400 hover:bg-slate-800/80 hover:text-white">
+                    <button type="button" onclick="switchTab('tab-general')" id="nav-tab-general" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
                         <i class="fas fa-sliders w-5 text-emerald-400"></i>
-                        <span>Configuration & Accueil</span>
+                        <span>Configuration Générale</span>
                     </button>
-                    <button type="button" onclick="switchTab('tab-projects')" id="nav-tab-projects" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 text-slate-400 hover:bg-slate-800/80 hover:text-white">
-                        <i class="fas fa-piggy-bank w-5 text-amber-400"></i>
-                        <span>Projets & Budget</span>
-                    </button>
-                    <button type="button" onclick="switchTab('tab-upcoming')" id="nav-tab-upcoming" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 text-slate-400 hover:bg-slate-800/80 hover:text-white">
-                        <i class="fas fa-calendar-alt w-5 text-purple-400"></i>
-                        <span>Agenda Événements</span>
-                    </button>
-                    <button type="button" onclick="switchTab('tab-past')" id="nav-tab-past" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 text-slate-400 hover:bg-slate-800/80 hover:text-white">
-                        <i class="fas fa-camera-retro w-5 text-pink-400"></i>
-                        <span>Albums Photos</span>
+                    <button type="button" onclick="switchTab('tab-projects')" id="nav-tab-projects" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
+                        <i class="fas fa-piggy-bank w-5 text-blue-400"></i>
+                        <span>Budget & Projets</span>
                     </button>
                 </nav>
             </div>
 
-            <!-- FOOTER ACTIONS SIDEBAR -->
-            <div class="pt-6 border-t border-slate-800/80 space-y-2.5">
-                <button type="button" onclick="exportDataJSON()" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold text-slate-300 bg-slate-800/60 hover:bg-slate-800 transition border border-slate-700/50 cursor-pointer">
-                    <span><i class="fas fa-download mr-2 text-blue-400"></i> Exporter sauvegarde</span>
-                </button>
-                <a href="index.html" target="_blank" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold text-slate-300 bg-slate-800/60 hover:bg-slate-800 transition border border-slate-700/50">
-                    <span><i class="fas fa-external-link-alt mr-2 text-brand-400"></i> Site public</span>
+            <div class="pt-6 border-t border-slate-800 space-y-2">
+                <a href="index.html" target="_blank" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold text-slate-300 bg-slate-800 hover:bg-slate-700 transition">
+                    <span><i class="fas fa-external-link-alt mr-2 text-rose-400"></i> Voir le site public</span>
                 </a>
-                <button type="button" onclick="logoutAdmin()" class="w-full flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-rose-400 hover:bg-rose-500/10 transition cursor-pointer">
-                    <i class="fas fa-arrow-right-from-bracket"></i>
+                <button type="button" onclick="logoutAdmin()" class="w-full flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-rose-400 hover:bg-rose-500/10 transition">
+                    <i class="fas fa-sign-out-alt"></i>
                     <span>Déconnexion</span>
                 </button>
             </div>
         </aside>
 
         <!-- CONTENU PRINCIPAL -->
-        <main class="flex-1 bg-slate-950 p-4 sm:p-8 overflow-y-auto custom-scrollbar">
+        <main class="flex-1 bg-slate-100 p-4 md:p-8 overflow-y-auto">
             
-            <!-- HEADER PRINCIPAL -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 bg-slate-900/60 p-6 rounded-3xl border border-slate-800/80 glass-card">
-                <div>
-                    <span class="text-xs font-bold uppercase tracking-widest text-brand-500 mb-1 block">Console de Gestion</span>
-                    <h1 class="font-heading text-2xl sm:text-3xl font-extrabold text-white">Panneau d'Administration</h1>
-                </div>
-                <div class="flex items-center gap-3">
-                    <span id="sync-status" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                        Synchronisé Supabase
-                    </span>
-                </div>
+            <div class="mb-8">
+                <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900">Administration du Site</h1>
+                <p class="text-slate-500 text-sm mt-1">Modifiez les informations et cliquez sur enregistrer.</p>
             </div>
 
-            <!-- TAB 0 : APERÇU & KPIS -->
-            <div id="tab-overview" class="tab-content hidden space-y-6">
-                <!-- CARTE DE KPIS -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                    <div class="glass-card p-6 rounded-3xl border border-slate-800 relative overflow-hidden">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="text-xs font-bold uppercase text-slate-400 tracking-wider">Budget Récolté</p>
-                                <h3 id="kpi-budget-current" class="text-2xl font-black font-heading text-emerald-400 mt-2">0 €</h3>
-                            </div>
-                            <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl">
-                                <i class="fas fa-wallet"></i>
-                            </div>
-                        </div>
-                        <div class="mt-4 w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-                            <div id="kpi-budget-bar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                        </div>
-                    </div>
+            <!-- TAB 1 : CONFIGURATION GÉNÉRALE -->
+            <div id="tab-general" class="tab-content space-y-6">
+                <!-- LE FORMULAIRE INTERCEPTE L'EVENEMENT ONSUBMIT POUR EMPÊCHER LE RECHARGEMENT -->
+                <form onsubmit="handleSaveGeneral(event)" class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm space-y-6">
+                    <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-4">
+                        <i class="fas fa-sliders text-rose-600 mr-2"></i> Informations d'en-tête & Bannières
+                    </h3>
 
-                    <div class="glass-card p-6 rounded-3xl border border-slate-800 relative overflow-hidden">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="text-xs font-bold uppercase text-slate-400 tracking-wider">Objectif Fixé</p>
-                                <h3 id="kpi-budget-target" class="text-2xl font-black font-heading text-amber-400 mt-2">0 €</h3>
-                            </div>
-                            <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl">
-                                <i class="fas fa-bullseye"></i>
-                            </div>
-                        </div>
-                        <p id="kpi-budget-percent" class="text-xs text-slate-400 mt-4 font-semibold">0% atteint</p>
-                    </div>
-
-                    <div class="glass-card p-6 rounded-3xl border border-slate-800 relative overflow-hidden">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="text-xs font-bold uppercase text-slate-400 tracking-wider">À venir</p>
-                                <h3 id="kpi-upcoming-count" class="text-2xl font-black font-heading text-purple-400 mt-2">0</h3>
-                            </div>
-                            <div class="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl">
-                                <i class="fas fa-calendar-check"></i>
-                            </div>
-                        </div>
-                        <p class="text-xs text-slate-400 mt-4 font-semibold">Événements programmés</p>
-                    </div>
-
-                    <div class="glass-card p-6 rounded-3xl border border-slate-800 relative overflow-hidden">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="text-xs font-bold uppercase text-slate-400 tracking-wider">Albums Photos</p>
-                                <h3 id="kpi-past-count" class="text-2xl font-black font-heading text-pink-400 mt-2">0</h3>
-                            </div>
-                            <div class="w-12 h-12 rounded-2xl bg-pink-500/10 text-pink-400 flex items-center justify-center text-xl">
-                                <i class="fas fa-images"></i>
-                            </div>
-                        </div>
-                        <p class="text-xs text-slate-400 mt-4 font-semibold">Albums sauvegardés</p>
-                    </div>
-                </div>
-
-                <!-- PREVISUALISATION RAPIDE DU BUDGET & AFFICHE -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="glass-card p-6 rounded-3xl border border-slate-800">
-                        <h3 class="font-heading font-bold text-lg text-white mb-4 flex items-center gap-2">
-                            <i class="fas fa-eye text-brand-500"></i> Aperçu de l'Affiche d'Événement
-                        </h3>
-                        <div class="flex flex-col sm:flex-row items-center gap-6 p-4 bg-slate-900/80 rounded-2xl border border-slate-800">
-                            <img id="overview-poster-preview" src="" alt="Affiche" class="w-32 h-40 object-cover rounded-xl shadow-md border border-slate-700/50">
-                            <div>
-                                <span class="text-[10px] uppercase font-bold text-amber-400 tracking-wider bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">Prochainement</span>
-                                <h4 id="overview-poster-title" class="font-heading font-bold text-white text-lg mt-2">Titre Affiche</h4>
-                                <p id="overview-poster-desc" class="text-xs text-slate-400 mt-1">Légende de l'affiche</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="glass-card p-6 rounded-3xl border border-slate-800 flex flex-col justify-between">
-                        <div>
-                            <h3 class="font-heading font-bold text-lg text-white mb-2 flex items-center gap-2">
-                                <i class="fas fa-bolt text-amber-400"></i> Actions Rapides
-                            </h3>
-                            <p class="text-xs text-slate-400 mb-6">Accédez directement aux fonctionnalités principales de configuration.</p>
-                        </div>
-                        <div class="grid grid-cols-2 gap-3">
-                            <button onclick="switchTab('tab-general')" class="py-3 px-4 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs font-bold text-white transition flex items-center gap-2">
-                                <i class="fas fa-pen text-brand-400"></i> Modifier Textes
-                            </button>
-                            <button onclick="openUpcomingModal()" class="py-3 px-4 bg-brand-600 hover:bg-brand-500 rounded-xl text-xs font-bold text-white transition flex items-center gap-2">
-                                <i class="fas fa-plus text-white"></i> Nouvel Événement
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB 1 : CONFIGURATION GÉNÉRALE & ACCUEIL 3 COLONNES -->
-            <div id="tab-general" class="tab-content hidden space-y-6">
-                <form id="form-general" class="glass-card rounded-3xl p-6 md:p-8 border border-slate-800 space-y-8">
-                    <div class="border-b border-slate-800 pb-4 flex justify-between items-center">
-                        <div>
-                            <h3 class="font-heading text-xl font-bold text-white flex items-center gap-2">
-                                <i class="fas fa-sliders text-brand-500"></i> Section Accueil & Présentation
-                            </h3>
-                            <p class="text-xs text-slate-400 mt-1">Gérez la disposition à 3 colonnes de la page d'accueil du site public.</p>
-                        </div>
-                    </div>
-
-                    <!-- INFOS ENTÊTE -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Nom de l'Association</label>
-                            <input type="text" id="cfg-siteName" class="w-full px-4 py-3 bg-slate-900 border border-slate-800 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none text-white text-sm">
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Nom de l'Association</label>
+                            <input type="text" id="cfg-siteName" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-rose-500 outline-none">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Commune / Localisation</label>
-                            <input type="text" id="cfg-siteLocation" class="w-full px-4 py-3 bg-slate-900 border border-slate-800 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none text-white text-sm">
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Commune / Localisation</label>
+                            <input type="text" id="cfg-siteLocation" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-rose-500 outline-none">
                         </div>
                     </div>
 
-                    <!-- TROIS COLONNES DE L'ACCUEIL -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        
-                        <!-- COL 1 : GAUCHE - LOGO -->
-                        <div class="p-5 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-4">
-                            <div class="flex items-center gap-2 text-rose-400 font-heading font-bold text-sm">
-                                <i class="fas fa-image"></i> Col 1: Logo Association
-                            </div>
-                            <div>
-                                <label class="block text-xs text-slate-400 mb-2">Image du Logo (URL ou Fichier local)</label>
-                                <input type="text" id="cfg-logoImg" placeholder="image_736dff.jpg..." class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white mb-2">
-                                <label class="w-full cursor-pointer px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 border border-slate-700 transition">
-                                    <i class="fas fa-upload text-brand-400"></i> Téléverser Fichier Local
-                                    <input type="file" accept="image/*" class="hidden" onchange="uploadLogoImage(event)">
-                                </label>
-                            </div>
-                            <div class="text-center pt-2">
-                                <img id="preview-logo-img" src="" alt="Aperçu Logo" class="h-28 mx-auto object-contain rounded-xl border border-slate-800">
-                            </div>
+                    <!-- BLOC LOGO GAUCHE -->
+                    <div class="p-5 bg-rose-50/60 rounded-2xl border border-rose-200/70 space-y-3">
+                        <h4 class="font-bold text-rose-900 text-sm">Logo à gauche (URL ou Fichier)</h4>
+                        <div class="flex gap-2">
+                            <input type="text" id="cfg-logoImg" placeholder="image_736dff.jpg ou URL..." class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none">
+                            <label class="cursor-pointer px-4 py-2 bg-slate-800 text-white font-bold text-xs rounded-xl flex items-center gap-2 hover:bg-slate-900 transition shrink-0">
+                                <i class="fas fa-upload"></i> Uploader
+                                <input type="file" accept="image/*" class="hidden" onchange="uploadLogoImage(event)">
+                            </label>
                         </div>
+                    </div>
 
-                        <!-- COL 2 : CENTRE - TEXTE DESCRIPTIF -->
-                        <div class="p-5 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-4">
-                            <div class="flex items-center gap-2 text-amber-400 font-heading font-bold text-sm">
-                                <i class="fas fa-align-center"></i> Col 2: Texte Présentation
-                            </div>
-                            <div>
-                                <label class="block text-xs text-slate-400 mb-1">Tag Supérieur (Localisation)</label>
-                                <input type="text" id="cfg-locationTag" class="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white">
-                            </div>
-                            <div>
-                                <label class="block text-xs text-slate-400 mb-1">Titre Principal Hero</label>
-                                <input type="text" id="cfg-heroTitle" class="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white font-bold">
-                            </div>
-                            <div>
-                                <label class="block text-xs text-slate-400 mb-1">Paragraphe Descriptif</label>
-                                <textarea id="cfg-heroDesc" rows="3" class="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white"></textarea>
-                            </div>
+                    <!-- BLOC MILIEU -->
+                    <div class="p-5 bg-amber-50/50 rounded-2xl border border-amber-200/60 space-y-4">
+                        <h4 class="font-bold text-amber-900 text-sm">Texte du Milieu</h4>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Tag Supérieur</label>
+                            <input type="text" id="cfg-locationTag" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none">
                         </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Titre Principal</label>
+                            <input type="text" id="cfg-heroTitle" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Description</label>
+                            <textarea id="cfg-heroDesc" rows="2" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none"></textarea>
+                        </div>
+                    </div>
 
-                        <!-- COL 3 : DROITE - AFFICHE ÉVÉNEMENT -->
-                        <div class="p-5 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-4">
-                            <div class="flex items-center gap-2 text-purple-400 font-heading font-bold text-sm">
-                                <i class="fas fa-bullhorn"></i> Col 3: Prochain Événement
-                            </div>
-                            <div>
-                                <label class="block text-xs text-slate-400 mb-1">Titre de l'Affiche</label>
-                                <input type="text" id="cfg-posterHeading" class="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white">
-                            </div>
-                            <div>
-                                <label class="block text-xs text-slate-400 mb-1">Image de l'Affiche</label>
-                                <input type="text" id="cfg-posterImg" placeholder="image_736dff.jpg..." class="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white mb-2">
-                                <label class="w-full cursor-pointer px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 border border-slate-700 transition">
-                                    <i class="fas fa-upload text-purple-400"></i> Téléverser Affiche
+                    <!-- BLOC AFFICHE DROITE -->
+                    <div class="p-5 bg-slate-100 rounded-2xl border border-slate-300 space-y-4">
+                        <h4 class="font-bold text-slate-900 text-sm">Affiche à Droite</h4>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Titre Affiche</label>
+                            <input type="text" id="cfg-posterHeading" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Image Affiche</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="cfg-posterImg" placeholder="image_736dff.jpg ou URL..." class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none">
+                                <label class="cursor-pointer px-4 py-2 bg-slate-800 text-white font-bold text-xs rounded-xl flex items-center gap-2 hover:bg-slate-900 transition shrink-0">
+                                    <i class="fas fa-upload"></i> Uploader
                                     <input type="file" accept="image/*" class="hidden" onchange="uploadPosterImage(event)">
                                 </label>
                             </div>
-                            <div>
-                                <label class="block text-xs text-slate-400 mb-1">Légende</label>
-                                <input type="text" id="cfg-posterCaption" class="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white">
-                            </div>
                         </div>
-
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Légende Affiche</label>
+                            <input type="text" id="cfg-posterCaption" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none">
+                        </div>
                     </div>
 
                     <div class="pt-4 flex justify-end">
-                        <button type="button" onclick="saveGeneralInfo()" class="px-8 py-3.5 bg-gradient-to-r from-brand-600 to-rose-500 hover:from-brand-700 hover:to-rose-600 text-white font-bold rounded-xl shadow-lg shadow-brand-600/30 transition active:scale-95 cursor-pointer">
-                            <i class="fas fa-floppy-disk mr-2"></i> Enregistrer les modifications
+                        <button type="submit" class="px-8 py-3.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl shadow-lg transition active:scale-95 cursor-pointer flex items-center gap-2">
+                            <i class="fas fa-save"></i>
+                            <span>Enregistrer les modifications</span>
                         </button>
                     </div>
                 </form>
             </div>
 
-            <!-- TAB 2 : PROJETS & BUDGET -->
+            <!-- TAB 2 : PROJET & BUDGET -->
             <div id="tab-projects" class="tab-content hidden space-y-6">
-                <form id="form-project" class="glass-card rounded-3xl p-6 md:p-8 border border-slate-800 space-y-6">
-                    <h3 class="font-heading text-xl font-bold text-white border-b border-slate-800 pb-4">
-                        <i class="fas fa-coins text-amber-400 mr-2"></i> Objectif Budgétaire Annuel
-                    </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Montant Récolté Actuel (€)</label>
-                            <input type="number" id="proj-current" class="w-full px-4 py-3 bg-slate-900 border border-slate-800 rounded-xl font-bold text-emerald-400 text-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Objectif Total (€)</label>
-                            <input type="number" id="proj-target" class="w-full px-4 py-3 bg-slate-900 border border-slate-800 rounded-xl font-bold text-amber-400 text-lg focus:ring-2 focus:ring-amber-500 focus:outline-none">
-                        </div>
+                <form onsubmit="handleSaveProject(event)" class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm space-y-6">
+                    <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-4">Budget & Jauge Récoltée</h3>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Montant Actuel Récolté (€)</label>
+                        <input type="number" id="proj-current" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-emerald-600 outline-none">
                     </div>
-
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Objectif Total (€)</label>
+                        <input type="number" id="proj-target" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-700 outline-none">
+                    </div>
                     <div class="pt-4 flex justify-end">
-                        <button type="button" onclick="saveProjectData()" class="px-8 py-3.5 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/30 transition active:scale-95 cursor-pointer">
-                            <i class="fas fa-save mr-2"></i> Mettre à jour le Budget
+                        <button type="submit" class="px-8 py-3.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl shadow-lg transition active:scale-95 cursor-pointer flex items-center gap-2">
+                            <i class="fas fa-save"></i>
+                            <span>Mettre à jour le Budget</span>
                         </button>
                     </div>
                 </form>
-            </div>
-
-            <!-- TAB 3 : ÉVÉNEMENTS À VENIR -->
-            <div id="tab-upcoming" class="tab-content hidden space-y-6">
-                <div class="flex justify-between items-center bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
-                    <h3 class="font-heading text-lg font-bold text-white"><i class="fas fa-calendar-star text-purple-400 mr-2"></i> Agenda des Événements Futurs</h3>
-                    <button type="button" onclick="openUpcomingModal()" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs rounded-xl shadow-lg transition flex items-center gap-2 cursor-pointer">
-                        <i class="fas fa-plus"></i> Nouvel Événement
-                    </button>
-                </div>
-                <div id="upcoming-events-list" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
-            </div>
-
-            <!-- TAB 4 : ALBUMS PHOTOS / ÉVÉNEMENTS PASSÉS -->
-            <div id="tab-past" class="tab-content hidden space-y-6">
-                <div class="flex justify-between items-center bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
-                    <h3 class="font-heading text-lg font-bold text-white"><i class="fas fa-photo-film text-pink-400 mr-2"></i> Galerie Photos & Albums</h3>
-                    <button type="button" onclick="openPastModal()" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs rounded-xl shadow-lg transition flex items-center gap-2 cursor-pointer">
-                        <i class="fas fa-folder-plus"></i> Nouvel Album
-                    </button>
-                </div>
-                <div id="past-events-list" class="space-y-6"></div>
             </div>
 
         </main>
     </div>
 
-    <!-- MODAL - NOUVEL ÉVÉNEMENT A VENIR -->
-    <div id="modal-upcoming" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
-        <div class="max-w-lg w-full glass-panel rounded-3xl p-6 border border-slate-800 space-y-5">
-            <h3 class="font-heading font-bold text-lg text-white">Ajouter un Événement à Venir</h3>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1">Titre de l'événement</label>
-                    <input type="text" id="modal-up-title" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white">
-                </div>
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1">Date (Ex: Samedi 12 Juin)</label>
-                    <input type="text" id="modal-up-date" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white">
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Heure</label>
-                        <input type="text" id="modal-up-time" placeholder="14h00" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Badge</label>
-                        <input type="text" id="modal-up-badge" placeholder="Kermesse, Fête..." class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1">Lieu</label>
-                    <input type="text" id="modal-up-location" placeholder="Cour de l'école..." class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white">
-                </div>
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1">Description</label>
-                    <textarea id="modal-up-desc" rows="3" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white"></textarea>
-                </div>
-            </div>
-            <div class="flex justify-end gap-3 pt-4 border-t border-slate-800">
-                <button onclick="closeUpcomingModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-xl">Annuler</button>
-                <button onclick="saveUpcomingEvent()" class="px-5 py-2 bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold rounded-xl">Ajouter</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL - NOUVEL ALBUM PHOTO -->
-    <div id="modal-past" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
-        <div class="max-w-lg w-full glass-panel rounded-3xl p-6 border border-slate-800 space-y-5">
-            <h3 class="font-heading font-bold text-lg text-white">Créer un Album Souvenirs</h3>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1">Titre de l'Album</label>
-                    <input type="text" id="modal-past-title" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white">
-                </div>
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1">Date / Saison</label>
-                    <input type="text" id="modal-past-date" placeholder="Décembre 2025" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white">
-                </div>
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1">Description</label>
-                    <textarea id="modal-past-desc" rows="2" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white"></textarea>
-                </div>
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1">URLs des Photos (Séparées par des virgules ou retours à la ligne)</label>
-                    <textarea id="modal-past-photos" rows="3" placeholder="https://..., https://..." class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white"></textarea>
-                </div>
-            </div>
-            <div class="flex justify-end gap-3 pt-4 border-t border-slate-800">
-                <button onclick="closePastModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-xl">Annuler</button>
-                <button onclick="savePastAlbum()" class="px-5 py-2 bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold rounded-xl">Créer Album</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- JAVASCRIPT DE CONFIGURATION ET SAUVEGARDE SECURISEE -->
+    <!-- LOGIQUE JAVASCRIPT CORRIGÉE -->
     <script>
         const DEFAULT_DATA = {
             general: {
@@ -523,12 +218,8 @@
                 adminPassword: "admin123"
             },
             project: { currentAmount: 3800, targetAmount: 5000 },
-            upcomingEvents: [
-                { id: 1, title: "Grand Loto du Sou", date: "Samedi 28 Mars 2026", time: "18h00", badge: "Loto", location: "Salle des fêtes de Petit-Cœur", desc: "De nombreux lots à gagner ! Buvette et petite restauration sur place." }
-            ],
-            pastEvents: [
-                { id: 101, title: "Marché de Noël 2025", date: "Décembre 2025", desc: "Vente de bricolages faits par les enfants et crêpes parties.", photos: ["image_736dff.jpg"] }
-            ]
+            upcomingEvents: [],
+            pastEvents: []
         };
 
         let appData = Object.assign({}, DEFAULT_DATA);
@@ -544,7 +235,9 @@
             if (logged === 'true') {
                 document.getElementById('login-view').classList.add('hidden');
                 document.getElementById('admin-dashboard').classList.remove('hidden');
-                initDashboardUI();
+                switchTab('tab-general');
+                fillGeneralForm();
+                fillProjectForm();
             } else {
                 document.getElementById('login-view').classList.remove('hidden');
                 document.getElementById('admin-dashboard').classList.add('hidden');
@@ -559,7 +252,7 @@
             if (passInput === currentPass) {
                 sessionStorage.setItem('sou_admin_logged', 'true');
                 checkSession();
-                showToast("Accès Autorisé", "Bienvenue sur l'espace d'administration", "success");
+                showToast("Connexion réussie !");
             } else {
                 document.getElementById('login-error').classList.remove('hidden');
             }
@@ -570,29 +263,14 @@
             checkSession();
         }
 
-        function initDashboardUI() {
-            switchTab('tab-overview');
-            fillGeneralForm();
-            fillProjectForm();
-            renderUpcomingList();
-            renderPastList();
-            updateKPIs();
-        }
-
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('bg-brand-600', 'text-white', 'shadow-lg');
-                btn.classList.add('text-slate-400');
-            });
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-rose-600', 'text-white'));
 
             const target = document.getElementById(tabId);
             if (target) target.classList.remove('hidden');
             const btn = document.getElementById('nav-' + tabId);
-            if (btn) {
-                btn.classList.add('bg-brand-600', 'text-white', 'shadow-lg');
-                btn.classList.remove('text-slate-400');
-            }
+            if (btn) btn.classList.add('bg-rose-600', 'text-white');
         }
 
         function fillGeneralForm() {
@@ -606,11 +284,6 @@
             document.getElementById('cfg-posterHeading').value = g.posterHeading || '';
             document.getElementById('cfg-posterImg').value = g.posterImg || '';
             document.getElementById('cfg-posterCaption').value = g.posterCaption || '';
-
-            document.getElementById('preview-logo-img').src = g.logoImg || 'image_736dff.jpg';
-            document.getElementById('overview-poster-preview').src = g.posterImg || 'image_736dff.jpg';
-            document.getElementById('overview-poster-title').textContent = g.posterHeading || 'Événement';
-            document.getElementById('overview-poster-desc').textContent = g.posterCaption || '';
         }
 
         function fillProjectForm() {
@@ -619,21 +292,10 @@
             document.getElementById('proj-target').value = p.targetAmount || 5000;
         }
 
-        function updateKPIs() {
-            const current = appData.project.currentAmount || 0;
-            const target = appData.project.targetAmount || 1;
-            const pct = Math.min(100, Math.round((current / target) * 100));
-
-            document.getElementById('kpi-budget-current').textContent = current.toLocaleString('fr-FR') + ' €';
-            document.getElementById('kpi-budget-target').textContent = target.toLocaleString('fr-FR') + ' €';
-            document.getElementById('kpi-budget-percent').textContent = pct + '% de l\'objectif atteint';
-            document.getElementById('kpi-budget-bar').style.width = pct + '%';
-
-            document.getElementById('kpi-upcoming-count').textContent = (appData.upcomingEvents || []).length;
-            document.getElementById('kpi-past-count').textContent = (appData.pastEvents || []).length;
-        }
-
-        async function saveGeneralInfo() {
+        // GESTIONNAIRES D'ÉVÉNEMENT DE SOUMISSION DU FORMULAIRE
+        async function handleSaveGeneral(e) {
+            e.preventDefault(); // Empêche le rechargement de la page
+            
             appData.general.siteName = document.getElementById('cfg-siteName').value;
             appData.general.siteLocation = document.getElementById('cfg-siteLocation').value;
             appData.general.logoImg = document.getElementById('cfg-logoImg').value;
@@ -644,18 +306,19 @@
             appData.general.posterImg = document.getElementById('cfg-posterImg').value;
             appData.general.posterCaption = document.getElementById('cfg-posterCaption').value;
 
-            fillGeneralForm();
             await saveDataToStorage();
         }
 
-        async function saveProjectData() {
+        async function handleSaveProject(e) {
+            e.preventDefault();
+            
             appData.project.currentAmount = parseFloat(document.getElementById('proj-current').value) || 0;
             appData.project.targetAmount = parseFloat(document.getElementById('proj-target').value) || 1;
-            updateKPIs();
+
             await saveDataToStorage();
         }
 
-        // ENREGISTREMENT
+        // SAUVEGARDE UNIFIÉE DANS LOCALSTORAGE + SUPABASE
         async function saveDataToStorage() {
             const publicData = {
                 adminPassword: appData.general.adminPassword || "admin123",
@@ -679,21 +342,23 @@
                 pastEvents: appData.pastEvents || []
             };
 
+            // Enregistrement local instantané
             localStorage.setItem('sou_app_data', JSON.stringify(appData));
             localStorage.setItem('sou_petit_coeur_data', JSON.stringify(publicData));
 
+            // Tentative d'envoi Supabase
             try {
                 const { error } = await _supabase
                     .from('site_content')
                     .upsert({ id: 1, content: publicData });
 
                 if (error) {
-                    showToast("Enregistré en Local", "Supabase bloqué - sauvegarde secours effectuée.", "warning");
+                    showToast("Enregistré localement !", "warning");
                 } else {
-                    showToast("Enregistré et Publié !", "Le site public à jour en direct.", "success");
+                    showToast("Enregistré et publié en direct !");
                 }
             } catch (err) {
-                showToast("Sauvegardé Hors-Ligne", "Modifications enregistrées localement.", "warning");
+                showToast("Sauvegardé hors-ligne !", "warning");
             }
         }
 
@@ -719,114 +384,14 @@
                         appData.general.siteLocation = c.general.assocSub || appData.general.siteLocation;
                         appData.general.logoImg = c.general.logoImg || appData.general.logoImg;
                         appData.general.posterImg = c.general.posterImg || appData.general.posterImg;
+                        appData.general.heroTitle = c.general.heroTitle || appData.general.heroTitle;
+                        appData.general.heroDesc = c.general.heroDesc || appData.general.heroDesc;
+                        appData.general.posterHeading = c.general.posterHeading || appData.general.posterHeading;
+                        appData.general.posterCaption = c.general.posterCaption || appData.general.posterCaption;
                     }
-                    if (c.upcomingEvents) appData.upcomingEvents = c.upcomingEvents;
-                    if (c.pastEvents) appData.pastEvents = c.pastEvents;
                     fillGeneralForm();
-                    updateKPIs();
                 }
             } catch(e) {}
-        }
-
-        // AGENDA
-        function openUpcomingModal() { document.getElementById('modal-upcoming').classList.remove('hidden'); }
-        function closeUpcomingModal() { document.getElementById('modal-upcoming').classList.add('hidden'); }
-
-        async function saveUpcomingEvent() {
-            const ev = {
-                id: Date.now(),
-                title: document.getElementById('modal-up-title').value,
-                date: document.getElementById('modal-up-date').value,
-                time: document.getElementById('modal-up-time').value,
-                badge: document.getElementById('modal-up-badge').value || 'Événement',
-                location: document.getElementById('modal-up-location').value,
-                desc: document.getElementById('modal-up-desc').value
-            };
-            appData.upcomingEvents.push(ev);
-            renderUpcomingList();
-            closeUpcomingModal();
-            updateKPIs();
-            await saveDataToStorage();
-        }
-
-        function renderUpcomingList() {
-            const list = document.getElementById('upcoming-events-list');
-            list.innerHTML = '';
-            (appData.upcomingEvents || []).forEach(ev => {
-                list.innerHTML += `
-                    <div class="glass-card p-5 rounded-2xl border border-slate-800 flex justify-between items-start gap-4">
-                        <div>
-                            <span class="text-[10px] font-bold text-purple-400 bg-purple-500/10 px-2.5 py-0.5 rounded-full border border-purple-500/20">${ev.badge}</span>
-                            <h4 class="font-heading font-bold text-white text-base mt-2">${ev.title}</h4>
-                            <p class="text-xs text-slate-400 mt-1"><i class="far fa-calendar mr-1"></i> ${ev.date} - ${ev.time}</p>
-                            <p class="text-xs text-slate-500 mt-2">${ev.desc}</p>
-                        </div>
-                        <button onclick="deleteUpcomingEvent(${ev.id})" class="text-rose-400 hover:text-rose-300 text-xs p-2 bg-rose-500/10 rounded-lg">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `;
-            });
-        }
-
-        async function deleteUpcomingEvent(id) {
-            appData.upcomingEvents = appData.upcomingEvents.filter(x => x.id !== id);
-            renderUpcomingList();
-            updateKPIs();
-            await saveDataToStorage();
-        }
-
-        // ALBUMS
-        function openPastModal() { document.getElementById('modal-past').classList.remove('hidden'); }
-        function closePastModal() { document.getElementById('modal-past').classList.add('hidden'); }
-
-        async function savePastAlbum() {
-            const photosRaw = document.getElementById('modal-past-photos').value;
-            const photos = photosRaw.split(/[\n,]/).map(x => x.trim()).filter(x => x.length > 0);
-
-            const album = {
-                id: Date.now(),
-                title: document.getElementById('modal-past-title').value,
-                date: document.getElementById('modal-past-date').value,
-                desc: document.getElementById('modal-past-desc').value,
-                photos: photos
-            };
-            appData.pastEvents.push(album);
-            renderPastList();
-            closePastModal();
-            updateKPIs();
-            await saveDataToStorage();
-        }
-
-        function renderPastList() {
-            const list = document.getElementById('past-events-list');
-            list.innerHTML = '';
-            (appData.pastEvents || []).forEach(alb => {
-                list.innerHTML += `
-                    <div class="glass-card p-5 rounded-2xl border border-slate-800">
-                        <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <h4 class="font-heading font-bold text-white text-base">${alb.title}</h4>
-                                <span class="text-xs text-amber-400 font-semibold">${alb.date}</span>
-                            </div>
-                            <button onclick="deletePastAlbum(${alb.id})" class="text-rose-400 hover:text-rose-300 text-xs p-2 bg-rose-500/10 rounded-lg">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                        <p class="text-xs text-slate-400 mb-4">${alb.desc}</p>
-                        <div class="grid grid-cols-4 gap-2">
-                            ${(alb.photos || []).map(p => `<img src="${p}" class="h-16 w-full object-cover rounded-lg border border-slate-700/50">`).join('')}
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        async function deletePastAlbum(id) {
-            appData.pastEvents = appData.pastEvents.filter(x => x.id !== id);
-            renderPastList();
-            updateKPIs();
-            await saveDataToStorage();
         }
 
         function uploadLogoImage(e) {
@@ -835,8 +400,7 @@
             const r = new FileReader();
             r.onload = (evt) => {
                 document.getElementById('cfg-logoImg').value = evt.target.result;
-                document.getElementById('preview-logo-img').src = evt.target.result;
-                showToast("Logo Prêt", "Appuyez sur enregistrer pour valider", "info");
+                showToast("Image chargée, cliquez sur enregistrer !");
             };
             r.readAsDataURL(file);
         }
@@ -847,44 +411,26 @@
             const r = new FileReader();
             r.onload = (evt) => {
                 document.getElementById('cfg-posterImg').value = evt.target.result;
-                showToast("Affiche Prête", "Appuyez sur enregistrer pour valider", "info");
+                showToast("Affiche chargée, cliquez sur enregistrer !");
             };
             r.readAsDataURL(file);
         }
 
-        function exportDataJSON() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
-            const dlAnchor = document.createElement('a');
-            dlAnchor.setAttribute("href", dataStr);
-            dlAnchor.setAttribute("download", "sauvegarde_ape_petit_coeur.json");
-            document.body.appendChild(dlAnchor);
-            dlAnchor.click();
-            dlAnchor.remove();
-        }
-
-        function showToast(title, msg, type = "success") {
+        function showToast(msg, type = "success") {
             const toast = document.getElementById('toast');
-            const iconBg = document.getElementById('toast-icon-bg');
-            const icon = document.getElementById('toast-icon');
-
-            document.getElementById('toast-title').textContent = title;
+            const toastIcon = document.getElementById('toast-icon');
             document.getElementById('toast-message').textContent = msg;
 
             if (type === "warning") {
-                iconBg.className = "w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0";
-                icon.className = "fas fa-triangle-exclamation text-lg";
-            } else if (type === "info") {
-                iconBg.className = "w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0";
-                icon.className = "fas fa-info text-lg";
+                toastIcon.className = "fas fa-exclamation-triangle text-amber-400 text-xl";
             } else {
-                iconBg.className = "w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0";
-                icon.className = "fas fa-check text-lg";
+                toastIcon.className = "fas fa-check-circle text-emerald-400 text-xl";
             }
 
-            toast.classList.remove('translate-y-32', 'opacity-0');
+            toast.classList.remove('translate-y-20', 'opacity-0');
             setTimeout(() => {
-                toast.classList.add('translate-y-32', 'opacity-0');
-            }, 3500);
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
         }
     </script>
 </body>
