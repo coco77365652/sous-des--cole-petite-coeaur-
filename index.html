@@ -82,7 +82,6 @@
                 <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-gray-700">
                     <a href="#accueil" class="hover:text-brand-blue transition-colors">Accueil</a>
                     <a href="#qui-sommes-nous" class="hover:text-brand-blue transition-colors">Qui sommes-nous ?</a>
-                    <a href="#documents" class="hover:text-brand-blue transition-colors">Documents</a>
                     <a href="#evenements" class="hover:text-brand-blue transition-colors">Événements</a>
                     <a href="#galerie" class="hover:text-brand-blue transition-colors">Galerie</a>
                     <a href="#contact" class="hover:text-brand-blue transition-colors">Nous Contacter</a>
@@ -97,7 +96,6 @@
         <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-200 px-4 pt-2 pb-6 space-y-3">
             <a href="#accueil" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Accueil</a>
             <a href="#qui-sommes-nous" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Qui sommes-nous ?</a>
-            <a href="#documents" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Documents</a>
             <a href="#evenements" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Événements</a>
             <a href="#galerie" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Galerie</a>
             <a href="#contact" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Nous Contacter</a>
@@ -138,8 +136,8 @@
                             <a href="#evenements" class="bg-brand-yellow hover:bg-amber-300 text-gray-900 font-title font-semibold px-5 py-3 rounded-2xl shadow-lg transition-all text-center flex items-center justify-center gap-2 text-sm">
                                 <i class="fa-solid fa-calendar-star text-brand-red"></i> Prochains Événements
                             </a>
-                            <a href="#documents" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/40 text-white font-title font-semibold px-5 py-3 rounded-2xl transition-all text-center flex items-center justify-center gap-2 text-sm">
-                                <i class="fa-solid fa-file-pdf text-brand-yellow"></i> Statuts & Documents
+                            <a href="#qui-sommes-nous" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/40 text-white font-title font-semibold px-5 py-3 rounded-2xl transition-all text-center flex items-center justify-center gap-2 text-sm">
+                                <i class="fa-solid fa-users text-brand-yellow"></i> Qui sommes-nous ?
                             </a>
                         </div>
                     </div>
@@ -200,31 +198,19 @@
                         </div>
                     </div>
 
+                    <!-- LIEN STATUTS / DOCUMENT -->
                     <div id="about-file-box" class="pt-4 border-t border-amber-100 hidden">
                         <a id="about-file-link" href="#" target="_blank" class="inline-flex items-center gap-2 bg-brand-red hover:bg-rose-600 text-white font-title font-semibold text-sm px-5 py-3 rounded-2xl shadow-md transition-all">
-                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                            <span id="about-file-btn-text">Consulter le document</span>
+                            <i class="fa-solid fa-file-pdf"></i>
+                            <span id="about-file-btn-text">Consulter les Statuts</span>
                         </a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION DOCUMENTS & TÉLÉCHARGEMENTS -->
-        <section id="documents" class="py-20 bg-amber-50/50 border-y border-amber-100">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center max-w-3xl mx-auto mb-12">
-                    <span class="text-brand-darkblue font-title font-bold text-sm tracking-wider uppercase bg-blue-100/60 px-4 py-1.5 rounded-full text-brand-darkblue">Transparence & Statuts</span>
-                    <h2 class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Documents Officiels</h2>
-                    <p class="text-gray-600 mt-4 text-base">Cliquez sur un document ci-dessous pour le consulter directement dans votre navigateur.</p>
-                </div>
-
-                <div id="documents-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-            </div>
-        </section>
-
         <!-- ÉVÉNEMENTS À VENIR -->
-        <section id="evenements" class="py-20">
+        <section id="evenements" class="py-20 bg-amber-50/50 border-y border-amber-100">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="mb-12 text-center md:text-left">
                     <span class="text-brand-red font-title font-bold text-sm tracking-wider uppercase bg-rose-100/60 px-4 py-1.5 rounded-full">Agenda des écoliers</span>
@@ -235,18 +221,16 @@
         </section>
 
         <!-- GALERIE -->
-        <section id="galerie" class="py-20 bg-amber-50/50 border-t border-amber-100">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="mb-12 text-center md:text-left">
-                    <span class="text-brand-yellow font-title font-bold text-sm tracking-wider uppercase bg-amber-100/60 px-4 py-1.5 rounded-full text-amber-900">Souvenirs</span>
-                    <h2 class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Galerie & Photos</h2>
-                </div>
-                <div class="space-y-12" id="past-events-container"></div>
+        <section id="galerie" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 text-center md:text-left">
+                <span class="text-brand-yellow font-title font-bold text-sm tracking-wider uppercase bg-amber-100/60 px-4 py-1.5 rounded-full text-amber-900">Souvenirs</span>
+                <h2 class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Galerie & Photos</h2>
             </div>
+            <div class="space-y-12" id="past-events-container"></div>
         </section>
 
         <!-- SECTION NOUS CONTACTER -->
-        <section id="contact" class="py-20 border-t border-amber-100">
+        <section id="contact" class="py-20 bg-amber-50/50 border-t border-amber-100">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-12">
                     <span id="contact-tag" class="text-brand-green font-title font-bold text-sm tracking-wider uppercase bg-emerald-100/60 px-4 py-1.5 rounded-full text-emerald-900">Coordonnées</span>
@@ -291,7 +275,7 @@
         </div>
     </footer>
 
-    <!-- LIGHTBOX / VISIONNEUSE GRAND ÉCRAN -->
+    <!-- LIGHTBOX -->
     <div id="modal-lightbox" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex flex-col items-center justify-center p-4 transition-all duration-300" onclick="closeLightbox()">
         <button onclick="closeLightbox()" class="absolute top-5 right-5 z-10 bg-white/20 hover:bg-brand-red text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-lg border border-white/30 backdrop-blur-md flex items-center gap-2 transition-all active:scale-95 cursor-pointer">
             <i class="fa-solid fa-xmark text-lg"></i>
@@ -306,7 +290,7 @@
         </div>
     </div>
 
-    <!-- SCRIPTS DE SYNCHRONISATION -->
+    <!-- SCRIPTS -->
     <script>
         const SUPABASE_URL = 'https://gdbktvxramksondbobns.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_6Q9vML3WwH7_8n5Ipvo-3g_DRZx_VPK';
@@ -333,14 +317,14 @@
                 block1Img: "",
                 block2Title: "Le Mot du Bureau",
                 block2Text: "« Chaque événement est une belle aventure humaine. Un grand merci à tous les parents, enseignants et partenaires de la commune de La Léchère pour leur précieux soutien ! »",
-                fileUrl: "",
-                fileBtnText: "Consulter les Statuts (PDF)"
+                fileUrl: "image_736dff.jpg",
+                fileBtnText: "Consulter les Statuts"
             },
             documents: [
                 {
                     key: "statuts",
-                    title: "Statuts du Sou des Écoles Petit-Cœur",
-                    desc: "Statuts officiels régissant l'association (Loi 1901).",
+                    title: "Statuts du Sou des Écoles",
+                    desc: "Statuts officiels (Loi 1901)",
                     url: "image_736dff.jpg"
                 }
             ],
@@ -358,7 +342,6 @@
 
         let siteData = Object.assign({}, defaultSiteData);
 
-        // MOTEUR D'INSERTION DES LIENS [LIEN:key|Texte]
         function parseTextLinks(inputText) {
             if (!inputText) return '';
             const docs = siteData.documents || defaultSiteData.documents || [];
@@ -386,7 +369,6 @@
             if (document.getElementById('hero-title')) document.getElementById('hero-title').textContent = gen.heroTitle || defaultSiteData.general.heroTitle;
             if (document.getElementById('hero-description')) document.getElementById('hero-description').innerHTML = parseTextLinks(gen.heroDesc || defaultSiteData.general.heroDesc);
 
-            // SECTION QUI SOMMES NOUS
             if (document.getElementById('about-tag')) document.getElementById('about-tag').textContent = ab.tag || defaultSiteData.about.tag;
             if (document.getElementById('about-title')) document.getElementById('about-title').textContent = ab.title || defaultSiteData.about.title;
             if (document.getElementById('about-desc')) document.getElementById('about-desc').innerHTML = parseTextLinks(ab.desc || defaultSiteData.about.desc);
@@ -407,52 +389,19 @@
             if (document.getElementById('about-block2-title')) document.getElementById('about-block2-title').innerHTML = `<i class="fa-solid fa-heart text-brand-red"></i> ${ab.block2Title || defaultSiteData.about.block2Title}`;
             if (document.getElementById('about-block2-text')) document.getElementById('about-block2-text').innerHTML = parseTextLinks(ab.block2Text || defaultSiteData.about.block2Text);
 
+            // GESTION DU LIEN DES STATUTS (OUVERTURE DANS UN NOUVEL ONGLET)
             const fileBox = document.getElementById('about-file-box');
             const fileLink = document.getElementById('about-file-link');
             const fileBtnText = document.getElementById('about-file-btn-text');
             
             if (ab.fileUrl && ab.fileUrl.trim() !== '') {
                 fileLink.href = ab.fileUrl;
-                fileBtnText.textContent = ab.fileBtnText || "Consulter le document";
+                fileBtnText.textContent = ab.fileBtnText || "Consulter les Statuts";
                 fileBox.classList.remove('hidden');
             } else {
                 fileBox.classList.add('hidden');
             }
 
-            // RENDU DES DOCUMENTS PUBLICS
-            const docContainer = document.getElementById('documents-list-container');
-            if (docContainer) {
-                docContainer.innerHTML = '';
-                const docs = siteData.documents || defaultSiteData.documents;
-                if (docs.length === 0) {
-                    docContainer.innerHTML = '<p class="text-gray-500 col-span-3 text-center py-6">Aucun document disponible pour le moment.</p>';
-                } else {
-                    docs.forEach(doc => {
-                        docContainer.innerHTML += `
-                            <div class="bg-white rounded-3xl p-6 border border-amber-100 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
-                                <div class="space-y-3">
-                                    <div class="flex items-center justify-between">
-                                        <div class="w-12 h-12 rounded-2xl bg-red-100 text-brand-red flex items-center justify-center text-xl">
-                                            <i class="fa-solid fa-file-pdf"></i>
-                                        </div>
-                                        <span class="text-[10px] font-mono font-bold uppercase bg-amber-100 text-amber-900 px-2.5 py-1 rounded-md">ID: ${doc.key || 'doc'}</span>
-                                    </div>
-                                    <h3 class="font-title font-bold text-lg text-gray-900">${doc.title || 'Document PDF'}</h3>
-                                    <p class="text-xs text-gray-500 leading-relaxed">${doc.desc || ''}</p>
-                                </div>
-                                <div class="pt-5 mt-4 border-t border-amber-50">
-                                    <a href="${doc.url || '#'}" target="_blank" class="w-full py-3 px-4 bg-amber-100 hover:bg-brand-yellow text-gray-900 font-title font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-colors">
-                                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                                        <span>Ouvrir le document</span>
-                                    </a>
-                                </div>
-                            </div>
-                        `;
-                    });
-                }
-            }
-
-            // SECTION NOUS CONTACTER
             if (document.getElementById('contact-tag')) document.getElementById('contact-tag').textContent = ct.tag || defaultSiteData.contact.tag;
             if (document.getElementById('contact-title')) document.getElementById('contact-title').textContent = ct.title || defaultSiteData.contact.title;
             if (document.getElementById('contact-desc')) document.getElementById('contact-desc').innerHTML = parseTextLinks(ct.desc || defaultSiteData.contact.desc);
