@@ -1,12 +1,20 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administration - APE de Petit-Cœur</title>
+    <title>Studio Admin - APE Petit-Cœur</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script>
         const SUPABASE_URL = 'https://gdbktvxramksondbobns.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_6Q9vML3WwH7_8n5Ipvo-3g_DRZx_VPK';
@@ -14,80 +22,307 @@
         try {
             _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         } catch(e) {}
+
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            bg: '#0B0F19',
+                            card: '#151C2C',
+                            border: '#232D42',
+                            pink: '#FF2A6D',
+                            cyan: '#05D9E8',
+                            purple: '#7B2CBF',
+                            green: '#00F5D4'
+                        }
+                    },
+                    fontFamily: {
+                        title: ['Outfit', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
     </script>
+    <style>
+        body {
+            background-color: #0B0F19;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(255, 42, 109, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(5, 217, 232, 0.08) 0%, transparent 40%);
+        }
+        .glass-card {
+            background: rgba(21, 28, 44, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-input {
+            background: rgba(11, 15, 25, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #FFFFFF;
+        }
+        .glass-input:focus {
+            border-color: #05D9E8;
+            box-shadow: 0 0 15px rgba(5, 217, 232, 0.25);
+        }
+        .glow-pink {
+            box-shadow: 0 0 25px rgba(255, 42, 109, 0.35);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 25px rgba(5, 217, 232, 0.35);
+        }
+    </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen p-4 md:p-8">
+<body class="font-sans text-slate-200 antialiased min-h-screen flex flex-col">
 
-    <div id="status-box" class="fixed top-5 right-5 z-50 hidden px-6 py-4 rounded-2xl shadow-2xl font-bold text-white transition-all"></div>
-
-    <div class="max-w-4xl mx-auto bg-slate-800 rounded-3xl p-6 border border-slate-700 shadow-2xl">
-        <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-700">
-            <h1 class="text-2xl font-bold text-rose-500"><i class="fas fa-cog mr-2"></i> Administration APE Petit-Cœur</h1>
-            <a href="index.html" target="_blank" class="text-xs bg-slate-700 hover:bg-slate-600 px-3 py-2 rounded-xl text-slate-200 transition">
-                <i class="fas fa-external-link-alt mr-1"></i> Voir le site
-            </a>
+    <!-- STATUS NOTIFICATION / TOAST FUTURISTE -->
+    <div id="status-toast" class="fixed top-6 right-6 z-50 transform translate-x-full opacity-0 transition-all duration-500 px-6 py-4 rounded-2xl glass-card flex items-center gap-4 border text-white font-title font-bold text-sm">
+        <div id="status-icon-bg" class="w-10 h-10 rounded-xl flex items-center justify-center text-lg">
+            <i id="status-icon" class="fas"></i>
         </div>
+        <div>
+            <p id="status-title" class="text-xs font-semibold uppercase tracking-wider text-slate-400">Notification</p>
+            <p id="status-message">Action effectuée</p>
+        </div>
+    </div>
 
-        <form onsubmit="forceSave(event)" class="space-y-6">
-            <div class="space-y-4 bg-slate-900/50 p-4 rounded-2xl border border-slate-700">
-                <h2 class="text-sm font-bold text-amber-400 uppercase tracking-wider">1. Textes d'Accueil</h2>
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1">Nom de l'Association</label>
-                    <input type="text" id="cfg-siteName" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-sm focus:border-rose-500 outline-none">
+    <!-- CONNEXION ADMIN -->
+    <div id="login-view" class="fixed inset-0 z-50 bg-[#0B0F19]/95 backdrop-blur-2xl flex items-center justify-center p-4">
+        <div class="max-w-md w-full glass-card rounded-3xl p-8 border border-white/10 relative overflow-hidden shadow-2xl">
+            <div class="absolute -top-24 -right-24 w-48 h-48 bg-cyber-pink/20 rounded-full blur-3xl"></div>
+            <div class="text-center mb-8 relative z-10">
+                <div class="w-16 h-16 bg-gradient-to-tr from-cyber-pink to-cyber-purple rounded-2xl flex items-center justify-center text-white mx-auto mb-4 text-2xl shadow-lg glow-pink">
+                    <i class="fas fa-bolt"></i>
                 </div>
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1">Titre Principal</label>
-                    <input type="text" id="cfg-heroTitle" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-sm focus:border-rose-500 outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1">Description</label>
-                    <textarea id="cfg-heroDesc" rows="2" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-sm focus:border-rose-500 outline-none"></textarea>
-                </div>
+                <h1 class="font-title text-3xl font-extrabold text-white tracking-wide">STUDIO ADMIN</h1>
+                <p class="text-slate-400 text-xs mt-1 font-medium">APE de Petit-Cœur • Contrôle Intégral</p>
             </div>
 
-            <div class="space-y-4 bg-slate-900/50 p-4 rounded-2xl border border-slate-700">
-                <h2 class="text-sm font-bold text-amber-400 uppercase tracking-wider">2. Images (Logo et Affiche)</h2>
+            <form onsubmit="handleLogin(event)" class="space-y-5 relative z-10">
                 <div>
-                    <label class="block text-xs text-slate-400 mb-1">URL / Base64 du Logo</label>
-                    <div class="flex gap-2">
-                        <input type="text" id="cfg-logoImg" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-sm focus:border-rose-500 outline-none">
-                        <label class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs px-4 py-2 rounded-xl cursor-pointer flex items-center shrink-0">
-                            Choisir
-                            <input type="file" accept="image/*" class="hidden" onchange="processImage(event, 'cfg-logoImg')">
-                        </label>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Code d'accès sécurisé</label>
+                    <div class="relative">
+                        <i class="fas fa-key absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+                        <input type="password" id="admin-pass-input" placeholder="admin123" required 
+                            class="w-full pl-11 pr-4 py-3.5 glass-input rounded-2xl focus:outline-none transition-all text-sm font-semibold">
                     </div>
+                    <p id="login-error" class="text-cyber-pink text-xs font-semibold mt-2 hidden"><i class="fas fa-circle-exclamation mr-1"></i> Mot de passe incorrect.</p>
                 </div>
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1">URL / Base64 de l'Affiche</label>
-                    <div class="flex gap-2">
-                        <input type="text" id="cfg-posterImg" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-sm focus:border-rose-500 outline-none">
-                        <label class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs px-4 py-2 rounded-xl cursor-pointer flex items-center shrink-0">
-                            Choisir
-                            <input type="file" accept="image/*" class="hidden" onchange="processImage(event, 'cfg-posterImg')">
-                        </label>
-                    </div>
-                </div>
-            </div>
+                <button type="submit" class="w-full py-4 bg-gradient-to-r from-cyber-pink to-cyber-purple hover:opacity-90 text-white font-title font-bold rounded-2xl transition-all glow-pink flex items-center justify-center gap-2 cursor-pointer">
+                    <span>SE CONNECTER</span>
+                    <i class="fas fa-arrow-right text-xs"></i>
+                </button>
+            </form>
+        </div>
+    </div>
 
-            <div class="space-y-4 bg-slate-900/50 p-4 rounded-2xl border border-slate-700">
-                <h2 class="text-sm font-bold text-amber-400 uppercase tracking-wider">3. Budget</h2>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Récolté (€)</label>
-                        <input type="number" id="proj-current" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-sm focus:border-rose-500 outline-none">
+    <!-- DASHBOARD ADMIN FUTURISTE -->
+    <div id="admin-dashboard" class="hidden min-h-screen flex flex-col md:flex-row">
+        
+        <!-- SIDEBAR BARRE LATÉRALE -->
+        <aside class="w-full md:w-72 bg-cyber-card/80 backdrop-blur-xl border-r border-cyber-border flex-shrink-0 flex flex-col justify-between p-6">
+            <div>
+                <div class="flex items-center gap-3 pb-6 border-b border-cyber-border">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyber-cyan to-brand-blue flex items-center justify-center text-slate-900 font-black text-xl shadow-lg">
+                        <i class="fas fa-cube"></i>
                     </div>
                     <div>
-                        <label class="block text-xs text-slate-400 mb-1">Objectif (€)</label>
-                        <input type="number" id="proj-target" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-sm focus:border-rose-500 outline-none">
+                        <h2 class="font-title font-bold text-base text-white tracking-wide">APE Petit-Cœur</h2>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-cyber-cyan bg-cyber-cyan/10 px-2.5 py-0.5 rounded-full border border-cyber-cyan/20">Futur Engine</span>
+                    </div>
+                </div>
+
+                <nav class="mt-8 space-y-2">
+                    <button type="button" onclick="switchTab('tab-general')" id="nav-tab-general" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
+                        <i class="fas fa-sliders w-5 text-cyber-cyan"></i>
+                        <span>Textes & Héros</span>
+                    </button>
+                    <button type="button" onclick="switchTab('tab-images')" id="nav-tab-images" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
+                        <i class="fas fa-image w-5 text-cyber-pink"></i>
+                        <span>Logo & Affiche</span>
+                    </button>
+                    <button type="button" onclick="switchTab('tab-budget')" id="nav-tab-budget" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
+                        <i class="fas fa-chart-pie w-5 text-cyber-green"></i>
+                        <span>Budget & Jauge</span>
+                    </button>
+                    <button type="button" onclick="switchTab('tab-events')" id="nav-tab-events" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
+                        <i class="fas fa-calendar-star w-5 text-amber-400"></i>
+                        <span>Prochains Événements</span>
+                    </button>
+                    <button type="button" onclick="switchTab('tab-gallery')" id="nav-tab-gallery" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
+                        <i class="fas fa-photo-film w-5 text-cyber-purple"></i>
+                        <span>Galerie Photos</span>
+                    </button>
+                </nav>
+            </div>
+
+            <div class="pt-6 border-t border-cyber-border space-y-3">
+                <a href="index.html" target="_blank" class="w-full flex items-center justify-between px-4 py-3 rounded-2xl text-xs font-title font-bold text-slate-300 glass-card hover:border-cyber-cyan/50 transition-all group">
+                    <span class="group-hover:text-cyber-cyan transition-colors"><i class="fas fa-globe mr-2"></i> Prévisualiser le site</span>
+                    <i class="fas fa-arrow-up-right-from-square text-[10px] text-slate-500"></i>
+                </a>
+                <button type="button" onclick="logoutAdmin()" class="w-full flex items-center gap-2 px-4 py-3 rounded-2xl text-xs font-title font-bold text-cyber-pink hover:bg-cyber-pink/10 transition-all">
+                    <i class="fas fa-power-off"></i>
+                    <span>Déconnexion</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 p-6 md:p-10 overflow-y-auto">
+            
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                <div>
+                    <h1 class="font-title text-3xl font-black text-white tracking-wide">TABLEAU DE BORD</h1>
+                    <p class="text-slate-400 text-xs mt-1">Personnalisez tout l'écosystème de <code class="text-cyber-cyan">index.html</code></p>
+                </div>
+            </div>
+
+            <!-- ONGLET 1 : TEXTES ET PRESENTATION -->
+            <div id="tab-general" class="tab-content hidden space-y-6">
+                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+                    <h3 class="font-title text-lg font-bold text-white flex items-center gap-2 border-b border-cyber-border pb-4">
+                        <i class="fas fa-pen-nib text-cyber-cyan"></i> Textes de la Bannière d'Accueil
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Nom de l'Association</label>
+                            <input type="text" id="cfg-siteName" class="w-full px-4 py-3 glass-input rounded-2xl font-semibold text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Sous-titre / Localisation Header</label>
+                            <input type="text" id="cfg-siteLocation" class="w-full px-4 py-3 glass-input rounded-2xl font-semibold text-sm">
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 pt-2">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Tag Supérieur (Badge)</label>
+                            <input type="text" id="cfg-locationTag" class="w-full px-4 py-3 glass-input rounded-2xl font-semibold text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Grand Titre Principal (Hero Title)</label>
+                            <input type="text" id="cfg-heroTitle" class="w-full px-4 py-3 glass-input rounded-2xl font-bold text-base text-cyber-cyan">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Description de présentation</label>
+                            <textarea id="cfg-heroDesc" rows="3" class="w-full px-4 py-3 glass-input rounded-2xl text-sm leading-relaxed"></textarea>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <button type="submit" id="save-btn" class="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-lg rounded-2xl shadow-xl transition active:scale-98 flex items-center justify-center gap-2 cursor-pointer">
-                <i class="fas fa-save"></i>
-                <span>ENREGISTRER LES MODIFICATIONS</span>
-            </button>
-        </form>
+            <!-- ONGLET 2 : LOGO ET AFFICHE -->
+            <div id="tab-images" class="tab-content hidden space-y-6">
+                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+                    <h3 class="font-title text-lg font-bold text-white flex items-center gap-2 border-b border-cyber-border pb-4">
+                        <i class="fas fa-icons text-cyber-pink"></i> Images du Haut de Page
+                    </h3>
+
+                    <!-- BLOC LOGO GAUCHE -->
+                    <div class="p-6 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h4 class="font-title font-bold text-white text-sm"><i class="fas fa-heart text-cyber-pink mr-2"></i> Bloc Gauche : Logo Sou des Écoles</h4>
+                            <span class="text-[10px] text-slate-400 bg-white/5 px-2.5 py-1 rounded-full">Redimensionnement auto</span>
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <input type="text" id="cfg-logoImg" placeholder="image_736dff.jpg ou URL..." class="w-full px-4 py-3 glass-input rounded-2xl text-xs">
+                            <label class="cursor-pointer px-5 py-3 bg-cyber-pink hover:bg-rose-600 text-white font-title font-bold text-xs rounded-2xl flex items-center justify-center gap-2 shrink-0 transition-all glow-pink">
+                                <i class="fas fa-cloud-arrow-up"></i> Uploader
+                                <input type="file" accept="image/*" class="hidden" onchange="processImage(event, 'cfg-logoImg')">
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- BLOC AFFICHE DROITE -->
+                    <div class="p-6 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h4 class="font-title font-bold text-white text-sm"><i class="fas fa-bullhorn text-amber-400 mr-2"></i> Bloc Droite : Affiche de l'Événement</h4>
+                            <span class="text-[10px] text-slate-400 bg-white/5 px-2.5 py-1 rounded-full">Plein écran Lightbox</span>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Titre au-dessus de l'Affiche</label>
+                            <input type="text" id="cfg-posterHeading" class="w-full px-4 py-2.5 glass-input rounded-xl text-xs mb-3">
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <input type="text" id="cfg-posterImg" placeholder="image_736dff.jpg ou URL..." class="w-full px-4 py-3 glass-input rounded-2xl text-xs">
+                            <label class="cursor-pointer px-5 py-3 bg-cyber-cyan hover:bg-cyan-400 text-slate-900 font-title font-bold text-xs rounded-2xl flex items-center justify-center gap-2 shrink-0 transition-all glow-cyan">
+                                <i class="fas fa-cloud-arrow-up"></i> Uploader
+                                <input type="file" accept="image/*" class="hidden" onchange="processImage(event, 'cfg-posterImg')">
+                            </label>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Légende sous l'Affiche</label>
+                            <input type="text" id="cfg-posterCaption" class="w-full px-4 py-2.5 glass-input rounded-xl text-xs">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ONGLET 3 : BUDGET ET JAUGE -->
+            <div id="tab-budget" class="tab-content hidden space-y-6">
+                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+                    <h3 class="font-title text-lg font-bold text-white flex items-center gap-2 border-b border-cyber-border pb-4">
+                        <i class="fas fa-chart-line text-cyber-green"></i> Jauge du Budget Annuel
+                    </h3>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Montant Actuel Récolté (€)</label>
+                            <input type="number" id="proj-current" class="w-full px-4 py-3.5 glass-input rounded-2xl font-bold text-cyber-green text-lg">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Objectif Total (€)</label>
+                            <input type="number" id="proj-target" class="w-full px-4 py-3.5 glass-input rounded-2xl font-bold text-white text-lg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ONGLET 4 : PROCHAINS EVENEMENTS -->
+            <div id="tab-events" class="tab-content hidden space-y-6">
+                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+                    <div class="flex justify-between items-center border-b border-cyber-border pb-4">
+                        <h3 class="font-title text-lg font-bold text-white flex items-center gap-2">
+                            <i class="fas fa-calendar-star text-amber-400"></i> Événements à Venir
+                        </h3>
+                        <button type="button" onclick="addUpcomingEvent()" class="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-900 font-title font-bold text-xs rounded-xl transition-all flex items-center gap-2">
+                            <i class="fas fa-plus"></i> Ajouter un Événement
+                        </button>
+                    </div>
+
+                    <div id="upcoming-events-container" class="space-y-4"></div>
+                </div>
+            </div>
+
+            <!-- ONGLET 5 : GALERIE ET ALBUMS -->
+            <div id="tab-gallery" class="tab-content hidden space-y-6">
+                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+                    <div class="flex justify-between items-center border-b border-cyber-border pb-4">
+                        <h3 class="font-title text-lg font-bold text-white flex items-center gap-2">
+                            <i class="fas fa-images text-cyber-purple"></i> Galerie & Albums Souvenirs
+                        </h3>
+                        <button type="button" onclick="addPastEvent()" class="px-4 py-2 bg-cyber-purple hover:bg-purple-600 text-white font-title font-bold text-xs rounded-xl transition-all flex items-center gap-2">
+                            <i class="fas fa-folder-plus"></i> Nouvel Album
+                        </button>
+                    </div>
+
+                    <div id="past-events-container" class="space-y-6"></div>
+                </div>
+            </div>
+
+            <!-- PANNEAU D'ACTION RECAPITULATIF (BOUTON ENREGISTRER GLOBAL) -->
+            <div class="mt-8 pt-6 border-t border-cyber-border flex justify-end">
+                <button type="button" onclick="globalSaveData()" id="save-btn" class="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-cyber-cyan via-brand-blue to-cyber-pink text-slate-900 font-title font-black text-sm tracking-wider uppercase rounded-2xl shadow-2xl transition-all duration-300 hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3 cursor-pointer">
+                    <i class="fas fa-floppy-disk text-base"></i>
+                    <span>ENREGISTRER TOUTES LES MODIFICATIONS</span>
+                </button>
+            </div>
+
+        </main>
     </div>
 
     <script>
@@ -97,95 +332,235 @@
                 assocSub: "Petit-Cœur • La Léchère",
                 locationTag: "Savoie - Commune de La Léchère",
                 heroTitle: "Ensemble pour les enfants de Petit-Cœur !",
-                heroDesc: "Association de parents d'élèves (APE) bénévoles dédiée au financement des sorties scolaires.",
+                heroDesc: "Association de parents d'élèves (APE) bénévoles dédiée au financement des sorties scolaires, projets pédagogiques et animations des écoles de notre village.",
                 logoImg: "image_736dff.jpg",
                 posterImg: "image_736dff.jpg",
                 posterHeading: "À l'Affiche !",
-                posterCaption: "Prochain événement du Sou des Écoles"
+                posterCaption: "Prochain événement du Sou des Écoles",
+                adminPassword: "admin123"
             },
             budget: { current: 3800, target: 5000 },
+            upcomingEvents: [],
             pastEvents: []
         };
 
+        let appData = Object.assign({}, DEFAULT_DATA);
+
         document.addEventListener('DOMContentLoaded', () => {
-            loadForm();
+            loadInitialData();
+            checkSession();
         });
 
-        function loadForm() {
-            const raw = localStorage.getItem('sou_petit_coeur_data');
-            let data = DEFAULT_DATA;
-            if (raw) {
-                try { data = JSON.parse(raw); } catch(e){}
+        function checkSession() {
+            const logged = sessionStorage.getItem('sou_admin_logged');
+            if (logged === 'true') {
+                document.getElementById('login-view').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                switchTab('tab-general');
+                renderUI();
+            } else {
+                document.getElementById('login-view').classList.remove('hidden');
+                document.getElementById('admin-dashboard').classList.add('hidden');
             }
-            const g = data.general || DEFAULT_DATA.general;
-            const b = data.budget || DEFAULT_DATA.budget;
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const passInput = document.getElementById('admin-pass-input').value;
+            const currentPass = appData.general.adminPassword || "admin123";
+
+            if (passInput === currentPass) {
+                sessionStorage.setItem('sou_admin_logged', 'true');
+                checkSession();
+                showStatusToast("OUI ! Connexion réussie.", "success");
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        }
+
+        function logoutAdmin() {
+            sessionStorage.removeItem('sou_admin_logged');
+            checkSession();
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-white/10', 'text-white', 'border-l-4', 'border-cyber-cyan'));
+
+            const target = document.getElementById(tabId);
+            if (target) target.classList.remove('hidden');
+            const btn = document.getElementById('nav-' + tabId);
+            if (btn) btn.classList.add('bg-white/10', 'text-white', 'border-l-4', 'border-cyber-cyan');
+        }
+
+        function renderUI() {
+            const g = appData.general || {};
+            const b = appData.budget || {};
 
             document.getElementById('cfg-siteName').value = g.assocName || '';
+            document.getElementById('cfg-siteLocation').value = g.assocSub || '';
+            document.getElementById('cfg-locationTag').value = g.locationTag || '';
             document.getElementById('cfg-heroTitle').value = g.heroTitle || '';
             document.getElementById('cfg-heroDesc').value = g.heroDesc || '';
             document.getElementById('cfg-logoImg').value = g.logoImg || '';
             document.getElementById('cfg-posterImg').value = g.posterImg || '';
+            document.getElementById('cfg-posterHeading').value = g.posterHeading || '';
+            document.getElementById('cfg-posterCaption').value = g.posterCaption || '';
+
             document.getElementById('proj-current').value = b.current || 3800;
             document.getElementById('proj-target').value = b.target || 5000;
+
+            renderUpcomingEvents();
+            renderPastEvents();
         }
 
-        async function forceSave(e) {
-            e.preventDefault();
+        function renderUpcomingEvents() {
+            const container = document.getElementById('upcoming-events-container');
+            container.innerHTML = '';
+            const upcoming = appData.upcomingEvents || [];
+
+            if (upcoming.length === 0) {
+                container.innerHTML = '<p class="text-slate-500 text-xs italic">Aucun événement à venir. Cliquez sur Ajouter pour créer un événement.</p>';
+                return;
+            }
+
+            upcoming.forEach((ev, index) => {
+                container.innerHTML += `
+                    <div class="p-4 bg-cyber-card rounded-2xl border border-cyber-border space-y-3 relative">
+                        <button type="button" onclick="removeUpcomingEvent(${index})" class="absolute top-4 right-4 text-cyber-pink hover:text-rose-400 text-xs font-bold">
+                            <i class="fas fa-trash-can mr-1"></i> Supprimer
+                        </button>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-20">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Titre de l'événement</label>
+                                <input type="text" value="${ev.title || ''}" onchange="appData.upcomingEvents[${index}].title = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Date (Ex: Samedi 12 Avril)</label>
+                                <input type="text" value="${ev.date || ''}" onchange="appData.upcomingEvents[${index}].date = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Heure & Info (Ex: 14h00)</label>
+                                <input type="text" value="${ev.time || ''}" onchange="appData.upcomingEvents[${index}].time = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Lieu</label>
+                                <input type="text" value="${ev.location || ''}" onchange="appData.upcomingEvents[${index}].location = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function addUpcomingEvent() {
+            if (!appData.upcomingEvents) appData.upcomingEvents = [];
+            appData.upcomingEvents.push({ title: "Nouvel Événement", date: "Prochainement", time: "14h00", location: "École de Petit-Cœur" });
+            renderUpcomingEvents();
+        }
+
+        function removeUpcomingEvent(index) {
+            appData.upcomingEvents.splice(index, 1);
+            renderUpcomingEvents();
+        }
+
+        function renderPastEvents() {
+            const container = document.getElementById('past-events-container');
+            container.innerHTML = '';
+            const past = appData.pastEvents || [];
+
+            if (past.length === 0) {
+                container.innerHTML = '<p class="text-slate-500 text-xs italic">Aucun album photo. Cliquez sur Nouvel Album pour en ajouter un.</p>';
+                return;
+            }
+
+            past.forEach((pev, index) => {
+                container.innerHTML += `
+                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-4 relative">
+                        <button type="button" onclick="removePastEvent(${index})" class="absolute top-4 right-4 text-cyber-pink hover:text-rose-400 text-xs font-bold">
+                            <i class="fas fa-trash-can mr-1"></i> Supprimer Album
+                        </button>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-24">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Titre de l'Album</label>
+                                <input type="text" value="${pev.title || ''}" onchange="appData.pastEvents[${index}].title = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Date / Année</label>
+                                <input type="text" value="${pev.date || ''}" onchange="appData.pastEvents[${index}].date = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 mb-1">Description Souvenir</label>
+                            <input type="text" value="${pev.desc || ''}" onchange="appData.pastEvents[${index}].desc = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function addPastEvent() {
+            if (!appData.pastEvents) appData.pastEvents = [];
+            appData.pastEvents.push({ title: "Nouvel Album Souvenir", date: "2026", desc: "Souvenirs de l'événement.", photos: [] });
+            renderPastEvents();
+        }
+
+        function removePastEvent(index) {
+            appData.pastEvents.splice(index, 1);
+            renderPastEvents();
+        }
+
+        async function globalSaveData() {
             const btn = document.getElementById('save-btn');
             btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement en cours...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ENREGISTREMENT EN COURS...';
 
-            const payload = {
-                general: {
-                    assocName: document.getElementById('cfg-siteName').value,
-                    assocSub: "Petit-Cœur • La Léchère",
-                    locationTag: "Savoie - Commune de La Léchère",
-                    heroTitle: document.getElementById('cfg-heroTitle').value,
-                    heroDesc: document.getElementById('cfg-heroDesc').value,
-                    logoImg: document.getElementById('cfg-logoImg').value,
-                    posterImg: document.getElementById('cfg-posterImg').value,
-                    posterHeading: "À l'Affiche !",
-                    posterCaption: "Prochain événement"
-                },
-                budget: {
-                    current: parseFloat(document.getElementById('proj-current').value) || 0,
-                    target: parseFloat(document.getElementById('proj-target').value) || 5000
-                },
-                pastEvents: []
-            };
+            appData.general.assocName = document.getElementById('cfg-siteName').value;
+            appData.general.assocSub = document.getElementById('cfg-siteLocation').value;
+            appData.general.locationTag = document.getElementById('cfg-locationTag').value;
+            appData.general.heroTitle = document.getElementById('cfg-heroTitle').value;
+            appData.general.heroDesc = document.getElementById('cfg-heroDesc').value;
+            appData.general.logoImg = document.getElementById('cfg-logoImg').value;
+            appData.general.posterImg = document.getElementById('cfg-posterImg').value;
+            appData.general.posterHeading = document.getElementById('cfg-posterHeading').value;
+            appData.general.posterCaption = document.getElementById('cfg-posterCaption').value;
 
-            let saveSuccess = false;
-            let errorMsg = "";
+            appData.budget.current = parseFloat(document.getElementById('proj-current').value) || 0;
+            appData.budget.target = parseFloat(document.getElementById('proj-target').value) || 5000;
+
+            let localSuccess = false;
 
             try {
-                localStorage.setItem('sou_petit_coeur_data', JSON.stringify(payload));
-                saveSuccess = true;
+                localStorage.setItem('sou_petit_coeur_data', JSON.stringify(appData));
+                localStorage.setItem('sou_app_data', JSON.stringify(appData));
+                localSuccess = true;
             } catch (err) {
-                saveSuccess = false;
-                errorMsg = "L'image est trop lourde pour le stockage local.";
+                localSuccess = false;
             }
 
             if (_supabase) {
                 try {
-                    await _supabase.from('site_content').upsert({ id: 1, content: payload });
-                } catch(err) {}
+                    await _supabase.from('site_content').upsert({ id: 1, content: appData });
+                } catch(e) {}
             }
 
             btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-save"></i> <span>ENREGISTRER LES MODIFICATIONS</span>';
+            btn.innerHTML = '<i class="fas fa-floppy-disk text-base"></i> <span>ENREGISTRER TOUTES LES MODIFICATIONS</span>';
 
-            const statusBox = document.getElementById('status-box');
-            statusBox.classList.remove('hidden', 'bg-emerald-600', 'bg-rose-600');
-
-            if (saveSuccess) {
-                statusBox.classList.add('bg-emerald-600');
-                statusBox.innerHTML = '<i class="fas fa-check-circle mr-2"></i> OUI ! Les modifications sont enregistrées !';
+            if (localSuccess) {
+                showStatusToast("OUI ! Enregistrement réussi et publié !", "success");
             } else {
-                statusBox.classList.add('bg-rose-600');
-                statusBox.innerHTML = `<i class="fas fa-exclamation-triangle mr-2"></i> NON ! ${errorMsg}`;
+                showStatusToast("NON ! Erreur de mémoire lors de la sauvegarde.", "error");
             }
+        }
 
-            setTimeout(() => { statusBox.classList.add('hidden'); }, 4000);
+        function loadInitialData() {
+            const raw = localStorage.getItem('sou_petit_coeur_data') || localStorage.getItem('sou_app_data');
+            if (raw) {
+                try { appData = Object.assign({}, DEFAULT_DATA, JSON.parse(raw)); } catch(e){}
+            }
         }
 
         function processImage(e, targetId) {
@@ -213,10 +588,37 @@
 
                     const resizedBase64 = canvas.toDataURL('image/jpeg', 0.7);
                     document.getElementById(targetId).value = resizedBase64;
+                    showStatusToast("Image prête ! Cliquez sur enregistrer.", "success");
                 };
                 img.src = evt.target.result;
             };
             reader.readAsDataURL(file);
+        }
+
+        function showStatusToast(msg, type = "success") {
+            const toast = document.getElementById('status-toast');
+            const iconBg = document.getElementById('status-icon-bg');
+            const icon = document.getElementById('status-icon');
+            const message = document.getElementById('status-message');
+
+            message.textContent = msg;
+
+            if (type === "error") {
+                toast.classList.add('border-cyber-pink');
+                toast.classList.remove('border-cyber-cyan');
+                iconBg.className = "w-10 h-10 rounded-xl flex items-center justify-center text-lg bg-cyber-pink/20 text-cyber-pink";
+                icon.className = "fas fa-xmark";
+            } else {
+                toast.classList.add('border-cyber-cyan');
+                toast.classList.remove('border-cyber-pink');
+                iconBg.className = "w-10 h-10 rounded-xl flex items-center justify-center text-lg bg-cyber-cyan/20 text-cyber-cyan";
+                icon.className = "fas fa-check";
+            }
+
+            toast.classList.remove('translate-x-full', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-x-full', 'opacity-0');
+            }, 3500);
         }
     </script>
 </body>
