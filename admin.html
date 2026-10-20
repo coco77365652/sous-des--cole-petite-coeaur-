@@ -9,7 +9,8 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+   
     <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
@@ -17,12 +18,46 @@
         const SUPABASE_ANON_KEY = 'sb_publishable_6Q9vML3WwH7_8n5Ipvo-3g_DRZx_VPK';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body class="bg-slate-100 font-sans text-slate-800 antialiased min-h-screen flex flex-col">
 
-    <!-- OVERLAY NOTIFICATION -->
-    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3">
-        <i id="toast-icon" class="fas fa-check-circle text-emerald-400 text-xl"></i>
+    <!-- OVERLAY NOTIFICATION / TOAST -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
+        <i id="toast-icon" class="fas fa-check-circle text-emerald-400 text-lg"></i>
         <span id="toast-message" class="text-sm font-semibold">Action réussie !</span>
     </div>
 
@@ -30,24 +65,33 @@
     <div id="login-view" class="fixed inset-0 z-50 bg-slate-900 flex items-center justify-center p-4">
         <div class="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8 relative overflow-hidden">
             <div class="text-center mb-8">
-                <div class="w-16 h-16 bg-rose-50 rounded-2xl flex items-center justify-center text-rose-600 mx-auto mb-4 text-2xl shadow-inner">
+                <div class="w-16 h-16 bg-brand-50 rounded-2xl flex items-center justify-center text-brand-600 mx-auto mb-4 text-2xl shadow-inner">
                     <i class="fas fa-user-shield"></i>
                 </div>
-                <h1 class="font-bold text-2xl text-slate-900">Espace Administration</h1>
+                <h1 class="font-heading text-2xl font-extrabold text-slate-900">Espace Administration</h1>
                 <p class="text-slate-500 text-sm mt-1">APE de Petit-Cœur</p>
             </div>
 
-            <form onsubmit="handleLogin(event)" class="space-y-5">
+            <form id="login-form" onsubmit="handleLogin(event)" class="space-y-5">
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Mot de passe</label>
-                    <input type="password" id="admin-pass-input" placeholder="admin123" required 
-                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-rose-500 outline-none">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Mot de passe d'accès</label>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="password" id="admin-pass-input" placeholder="admin123" required 
+                            class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500">
+                    </div>
                     <p id="login-error" class="text-rose-500 text-xs font-semibold mt-2 hidden"><i class="fas fa-exclamation-circle mr-1"></i> Mot de passe incorrect.</p>
                 </div>
-                <button type="submit" class="w-full py-3.5 px-6 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl shadow-lg transition-all">
-                    Connexion
+                <button type="submit" class="w-full py-3.5 px-6 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+                    <span>Connexion</span>
+                    <i class="fas fa-arrow-right"></i>
                 </button>
             </form>
+
+            <div class="mt-8 pt-6 border-t border-slate-100 flex justify-between items-center text-xs text-slate-500">
+                <span>Code par défaut : <code class="bg-slate-100 px-2 py-0.5 rounded font-mono text-slate-700">admin123</code></span>
+                <a href="index.html" class="hover:text-brand-600 font-semibold transition"><i class="fas fa-arrow-left mr-1"></i> Voir le site</a>
+            </div>
         </div>
     </div>
 
@@ -58,30 +102,38 @@
         <aside class="w-full md:w-64 bg-slate-900 text-white flex-shrink-0 flex flex-col justify-between p-5 border-r border-slate-800">
             <div>
                 <div class="flex items-center gap-3 pb-6 border-b border-slate-800">
-                    <div class="w-10 h-10 rounded-xl bg-rose-600 flex items-center justify-center text-white font-bold shadow-lg">
+                    <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold shadow-lg">
                         <i class="fas fa-heart"></i>
                     </div>
                     <div>
-                        <h2 class="font-bold text-sm text-white">APE Petit-Cœur</h2>
-                        <span class="text-[10px] uppercase font-bold tracking-wider text-rose-400">Panneau Admin</span>
+                        <h2 class="font-heading font-extrabold text-sm leading-tight text-white">APE Petit-Cœur</h2>
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-brand-400 bg-brand-500/10 px-2 py-0.5 rounded">Dashboard</span>
                     </div>
                 </div>
 
-                <nav class="mt-6 space-y-2">
+                <nav class="mt-6 space-y-1">
                     <button type="button" onclick="switchTab('tab-general')" id="nav-tab-general" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
                         <i class="fas fa-sliders w-5 text-emerald-400"></i>
-                        <span>Configuration Générale</span>
+                        <span>Général & Accueil</span>
                     </button>
                     <button type="button" onclick="switchTab('tab-projects')" id="nav-tab-projects" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
                         <i class="fas fa-piggy-bank w-5 text-blue-400"></i>
-                        <span>Budget & Projets</span>
+                        <span>Projet & Budget</span>
+                    </button>
+                    <button type="button" onclick="switchTab('tab-upcoming')" id="nav-tab-upcoming" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
+                        <i class="fas fa-calendar-alt w-5 text-purple-400"></i>
+                        <span>Événements à Venir</span>
+                    </button>
+                    <button type="button" onclick="switchTab('tab-past')" id="nav-tab-past" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:bg-slate-800 hover:text-white">
+                        <i class="fas fa-camera-retro w-5 text-pink-400"></i>
+                        <span>Albums & Photos</span>
                     </button>
                 </nav>
             </div>
 
             <div class="pt-6 border-t border-slate-800 space-y-2">
-                <a href="index.html" target="_blank" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold text-slate-300 bg-slate-800 hover:bg-slate-700 transition">
-                    <span><i class="fas fa-external-link-alt mr-2 text-rose-400"></i> Voir le site public</span>
+                <a href="index.html" target="_blank" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold text-slate-300 bg-slate-800/80 hover:bg-slate-800 transition">
+                    <span><i class="fas fa-external-link-alt mr-2 text-brand-400"></i> Voir le site public</span>
                 </a>
                 <button type="button" onclick="logoutAdmin()" class="w-full flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-rose-400 hover:bg-rose-500/10 transition">
                     <i class="fas fa-sign-out-alt"></i>
@@ -91,49 +143,50 @@
         </aside>
 
         <!-- CONTENU PRINCIPAL -->
-        <main class="flex-1 bg-slate-100 p-4 md:p-8 overflow-y-auto">
+        <main class="flex-1 bg-slate-100 p-4 md:p-8 overflow-y-auto custom-scrollbar">
             
-            <div class="mb-8">
-                <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900">Administration du Site</h1>
-                <p class="text-slate-500 text-sm mt-1">Modifiez les informations et cliquez sur enregistrer.</p>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                <div>
+                    <h1 class="font-heading text-2xl md:text-3xl font-extrabold text-slate-900">Panneau de Configuration</h1>
+                    <p class="text-slate-500 text-sm mt-1">Gérez facilement les informations de votre site.</p>
+                </div>
             </div>
 
-            <!-- TAB 1 : CONFIGURATION GÉNÉRALE -->
-            <div id="tab-general" class="tab-content space-y-6">
-                <!-- LE FORMULAIRE INTERCEPTE L'EVENEMENT ONSUBMIT POUR EMPÊCHER LE RECHARGEMENT -->
+            <!-- TAB 1 : GÉNÉRAL & ACCUEIL -->
+            <div id="tab-general" class="tab-content hidden space-y-6">
                 <form onsubmit="handleSaveGeneral(event)" class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm space-y-6">
-                    <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-4">
-                        <i class="fas fa-sliders text-rose-600 mr-2"></i> Informations d'en-tête & Bannières
+                    <h3 class="font-heading text-lg font-bold text-slate-900 border-b border-slate-100 pb-4">
+                        <i class="fas fa-sliders text-brand-600 mr-2"></i> Configuration Générale
                     </h3>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Nom de l'Association</label>
-                            <input type="text" id="cfg-siteName" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-rose-500 outline-none">
+                            <input type="text" id="cfg-siteName" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 outline-none">
                         </div>
                         <div>
                             <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Commune / Localisation</label>
-                            <input type="text" id="cfg-siteLocation" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-rose-500 outline-none">
+                            <input type="text" id="cfg-siteLocation" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-500 outline-none">
                         </div>
                     </div>
 
-                    <!-- BLOC LOGO GAUCHE -->
+                    <!-- 1. GAUCHE : LOGO SOU DES ÉCOLES -->
                     <div class="p-5 bg-rose-50/60 rounded-2xl border border-rose-200/70 space-y-3">
-                        <h4 class="font-bold text-rose-900 text-sm">Logo à gauche (URL ou Fichier)</h4>
+                        <h4 class="font-heading font-bold text-rose-900 text-sm">Bloc 1 (Gauche) : Logo Sou des Écoles</h4>
                         <div class="flex gap-2">
                             <input type="text" id="cfg-logoImg" placeholder="image_736dff.jpg ou URL..." class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none">
-                            <label class="cursor-pointer px-4 py-2 bg-slate-800 text-white font-bold text-xs rounded-xl flex items-center gap-2 hover:bg-slate-900 transition shrink-0">
+                            <label class="cursor-pointer px-4 py-2 bg-slate-800 text-white font-bold text-xs rounded-xl flex items-center gap-2 shrink-0 hover:bg-slate-900 transition">
                                 <i class="fas fa-upload"></i> Uploader
                                 <input type="file" accept="image/*" class="hidden" onchange="uploadLogoImage(event)">
                             </label>
                         </div>
                     </div>
 
-                    <!-- BLOC MILIEU -->
+                    <!-- 2. MILIEU : TEXTE DE PRÉSENTATION -->
                     <div class="p-5 bg-amber-50/50 rounded-2xl border border-amber-200/60 space-y-4">
-                        <h4 class="font-bold text-amber-900 text-sm">Texte du Milieu</h4>
+                        <h4 class="font-heading font-bold text-amber-900 text-sm">Bloc 2 (Milieu) : Texte de Présentation</h4>
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Tag Supérieur</label>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Tag du Haut</label>
                             <input type="text" id="cfg-locationTag" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none">
                         </div>
                         <div>
@@ -141,36 +194,36 @@
                             <input type="text" id="cfg-heroTitle" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold outline-none">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Description</label>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Paragraphe Descriptif</label>
                             <textarea id="cfg-heroDesc" rows="2" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none"></textarea>
                         </div>
                     </div>
 
-                    <!-- BLOC AFFICHE DROITE -->
+                    <!-- 3. DROITE : AFFICHE DE L'ÉVÉNEMENT -->
                     <div class="p-5 bg-slate-100 rounded-2xl border border-slate-300 space-y-4">
-                        <h4 class="font-bold text-slate-900 text-sm">Affiche à Droite</h4>
+                        <h4 class="font-heading font-bold text-slate-900 text-sm">Bloc 3 (Droite) : Affiche du Prochain Événement</h4>
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Titre Affiche</label>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Titre de l'Affiche</label>
                             <input type="text" id="cfg-posterHeading" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Image Affiche</label>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Image de l'Affiche</label>
                             <div class="flex gap-2">
                                 <input type="text" id="cfg-posterImg" placeholder="image_736dff.jpg ou URL..." class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none">
-                                <label class="cursor-pointer px-4 py-2 bg-slate-800 text-white font-bold text-xs rounded-xl flex items-center gap-2 hover:bg-slate-900 transition shrink-0">
+                                <label class="cursor-pointer px-4 py-2 bg-slate-800 text-white font-bold text-xs rounded-xl flex items-center gap-2 shrink-0 hover:bg-slate-900 transition">
                                     <i class="fas fa-upload"></i> Uploader
                                     <input type="file" accept="image/*" class="hidden" onchange="uploadPosterImage(event)">
                                 </label>
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Légende Affiche</label>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Légende sous l'Affiche</label>
                             <input type="text" id="cfg-posterCaption" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none">
                         </div>
                     </div>
 
                     <div class="pt-4 flex justify-end">
-                        <button type="submit" class="px-8 py-3.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl shadow-lg transition active:scale-95 cursor-pointer flex items-center gap-2">
+                        <button type="submit" class="px-8 py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg transition active:scale-95 cursor-pointer flex items-center gap-2">
                             <i class="fas fa-save"></i>
                             <span>Enregistrer les modifications</span>
                         </button>
@@ -181,9 +234,9 @@
             <!-- TAB 2 : PROJET & BUDGET -->
             <div id="tab-projects" class="tab-content hidden space-y-6">
                 <form onsubmit="handleSaveProject(event)" class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm space-y-6">
-                    <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-4">Budget & Jauge Récoltée</h3>
+                    <h3 class="font-heading text-lg font-bold text-slate-900 border-b border-slate-100 pb-4">Projet Annuel & Budget</h3>
                     <div>
-                        <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Montant Actuel Récolté (€)</label>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-2">Montant Récolté Actuel (€)</label>
                         <input type="number" id="proj-current" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-emerald-600 outline-none">
                     </div>
                     <div>
@@ -191,7 +244,7 @@
                         <input type="number" id="proj-target" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-700 outline-none">
                     </div>
                     <div class="pt-4 flex justify-end">
-                        <button type="submit" class="px-8 py-3.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl shadow-lg transition active:scale-95 cursor-pointer flex items-center gap-2">
+                        <button type="submit" class="px-8 py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg transition active:scale-95 cursor-pointer flex items-center gap-2">
                             <i class="fas fa-save"></i>
                             <span>Mettre à jour le Budget</span>
                         </button>
@@ -199,10 +252,32 @@
                 </form>
             </div>
 
+            <!-- TAB 3 : ÉVÉNEMENTS À VENIR -->
+            <div id="tab-upcoming" class="tab-content hidden space-y-6">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-heading text-lg font-bold text-slate-900">Événements Futurs</h3>
+                    <button type="button" onclick="openUpcomingModal()" class="px-4 py-2.5 bg-brand-600 text-white font-bold text-xs rounded-xl shadow flex items-center gap-2 hover:bg-brand-700 transition">
+                        <i class="fas fa-plus"></i> Nouvel Événement
+                    </button>
+                </div>
+                <div id="upcoming-events-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </div>
+
+            <!-- TAB 4 : ALBUMS & PASSÉS -->
+            <div id="tab-past" class="tab-content hidden space-y-6">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-heading text-lg font-bold text-slate-900">Albums Souvenirs</h3>
+                    <button type="button" onclick="openPastModal()" class="px-4 py-2.5 bg-brand-600 text-white font-bold text-xs rounded-xl shadow flex items-center gap-2 hover:bg-brand-700 transition">
+                        <i class="fas fa-folder-plus"></i> Nouvel Album
+                    </button>
+                </div>
+                <div id="past-events-list" class="space-y-6"></div>
+            </div>
+
         </main>
     </div>
 
-    <!-- LOGIQUE JAVASCRIPT CORRIGÉE -->
+    <!-- SCRIPT LOGIQUE ET SAUVEGARDE COMPLÈTE -->
     <script>
         const DEFAULT_DATA = {
             general: {
@@ -235,9 +310,7 @@
             if (logged === 'true') {
                 document.getElementById('login-view').classList.add('hidden');
                 document.getElementById('admin-dashboard').classList.remove('hidden');
-                switchTab('tab-general');
-                fillGeneralForm();
-                fillProjectForm();
+                initDashboardUI();
             } else {
                 document.getElementById('login-view').classList.remove('hidden');
                 document.getElementById('admin-dashboard').classList.add('hidden');
@@ -263,14 +336,20 @@
             checkSession();
         }
 
+        function initDashboardUI() {
+            switchTab('tab-general');
+            fillGeneralForm();
+            fillProjectForm();
+        }
+
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-rose-600', 'text-white'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-brand-600', 'text-white'));
 
             const target = document.getElementById(tabId);
             if (target) target.classList.remove('hidden');
             const btn = document.getElementById('nav-' + tabId);
-            if (btn) btn.classList.add('bg-rose-600', 'text-white');
+            if (btn) btn.classList.add('bg-brand-600', 'text-white');
         }
 
         function fillGeneralForm() {
@@ -292,9 +371,9 @@
             document.getElementById('proj-target').value = p.targetAmount || 5000;
         }
 
-        // GESTIONNAIRES D'ÉVÉNEMENT DE SOUMISSION DU FORMULAIRE
+        // ÉVÉNEMENTS ONSUBMIT CORRIGÉS
         async function handleSaveGeneral(e) {
-            e.preventDefault(); // Empêche le rechargement de la page
+            e.preventDefault();
             
             appData.general.siteName = document.getElementById('cfg-siteName').value;
             appData.general.siteLocation = document.getElementById('cfg-siteLocation').value;
@@ -318,7 +397,7 @@
             await saveDataToStorage();
         }
 
-        // SAUVEGARDE UNIFIÉE DANS LOCALSTORAGE + SUPABASE
+        // ENREGISTREMENT UNIFIÉ DANS SUPABASE ET LOCALSTORAGE
         async function saveDataToStorage() {
             const publicData = {
                 adminPassword: appData.general.adminPassword || "admin123",
@@ -342,11 +421,9 @@
                 pastEvents: appData.pastEvents || []
             };
 
-            // Enregistrement local instantané
             localStorage.setItem('sou_app_data', JSON.stringify(appData));
             localStorage.setItem('sou_petit_coeur_data', JSON.stringify(publicData));
 
-            // Tentative d'envoi Supabase
             try {
                 const { error } = await _supabase
                     .from('site_content')
@@ -400,7 +477,7 @@
             const r = new FileReader();
             r.onload = (evt) => {
                 document.getElementById('cfg-logoImg').value = evt.target.result;
-                showToast("Image chargée, cliquez sur enregistrer !");
+                showToast("Logo chargé ! Cliquez sur enregistrer.");
             };
             r.readAsDataURL(file);
         }
@@ -411,7 +488,7 @@
             const r = new FileReader();
             r.onload = (evt) => {
                 document.getElementById('cfg-posterImg').value = evt.target.result;
-                showToast("Affiche chargée, cliquez sur enregistrer !");
+                showToast("Affiche chargée ! Cliquez sur enregistrer.");
             };
             r.readAsDataURL(file);
         }
@@ -422,9 +499,9 @@
             document.getElementById('toast-message').textContent = msg;
 
             if (type === "warning") {
-                toastIcon.className = "fas fa-exclamation-triangle text-amber-400 text-xl";
+                toastIcon.className = "fas fa-exclamation-triangle text-amber-400 text-lg";
             } else {
-                toastIcon.className = "fas fa-check-circle text-emerald-400 text-xl";
+                toastIcon.className = "fas fa-check-circle text-emerald-400 text-lg";
             }
 
             toast.classList.remove('translate-y-20', 'opacity-0');
