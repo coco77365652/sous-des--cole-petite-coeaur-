@@ -175,23 +175,35 @@
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-12">
-                <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-sm space-y-4">
-                    <h3 id="about-block1-title" class="font-title text-2xl font-bold text-gray-900 flex items-center gap-3">
-                        <i class="fa-solid fa-users text-brand-blue"></i> Notre Mission
-                    </h3>
-                    <p id="about-block1-text" class="text-gray-600 leading-relaxed text-base">
-                        Organiser des manifestations tout au long de l'année afin de financer les projets éducatifs, sorties scolaires, achats de matériel et spectacles pour nos enfants.
-                    </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch mb-12">
+                <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-sm space-y-4 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <h3 id="about-block1-title" class="font-title text-2xl font-bold text-gray-900 flex items-center gap-3">
+                            <i class="fa-solid fa-users text-brand-blue"></i> Notre Mission
+                        </h3>
+                        <p id="about-block1-text" class="text-gray-600 leading-relaxed text-base">
+                            Organiser des manifestations tout au long de l'année afin de financer les projets éducatifs, sorties scolaires, achats de matériel et spectacles pour nos enfants.
+                        </p>
+                    </div>
                 </div>
 
-                <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-sm space-y-4">
-                    <h3 id="about-block2-title" class="font-title text-2xl font-bold text-gray-900 flex items-center gap-3">
-                        <i class="fa-solid fa-heart text-brand-red"></i> Le Mot du Bureau
-                    </h3>
-                    <p id="about-block2-text" class="text-gray-600 italic leading-relaxed text-base">
-                        « Chaque événement est une belle aventure humaine. Un grand merci à tous les parents, enseignants et partenaires de la commune de La Léchère pour leur précieux soutien ! »
-                    </p>
+                <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-sm space-y-4 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <h3 id="about-block2-title" class="font-title text-2xl font-bold text-gray-900 flex items-center gap-3">
+                            <i class="fa-solid fa-heart text-brand-red"></i> Le Mot du Bureau
+                        </h3>
+                        <p id="about-block2-text" class="text-gray-600 italic leading-relaxed text-base">
+                            « Chaque événement est une belle aventure humaine. Un grand merci à tous les parents, enseignants et partenaires de la commune de La Léchère pour leur précieux soutien ! »
+                        </p>
+                    </div>
+
+                    <!-- BOUTON TÉLÉCHARGEMENT DU MOT DU BUREAU -->
+                    <div id="about-file-box" class="pt-4 border-t border-amber-100 hidden">
+                        <a id="about-file-link" href="#" download target="_blank" class="inline-flex items-center gap-2 bg-brand-red hover:bg-rose-600 text-white font-title font-semibold text-sm px-5 py-3 rounded-2xl shadow-md transition-all">
+                            <i class="fa-solid fa-file-arrow-down"></i>
+                            <span id="about-file-btn-text">Télécharger le document</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
@@ -263,7 +275,9 @@
                 block1Title: "Notre Mission",
                 block1Text: "Organiser des manifestations tout au long de l'année afin de financer les projets éducatifs, sorties scolaires, achats de matériel et spectacles pour nos enfants.",
                 block2Title: "Le Mot du Bureau",
-                block2Text: "« Chaque événement est une belle aventure humaine. Un grand merci à tous les parents, enseignants et partenaires de la commune de La Léchère pour leur précieux soutien ! »"
+                block2Text: "« Chaque événement est une belle aventure humaine. Un grand merci à tous les parents, enseignants et partenaires de la commune de La Léchère pour leur précieux soutien ! »",
+                fileUrl: "",
+                fileBtnText: "Télécharger le document"
             },
             upcomingEvents: [],
             pastEvents: []
@@ -290,6 +304,19 @@
             if (document.getElementById('about-block1-text')) document.getElementById('about-block1-text').textContent = ab.block1Text || defaultSiteData.about.block1Text;
             if (document.getElementById('about-block2-title')) document.getElementById('about-block2-title').innerHTML = `<i class="fa-solid fa-heart text-brand-red"></i> ${ab.block2Title || defaultSiteData.about.block2Title}`;
             if (document.getElementById('about-block2-text')) document.getElementById('about-block2-text').textContent = ab.block2Text || defaultSiteData.about.block2Text;
+
+            // GESTION DU FICHIER TÉLÉCHARGEABLE MOT DU BUREAU
+            const fileBox = document.getElementById('about-file-box');
+            const fileLink = document.getElementById('about-file-link');
+            const fileBtnText = document.getElementById('about-file-btn-text');
+            
+            if (ab.fileUrl && ab.fileUrl.trim() !== '') {
+                fileLink.href = ab.fileUrl;
+                fileBtnText.textContent = ab.fileBtnText || "Télécharger le document";
+                fileBox.classList.remove('hidden');
+            } else {
+                fileBox.classList.add('hidden');
+            }
 
             const logoImg = document.getElementById('logo-img');
             if (logoImg) {

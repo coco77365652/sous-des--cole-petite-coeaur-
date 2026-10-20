@@ -250,9 +250,9 @@
                         </div>
                     </div>
 
-                    <!-- BLOC 2 : LE MOT DU BUREAU -->
-                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-3">
-                        <h4 class="font-title font-bold text-white text-sm"><i class="fas fa-quote-left text-cyber-pink mr-2"></i> Bloc 2 (Droite)</h4>
+                    <!-- BLOC 2 : LE MOT DU BUREAU & TÉLÉCHARGEMENT -->
+                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
+                        <h4 class="font-title font-bold text-white text-sm"><i class="fas fa-quote-left text-cyber-pink mr-2"></i> Bloc 2 (Droite - Le Mot du Bureau)</h4>
                         <div>
                             <label class="block text-[10px] font-bold text-slate-400 mb-1">Titre du bloc 2</label>
                             <input type="text" id="cfg-aboutBlock2Title" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-bold mb-2">
@@ -260,6 +260,24 @@
                         <div>
                             <label class="block text-[10px] font-bold text-slate-400 mb-1">Texte du bloc 2 (Citation)</label>
                             <textarea id="cfg-aboutBlock2Text" rows="3" class="w-full px-3 py-2 glass-input rounded-xl text-xs italic"></textarea>
+                        </div>
+
+                        <!-- AJOUT FICHIER TÉLÉCHARGEABLE MOT DU BUREAU -->
+                        <div class="pt-3 border-t border-cyber-border/60 space-y-3">
+                            <h5 class="font-title font-bold text-xs text-cyber-pink flex items-center gap-2">
+                                <i class="fas fa-file-arrow-down"></i> Document téléchargeable joint
+                            </h5>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Texte du bouton</label>
+                                <input type="text" id="cfg-aboutFileBtnText" placeholder="Télécharger le document (PDF)..." class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                            </div>
+                            <div class="flex flex-col sm:flex-row gap-3">
+                                <input type="text" id="cfg-aboutFileUrl" placeholder="URL ou fichier encodé..." class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                                <label class="cursor-pointer px-4 py-2 bg-cyber-pink hover:bg-rose-600 text-white font-title font-bold text-xs rounded-xl flex items-center justify-center gap-2 shrink-0 transition-all glow-pink">
+                                    <i class="fas fa-upload"></i> Choisir Fichier (PDF/Doc)
+                                    <input type="file" class="hidden" onchange="processGenericFile(event, 'cfg-aboutFileUrl')">
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -381,7 +399,9 @@
                 block1Title: "Notre Mission",
                 block1Text: "Organiser des manifestations tout au long de l'année afin de financer les projets éducatifs, sorties scolaires, achats de matériel et spectacles pour nos enfants.",
                 block2Title: "Le Mot du Bureau",
-                block2Text: "« Chaque événement est une belle aventure humaine. Un grand merci à tous les parents, enseignants et partenaires de la commune de La Léchère pour leur précieux soutien ! »"
+                block2Text: "« Chaque événement est une belle aventure humaine. Un grand merci à tous les parents, enseignants et partenaires de la commune de La Léchère pour leur précieux soutien ! »",
+                fileUrl: "",
+                fileBtnText: "Télécharger le document"
             },
             upcomingEvents: [],
             pastEvents: []
@@ -458,6 +478,8 @@
             document.getElementById('cfg-aboutBlock1Text').value = ab.block1Text || DEFAULT_DATA.about.block1Text;
             document.getElementById('cfg-aboutBlock2Title').value = ab.block2Title || DEFAULT_DATA.about.block2Title;
             document.getElementById('cfg-aboutBlock2Text').value = ab.block2Text || DEFAULT_DATA.about.block2Text;
+            document.getElementById('cfg-aboutFileUrl').value = ab.fileUrl || '';
+            document.getElementById('cfg-aboutFileBtnText').value = ab.fileBtnText || 'Télécharger le document';
 
             renderUpcomingEvents();
             renderPastEvents();
@@ -634,7 +656,7 @@
             appData.general.posterHeading = document.getElementById('cfg-posterHeading').value;
             appData.general.posterCaption = document.getElementById('cfg-posterCaption').value;
 
-            // SAUVEGARDE QUI SOMMES NOUS
+            // SAUVEGARDE QUI SOMMES NOUS ET DOCUMENT
             if (!appData.about) appData.about = {};
             appData.about.tag = document.getElementById('cfg-aboutTag').value;
             appData.about.title = document.getElementById('cfg-aboutTitle').value;
@@ -643,6 +665,8 @@
             appData.about.block1Text = document.getElementById('cfg-aboutBlock1Text').value;
             appData.about.block2Title = document.getElementById('cfg-aboutBlock2Title').value;
             appData.about.block2Text = document.getElementById('cfg-aboutBlock2Text').value;
+            appData.about.fileUrl = document.getElementById('cfg-aboutFileUrl').value;
+            appData.about.fileBtnText = document.getElementById('cfg-aboutFileBtnText').value;
 
             let localSuccess = false;
 
@@ -675,6 +699,18 @@
             if (raw) {
                 try { appData = Object.assign({}, DEFAULT_DATA, JSON.parse(raw)); } catch(e){}
             }
+        }
+
+        function processGenericFile(e, targetId) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                document.getElementById(targetId).value = evt.target.result;
+                showStatusToast("Fichier prêt et encodé !", "success");
+            };
+            reader.readAsDataURL(file);
         }
 
         function processImage(e, targetId, previewId) {
