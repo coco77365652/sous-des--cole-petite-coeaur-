@@ -1,179 +1,367 @@
 <!DOCTYPE html>
 <html lang="fr" class="dark">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - APE Petit-Cœur</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Admin - APE Petit-Cœur</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>tailwind.config={darkMode:'class',theme:{extend:{colors:{cyber:{bg:'#0B0F19',card:'#151C2C',border:'#232D42',pink:'#FF2A6D',cyan:'#05D9E8'}}}}}</script>
-    <style>body{background:#0B0F19}.glass{background:rgba(21,28,44,.8);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08)}.input{background:rgba(11,15,25,.6);border:1px solid rgba(255,255,255,.1);color:#fff}</style>
+    <script>
+        const SUPABASE_URL = 'https://gdbktvxramksondbobns.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_6Q9vML3WwH7_8n5Ipvo-3g_DRZx_VPK';
+        let _supabase = null;
+        try { _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); } catch(e) {}
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: { cyber: { bg: '#0B0F19', card: '#151C2C', border: '#232D42', pink: '#FF2A6D', cyan: '#05D9E8', purple: '#7B2CBF', green: '#00F5D4' } },
+                    fontFamily: { title: ['Outfit', 'sans-serif'], sans: ['Plus Jakarta Sans', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0B0F19; }
+        .glass-card { background: rgba(21, 28, 44, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass-input { background: rgba(11, 15, 25, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); color: #FFFFFF; }
+        .glass-input:focus { border-color: #05D9E8; }
+    </style>
 </head>
-<body class="font-sans text-slate-200 min-h-screen flex flex-col">
-    <div id="toast" class="fixed top-5 right-5 z-50 transform translate-x-full opacity-0 transition-all px-4 py-2 rounded-xl glass text-xs font-bold text-cyber-cyan border border-cyber-cyan/30">Action réussie</div>
-    
-    <div id="login" class="fixed inset-0 z-50 bg-[#0B0F19] flex items-center justify-center p-4">
-        <div class="max-w-xs w-full glass p-6 rounded-2xl text-center space-y-4">
-            <h1 class="text-xl font-black text-white">ADMIN</h1>
-            <form onsubmit="doLogin(event)" class="space-y-3">
-                <input type="password" id="pass" placeholder="Code" required class="w-full p-2.5 input rounded-xl text-center text-xs font-bold">
-                <button type="submit" class="w-full py-2.5 bg-gradient-to-r from-cyber-pink to-cyber-cyan text-slate-900 font-bold rounded-xl text-xs">CONNEXION</button>
+<body class="font-sans text-slate-200 antialiased min-h-screen flex flex-col">
+
+    <div id="status-toast" class="fixed top-6 right-6 z-50 transform translate-x-full opacity-0 transition-all duration-500 px-6 py-4 rounded-2xl glass-card flex items-center gap-4 border text-white font-title font-bold text-sm">
+        <div id="status-icon-bg" class="w-10 h-10 rounded-xl flex items-center justify-center text-lg"><i id="status-icon" class="fas"></i></div>
+        <div><p id="status-title" class="text-xs font-semibold uppercase tracking-wider text-slate-400">Notification</p><p id="status-message">Action effectuée</p></div>
+    </div>
+
+    <div id="login-view" class="fixed inset-0 z-50 bg-[#0B0F19]/95 backdrop-blur-2xl flex items-center justify-center p-4">
+        <div class="max-w-md w-full glass-card rounded-3xl p-8 border border-white/10 relative overflow-hidden shadow-2xl">
+            <div class="text-center mb-8 relative z-10">
+                <div class="w-16 h-16 bg-gradient-to-tr from-cyber-pink to-cyber-purple rounded-2xl flex items-center justify-center text-white mx-auto mb-4 text-2xl shadow-lg"><i class="fas fa-bolt"></i></div>
+                <h1 class="font-title text-3xl font-extrabold text-white tracking-wide">STUDIO ADMIN</h1>
+                <p class="text-slate-400 text-xs mt-1 font-medium">APE de Petit-Cœur</p>
+            </div>
+            <form onsubmit="handleLogin(event)" class="space-y-5 relative z-10">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Code d'accès sécurisé</label>
+                    <input type="password" id="admin-pass-input" placeholder="admin123" required class="w-full px-4 py-3.5 glass-input rounded-2xl focus:outline-none text-sm font-semibold">
+                    <p id="login-error" class="text-cyber-pink text-xs font-semibold mt-2 hidden"><i class="fas fa-circle-exclamation mr-1"></i> Mot de passe incorrect.</p>
+                </div>
+                <button type="submit" class="w-full py-4 bg-gradient-to-r from-cyber-pink to-cyber-purple text-white font-title font-bold rounded-2xl transition-all">SE CONNECTER</button>
             </form>
         </div>
     </div>
 
-    <div id="dash" class="hidden min-h-screen flex flex-col md:flex-row">
-        <aside class="w-full md:w-60 bg-cyber-card/90 border-r border-cyber-border p-4 flex flex-col justify-between shrink-0">
-            <div class="space-y-3">
-                <div class="font-bold text-white text-sm pb-2 border-b border-cyber-border"><i class="fas fa-cube text-cyber-cyan mr-1"></i> APE Admin</div>
-                <nav class="space-y-1 text-xs font-bold">
-                    <button onclick="tab('gen')" class="w-full text-left p-2 rounded-lg hover:bg-white/5 text-slate-300"><i class="fas fa-sliders text-cyber-cyan w-4"></i> Accueil</button>
-                    <button onclick="tab('about')" class="w-full text-left p-2 rounded-lg hover:bg-white/5 text-slate-300"><i class="fas fa-users text-emerald-400 w-4"></i> Qui sommes-nous</button>
-                    <button onclick="tab('posters')" class="w-full text-left p-2 rounded-lg hover:bg-white/5 text-slate-300"><i class="fas fa-bullhorn text-cyber-pink w-4"></i> Affiche & Boutons</button>
-                    <button onclick="tab('events')" class="w-full text-left p-2 rounded-lg hover:bg-white/5 text-slate-300"><i class="fas fa-calendar text-amber-400 w-4"></i> Événements</button>
-                    <button onclick="tab('gallery')" class="w-full text-left p-2 rounded-lg hover:bg-white/5 text-slate-300"><i class="fas fa-images text-purple-400 w-4"></i> Galerie</button>
-                    <button onclick="tab('partners')" class="w-full text-left p-2 rounded-lg hover:bg-white/5 text-slate-300"><i class="fas fa-handshake text-teal-400 w-4"></i> Partenaires</button>
-                    <button onclick="tab('contact')" class="w-full text-left p-2 rounded-lg hover:bg-white/5 text-slate-300"><i class="fas fa-envelope text-sky-400 w-4"></i> Contact</button>
+    <div id="admin-dashboard" class="hidden min-h-screen flex flex-col md:flex-row">
+        <aside class="w-full md:w-72 bg-cyber-card/80 backdrop-blur-xl border-r border-cyber-border flex-shrink-0 flex flex-col justify-between p-6">
+            <div>
+                <div class="flex items-center gap-3 pb-6 border-b border-cyber-border">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyber-cyan to-brand-blue flex items-center justify-center text-slate-900 font-black text-xl"><i class="fas fa-cube"></i></div>
+                    <div><h2 class="font-title font-bold text-base text-white">APE Petit-Cœur</h2></div>
+                </div>
+                <nav class="mt-8 space-y-2">
+                    <button type="button" onclick="switchTab('tab-general')" id="nav-tab-general" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm text-slate-400 hover:text-white hover:bg-white/5"><i class="fas fa-sliders w-5 text-cyber-cyan"></i><span>Textes Accueil</span></button>
+                    <button type="button" onclick="switchTab('tab-about')" id="nav-tab-about" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm text-slate-400 hover:text-white hover:bg-white/5"><i class="fas fa-users w-5 text-cyber-green"></i><span>Qui sommes-nous ?</span></button>
+                    <button type="button" onclick="switchTab('tab-images')" id="nav-tab-images" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm text-slate-400 hover:text-white hover:bg-white/5"><i class="fas fa-bullhorn w-5 text-cyber-pink"></i><span>Affiche & Docs</span></button>
+                    <button type="button" onclick="switchTab('tab-events')" id="nav-tab-events" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm text-slate-400 hover:text-white hover:bg-white/5"><i class="fas fa-calendar-star w-5 text-amber-400"></i><span>Événements</span></button>
+                    <button type="button" onclick="switchTab('tab-gallery')" id="nav-tab-gallery" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm text-slate-400 hover:text-white hover:bg-white/5"><i class="fas fa-photo-film w-5 text-cyber-purple"></i><span>Galerie Photos</span></button>
+                    <button type="button" onclick="switchTab('tab-partners')" id="nav-tab-partners" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm text-slate-400 hover:text-white hover:bg-white/5"><i class="fas fa-handshake w-5 text-emerald-400"></i><span>Nos Partenaires</span></button>
+                    <button type="button" onclick="switchTab('tab-contact')" id="nav-tab-contact" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm text-slate-400 hover:text-white hover:bg-white/5"><i class="fas fa-envelope w-5 text-sky-400"></i><span>Nous Contacter</span></button>
                 </nav>
             </div>
-            <div class="pt-3 border-t border-cyber-border space-y-1 text-xs">
-                <a href="index.html" target="_blank" class="block p-2 glass rounded-lg text-center font-bold text-slate-300">Voir le site</a>
-                <button onclick="sessionStorage.clear();location.reload()" class="w-full p-2 text-cyber-pink font-bold text-left">Déconnexion</button>
+            <div class="pt-6 border-t border-cyber-border space-y-3">
+                <a href="index.html" target="_blank" class="w-full flex items-center justify-between px-4 py-3 rounded-2xl text-xs font-title font-bold text-slate-300 glass-card"><span class="hover:text-cyber-cyan"><i class="fas fa-globe mr-2"></i> Voir le site public</span></a>
+                <button type="button" onclick="logoutAdmin()" class="w-full flex items-center gap-2 px-4 py-3 rounded-2xl text-xs font-title font-bold text-cyber-pink hover:bg-cyber-pink/10"><i class="fas fa-power-off"></i><span>Déconnexion</span></button>
             </div>
         </aside>
 
-        <main class="flex-1 p-4 md:p-6 space-y-4 overflow-y-auto text-xs">
-            <div id="t-gen" class="sec hidden glass p-5 rounded-2xl space-y-3">
-                <h3 class="font-bold text-white border-b border-cyber-border pb-2">ACCUEIL</h3>
-                <div class="grid grid-cols-2 gap-2"><input id="f-name" placeholder="Nom" class="p-2 input rounded-lg"><input id="f-sub" placeholder="Sous-titre" class="p-2 input rounded-lg"></div>
-                <input id="f-tag" placeholder="Badge" class="w-full p-2 input rounded-lg">
-                <input id="f-title" placeholder="Grand Titre" class="w-full p-2 input rounded-lg text-cyber-cyan font-bold">
-                <textarea id="f-desc" rows="2" placeholder="Description" class="w-full p-2 input rounded-lg"></textarea>
-            </div>
-
-            <div id="t-about" class="sec hidden glass p-5 rounded-2xl space-y-3">
-                <h3 class="font-bold text-white border-b border-cyber-border pb-2">PRÉSENTATION</h3>
-                <div class="grid grid-cols-2 gap-2"><input id="f-atag" placeholder="Badge" class="p-2 input rounded-lg"><input id="f-atitle" placeholder="Titre" class="p-2 input rounded-lg"></div>
-                <textarea id="f-adesc" rows="2" placeholder="Intro" class="w-full p-2 input rounded-lg"></textarea>
-                <div class="grid grid-cols-2 gap-2">
-                    <div class="p-3 bg-cyber-bg rounded-xl space-y-2"><input id="f-b1t" placeholder="Titre Bloc 1" class="w-full p-1.5 input rounded font-bold"><textarea id="f-b1d" rows="2" placeholder="Texte" class="w-full p-1.5 input rounded"></textarea><input id="f-b1i" placeholder="Image URL" class="w-full p-1.5 input rounded"></div>
-                    <div class="p-3 bg-cyber-bg rounded-xl space-y-2"><input id="f-b2t" placeholder="Titre Bloc 2" class="w-full p-1.5 input rounded font-bold"><textarea id="f-b2d" rows="2" placeholder="Citation" class="w-full p-1.5 input rounded"></textarea><input id="f-fbtn" placeholder="Texte Bouton PDF" class="w-full p-1.5 input rounded"><input id="f-furl" placeholder="URL PDF/Statuts" class="w-full p-1.5 input rounded"></div>
+        <main class="flex-1 p-6 md:p-10 overflow-y-auto">
+            <div id="tab-general" class="tab-content hidden space-y-6">
+                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+                    <h3 class="font-title text-lg font-bold text-white border-b border-cyber-border pb-4">Textes d'Accueil</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div><label class="block text-xs font-bold uppercase text-slate-400 mb-2">Nom Association</label><input type="text" id="cfg-siteName" class="w-full px-4 py-3 glass-input rounded-2xl text-sm"></div>
+                        <div><label class="block text-xs font-bold uppercase text-slate-400 mb-2">Sous-titre</label><input type="text" id="cfg-siteLocation" class="w-full px-4 py-3 glass-input rounded-2xl text-sm"></div>
+                    </div>
+                    <div class="space-y-4">
+                        <div><label class="block text-xs font-bold uppercase text-slate-400 mb-2">Tag Supérieur</label><input type="text" id="cfg-locationTag" class="w-full px-4 py-3 glass-input rounded-2xl text-sm"></div>
+                        <div><label class="block text-xs font-bold uppercase text-slate-400 mb-2">Grand Titre</label><input type="text" id="cfg-heroTitle" class="w-full px-4 py-3 glass-input rounded-2xl text-sm text-cyber-cyan"></div>
+                        <div><label class="block text-xs font-bold uppercase text-slate-400 mb-2">Description</label><textarea id="cfg-heroDesc" rows="3" class="w-full px-4 py-3 glass-input rounded-2xl text-sm"></textarea></div>
+                    </div>
                 </div>
             </div>
 
-            <div id="t-posters" class="sec hidden glass p-5 rounded-2xl space-y-3">
-                <h3 class="font-bold text-white border-b border-cyber-border pb-2">AFFICHE & BOUTONS</h3>
-                <div class="grid grid-cols-2 gap-2"><input id="f-phead" placeholder="Titre haut" class="p-2 input rounded-lg"><input id="f-pcap" placeholder="Légende" class="p-2 input rounded-lg"></div>
-                <div class="flex gap-2"><input id="f-pimg" placeholder="Image Affiche URL" class="w-full p-2 input rounded-lg"><input type="file" accept="image/*" class="hidden" id="fi-p" onchange="file64(event,'f-pimg')"><label for="fi-p" class="px-3 py-2 bg-cyber-cyan text-slate-900 font-bold rounded-lg cursor-pointer">Image</label></div>
-                <div class="pt-2 border-t border-cyber-border space-y-2">
-                    <div class="flex justify-between font-bold text-amber-400"><span>Boutons sous l'affiche</span><button onclick="addBtn()" class="px-2 py-1 bg-amber-400 text-slate-900 rounded">+ Bouton</button></div>
-                    <div id="c-btns" class="space-y-2"></div>
+            <div id="tab-about" class="tab-content hidden space-y-6">
+                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+                    <h3 class="font-title text-lg font-bold text-white border-b border-cyber-border pb-4">Qui sommes-nous ? & Statuts</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div><label class="block text-xs font-bold uppercase text-slate-400 mb-2">Tag</label><input type="text" id="cfg-aboutTag" class="w-full px-4 py-3 glass-input rounded-2xl text-sm"></div>
+                        <div><label class="block text-xs font-bold uppercase text-slate-400 mb-2">Titre</label><input type="text" id="cfg-aboutTitle" class="w-full px-4 py-3 glass-input rounded-2xl text-sm text-cyber-green"></div>
+                    </div>
+                    <div><label class="block text-xs font-bold uppercase text-slate-400 mb-2">Intro</label><textarea id="cfg-aboutDesc" rows="2" class="w-full px-4 py-3 glass-input rounded-2xl text-sm"></textarea></div>
+                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
+                        <h4 class="font-title font-bold text-white text-sm">Bloc 1 (Mission)</h4>
+                        <input type="text" id="cfg-aboutBlock1Title" class="w-full px-3 py-2 glass-input rounded-xl text-xs mb-2">
+                        <textarea id="cfg-aboutBlock1Text" rows="3" class="w-full px-3 py-2 glass-input rounded-xl text-xs"></textarea>
+                        <div class="flex gap-3"><input type="text" id="cfg-aboutBlock1Img" class="w-full px-3 py-2 glass-input rounded-xl text-xs"><label class="cursor-pointer px-4 py-2 bg-cyber-cyan text-slate-900 font-bold text-xs rounded-xl flex items-center">Photo<input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-aboutBlock1Img')"></label></div>
+                    </div>
+                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
+                        <h4 class="font-title font-bold text-white text-sm">Bloc 2 (Mot du Bureau & Statuts)</h4>
+                        <input type="text" id="cfg-aboutBlock2Title" class="w-full px-3 py-2 glass-input rounded-xl text-xs mb-2">
+                        <textarea id="cfg-aboutBlock2Text" rows="3" class="w-full px-3 py-2 glass-input rounded-xl text-xs"></textarea>
+                        <input type="text" id="cfg-aboutFileBtnText" placeholder="Texte bouton PDF" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                        <div class="flex gap-3"><input type="text" id="cfg-aboutFileUrl" placeholder="URL PDF" class="w-full px-3 py-2 glass-input rounded-xl text-xs"><label class="cursor-pointer px-4 py-2 bg-cyber-pink text-white font-bold text-xs rounded-xl flex items-center">PDF<input type="file" accept="application/pdf,image/*" class="hidden" onchange="processGenericFile(event, 'cfg-aboutFileUrl')"></label></div>
+                    </div>
                 </div>
             </div>
 
-            <div id="t-events" class="sec hidden glass p-5 rounded-2xl space-y-3">
-                <div class="flex justify-between font-bold text-amber-400 border-b border-cyber-border pb-2"><span>ÉVÉNEMENTS</span><button onclick="addEv()" class="px-2 py-1 bg-amber-400 text-slate-900 rounded">+ Ajouter</button></div>
-                <div id="c-events" class="space-y-2"></div>
+            <div id="tab-images" class="tab-content hidden space-y-6">
+                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+                    <h3 class="font-title text-lg font-bold text-white border-b border-cyber-border pb-4">Affiches & Boutons</h3>
+                    <div class="p-6 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
+                        <h4 class="font-title font-bold text-white text-sm">Logo APE</h4>
+                        <div class="flex gap-3"><input type="text" id="cfg-logoImg" class="w-full px-4 py-3 glass-input rounded-2xl text-xs"><label class="cursor-pointer px-5 py-3 bg-cyber-pink text-white font-bold text-xs rounded-2xl flex items-center">Logo<input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-logoImg')"></label></div>
+                    </div>
+                    <div class="p-6 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
+                        <h4 class="font-title font-bold text-white text-sm">Affiche Principale</h4>
+                        <div class="grid grid-cols-2 gap-3"><input type="text" id="cfg-posterHeading" placeholder="Titre" class="px-3 py-2 glass-input rounded-xl text-xs"><input type="text" id="cfg-posterCaption" placeholder="Légende" class="px-3 py-2 glass-input rounded-xl text-xs"></div>
+                        <div class="flex gap-3"><input type="text" id="cfg-posterImg" class="w-full px-4 py-3 glass-input rounded-2xl text-xs"><label class="cursor-pointer px-5 py-3 bg-cyber-cyan text-slate-900 font-bold text-xs rounded-2xl flex items-center">Image<input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-posterImg')"></label></div>
+                    </div>
+                    <div class="p-6 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
+                        <div class="flex justify-between items-center border-b border-cyber-border pb-3"><h4 class="font-title font-bold text-white text-sm">Boutons sous l'affiche</h4><button type="button" onclick="addPosterBtnItem()" class="px-4 py-2 bg-amber-400 text-slate-900 font-bold text-xs rounded-xl">+ Ajouter</button></div>
+                        <div id="poster-buttons-admin-container" class="space-y-3"></div>
+                    </div>
+                </div>
             </div>
 
-            <div id="t-gallery" class="sec hidden glass p-5 rounded-2xl space-y-3">
-                <div class="flex justify-between font-bold text-purple-400 border-b border-cyber-border pb-2"><span>GALERIE</span><button onclick="addGal()" class="px-2 py-1 bg-purple-500 text-white rounded">+ Album</button></div>
-                <div id="c-gallery" class="space-y-3"></div>
+            <div id="tab-events" class="tab-content hidden space-y-6">
+                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+                    <div class="flex justify-between items-center border-b border-cyber-border pb-4"><h3 class="font-title text-lg font-bold text-white">Événements</h3><button type="button" onclick="addUpcomingEvent()" class="px-4 py-2 bg-amber-400 text-slate-900 font-bold text-xs rounded-xl">+ Ajouter</button></div>
+                    <div id="upcoming-events-container" class="space-y-4"></div>
+                </div>
             </div>
 
-            <div id="t-partners" class="sec hidden glass p-5 rounded-2xl space-y-3">
-                <div class="flex justify-between font-bold text-teal-400 border-b border-cyber-border pb-2"><span>PARTENAIRES</span><button onclick="addPart()" class="px-2 py-1 bg-teal-400 text-slate-900 rounded">+ Partenaire</button></div>
-                <div class="grid grid-cols-2 gap-2"><input id="f-ptag" placeholder="Badge" class="p-2 input rounded-lg"><input id="f-ptitle" placeholder="Titre" class="p-2 input rounded-lg font-bold text-teal-400"></div>
-                <textarea id="f-pdesc" rows="2" placeholder="Description générale" class="w-full p-2 input rounded-lg"></textarea>
-                <div id="c-partners" class="space-y-2"></div>
+            <div id="tab-gallery" class="tab-content hidden space-y-6">
+                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+                    <div class="flex justify-between items-center border-b border-cyber-border pb-4"><h3 class="font-title text-lg font-bold text-white">Galerie Photos</h3><button type="button" onclick="addPastEvent()" class="px-4 py-2 bg-cyber-purple text-white font-bold text-xs rounded-xl">+ Album</button></div>
+                    <div id="past-events-container" class="space-y-6"></div>
+                </div>
             </div>
 
-            <div id="t-contact" class="sec hidden glass p-5 rounded-2xl space-y-3">
-                <h3 class="font-bold text-white border-b border-cyber-border pb-2">CONTACT</h3>
-                <div class="grid grid-cols-2 gap-2"><input id="f-ctag" placeholder="Badge" class="p-2 input rounded-lg"><input id="f-ctitle" placeholder="Titre" class="p-2 input rounded-lg font-bold text-sky-400"></div>
-                <textarea id="f-cdesc" rows="2" placeholder="Description" class="w-full p-2 input rounded-lg"></textarea>
-                <div class="grid grid-cols-2 gap-2"><input id="f-cemail" placeholder="Email" class="p-2 input rounded-lg"><input id="f-cphone" placeholder="Téléphone" class="p-2 input rounded-lg"></div>
-                <input id="f-caddr" placeholder="Adresse" class="w-full p-2 input rounded-lg">
+            <div id="tab-partners" class="tab-content hidden space-y-6">
+                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+                    <div class="flex justify-between items-center border-b border-cyber-border pb-4"><h3 class="font-title text-lg font-bold text-white">Nos Partenaires</h3><button type="button" onclick="addPartnerItem()" class="px-4 py-2 bg-emerald-400 text-slate-900 font-bold text-xs rounded-xl">+ Ajouter</button></div>
+                    <div class="grid grid-cols-2 gap-6"><input type="text" id="cfg-partnersTag" placeholder="Tag" class="px-4 py-3 glass-input rounded-2xl text-sm"><input type="text" id="cfg-partnersTitle" placeholder="Titre" class="px-4 py-3 glass-input rounded-2xl text-sm text-emerald-400 font-bold"></div>
+                    <textarea id="cfg-partnersDesc" rows="2" placeholder="Description générale" class="w-full px-4 py-3 glass-input rounded-2xl text-sm"></textarea>
+                    <div id="partners-admin-container" class="space-y-4 pt-4 border-t border-cyber-border"></div>
+                </div>
             </div>
 
-            <div class="pt-3 border-t border-cyber-border flex justify-end">
-                <button onclick="save()" class="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-cyber-cyan to-cyber-pink text-slate-900 font-black rounded-xl shadow-lg"><i class="fas fa-save mr-1"></i> ENREGISTRER</button>
+            <div id="tab-contact" class="tab-content hidden space-y-6">
+                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+                    <h3 class="font-title text-lg font-bold text-white border-b border-cyber-border pb-4">Contact</h3>
+                    <div class="grid grid-cols-2 gap-6"><input type="text" id="cfg-contactTag" class="px-4 py-3 glass-input rounded-2xl text-sm"><input type="text" id="cfg-contactTitle" class="px-4 py-3 glass-input rounded-2xl text-sm text-sky-400 font-bold"></div>
+                    <textarea id="cfg-contactDesc" rows="2" class="w-full px-4 py-3 glass-input rounded-2xl text-sm"></textarea>
+                    <div class="grid grid-cols-2 gap-4"><input type="email" id="cfg-contactEmail" placeholder="Email" class="px-3 py-2 glass-input rounded-xl text-xs"><input type="text" id="cfg-contactPhone" placeholder="Téléphone" class="px-3 py-2 glass-input rounded-xl text-xs"></div>
+                    <input type="text" id="cfg-contactAddress" placeholder="Adresse" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-cyber-border flex justify-end">
+                <button type="button" onclick="globalSaveData()" id="save-btn" class="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-cyber-cyan via-brand-blue to-cyber-pink text-slate-900 font-title font-black text-sm uppercase rounded-2xl shadow-2xl transition-all cursor-pointer">ENREGISTRER TOUTES LES MODIFICATIONS</button>
             </div>
         </main>
     </div>
 
     <script>
-        const SB = supabase.createClient('https://gdbktvxramksondbobns.supabase.co', 'sb_publishable_6Q9vML3WwH7_8n5Ipvo-3g_DRZx_VPK');
-        let D = {general:{assocName:"APE de Petit-Cœur",assocSub:"La Léchère",posterButtons:[]}, about:{}, partners:{list:[]}, contact:{}, upcomingEvents:[], pastEvents:[]};
-
-        window.onload = () => {
-            if(sessionStorage.getItem('auth')==='1') { document.getElementById('login').remove(); document.getElementById('dash').classList.remove('hidden'); tab('gen'); load(); }
+        const DEFAULT_DATA = {
+            general: { assocName: "APE de Petit-Cœur", assocSub: "Petit-Cœur • La Léchère", locationTag: "Savoie - Commune de La Léchère", heroTitle: "Ensemble pour les enfants de Petit-Cœur !", heroDesc: "Association de parents d'élèves.", logoImg: "image_251ba6.png", posterImg: "image_251ba6.png", posterHeading: "À l'Affiche !", posterCaption: "Le Bureau du Sou des Écoles", posterButtons: [{ label: "Télécharger l'affiche", url: "image_251ba6.png" }], adminPassword: "admin123" },
+            about: { tag: "Présentation", title: "Qui sommes-nous ?", desc: "Une équipe dédiée aux enfants.", block1Title: "Notre Mission", block1Text: "Financer les projets scolaires.", block1Img: "", block2Title: "Le Mot du Bureau", block2Text: "Merci à tous !", fileUrl: "image_251ba6.png", fileBtnText: "Consulter les Statuts" },
+            partners: { tag: "Soutien", title: "Nos Partenaires", desc: "Merci à nos partenaires !", list: [{ name: "Mairie de La Léchère", desc: "Soutien institutionnel.", logo: "image_251ba6.png", link: "https://www.la-lechere.fr" }] },
+            contact: { tag: "Coordonnées", title: "Nous Contacter", desc: "Contactez-nous.", email: "ape.petitcoeur@gmail.com", phone: "06 00 00 00 00", address: "École Primaire, 73260 La Léchère" },
+            upcomingEvents: [], pastEvents: []
         };
-        function doLogin(e) {
-            e.preventDefault();
-            if(document.getElementById('pass').value === (D.general.adminPassword || 'admin123')) { sessionStorage.setItem('auth','1'); location.reload(); }
-            else alert('Code incorrect');
-        }
-        function tab(id) {
-            document.querySelectorAll('.sec').forEach(e=>e.classList.add('hidden'));
-            document.getElementById('t-'+id).classList.remove('hidden');
-        }
-        function load() {
-            let raw = localStorage.getItem('site_d');
-            if(raw) try{D=JSON.parse(raw)}catch(e){}
-            SB.from('site_content').select('content').eq('id',1).single().then(({data})=>{if(data?.content){D=data.content;fill()}});
-            fill();
-        }
-        function fill() {
-            let g=D.general||{}, a=D.about||{}, p=D.partners||{}, c=D.contact||{};
-            set('f-name',g.assocName); set('f-sub',g.assocSub); set('f-tag',g.locationTag); set('f-title',g.heroTitle); set('f-desc',g.heroDesc);
-            set('f-atag',a.tag); set('f-atitle',a.title); set('f-adesc',a.desc); set('f-b1t',a.block1Title); set('f-b1d',a.block1Text); set('f-b1i',a.block1Img); set('f-b2t',a.block2Title); set('f-b2d',a.block2Text); set('f-furl',a.fileUrl); set('f-fbtn',a.fileBtnText);
-            set('f-phead',g.posterHeading); set('f-pcap',g.posterCaption); set('f-pimg',g.posterImg);
-            set('f-ptag',p.tag); set('f-ptitle',p.title); set('f-pdesc',p.desc);
-            set('f-ctag',c.tag); set('f-ctitle',c.title); set('f-cdesc',c.desc); set('f-cemail',c.email); set('f-cphone',c.phone); set('f-caddr',c.address);
-            renderList();
-        }
-        function set(id,v){let e=document.getElementById(id);if(e)e.value=v||''}
-        function renderList() {
-            let bc = document.getElementById('c-btns'); bc.innerHTML='';
-            (D.general.posterButtons||[]).forEach((b,i)=>{
-                bc.innerHTML+=`<div class="flex gap-2"><input value="${b.label||''}" onchange="D.general.posterButtons[${i}].label=this.value" class="p-1 input rounded w-1/3 text-xs"><input value="${b.url||''}" onchange="D.general.posterButtons[${i}].url=this.value" class="p-1 input rounded w-full text-xs"><button onclick="D.general.posterButtons.splice(${i},1);renderList()" class="text-pink-500 font-bold px-2">✕</button></div>`;
-            });
-            let ec = document.getElementById('c-events'); ec.innerHTML='';
-            (D.upcomingEvents||[]).forEach((ev,i)=>{
-                ec.innerHTML+=`<div class="p-2 bg-cyber-bg rounded-lg space-y-1"><div class="flex gap-2"><input value="${ev.title||''}" onchange="D.upcomingEvents[${i}].title=this.value" class="p-1 input rounded w-2/3 text-xs font-bold"><input value="${ev.date||''}" onchange="D.upcomingEvents[${i}].date=this.value" class="p-1 input rounded w-1/3 text-xs"><button onclick="D.upcomingEvents.splice(${i},1);renderList()" class="text-pink-500 font-bold">✕</button></div><input value="${ev.desc||''}" onchange="D.upcomingEvents[${i}].desc=this.value" class="p-1 input rounded w-full text-xs"></div>`;
-            });
-            let gc = document.getElementById('c-gallery'); gc.innerHTML='';
-            (D.pastEvents||[]).forEach((ev,i)=>{
-                let imgs=(ev.photos||[]).map((ph,pi)=>`<span class="relative"><img src="${ph}" class="h-10 w-10 object-cover rounded"><button onclick="D.pastEvents[${i}].photos.splice(${pi},1);renderList()" class="absolute -top-1 -right-1 bg-pink-600 text-white rounded-full w-3 h-3 text-[8px]">✕</button></span>`).join('');
-                gc.innerHTML+=`<div class="p-2 bg-cyber-bg rounded-lg space-y-2"><div class="flex gap-2"><input value="${ev.title||''}" onchange="D.pastEvents[${i}].title=this.value" class="p-1 input rounded w-2/3 text-xs font-bold"><input value="${ev.date||''}" onchange="D.pastEvents[${i}].date=this.value" class="p-1 input rounded w-1/3 text-xs"><button onclick="D.pastEvents.splice(${i},1);renderList()" class="text-pink-500 font-bold">✕</button></div><div class="flex items-center gap-1 overflow-x-auto">${imgs}<input type="file" accept="image/*" class="hidden" id="gf-${i}" onchange="addPh(event, ${i})"><label for="gf-${i}" class="px-2 py-1 bg-purple-500 text-white text-[10px] rounded cursor-pointer">+ Photo</label></div></div>`;
-            });
-            let pc = document.getElementById('c-partners'); pc.innerHTML='';
-            (D.partners.list||[]).forEach((pt,i)=>{
-                pc.innerHTML+=`<div class="p-2 bg-cyber-bg rounded-lg space-y-1"><div class="flex gap-2"><input value="${pt.name||''}" onchange="D.partners.list[${i}].name=this.value" class="p-1 input rounded w-1/2 text-xs font-bold"><input value="${pt.link||''}" onchange="D.partners.list[${i}].link=this.value" class="p-1 input rounded w-1/2 text-xs" placeholder="Lien web"><button onclick="D.partners.list.splice(${i},1);renderList()" class="text-pink-500 font-bold">✕</button></div><input value="${pt.logo||''}" onchange="D.partners.list[${i}].logo=this.value" class="p-1 input rounded w-full text-xs" placeholder="Logo URL"></div>`;
-            });
-        }
-        function addBtn(){D.general.posterButtons.push({label:'Lien',url:''});renderList()}
-        function addEv(){D.upcomingEvents.push({title:'Événement',date:'Bientôt'});renderList()}
-        function addGal(){D.pastEvents.push({title:'Album',date:'2026',photos:[]});renderList()}
-        function addPart(){D.partners.list.push({name:'Partenaire'});renderList()}
-        function addPh(e,i){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=ev=>{resize(ev.target.result,b=>{D.pastEvents[i].photos.push(b);renderList()})};r.readAsDataURL(f);}
-        function file64(e,id){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=ev=>{resize(ev.target.result,b=>{document.getElementById(id).value=b})};r.readAsDataURL(f);}
-        function resize(data,cb){let img=new Image();img.onload=()=>{let c=document.createElement('canvas'),MAX=500,w=img.width,h=img.height;if(w>MAX){h*=MAX/w;w=MAX};c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);cb(c.toDataURL('image/jpeg',0.5)};img.src=data;}
-        async function save() {
-            let g=D.general, a=D.about, p=D.partners, c=D.contact;
-            g.assocName=gval('f-name'); g.assocSub=gval('f-sub'); g.locationTag=gval('f-tag'); g.heroTitle=gval('f-title'); g.heroDesc=gval('f-desc');
-            a.tag=gval('f-atag'); a.title=gval('f-atitle'); a.desc=gval('f-adesc'); a.block1Title=gval('f-b1t'); a.block1Text=gval('f-b1d'); a.block1Img=gval('f-b1i'); a.block2Title=gval('f-b2t'); a.block2Text=gval('f-b2d'); a.fileUrl=gval('f-furl'); a.fileBtnText=gval('f-fbtn');
-            g.posterHeading=gval('f-phead'); g.posterCaption=gval('f-pcap'); g.posterImg=gval('f-pimg');
-            p.tag=gval('f-ptag'); p.title=gval('f-ptitle'); p.desc=gval('f-pdesc');
-            c.tag=gval('f-ctag'); c.title=gval('f-ctitle'); c.desc=gval('f-cdesc'); c.email=gval('f-cemail'); c.phone=gval('f-cphone'); c.address=gval('f-caddr');
 
-            let s=JSON.stringify(D);
-            try{localStorage.setItem('site_d',s)}catch(e){}
-            await SB.from('site_content').upsert({id:1,content:D});
-            let t=document.getElementById('toast'); t.classList.remove('translate-x-full','opacity-0'); setTimeout(()=>t.classList.add('translate-x-full','opacity-0'),2000);
+        let appData = Object.assign({}, DEFAULT_DATA);
+
+        document.addEventListener('DOMContentLoaded', () => { loadInitialData(); checkSession(); });
+
+        function checkSession() {
+            if (sessionStorage.getItem('sou_admin_logged') === 'true') {
+                document.getElementById('login-view').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                switchTab('tab-general'); renderUI();
+            } else {
+                document.getElementById('login-view').classList.remove('hidden');
+                document.getElementById('admin-dashboard').classList.add('hidden');
+            }
         }
-        function gval(id){let e=document.getElementById(id);return e?e.value:''}
+
+        function handleLogin(e) {
+            e.preventDefault();
+            if (document.getElementById('admin-pass-input').value === (appData.general?.adminPassword || "admin123")) {
+                sessionStorage.setItem('sou_admin_logged', 'true'); checkSession(); showStatusToast("Connexion réussie !");
+            } else { document.getElementById('login-error').classList.remove('hidden'); }
+        }
+
+        function logoutAdmin() { sessionStorage.removeItem('sou_admin_logged'); checkSession(); }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-white/10', 'text-white'));
+            document.getElementById(tabId)?.classList.remove('hidden');
+            document.getElementById('nav-' + tabId)?.classList.add('bg-white/10', 'text-white');
+        }
+
+        function renderUI() {
+            const g = appData.general || {}, ab = appData.about || {}, pt = appData.partners || {}, ct = appData.contact || {};
+            const setV = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || ''; };
+
+            setV('cfg-siteName', g.assocName); setV('cfg-siteLocation', g.assocSub); setV('cfg-locationTag', g.locationTag); setV('cfg-heroTitle', g.heroTitle); setV('cfg-heroDesc', g.heroDesc);
+            setV('cfg-logoImg', g.logoImg); setV('cfg-posterImg', g.posterImg); setV('cfg-posterHeading', g.posterHeading); setV('cfg-posterCaption', g.posterCaption);
+            setV('cfg-aboutTag', ab.tag); setV('cfg-aboutTitle', ab.title); setV('cfg-aboutDesc', ab.desc); setV('cfg-aboutBlock1Title', ab.block1Title); setV('cfg-aboutBlock1Text', ab.block1Text);
+            setV('cfg-aboutBlock1Img', ab.block1Img || ab.block1Photo); setV('cfg-aboutBlock2Title', ab.block2Title); setV('cfg-aboutBlock2Text', ab.block2Text);
+            setV('cfg-aboutFileUrl', ab.fileUrl); setV('cfg-aboutFileBtnText', ab.fileBtnText);
+            setV('cfg-partnersTag', pt.tag); setV('cfg-partnersTitle', pt.title); setV('cfg-partnersDesc', pt.desc);
+            setV('cfg-contactTag', ct.tag); setV('cfg-contactTitle', ct.title); setV('cfg-contactDesc', ct.desc); setV('cfg-contactEmail', ct.email); setV('cfg-contactPhone', ct.phone); setV('cfg-contactAddress', ct.address);
+
+            renderPosterButtonsAdmin(); renderPartnersAdmin(); renderUpcomingEvents(); renderPastEvents();
+        }
+
+        function renderPartnersAdmin() {
+            const container = document.getElementById('partners-admin-container'); if (!container) return; container.innerHTML = '';
+            (appData.partners.list || []).forEach((p, index) => {
+                container.innerHTML += `
+                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-4 relative">
+                        <button type="button" onclick="appData.partners.list.splice(${index},1);renderPartnersAdmin()" class="absolute top-4 right-4 text-cyber-pink text-xs font-bold"><i class="fas fa-trash-can mr-1"></i> Supprimer</button>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-24">
+                            <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Nom</label><input type="text" value="${p.name || ''}" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-bold"></div>
+                            <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Site Web</label><input type="text" value="${p.link || ''}" class="w-full px-3 py-2 glass-input rounded-xl text-xs"></div>
+                        </div>
+                        <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Description</label><input type="text" value="${p.desc || ''}" class="w-full px-3 py-2 glass-input rounded-xl text-xs"></div>
+                        <div class="flex gap-3"><input type="text" value="${p.logo || ''}" class="w-full px-3 py-2 glass-input rounded-xl text-xs"></div>
+                    </div>`;
+            });
+        }
+        function addPartnerItem() { (appData.partners.list = appData.partners.list || []).push({ name: "Nouveau Partenaire", desc: "", logo: "image_251ba6.png", link: "" }); renderPartnersAdmin(); }
+
+        function renderPosterButtonsAdmin() {
+            const container = document.getElementById('poster-buttons-admin-container'); if (!container) return; container.innerHTML = '';
+            (appData.general.posterButtons || []).forEach((b, index) => {
+                container.innerHTML += `
+                    <div class="p-4 bg-cyber-bg rounded-2xl border border-cyber-border space-y-3 relative">
+                        <button type="button" onclick="appData.general.posterButtons.splice(${index},1);renderPosterButtonsAdmin()" class="absolute top-4 right-4 text-cyber-pink text-xs font-bold"><i class="fas fa-trash-can mr-1"></i> Supprimer</button>
+                        <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Texte</label><input type="text" value="${b.label || ''}" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-bold"></div>
+                        <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Lien / URL</label><input type="text" value="${b.url || ''}" class="w-full px-3 py-2 glass-input rounded-xl text-xs"></div>
+                    </div>`;
+            });
+        }
+        function addPosterBtnItem() { (appData.general.posterButtons = appData.general.posterButtons || []).push({ label: "Télécharger", url: "" }); renderPosterButtonsAdmin(); }
+
+        function renderUpcomingEvents() {
+            const container = document.getElementById('upcoming-events-container'); if (!container) return; container.innerHTML = '';
+            (appData.upcomingEvents || []).forEach((ev, index) => {
+                container.innerHTML += `
+                    <div class="p-4 bg-cyber-card rounded-2xl border border-cyber-border space-y-3 relative">
+                        <button type="button" onclick="appData.upcomingEvents.splice(${index},1);renderUpcomingEvents()" class="absolute top-4 right-4 text-cyber-pink text-xs font-bold">Supprimer</button>
+                        <div class="grid grid-cols-2 gap-3 pr-20">
+                            <input type="text" value="${ev.title || ''}" class="px-3 py-2 glass-input rounded-xl text-xs">
+                            <input type="text" value="${ev.date || ''}" class="px-3 py-2 glass-input rounded-xl text-xs">
+                        </div>
+                        <textarea rows="2" class="w-full px-3 py-2 glass-input rounded-xl text-xs">${ev.desc || ''}</textarea>
+                    </div>`;
+            });
+        }
+        function addUpcomingEvent() { (appData.upcomingEvents = appData.upcomingEvents || []).push({ title: "Nouvel Événement", date: "Bientôt", desc: "" }); renderUpcomingEvents(); }
+
+        function renderPastEvents() {
+            const container = document.getElementById('past-events-container'); if (!container) return; container.innerHTML = '';
+            (appData.pastEvents || []).forEach((pev, index) => {
+                let photosHTML = (pev.photos || []).map((pUrl, pIdx) => `<div class="relative"><img src="${pUrl}" class="h-20 w-full object-cover rounded-xl"><button type="button" onclick="appData.pastEvents[${index}].photos.splice(${pIdx},1);renderPastEvents()" class="absolute top-1 right-1 bg-rose-600 text-white w-5 h-5 rounded-full text-[9px]">✕</button></div>`).join('');
+                container.innerHTML += `
+                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-4 relative">
+                        <button type="button" onclick="appData.pastEvents.splice(${index},1);renderPastEvents()" class="absolute top-4 right-4 text-cyber-pink text-xs font-bold">Supprimer</button>
+                        <div class="grid grid-cols-2 gap-3 pr-28">
+                            <input type="text" value="${pev.title || ''}" class="px-3 py-2 glass-input rounded-xl text-xs">
+                            <input type="text" value="${pev.date || ''}" class="px-3 py-2 glass-input rounded-xl text-xs">
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-2">${photosHTML}</div>
+                    </div>`;
+            });
+        }
+        function addPastEvent() { (appData.pastEvents = appData.pastEvents || []).push({ title: "Album", date: "2026", photos: [] }); renderPastEvents(); }
+
+        async function globalSaveData() {
+            const btn = document.getElementById('save-btn'); btn.disabled = true; btn.innerHTML = 'ENREGISTREMENT...';
+            try {
+                const getV = (id) => document.getElementById(id)?.value || '';
+                appData.general.assocName = getV('cfg-siteName'); appData.general.assocSub = getV('cfg-siteLocation'); appData.general.locationTag = getV('cfg-locationTag'); appData.general.heroTitle = getV('cfg-heroTitle'); appData.general.heroDesc = getV('cfg-heroDesc'); appData.general.logoImg = getV('cfg-logoImg'); appData.general.posterImg = getV('cfg-posterImg'); appData.general.posterHeading = getV('cfg-posterHeading'); appData.general.posterCaption = getV('cfg-posterCaption');
+                appData.about.tag = getV('cfg-aboutTag'); appData.about.title = getV('cfg-aboutTitle'); appData.about.desc = getV('cfg-aboutDesc'); appData.about.block1Title = getV('cfg-aboutBlock1Title'); appData.about.block1Text = getV('cfg-aboutBlock1Text'); appData.about.block1Img = getV('cfg-aboutBlock1Img'); appData.about.block2Title = getV('cfg-aboutBlock2Title'); appData.about.block2Text = getV('cfg-aboutBlock2Text'); appData.about.fileUrl = getV('cfg-aboutFileUrl'); appData.about.fileBtnText = getV('cfg-aboutFileBtnText');
+                
+                appData.partners.tag = getV('cfg-partnersTag'); appData.partners.title = getV('cfg-partnersTitle'); appData.partners.desc = getV('cfg-partnersDesc');
+                
+                // Correction ciblée : Récupération stricte des partenaires modifiés
+                const partnerCards = document.querySelectorAll('#partners-admin-container > div');
+                if (partnerCards.length > 0) {
+                    appData.partners.list = [];
+                    partnerCards.forEach(card => {
+                        const inputs = card.querySelectorAll('input');
+                        if (inputs.length >= 3) {
+                            appData.partners.list.push({ name: inputs[0].value, link: inputs[1].value, desc: inputs[2].value, logo: inputs[3] ? inputs[3].value : 'image_251ba6.png' });
+                        }
+                    });
+                }
+
+                // Récupération boutons affiche
+                const posterBtnCards = document.querySelectorAll('#poster-buttons-admin-container > div');
+                if (posterBtnCards.length > 0) {
+                    appData.general.posterButtons = [];
+                    posterBtnCards.forEach(card => {
+                        const inputs = card.querySelectorAll('input');
+                        if (inputs.length >= 2) {
+                            appData.general.posterButtons.push({ label: inputs[0].value, url: inputs[1].value });
+                        }
+                    });
+                }
+
+                appData.contact.tag = getV('cfg-contactTag'); appData.contact.title = getV('cfg-contactTitle'); appData.contact.desc = getV('cfg-contactDesc'); appData.contact.email = getV('cfg-contactEmail'); appData.contact.phone = getV('cfg-contactPhone'); appData.contact.address = getV('cfg-contactAddress');
+
+                const serialized = JSON.stringify(appData);
+                localStorage.setItem('sou_petit_coeur_data', serialized);
+                if (_supabase) await _supabase.from('site_content').upsert({ id: 1, content: appData });
+
+                showStatusToast("Sauvegarde réussie !");
+            } catch (err) { showStatusToast("Erreur de sauvegarde", "error"); }
+            finally { btn.disabled = false; btn.innerHTML = 'ENREGISTRER TOUTES LES MODIFICATIONS'; }
+        }
+
+        function loadInitialData() {
+            const raw = localStorage.getItem('sou_petit_coeur_data') || localStorage.getItem('sou_app_data');
+            if (raw) try { appData = Object.assign({}, DEFAULT_DATA, JSON.parse(raw)); } catch(e){}
+        }
+
+        function processGenericFile(e, targetId) { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = (evt) => { document.getElementById(targetId).value = evt.target.result; showStatusToast("Fichier chargé !"); }; r.readAsDataURL(f); }
+        function processImageCompressed(e, targetId) {
+            const f = e.target.files[0]; if (!f) return;
+            const r = new FileReader(); r.onload = (evt) => {
+                const img = new Image(); img.onload = () => {
+                    const canvas = document.createElement('canvas'); const MAX = 500;
+                    let w = img.width, h = img.height; if (w > MAX) { h *= MAX / w; w = MAX; }
+                    canvas.width = w; canvas.height = h; canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                    document.getElementById(targetId).value = canvas.toDataURL('image/jpeg', 0.5);
+                    showStatusToast("Image optimisée !");
+                }; img.src = evt.target.result;
+            }; r.readAsDataURL(f);
+        }
+
+        function showStatusToast(msg, type = "success") {
+            const t = document.getElementById('status-toast'); document.getElementById('status-message').textContent = msg;
+            t.classList.remove('translate-x-full', 'opacity-0');
+            setTimeout(() => t.classList.add('translate-x-full', 'opacity-0'), 3000);
+        }
     </script>
 </body>
 </html>
