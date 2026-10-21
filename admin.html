@@ -154,10 +154,6 @@
                         <i class="fas fa-photo-film w-5 text-cyber-purple"></i>
                         <span>Galerie Photos</span>
                     </button>
-                    <button type="button" onclick="switchTab('tab-partners')" id="nav-tab-partners" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
-                        <i class="fas fa-handshake w-5 text-emerald-400"></i>
-                        <span>Nos Partenaires</span>
-                    </button>
                     <button type="button" onclick="switchTab('tab-contact')" id="nav-tab-contact" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
                         <i class="fas fa-envelope w-5 text-sky-400"></i>
                         <span>Nous Contacter</span>
@@ -405,40 +401,7 @@
                 </div>
             </div>
 
-            <!-- ONGLET 6 : NOS PARTENAIRES -->
-            <div id="tab-partners" class="tab-content hidden space-y-6">
-                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
-                    <div class="flex justify-between items-center border-b border-cyber-border pb-4">
-                        <h3 class="font-title text-lg font-bold text-white flex items-center gap-2">
-                            <i class="fas fa-handshake text-emerald-400"></i> Nos Partenaires
-                        </h3>
-                        <button type="button" onclick="addPartnerItem()" class="px-4 py-2 bg-emerald-400 hover:bg-emerald-300 text-slate-900 font-title font-bold text-xs rounded-xl transition-all flex items-center gap-2">
-                            <i class="fas fa-plus"></i> Ajouter un Partenaire
-                        </button>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Tag Supérieur</label>
-                            <input type="text" id="cfg-partnersTag" class="w-full px-4 py-3 glass-input rounded-2xl font-semibold text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Titre de la Section</label>
-                            <input type="text" id="cfg-partnersTitle" class="w-full px-4 py-3 glass-input rounded-2xl font-bold text-sm text-emerald-400">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Description Générale</label>
-                        <textarea id="cfg-partnersDesc" rows="2" class="w-full px-4 py-3 glass-input rounded-2xl text-sm"></textarea>
-                    </div>
-
-                    <!-- LISTE DES PARTENAIRES -->
-                    <div id="partners-admin-container" class="space-y-4 pt-4 border-t border-cyber-border"></div>
-                </div>
-            </div>
-
-            <!-- ONGLET 7 : CONTACT -->
+            <!-- ONGLET 6 : CONTACT -->
             <div id="tab-contact" class="tab-content hidden space-y-6">
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
                     <h3 class="font-title text-lg font-bold text-white flex items-center gap-2 border-b border-cyber-border pb-4">
@@ -524,19 +487,6 @@
                 fileUrl: "image_251ba6.png",
                 fileBtnText: "Consulter les Statuts"
             },
-            partners: {
-                tag: "Soutien & Collaborations",
-                title: "Nos Partenaires",
-                desc: "Un grand merci aux entreprises, commerçants et institutions qui soutiennent les projets des enfants de Petit-Cœur !",
-                list: [
-                    {
-                        name: "Mairie de La Léchère",
-                        desc: "Soutien institutionnel et mise à disposition des équipements communaux.",
-                        logo: "image_251ba6.png",
-                        link: "https://www.la-lechere.fr"
-                    }
-                ]
-            },
             contact: {
                 tag: "Coordonnées",
                 title: "Nous Contacter",
@@ -572,12 +522,12 @@
         function handleLogin(e) {
             e.preventDefault();
             const passInput = document.getElementById('admin-pass-input').value;
-            const currentPass = appData.general ? appData.general.adminPassword || "admin123" : "admin123";
+            const currentPass = appData.general.adminPassword || "admin123";
 
             if (passInput === currentPass) {
                 sessionStorage.setItem('sou_admin_logged', 'true');
                 checkSession();
-                showStatusToast("Connexion réussie !", "success");
+                showStatusToast("OUI ! Connexion réussie.", "success");
             } else {
                 document.getElementById('login-error').classList.remove('hidden');
             }
@@ -601,27 +551,26 @@
         function renderUI() {
             const g = appData.general || {};
             const ab = appData.about || {};
-            const pt = appData.partners || {};
             const ct = appData.contact || {};
 
-            if (document.getElementById('cfg-siteName')) document.getElementById('cfg-siteName').value = g.assocName || '';
-            if (document.getElementById('cfg-siteLocation')) document.getElementById('cfg-siteLocation').value = g.assocSub || '';
-            if (document.getElementById('cfg-locationTag')) document.getElementById('cfg-locationTag').value = g.locationTag || '';
-            if (document.getElementById('cfg-heroTitle')) document.getElementById('cfg-heroTitle').value = g.heroTitle || '';
-            if (document.getElementById('cfg-heroDesc')) document.getElementById('cfg-heroDesc').value = g.heroDesc || '';
-            if (document.getElementById('cfg-logoImg')) document.getElementById('cfg-logoImg').value = g.logoImg || '';
-            if (document.getElementById('cfg-posterImg')) document.getElementById('cfg-posterImg').value = g.posterImg || '';
-            if (document.getElementById('cfg-posterHeading')) document.getElementById('cfg-posterHeading').value = g.posterHeading || 'À l\'Affiche !';
-            if (document.getElementById('cfg-posterCaption')) document.getElementById('cfg-posterCaption').value = g.posterCaption || '';
+            document.getElementById('cfg-siteName').value = g.assocName || '';
+            document.getElementById('cfg-siteLocation').value = g.assocSub || '';
+            document.getElementById('cfg-locationTag').value = g.locationTag || '';
+            document.getElementById('cfg-heroTitle').value = g.heroTitle || '';
+            document.getElementById('cfg-heroDesc').value = g.heroDesc || '';
+            document.getElementById('cfg-logoImg').value = g.logoImg || '';
+            document.getElementById('cfg-posterImg').value = g.posterImg || '';
+            document.getElementById('cfg-posterHeading').value = g.posterHeading || 'À l\'Affiche !';
+            document.getElementById('cfg-posterCaption').value = g.posterCaption || '';
 
-            if (document.getElementById('cfg-aboutTag')) document.getElementById('cfg-aboutTag').value = ab.tag || DEFAULT_DATA.about.tag;
-            if (document.getElementById('cfg-aboutTitle')) document.getElementById('cfg-aboutTitle').value = ab.title || DEFAULT_DATA.about.title;
-            if (document.getElementById('cfg-aboutDesc')) document.getElementById('cfg-aboutDesc').value = ab.desc || DEFAULT_DATA.about.desc;
-            if (document.getElementById('cfg-aboutBlock1Title')) document.getElementById('cfg-aboutBlock1Title').value = ab.block1Title || DEFAULT_DATA.about.block1Title;
-            if (document.getElementById('cfg-aboutBlock1Text')) document.getElementById('cfg-aboutBlock1Text').value = ab.block1Text || DEFAULT_DATA.about.block1Text;
+            document.getElementById('cfg-aboutTag').value = ab.tag || DEFAULT_DATA.about.tag;
+            document.getElementById('cfg-aboutTitle').value = ab.title || DEFAULT_DATA.about.title;
+            document.getElementById('cfg-aboutDesc').value = ab.desc || DEFAULT_DATA.about.desc;
+            document.getElementById('cfg-aboutBlock1Title').value = ab.block1Title || DEFAULT_DATA.about.block1Title;
+            document.getElementById('cfg-aboutBlock1Text').value = ab.block1Text || DEFAULT_DATA.about.block1Text;
             
             const b1ImgVal = ab.block1Img || ab.block1Photo || '';
-            if (document.getElementById('cfg-aboutBlock1Img')) document.getElementById('cfg-aboutBlock1Img').value = b1ImgVal;
+            document.getElementById('cfg-aboutBlock1Img').value = b1ImgVal;
             
             if (b1ImgVal && b1ImgVal.trim() !== '') {
                 const prevB1 = document.getElementById('preview-b1');
@@ -632,135 +581,28 @@
                 }
             }
 
-            if (document.getElementById('cfg-aboutBlock2Title')) document.getElementById('cfg-aboutBlock2Title').value = ab.block2Title || DEFAULT_DATA.about.block2Title;
-            if (document.getElementById('cfg-aboutBlock2Text')) document.getElementById('cfg-aboutBlock2Text').value = ab.block2Text || DEFAULT_DATA.about.block2Text;
-            if (document.getElementById('cfg-aboutFileUrl')) document.getElementById('cfg-aboutFileUrl').value = ab.fileUrl || '';
-            if (document.getElementById('cfg-aboutFileBtnText')) document.getElementById('cfg-aboutFileBtnText').value = ab.fileBtnText || 'Consulter les Statuts';
+            document.getElementById('cfg-aboutBlock2Title').value = ab.block2Title || DEFAULT_DATA.about.block2Title;
+            document.getElementById('cfg-aboutBlock2Text').value = ab.block2Text || DEFAULT_DATA.about.block2Text;
+            document.getElementById('cfg-aboutFileUrl').value = ab.fileUrl || '';
+            document.getElementById('cfg-aboutFileBtnText').value = ab.fileBtnText || 'Consulter les Statuts';
 
-            if (document.getElementById('cfg-partnersTag')) document.getElementById('cfg-partnersTag').value = pt.tag || DEFAULT_DATA.partners.tag;
-            if (document.getElementById('cfg-partnersTitle')) document.getElementById('cfg-partnersTitle').value = pt.title || DEFAULT_DATA.partners.title;
-            if (document.getElementById('cfg-partnersDesc')) document.getElementById('cfg-partnersDesc').value = pt.desc || DEFAULT_DATA.partners.desc;
-
-            if (document.getElementById('cfg-contactTag')) document.getElementById('cfg-contactTag').value = ct.tag || DEFAULT_DATA.contact.tag;
-            if (document.getElementById('cfg-contactTitle')) document.getElementById('cfg-contactTitle').value = ct.title || DEFAULT_DATA.contact.title;
-            if (document.getElementById('cfg-contactDesc')) document.getElementById('cfg-contactDesc').value = ct.desc || DEFAULT_DATA.contact.desc;
-            if (document.getElementById('cfg-contactEmail')) document.getElementById('cfg-contactEmail').value = ct.email || DEFAULT_DATA.contact.email;
-            if (document.getElementById('cfg-contactPhone')) document.getElementById('cfg-contactPhone').value = ct.phone || DEFAULT_DATA.contact.phone;
-            if (document.getElementById('cfg-contactAddress')) document.getElementById('cfg-contactAddress').value = ct.address || DEFAULT_DATA.contact.address;
+            document.getElementById('cfg-contactTag').value = ct.tag || DEFAULT_DATA.contact.tag;
+            document.getElementById('cfg-contactTitle').value = ct.title || DEFAULT_DATA.contact.title;
+            document.getElementById('cfg-contactDesc').value = ct.desc || DEFAULT_DATA.contact.desc;
+            document.getElementById('cfg-contactEmail').value = ct.email || DEFAULT_DATA.contact.email;
+            document.getElementById('cfg-contactPhone').value = ct.phone || DEFAULT_DATA.contact.phone;
+            document.getElementById('cfg-contactAddress').value = ct.address || DEFAULT_DATA.contact.address;
 
             renderPosterButtonsAdmin();
-            renderPartnersAdmin();
             renderUpcomingEvents();
             renderPastEvents();
         }
 
-        function renderPartnersAdmin() {
-            const container = document.getElementById('partners-admin-container');
-            if (!container) return;
-            container.innerHTML = '';
-
-            if (!appData.partners) appData.partners = DEFAULT_DATA.partners;
-            if (!appData.partners.list) appData.partners.list = DEFAULT_DATA.partners.list;
-
-            const list = appData.partners.list;
-
-            if (list.length === 0) {
-                container.innerHTML = '<p class="text-slate-500 text-xs italic">Aucun partenaire configuré. Cliquez sur "Ajouter un Partenaire".</p>';
-                return;
-            }
-
-            list.forEach((p, index) => {
-                container.innerHTML += `
-                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-4 relative">
-                        <button type="button" onclick="removePartnerItem(${index})" class="absolute top-4 right-4 text-cyber-pink hover:text-rose-400 text-xs font-bold">
-                            <i class="fas fa-trash-can mr-1"></i> Supprimer
-                        </button>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-24">
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Nom de l'Entreprise / Partenaire</label>
-                                <input type="text" value="${p.name || ''}" onchange="appData.partners.list[${index}].name = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-bold">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Site Web (Lien complet https://...)</label>
-                                <input type="text" value="${p.link || ''}" onchange="appData.partners.list[${index}].link = this.value" placeholder="https://..." class="w-full px-3 py-2 glass-input rounded-xl text-xs">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-400 mb-1">Description / Rôle</label>
-                            <input type="text" value="${p.desc || ''}" onchange="appData.partners.list[${index}].desc = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
-                        </div>
-
-                        <div class="flex flex-col sm:flex-row gap-3">
-                            <input type="text" id="partner-logo-${index}" value="${p.logo || ''}" onchange="appData.partners.list[${index}].logo = this.value" placeholder="Image ou URL du logo..." class="w-full px-3 py-2 glass-input rounded-xl text-xs">
-                            <label class="cursor-pointer px-4 py-2 bg-emerald-400 hover:bg-emerald-300 text-slate-900 font-title font-bold text-xs rounded-xl flex items-center justify-center gap-2 shrink-0 transition-all">
-                                <i class="fas fa-image"></i> Importer le Logo
-                                <input type="file" accept="image/*" class="hidden" onchange="processPartnerLogo(event, ${index})">
-                            </label>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function addPartnerItem() {
-            if (!appData.partners) appData.partners = { tag: "Soutien & Collaborations", title: "Nos Partenaires", desc: "", list: [] };
-            if (!appData.partners.list) appData.partners.list = [];
-
-            appData.partners.list.push({
-                name: "Nouveau Partenaire",
-                desc: "Description du partenaire",
-                logo: "image_251ba6.png",
-                link: ""
-            });
-            renderPartnersAdmin();
-        }
-
-        function removePartnerItem(index) {
-            appData.partners.list.splice(index, 1);
-            renderPartnersAdmin();
-        }
-
-        function processPartnerLogo(e, index) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 400;
-                    let width = img.width;
-                    let height = img.height;
-
-                    if (width > MAX_WIDTH) {
-                        height *= MAX_WIDTH / width;
-                        width = MAX_WIDTH;
-                    }
-
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-
-                    const resizedBase64 = canvas.toDataURL('image/png', 0.8);
-                    appData.partners.list[index].logo = resizedBase64;
-                    document.getElementById(`partner-logo-${index}`).value = resizedBase64;
-                    showStatusToast("Logo partenaire optimisé !", "success");
-                };
-                img.src = evt.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-
+        // GESTION DES BOUTONS DE TÉLÉCHARGEMENT SOUS L'AFFICHE
         function renderPosterButtonsAdmin() {
             const container = document.getElementById('poster-buttons-admin-container');
-            if (!container) return;
             container.innerHTML = '';
 
-            if (!appData.general) appData.general = DEFAULT_DATA.general;
             if (!appData.general.posterButtons) {
                 appData.general.posterButtons = DEFAULT_DATA.general.posterButtons;
             }
@@ -797,7 +639,6 @@
         }
 
         function addPosterBtnItem() {
-            if (!appData.general) appData.general = DEFAULT_DATA.general;
             if (!appData.general.posterButtons) appData.general.posterButtons = [];
             appData.general.posterButtons.push({
                 label: "Télécharger un document",
@@ -826,7 +667,6 @@
 
         function renderUpcomingEvents() {
             const container = document.getElementById('upcoming-events-container');
-            if (!container) return;
             container.innerHTML = '';
             const upcoming = appData.upcomingEvents || [];
 
@@ -873,7 +713,6 @@
 
         function renderPastEvents() {
             const container = document.getElementById('past-events-container');
-            if (!container) return;
             container.innerHTML = '';
             const past = appData.pastEvents || [];
 
@@ -991,83 +830,70 @@
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ENREGISTREMENT...';
 
+            appData.general.assocName = document.getElementById('cfg-siteName').value;
+            appData.general.assocSub = document.getElementById('cfg-siteLocation').value;
+            appData.general.locationTag = document.getElementById('cfg-locationTag').value;
+            appData.general.heroTitle = document.getElementById('cfg-heroTitle').value;
+            appData.general.heroDesc = document.getElementById('cfg-heroDesc').value;
+            appData.general.logoImg = document.getElementById('cfg-logoImg').value;
+            appData.general.posterImg = document.getElementById('cfg-posterImg').value;
+            appData.general.posterHeading = document.getElementById('cfg-posterHeading').value;
+            appData.general.posterCaption = document.getElementById('cfg-posterCaption').value;
+
+            if (!appData.about) appData.about = {};
+            appData.about.tag = document.getElementById('cfg-aboutTag').value;
+            appData.about.title = document.getElementById('cfg-aboutTitle').value;
+            appData.about.desc = document.getElementById('cfg-aboutDesc').value;
+            appData.about.block1Title = document.getElementById('cfg-aboutBlock1Title').value;
+            appData.about.block1Text = document.getElementById('cfg-aboutBlock1Text').value;
+            
+            const b1PhotoVal = document.getElementById('cfg-aboutBlock1Img').value;
+            appData.about.block1Img = b1PhotoVal;
+            appData.about.block1Photo = b1PhotoVal;
+
+            appData.about.block2Title = document.getElementById('cfg-aboutBlock2Title').value;
+            appData.about.block2Text = document.getElementById('cfg-aboutBlock2Text').value;
+            appData.about.fileUrl = document.getElementById('cfg-aboutFileUrl').value;
+            appData.about.fileBtnText = document.getElementById('cfg-aboutFileBtnText').value;
+
+            if (!appData.contact) appData.contact = {};
+            appData.contact.tag = document.getElementById('cfg-contactTag').value;
+            appData.contact.title = document.getElementById('cfg-contactTitle').value;
+            appData.contact.desc = document.getElementById('cfg-contactDesc').value;
+            appData.contact.email = document.getElementById('cfg-contactEmail').value;
+            appData.contact.phone = document.getElementById('cfg-contactPhone').value;
+            appData.contact.address = document.getElementById('cfg-contactAddress').value;
+
+            let localSuccess = false;
+
             try {
-                if (!appData.general) appData.general = {};
-                if (document.getElementById('cfg-siteName')) appData.general.assocName = document.getElementById('cfg-siteName').value;
-                if (document.getElementById('cfg-siteLocation')) appData.general.assocSub = document.getElementById('cfg-siteLocation').value;
-                if (document.getElementById('cfg-locationTag')) appData.general.locationTag = document.getElementById('cfg-locationTag').value;
-                if (document.getElementById('cfg-heroTitle')) appData.general.heroTitle = document.getElementById('cfg-heroTitle').value;
-                if (document.getElementById('cfg-heroDesc')) appData.general.heroDesc = document.getElementById('cfg-heroDesc').value;
-                if (document.getElementById('cfg-logoImg')) appData.general.logoImg = document.getElementById('cfg-logoImg').value;
-                if (document.getElementById('cfg-posterImg')) appData.general.posterImg = document.getElementById('cfg-posterImg').value;
-                if (document.getElementById('cfg-posterHeading')) appData.general.posterHeading = document.getElementById('cfg-posterHeading').value;
-                if (document.getElementById('cfg-posterCaption')) appData.general.posterCaption = document.getElementById('cfg-posterCaption').value;
-
-                if (!appData.about) appData.about = {};
-                if (document.getElementById('cfg-aboutTag')) appData.about.tag = document.getElementById('cfg-aboutTag').value;
-                if (document.getElementById('cfg-aboutTitle')) appData.about.title = document.getElementById('cfg-aboutTitle').value;
-                if (document.getElementById('cfg-aboutDesc')) appData.about.desc = document.getElementById('cfg-aboutDesc').value;
-                if (document.getElementById('cfg-aboutBlock1Title')) appData.about.block1Title = document.getElementById('cfg-aboutBlock1Title').value;
-                if (document.getElementById('cfg-aboutBlock1Text')) appData.about.block1Text = document.getElementById('cfg-aboutBlock1Text').value;
-                
-                if (document.getElementById('cfg-aboutBlock1Img')) {
-                    const b1PhotoVal = document.getElementById('cfg-aboutBlock1Img').value;
-                    appData.about.block1Img = b1PhotoVal;
-                    appData.about.block1Photo = b1PhotoVal;
-                }
-
-                if (document.getElementById('cfg-aboutBlock2Title')) appData.about.block2Title = document.getElementById('cfg-aboutBlock2Title').value;
-                if (document.getElementById('cfg-aboutBlock2Text')) appData.about.block2Text = document.getElementById('cfg-aboutBlock2Text').value;
-                if (document.getElementById('cfg-aboutFileUrl')) appData.about.fileUrl = document.getElementById('cfg-aboutFileUrl').value;
-                if (document.getElementById('cfg-aboutFileBtnText')) appData.about.fileBtnText = document.getElementById('cfg-aboutFileBtnText').value;
-
-                if (!appData.partners) appData.partners = {};
-                if (document.getElementById('cfg-partnersTag')) appData.partners.tag = document.getElementById('cfg-partnersTag').value;
-                if (document.getElementById('cfg-partnersTitle')) appData.partners.title = document.getElementById('cfg-partnersTitle').value;
-                if (document.getElementById('cfg-partnersDesc')) appData.partners.desc = document.getElementById('cfg-partnersDesc').value;
-
-                if (!appData.contact) appData.contact = {};
-                if (document.getElementById('cfg-contactTag')) appData.contact.tag = document.getElementById('cfg-contactTag').value;
-                if (document.getElementById('cfg-contactTitle')) appData.contact.title = document.getElementById('cfg-contactTitle').value;
-                if (document.getElementById('cfg-contactDesc')) appData.contact.desc = document.getElementById('cfg-contactDesc').value;
-                if (document.getElementById('cfg-contactEmail')) appData.contact.email = document.getElementById('cfg-contactEmail').value;
-                if (document.getElementById('cfg-contactPhone')) appData.contact.phone = document.getElementById('cfg-contactPhone').value;
-                if (document.getElementById('cfg-contactAddress')) appData.contact.address = document.getElementById('cfg-contactAddress').value;
-
-                let localSuccess = false;
-
                 const serialized = JSON.stringify(appData);
                 try {
                     localStorage.setItem('sou_petit_coeur_data', serialized);
                     localStorage.setItem('sou_app_data', serialized);
-                    localSuccess = true;
                 } catch(quotaErr) {
-                    console.warn("Storage plein, purge ponctuelle...");
                     localStorage.clear();
-                    try {
-                        localStorage.setItem('sou_petit_coeur_data', serialized);
-                        localSuccess = true;
-                    } catch(e) {}
+                    localStorage.setItem('sou_petit_coeur_data', serialized);
                 }
-
-                if (_supabase) {
-                    try {
-                        await _supabase.from('site_content').upsert({ id: 1, content: appData });
-                        localSuccess = true;
-                    } catch(e) {}
-                }
-
-                if (localSuccess) {
-                    showStatusToast("Sauvegarde effectuée avec succès !", "success");
-                } else {
-                    showStatusToast("Erreur de sauvegarde : donnez des images moins lourdes.", "error");
-                }
+                localSuccess = true;
             } catch (err) {
-                console.error(err);
-                showStatusToast("Erreur inattendue lors de la sauvegarde.", "error");
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-floppy-disk text-base"></i> <span>ENREGISTRER TOUTES LES MODIFICATIONS</span>';
+                console.warn("Stockage local indisponible, tentative Supabase seule.", err);
+            }
+
+            if (_supabase) {
+                try {
+                    await _supabase.from('site_content').upsert({ id: 1, content: appData });
+                    localSuccess = true;
+                } catch(e) {}
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-floppy-disk text-base"></i> <span>ENREGISTRER TOUTES LES MODIFICATIONS</span>';
+
+            if (localSuccess) {
+                showStatusToast("Sauvegarde effectuée avec succès !", "success");
+            } else {
+                showStatusToast("Stockage plein : Réduisez la taille des images téléversées.", "error");
             }
         }
 
@@ -1134,23 +960,22 @@
 
         function showStatusToast(msg, type = "success") {
             const toast = document.getElementById('status-toast');
-            if (!toast) return;
             const iconBg = document.getElementById('status-icon-bg');
             const icon = document.getElementById('status-icon');
             const message = document.getElementById('status-message');
 
-            if (message) message.textContent = msg;
+            message.textContent = msg;
 
             if (type === "error") {
                 toast.classList.add('border-cyber-pink');
                 toast.classList.remove('border-cyber-cyan');
-                if (iconBg) iconBg.className = "w-10 h-10 rounded-xl flex items-center justify-center text-lg bg-cyber-pink/20 text-cyber-pink";
-                if (icon) icon.className = "fas fa-xmark";
+                iconBg.className = "w-10 h-10 rounded-xl flex items-center justify-center text-lg bg-cyber-pink/20 text-cyber-pink";
+                icon.className = "fas fa-xmark";
             } else {
                 toast.classList.add('border-cyber-cyan');
                 toast.classList.remove('border-cyber-pink');
-                if (iconBg) iconBg.className = "w-10 h-10 rounded-xl flex items-center justify-center text-lg bg-cyber-cyan/20 text-cyber-cyan";
-                if (icon) icon.className = "fas fa-check";
+                iconBg.className = "w-10 h-10 rounded-xl flex items-center justify-center text-lg bg-cyber-cyan/20 text-cyber-cyan";
+                icon.className = "fas fa-check";
             }
 
             toast.classList.remove('translate-x-full', 'opacity-0');
