@@ -142,10 +142,6 @@
                         <i class="fas fa-users w-5 text-cyber-green"></i>
                         <span>Qui sommes-nous ? & Statuts</span>
                     </button>
-                    <button type="button" onclick="switchTab('tab-docs')" id="nav-tab-docs" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
-                        <i class="fas fa-link w-5 text-rose-400"></i>
-                        <span>Générateur de Liens</span>
-                    </button>
                     <button type="button" onclick="switchTab('tab-images')" id="nav-tab-images" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
                         <i class="fas fa-bullhorn w-5 text-cyber-pink"></i>
                         <span>Affiche & Boutons Docs</span>
@@ -305,25 +301,7 @@
                 </div>
             </div>
 
-            <!-- ONGLET 3 : GÉNÉRATEUR DE LIENS -->
-            <div id="tab-docs" class="tab-content hidden space-y-6">
-                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
-                    <div class="flex justify-between items-center border-b border-cyber-border pb-4">
-                        <h3 class="font-title text-lg font-bold text-white flex items-center gap-2">
-                            <i class="fas fa-link text-rose-400"></i> Générateur de Liens pour les textes
-                        </h3>
-                        <button type="button" onclick="addDocumentItem()" class="px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white font-title font-bold text-xs rounded-xl transition-all flex items-center gap-2">
-                            <i class="fas fa-plus"></i> Créer un Lien
-                        </button>
-                    </div>
-
-                    <p class="text-xs text-slate-400">Ajoutez, supprimez et gérez vos liens téléchargeables à intégrer dans les champs de texte via le code fourni.</p>
-
-                    <div id="documents-admin-container" class="space-y-4"></div>
-                </div>
-            </div>
-
-            <!-- ONGLET 4 : AFFICHE & BOUTONS MULTIPLES DE TÉLÉCHARGEMENT -->
+            <!-- ONGLET 3 : AFFICHE & BOUTONS MULTIPLES DE TÉLÉCHARGEMENT -->
             <div id="tab-images" class="tab-content hidden space-y-6">
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
                     <h3 class="font-title text-lg font-bold text-white flex items-center gap-2 border-b border-cyber-border pb-4">
@@ -391,7 +369,7 @@
                 </div>
             </div>
 
-            <!-- ONGLET 5 : ÉVÉNEMENTS -->
+            <!-- ONGLET 4 : ÉVÉNEMENTS -->
             <div id="tab-events" class="tab-content hidden space-y-6">
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
                     <div class="flex justify-between items-center border-b border-cyber-border pb-4">
@@ -407,7 +385,7 @@
                 </div>
             </div>
 
-            <!-- ONGLET 6 : GALERIE -->
+            <!-- ONGLET 5 : GALERIE -->
             <div id="tab-gallery" class="tab-content hidden space-y-6">
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
                     <div class="flex justify-between items-center border-b border-cyber-border pb-4">
@@ -423,7 +401,7 @@
                 </div>
             </div>
 
-            <!-- ONGLET 7 : CONTACT -->
+            <!-- ONGLET 6 : CONTACT -->
             <div id="tab-contact" class="tab-content hidden space-y-6">
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
                     <h3 class="font-title text-lg font-bold text-white flex items-center gap-2 border-b border-cyber-border pb-4">
@@ -509,14 +487,6 @@
                 fileUrl: "image_251ba6.png",
                 fileBtnText: "Consulter les Statuts"
             },
-            documents: [
-                {
-                    key: "statuts",
-                    title: "Statuts du Sou des Écoles",
-                    desc: "Statuts officiels (Loi 1901)",
-                    url: "image_251ba6.png"
-                }
-            ],
             contact: {
                 tag: "Coordonnées",
                 title: "Nous Contacter",
@@ -624,7 +594,6 @@
             document.getElementById('cfg-contactAddress').value = ct.address || DEFAULT_DATA.contact.address;
 
             renderPosterButtonsAdmin();
-            renderDocumentsAdmin();
             renderUpcomingEvents();
             renderPastEvents();
         }
@@ -696,84 +665,6 @@
             reader.readAsDataURL(file);
         }
 
-        function renderDocumentsAdmin() {
-            const container = document.getElementById('documents-admin-container');
-            container.innerHTML = '';
-            const docs = appData.documents || DEFAULT_DATA.documents;
-
-            if (docs.length === 0) {
-                container.innerHTML = '<p class="text-slate-500 text-xs italic">Aucun lien créé. Cliquez sur Créer un Lien.</p>';
-                return;
-            }
-
-            docs.forEach((doc, index) => {
-                const keyClean = (doc.key || 'doc' + (index + 1)).toLowerCase().replace(/[^a-z0-9_\-]/g, '');
-                const codeSnippet = `[LIEN:${keyClean}|${doc.title || 'Consulter'}]`;
-
-                container.innerHTML += `
-                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-4 relative">
-                        <button type="button" onclick="removeDocumentItem(${index})" class="absolute top-4 right-4 text-cyber-pink hover:text-rose-400 text-xs font-bold">
-                            <i class="fas fa-trash-can mr-1"></i> Supprimer
-                        </button>
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-24">
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Identifiant (ex: statuts)</label>
-                                <input type="text" value="${keyClean}" onchange="appData.documents[${index}].key = this.value; renderDocumentsAdmin();" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-mono font-bold text-cyber-cyan">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Texte du bouton affiché</label>
-                                <input type="text" value="${doc.title || ''}" onchange="appData.documents[${index}].title = this.value; renderDocumentsAdmin();" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-bold">
-                            </div>
-                        </div>
-
-                        <div class="flex flex-col sm:flex-row gap-3">
-                            <input type="text" id="doc-url-${index}" value="${doc.url || ''}" onchange="appData.documents[${index}].url = this.value" placeholder="Lien PDF ou fichier encodé..." class="w-full px-3 py-2 glass-input rounded-xl text-xs">
-                            <label class="cursor-pointer px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white font-title font-bold text-xs rounded-xl flex items-center justify-center gap-2 shrink-0 transition-all shadow-md">
-                                <i class="fas fa-file-arrow-up"></i> Importer un PDF
-                                <input type="file" accept="application/pdf,image/*" class="hidden" onchange="processDocumentFile(event, ${index})">
-                            </label>
-                        </div>
-
-                        <div class="p-3 bg-black/40 rounded-xl border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                            <span class="text-[11px] text-slate-400">Code à coller dans vos textes :</span>
-                            <div class="flex items-center gap-2">
-                                <code class="text-xs text-cyber-cyan font-mono font-bold px-2.5 py-1 bg-cyber-bg rounded-lg border border-cyber-border">${codeSnippet}</code>
-                                <button type="button" onclick="navigator.clipboard.writeText('${codeSnippet}'); showStatusToast('Code copié !', 'success');" class="px-3 py-1 bg-cyber-cyan text-slate-900 font-title font-bold text-[11px] rounded-lg hover:bg-cyan-300 transition-colors">
-                                    <i class="fas fa-copy mr-1"></i> Copier
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function addDocumentItem() {
-            if (!appData.documents) appData.documents = [];
-            const newKey = "doc" + (appData.documents.length + 1);
-            appData.documents.push({ key: newKey, title: "Nouveau Document", desc: "", url: "" });
-            renderDocumentsAdmin();
-        }
-
-        function removeDocumentItem(index) {
-            appData.documents.splice(index, 1);
-            renderDocumentsAdmin();
-        }
-
-        function processDocumentFile(e, index) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                appData.documents[index].url = evt.target.result;
-                document.getElementById(`doc-url-${index}`).value = evt.target.result;
-                showStatusToast("Fichier PDF importé avec succès !", "success");
-            };
-            reader.readAsDataURL(file);
-        }
-
         function renderUpcomingEvents() {
             const container = document.getElementById('upcoming-events-container');
             container.innerHTML = '';
@@ -801,7 +692,7 @@
                             </div>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-400 mb-1">Description (Supporte les liens [LIEN:...])</label>
+                            <label class="block text-[10px] font-bold text-slate-400 mb-1">Description</label>
                             <textarea onchange="appData.upcomingEvents[${index}].desc = this.value" rows="2" class="w-full px-3 py-2 glass-input rounded-xl text-xs">${ev.desc || ev.description || ''}</textarea>
                         </div>
                     </div>
@@ -863,7 +754,7 @@
                         </div>
 
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-400 mb-1">Description (Supporte les liens [LIEN:...])</label>
+                            <label class="block text-[10px] font-bold text-slate-400 mb-1">Description</label>
                             <textarea onchange="appData.pastEvents[${index}].desc = this.value" rows="2" class="w-full px-3 py-2 glass-input rounded-xl text-xs">${pev.desc || pev.description || ''}</textarea>
                         </div>
 
@@ -981,7 +872,6 @@
                     localStorage.setItem('sou_petit_coeur_data', serialized);
                     localStorage.setItem('sou_app_data', serialized);
                 } catch(quotaErr) {
-                    // Si stockage saturé, purge préventive des données temporaires
                     localStorage.clear();
                     localStorage.setItem('sou_petit_coeur_data', serialized);
                 }

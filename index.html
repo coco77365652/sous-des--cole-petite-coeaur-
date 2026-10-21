@@ -335,14 +335,6 @@
                 fileUrl: "image_251ba6.png",
                 fileBtnText: "Consulter les Statuts"
             },
-            documents: [
-                {
-                    key: "statuts",
-                    title: "Statuts du Sou des Écoles",
-                    desc: "Statuts officiels (Loi 1901)",
-                    url: "image_251ba6.png"
-                }
-            ],
             contact: {
                 tag: "Coordonnées",
                 title: "Nous Contacter",
@@ -357,21 +349,6 @@
 
         let siteData = Object.assign({}, defaultSiteData);
 
-        function parseTextLinks(inputText) {
-            if (!inputText) return '';
-            const docs = siteData.documents || defaultSiteData.documents || [];
-            
-            return inputText.replace(/\[LIEN:([a-zA-Z0-9_\-]+)\Vert{}([^\]]+)\]/g, (match, key, text) => {
-                const foundDoc = docs.find(d => (d.key || '').toLowerCase() === key.toLowerCase());
-                const targetUrl = foundDoc ? foundDoc.url : '#';
-                return `<a href="${targetUrl}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1 my-1 bg-brand-red hover:bg-rose-600 text-white font-title font-semibold text-xs rounded-xl shadow-sm transition-all border border-rose-400/30">
-                            <i class="fa-solid fa-file-pdf"></i>
-                            <span>${text}</span>
-                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-80"></i>
-                        </a>`;
-            });
-        }
-
         function renderSite() {
             const gen = siteData.general || {};
             const ab = siteData.about || {};
@@ -382,7 +359,7 @@
             
             if (document.getElementById('hero-location-tag')) document.getElementById('hero-location-tag').textContent = gen.locationTag || defaultSiteData.general.locationTag;
             if (document.getElementById('hero-title')) document.getElementById('hero-title').textContent = gen.heroTitle || defaultSiteData.general.heroTitle;
-            if (document.getElementById('hero-description')) document.getElementById('hero-description').innerHTML = parseTextLinks(gen.heroDesc || defaultSiteData.general.heroDesc);
+            if (document.getElementById('hero-description')) document.getElementById('hero-description').textContent = gen.heroDesc || defaultSiteData.general.heroDesc;
 
             // LOGO (GAUCHE)
             const logoImg = document.getElementById('logo-img');
@@ -407,7 +384,6 @@
                 btnContainer.innerHTML = '';
                 let buttons = gen.posterButtons;
 
-                // Rétrocompatibilité
                 if (!buttons || buttons.length === 0) {
                     buttons = [{
                         label: "Télécharger l'affiche",
@@ -430,9 +406,9 @@
 
             if (document.getElementById('about-tag')) document.getElementById('about-tag').textContent = ab.tag || defaultSiteData.about.tag;
             if (document.getElementById('about-title')) document.getElementById('about-title').textContent = ab.title || defaultSiteData.about.title;
-            if (document.getElementById('about-desc')) document.getElementById('about-desc').innerHTML = parseTextLinks(ab.desc || defaultSiteData.about.desc);
+            if (document.getElementById('about-desc')) document.getElementById('about-desc').textContent = ab.desc || defaultSiteData.about.desc;
             if (document.getElementById('about-block1-title')) document.getElementById('about-block1-title').innerHTML = `<i class="fa-solid fa-users text-brand-blue"></i> ${ab.block1Title || defaultSiteData.about.block1Title}`;
-            if (document.getElementById('about-block1-text')) document.getElementById('about-block1-text').innerHTML = parseTextLinks(ab.block1Text || defaultSiteData.about.block1Text);
+            if (document.getElementById('about-block1-text')) document.getElementById('about-block1-text').textContent = ab.block1Text || defaultSiteData.about.block1Text;
             
             const b1ImgBox = document.getElementById('about-block1-img-box');
             const b1Img = document.getElementById('about-block1-img');
@@ -446,7 +422,7 @@
             }
 
             if (document.getElementById('about-block2-title')) document.getElementById('about-block2-title').innerHTML = `<i class="fa-solid fa-heart text-brand-red"></i> ${ab.block2Title || defaultSiteData.about.block2Title}`;
-            if (document.getElementById('about-block2-text')) document.getElementById('about-block2-text').innerHTML = parseTextLinks(ab.block2Text || defaultSiteData.about.block2Text);
+            if (document.getElementById('about-block2-text')) document.getElementById('about-block2-text').textContent = ab.block2Text || defaultSiteData.about.block2Text;
 
             const fileBox = document.getElementById('about-file-box');
             const fileLink = document.getElementById('about-file-link');
@@ -462,7 +438,7 @@
 
             if (document.getElementById('contact-tag')) document.getElementById('contact-tag').textContent = ct.tag || defaultSiteData.contact.tag;
             if (document.getElementById('contact-title')) document.getElementById('contact-title').textContent = ct.title || defaultSiteData.contact.title;
-            if (document.getElementById('contact-desc')) document.getElementById('contact-desc').innerHTML = parseTextLinks(ct.desc || defaultSiteData.contact.desc);
+            if (document.getElementById('contact-desc')) document.getElementById('contact-desc').textContent = ct.desc || defaultSiteData.contact.desc;
 
             const contactEmailLink = document.getElementById('contact-email-link');
             if (contactEmailLink) {
@@ -499,7 +475,7 @@
                                 <div class="p-6 flex-1 flex flex-col justify-between">
                                     <div>
                                         <h3 class="font-title font-bold text-xl text-gray-900 mb-2">${ev.title || ''}</h3>
-                                        <div class="text-gray-600 text-sm mb-4">${parseTextLinks(ev.desc || ev.description || '')}</div>
+                                        <div class="text-gray-600 text-sm mb-4">${ev.desc || ev.description || ''}</div>
                                         <div class="space-y-2 text-xs text-gray-500">
                                             <p class="flex items-center gap-2"><i class="fa-regular fa-clock text-brand-blue"></i> ${ev.time || 'Non précisé'}</p>
                                             <p class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-brand-red"></i> ${ev.location || 'École de Petit-Cœur'}</p>
@@ -540,7 +516,7 @@
                                     <h3 class="font-title text-2xl font-bold text-gray-900">${pev.title || ''}</h3>
                                     <span class="bg-amber-100 text-amber-800 font-title text-xs font-bold px-3 py-1 rounded-full">${pev.date || ''}</span>
                                 </div>
-                                <div class="text-gray-600 text-sm leading-relaxed">${parseTextLinks(pev.desc || pev.description || '')}</div>
+                                <div class="text-gray-600 text-sm leading-relaxed">${pev.desc || pev.description || ''}</div>
                                 ${photosHTML}
                             </div>
                         `;
