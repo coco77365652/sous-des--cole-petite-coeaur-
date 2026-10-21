@@ -142,15 +142,15 @@
                         </div>
                     </div>
 
-                    <!-- 3. À DROITE : À L'AFFICHE (BOUTONS ALIGNÉS CÔTÉ À CÔTÉ) -->
+                    <!-- 3. À DROITE : DOCUMENTS & AFFICHES TÉLÉCHARGABLES -->
                     <div class="flex flex-col items-center w-full">
-                        <h3 class="font-title font-bold text-white text-base mb-3 flex items-center justify-center gap-2 drop-shadow-md">
-                            <i class="fa-solid fa-bullhorn text-brand-yellow"></i>
-                            <span id="poster-heading">À l'Affiche !</span>
+                        <h3 class="font-title font-bold text-white text-base mb-4 flex items-center justify-center gap-2 drop-shadow-md">
+                            <i class="fa-solid fa-download text-brand-yellow"></i>
+                            <span id="poster-heading">Documents & Affiches</span>
                         </h3>
                         
-                        <!-- LISTE D'AFFICHES AVEC BOUTONS CÔTÉ À CÔTÉ -->
-                        <div id="posters-list-container" class="w-full max-w-sm space-y-4"></div>
+                        <!-- CONTENEUR DE BOUTONS D'AFFICHES & DOCS -->
+                        <div id="posters-list-container" class="w-full max-w-xs space-y-3"></div>
                     </div>
 
                 </div>
@@ -297,12 +297,12 @@
                 heroTitle: "Ensemble pour les enfants de Petit-Cœur !",
                 heroDesc: "Association de parents d'élèves (APE) bénévoles dédiée au financement des sorties scolaires, projets pédagogiques et animations des écoles de notre village.",
                 logoImg: "image_251ba6.png",
-                posterHeading: "À l'Affiche !",
+                posterHeading: "Documents & Affiches",
                 postersList: [
                     {
-                        title: "Nouvelle Affiche",
+                        title: "Télécharger la fiche du bureau",
                         imgUrl: "image_251ba6.png",
-                        btnText: "Télécharger l'affiche"
+                        btnText: "Télécharger"
                     }
                 ]
             },
@@ -374,7 +374,7 @@
                 if (targetSrc && logoImg.src !== targetSrc) logoImg.src = targetSrc;
             }
 
-            // RENDU DYNAMIQUE DES AFFICHES AVEC BOUTONS CÔTÉ À CÔTÉ
+            // RENDU DES BOUTONS DE TÉLÉCHARGEMENT DIRECTS (DROITE)
             if (document.getElementById('poster-heading')) document.getElementById('poster-heading').textContent = gen.posterHeading || defaultSiteData.general.posterHeading;
             
             const postersContainer = document.getElementById('posters-list-container');
@@ -383,42 +383,27 @@
                 let posters = gen.postersList;
                 
                 if (!posters || posters.length === 0) {
-                    if (gen.posterImg) {
-                        posters = [{
-                            title: gen.posterCaption || "Nouvelle Affiche",
-                            imgUrl: gen.posterImg,
-                            btnText: "Télécharger l'affiche"
-                        }];
-                    } else {
-                        posters = defaultSiteData.general.postersList;
-                    }
+                    posters = defaultSiteData.general.postersList;
                 }
 
                 posters.forEach(p => {
-                    const posterTitle = p.title || 'Affiche événement';
-                    const imgUrl = p.imgUrl || 'image_251ba6.png';
-                    const btnLabel = p.btnText || 'Télécharger l\'affiche';
+                    const docTitle = p.title || 'Document téléchargeable';
+                    const fileUrl = p.imgUrl || '#';
+                    const btnLabel = p.btnText || 'Télécharger';
 
                     postersContainer.innerHTML += `
-                        <div class="bg-white/10 backdrop-blur-md p-4 rounded-3xl border border-white/20 shadow-xl flex flex-col items-center text-center">
-                            <div class="overflow-hidden cursor-pointer group rounded-2xl aspect-[4/3] w-full bg-white flex items-center justify-center p-2 mb-3 hover:scale-[1.02] transition-transform" onclick="openLightbox('${imgUrl}', '${posterTitle.replace(/'/g, "\\'")}')">
-                                <img src="${imgUrl}" alt="${posterTitle}" class="w-full h-full object-contain rounded-xl">
+                        <a href="${fileUrl}" target="_blank" download class="w-full bg-white/10 hover:bg-white/20 backdrop-blur-md p-4 rounded-2xl border border-white/30 shadow-lg flex items-center justify-between gap-3 transition-all hover:scale-[1.02] active:scale-95 group">
+                            <div class="flex items-center gap-3 text-left overflow-hidden">
+                                <div class="w-10 h-10 rounded-xl bg-brand-yellow/30 text-brand-yellow flex items-center justify-center text-lg shrink-0 group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-file-arrow-down"></i>
+                                </div>
+                                <span class="font-title font-bold text-sm text-white truncate">${docTitle}</span>
                             </div>
-                            
-                            <p class="font-title font-bold text-sm text-white mb-3">${posterTitle}</p>
-                            
-                            <!-- DEUX BOUTONS ALIGNÉS CÔTÉ À CÔTÉ -->
-                            <div class="grid grid-cols-2 gap-2 w-full">
-                                <button onclick="openLightbox('${imgUrl}', '${posterTitle.replace(/'/g, "\\'")}')" class="w-full inline-flex items-center justify-center gap-1.5 bg-white/20 hover:bg-white/30 text-white font-title font-semibold text-xs px-3 py-2.5 rounded-xl border border-white/30 transition-all active:scale-95">
-                                    <i class="fa-solid fa-expand"></i>
-                                    <span>Agrandir</span>
-                                </button>
-                                <a href="${imgUrl}" target="_blank" download class="w-full inline-flex items-center justify-center gap-1.5 bg-brand-yellow hover:bg-amber-300 text-gray-900 font-title font-bold text-xs px-3 py-2.5 rounded-xl shadow-md transition-all active:scale-95">
-                                    <i class="fa-solid fa-download"></i>
-                                    <span>${btnLabel}</span>
-                                </a>
+                            <div class="bg-brand-yellow hover:bg-amber-300 text-gray-900 font-title font-bold text-xs px-3.5 py-2 rounded-xl shadow-md shrink-0 flex items-center gap-1.5">
+                                <span>${btnLabel}</span>
+                                <i class="fa-solid fa-download text-xs"></i>
                             </div>
-                        </div>
+                        </a>
                     `;
                 });
             }

@@ -147,8 +147,8 @@
                         <span>Générateur de Liens</span>
                     </button>
                     <button type="button" onclick="switchTab('tab-images')" id="nav-tab-images" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
-                        <i class="fas fa-image w-5 text-cyber-pink"></i>
-                        <span>Logo & Affiches</span>
+                        <i class="fas fa-download w-5 text-cyber-pink"></i>
+                        <span>Logo & Boutons Docs</span>
                     </button>
                     <button type="button" onclick="switchTab('tab-events')" id="nav-tab-events" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
                         <i class="fas fa-calendar-star w-5 text-amber-400"></i>
@@ -323,11 +323,11 @@
                 </div>
             </div>
 
-            <!-- ONGLET 4 : LOGO ET AFFICHES MULTIPLES -->
+            <!-- ONGLET 4 : LOGO ET BOUTONS DOCS TÉLÉCHARGABLES -->
             <div id="tab-images" class="tab-content hidden space-y-6">
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
                     <h3 class="font-title text-lg font-bold text-white flex items-center gap-2 border-b border-cyber-border pb-4">
-                        <i class="fas fa-icons text-cyber-pink"></i> Logo & Gestion des Affiches
+                        <i class="fas fa-download text-cyber-pink"></i> Logo & Boutons Téléchargeables (Section Droite)
                     </h3>
 
                     <!-- LOGO -->
@@ -346,18 +346,18 @@
                         </div>
                     </div>
 
-                    <!-- GESTION DYNAMIQUE DES AFFICHES -->
+                    <!-- GESTION DYNAMIQUE DES BOUTONS DOCS / AFFICHES TÉLÉCHARGABLES -->
                     <div class="p-6 bg-cyber-card rounded-2xl border border-cyber-border space-y-6">
                         <div class="flex justify-between items-center border-b border-cyber-border pb-3">
-                            <h4 class="font-title font-bold text-white text-sm"><i class="fas fa-bullhorn text-amber-400 mr-2"></i> Section « À l'Affiche ! » (Affiches & Boutons)</h4>
+                            <h4 class="font-title font-bold text-white text-sm"><i class="fas fa-file-arrow-down text-amber-400 mr-2"></i> Boutons de Téléchargement (Section Droite)</h4>
                             <button type="button" onclick="addPosterItem()" class="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-900 font-title font-bold text-xs rounded-xl transition-all flex items-center gap-2">
-                                <i class="fas fa-plus"></i> Ajouter une Affiche
+                                <i class="fas fa-plus"></i> Ajouter un Bouton Doc
                             </button>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Titre du bloc haut</label>
-                            <input type="text" id="cfg-posterHeading" placeholder="À l'Affiche !" class="w-full px-4 py-2.5 glass-input rounded-xl text-xs mb-3">
+                            <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Titre de la section (Haut)</label>
+                            <input type="text" id="cfg-posterHeading" placeholder="Documents & Affiches" class="w-full px-4 py-2.5 glass-input rounded-xl text-xs mb-3">
                         </div>
 
                         <div id="posters-admin-container" class="space-y-4"></div>
@@ -460,12 +460,12 @@
                 heroTitle: "Ensemble pour les enfants de Petit-Cœur !",
                 heroDesc: "Association de parents d'élèves (APE) bénévoles dédiée au financement des sorties scolaires, projets pédagogiques et animations des écoles de notre village.",
                 logoImg: "image_251ba6.png",
-                posterHeading: "À l'Affiche !",
+                posterHeading: "Documents & Affiches",
                 postersList: [
                     {
-                        title: "Nouvelle Affiche",
+                        title: "Télécharger la fiche du bureau",
                         imgUrl: "image_251ba6.png",
-                        btnText: "Télécharger l'affiche"
+                        btnText: "Télécharger"
                     }
                 ],
                 adminPassword: "admin123"
@@ -562,7 +562,7 @@
             document.getElementById('cfg-heroTitle').value = g.heroTitle || '';
             document.getElementById('cfg-heroDesc').value = g.heroDesc || '';
             document.getElementById('cfg-logoImg').value = g.logoImg || '';
-            document.getElementById('cfg-posterHeading').value = g.posterHeading || 'À l\'Affiche !';
+            document.getElementById('cfg-posterHeading').value = g.posterHeading || 'Documents & Affiches';
 
             document.getElementById('cfg-aboutTag').value = ab.tag || DEFAULT_DATA.about.tag;
             document.getElementById('cfg-aboutTitle').value = ab.title || DEFAULT_DATA.about.title;
@@ -605,21 +605,13 @@
             container.innerHTML = '';
             
             if (!appData.general.postersList) {
-                if (appData.general.posterImg) {
-                    appData.general.postersList = [{
-                        title: appData.general.posterCaption || "Nouvelle Affiche",
-                        imgUrl: appData.general.posterImg,
-                        btnText: "Télécharger l'affiche"
-                    }];
-                } else {
-                    appData.general.postersList = [];
-                }
+                appData.general.postersList = DEFAULT_DATA.general.postersList;
             }
 
             const list = appData.general.postersList;
 
             if (list.length === 0) {
-                container.innerHTML = '<p class="text-slate-500 text-xs italic">Aucune affiche configurée. Cliquez sur "Ajouter une Affiche".</p>';
+                container.innerHTML = '<p class="text-slate-500 text-xs italic">Aucun bouton créé. Cliquez sur "Ajouter un Bouton Doc".</p>';
                 return;
             }
 
@@ -632,20 +624,20 @@
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-20">
                             <div>
-                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Titre de l'Affiche</label>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Nom du document</label>
                                 <input type="text" value="${p.title || ''}" onchange="appData.general.postersList[${index}].title = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-bold">
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Texte du bouton télécharger</label>
-                                <input type="text" value="${p.btnText || 'Télécharger l\'affiche'}" onchange="appData.general.postersList[${index}].btnText = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Texte du bouton</label>
+                                <input type="text" value="${p.btnText || 'Télécharger'}" onchange="appData.general.postersList[${index}].btnText = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
                             </div>
                         </div>
 
                         <div class="flex flex-col sm:flex-row gap-3">
-                            <input type="text" id="poster-url-${index}" value="${p.imgUrl || ''}" onchange="appData.general.postersList[${index}].imgUrl = this.value" placeholder="URL ou fichier encodé..." class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                            <input type="text" id="poster-url-${index}" value="${p.imgUrl || ''}" onchange="appData.general.postersList[${index}].imgUrl = this.value" placeholder="Lien du document ou fichier encodé..." class="w-full px-3 py-2 glass-input rounded-xl text-xs">
                             <label class="cursor-pointer px-4 py-2 bg-cyber-cyan hover:bg-cyan-400 text-slate-900 font-title font-bold text-xs rounded-xl flex items-center justify-center gap-2 shrink-0 transition-all glow-cyan">
-                                <i class="fas fa-file-image"></i> Importer Image / PDF
-                                <input type="file" accept="image/*,application/pdf" class="hidden" onchange="processPosterFile(event, ${index})">
+                                <i class="fas fa-file-arrow-up"></i> Importer le document
+                                <input type="file" accept="application/pdf,image/*,.doc,.docx" class="hidden" onchange="processPosterFile(event, ${index})">
                             </label>
                         </div>
                     </div>
@@ -656,9 +648,9 @@
         function addPosterItem() {
             if (!appData.general.postersList) appData.general.postersList = [];
             appData.general.postersList.push({
-                title: "Nouvelle Affiche",
+                title: "Nouveau Document",
                 imgUrl: "image_251ba6.png",
-                btnText: "Télécharger l'affiche"
+                btnText: "Télécharger"
             });
             renderPostersAdmin();
         }
@@ -676,7 +668,7 @@
             reader.onload = function(evt) {
                 appData.general.postersList[index].imgUrl = evt.target.result;
                 document.getElementById(`poster-url-${index}`).value = evt.target.result;
-                showStatusToast("Affiche chargée avec succès !", "success");
+                showStatusToast("Document importé avec succès !", "success");
             };
             reader.readAsDataURL(file);
         }
