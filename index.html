@@ -84,6 +84,7 @@
                     <a href="#qui-sommes-nous" class="hover:text-brand-blue transition-colors">Qui sommes-nous ?</a>
                     <a href="#evenements" class="hover:text-brand-blue transition-colors">Événements</a>
                     <a href="#galerie" class="hover:text-brand-blue transition-colors">Galerie</a>
+                    <a href="#partenaires" class="hover:text-brand-blue transition-colors">Nos Partenaires</a>
                     <a href="#contact" class="hover:text-brand-blue transition-colors">Nous Contacter</a>
                 </nav>
 
@@ -98,6 +99,7 @@
             <a href="#qui-sommes-nous" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Qui sommes-nous ?</a>
             <a href="#evenements" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Événements</a>
             <a href="#galerie" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Galerie</a>
+            <a href="#partenaires" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Nos Partenaires</a>
             <a href="#contact" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Nous Contacter</a>
         </div>
     </header>
@@ -109,7 +111,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
                     
-                    <!-- 1. À GAUCHE : LOGO -->
+                    <!-- LOGO -->
                     <div class="flex justify-center">
                         <div class="p-2 max-w-xs transform -rotate-2 hover:rotate-0 transition-all cursor-pointer group hover:scale-105" onclick="openLightbox(document.getElementById('logo-img').src, 'Logo Sou des Écoles - Petit-Cœur')">
                             <img id="logo-img" 
@@ -120,7 +122,7 @@
                         </div>
                     </div>
 
-                    <!-- 2. AU MILIEU : TEXTE -->
+                    <!-- TEXTE -->
                     <div class="text-center space-y-6">
                         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-white text-sm font-medium border border-white/30">
                             <i class="fa-solid fa-mountain-sun text-brand-yellow"></i>
@@ -142,17 +144,14 @@
                         </div>
                     </div>
 
-                    <!-- 3. À DROITE : AFFICHE ET SES BOUTONS DE TÉLÉCHARGEMENT EN DESSOUS -->
+                    <!-- AFFICHE ET BOUTONS -->
                     <div class="flex justify-center">
                         <div class="p-4 max-w-xs transform rotate-1 hover:rotate-0 transition-all w-full text-center bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl shadow-2xl">
-                            
-                            <!-- TITRE -->
                             <h3 class="font-title font-bold text-white text-base mb-3 flex items-center justify-center gap-2 drop-shadow-md">
                                 <i class="fa-solid fa-bullhorn text-brand-yellow"></i>
                                 <span id="poster-heading">À l'Affiche !</span>
                             </h3>
 
-                            <!-- IMAGE DE L'AFFICHE -->
                             <div class="overflow-hidden cursor-pointer group rounded-2xl aspect-[4/5] bg-white shadow-xl flex items-center justify-center p-2 border border-white/30 hover:scale-105 transition-transform" onclick="openLightbox(document.getElementById('poster-img').src, document.getElementById('poster-caption').textContent || 'Affiche')">
                                 <img id="poster-img" 
                                      src="image_251ba6.png" 
@@ -160,12 +159,8 @@
                                      class="w-full h-full object-contain rounded-xl">
                             </div>
 
-                            <!-- LÉGENDE DE L'AFFICHE -->
                             <p id="poster-caption" class="text-xs text-sky-100 mt-2 font-semibold">Le Bureau du Sou des Écoles</p>
-
-                            <!-- LISTE DES BOUTONS EN DESSOUS DE L'AFFICHE -->
                             <div id="poster-buttons-container" class="mt-4 flex flex-col gap-2"></div>
-
                         </div>
                     </div>
 
@@ -238,8 +233,23 @@
             <div class="space-y-12" id="past-events-container"></div>
         </section>
 
-        <!-- SECTION NOUS CONTACTER -->
-        <section id="contact" class="py-20 bg-amber-50/50 border-t border-amber-100">
+        <!-- NOS PARTENAIRES -->
+        <section id="partenaires" class="py-20 bg-amber-50/40 border-t border-amber-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <span id="partners-tag" class="text-brand-purple font-title font-bold text-sm tracking-wider uppercase bg-purple-100/80 px-4 py-1.5 rounded-full text-purple-900">Soutien & Collaborations</span>
+                    <h2 id="partners-title" class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Nos Partenaires</h2>
+                    <p id="partners-desc" class="text-gray-600 mt-4 text-lg leading-relaxed">
+                        Un grand merci aux entreprises, commerçants et institutions qui soutiennent les projets des enfants de Petit-Cœur !
+                    </p>
+                </div>
+
+                <div id="partners-list-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            </div>
+        </section>
+
+        <!-- NOUS CONTACTER -->
+        <section id="contact" class="py-20 bg-white border-t border-amber-100">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-12">
                     <span id="contact-tag" class="text-brand-green font-title font-bold text-sm tracking-wider uppercase bg-emerald-100/60 px-4 py-1.5 rounded-full text-emerald-900">Coordonnées</span>
@@ -335,6 +345,19 @@
                 fileUrl: "image_251ba6.png",
                 fileBtnText: "Consulter les Statuts"
             },
+            partners: {
+                tag: "Soutien & Collaborations",
+                title: "Nos Partenaires",
+                desc: "Un grand merci aux entreprises, commerçants et institutions qui soutiennent les projets des enfants de Petit-Cœur !",
+                list: [
+                    {
+                        name: "Mairie de La Léchère",
+                        desc: "Soutien institutionnel et mise à disposition des équipements communaux.",
+                        logo: "image_251ba6.png",
+                        link: "https://www.la-lechere.fr"
+                    }
+                ]
+            },
             contact: {
                 tag: "Coordonnées",
                 title: "Nous Contacter",
@@ -352,6 +375,7 @@
         function renderSite() {
             const gen = siteData.general || {};
             const ab = siteData.about || {};
+            const pt = siteData.partners || {};
             const ct = siteData.contact || {};
             
             if (document.getElementById('header-assoc-name')) document.getElementById('header-assoc-name').textContent = gen.assocName || defaultSiteData.general.assocName;
@@ -361,14 +385,12 @@
             if (document.getElementById('hero-title')) document.getElementById('hero-title').textContent = gen.heroTitle || defaultSiteData.general.heroTitle;
             if (document.getElementById('hero-description')) document.getElementById('hero-description').textContent = gen.heroDesc || defaultSiteData.general.heroDesc;
 
-            // LOGO (GAUCHE)
             const logoImg = document.getElementById('logo-img');
             if (logoImg) {
-                const targetSrc = gen.logoImg || gen.heroImg || defaultSiteData.general.logoImg;
+                const targetSrc = gen.logoImg || defaultSiteData.general.logoImg;
                 if (targetSrc && logoImg.src !== targetSrc) logoImg.src = targetSrc;
             }
 
-            // AFFICHE (DROITE)
             const posterImg = document.getElementById('poster-img');
             if (posterImg) {
                 const targetPoster = gen.posterImg || defaultSiteData.general.posterImg;
@@ -378,7 +400,6 @@
             if (document.getElementById('poster-heading')) document.getElementById('poster-heading').textContent = gen.posterHeading || defaultSiteData.general.posterHeading;
             if (document.getElementById('poster-caption')) document.getElementById('poster-caption').textContent = gen.posterCaption || defaultSiteData.general.posterCaption;
 
-            // BOUTONS DE TÉLÉCHARGEMENT SOUS L'AFFICHE
             const btnContainer = document.getElementById('poster-buttons-container');
             if (btnContainer) {
                 btnContainer.innerHTML = '';
@@ -434,6 +455,38 @@
                 fileBox.classList.remove('hidden');
             } else {
                 fileBox.classList.add('hidden');
+            }
+
+            // PARTENAIRES
+            if (document.getElementById('partners-tag')) document.getElementById('partners-tag').textContent = pt.tag || defaultSiteData.partners.tag;
+            if (document.getElementById('partners-title')) document.getElementById('partners-title').textContent = pt.title || defaultSiteData.partners.title;
+            if (document.getElementById('partners-desc')) document.getElementById('partners-desc').textContent = pt.desc || defaultSiteData.partners.desc;
+
+            const partnersContainer = document.getElementById('partners-list-container');
+            if (partnersContainer) {
+                partnersContainer.innerHTML = '';
+                const pList = pt.list || defaultSiteData.partners.list;
+
+                if (!pList || pList.length === 0) {
+                    partnersContainer.innerHTML = '<p class="text-gray-500 col-span-3 text-center py-8">Aucun partenaire affiché pour le moment.</p>';
+                } else {
+                    pList.forEach(p => {
+                        const linkHTML = p.link ? `<a href="${p.link}" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-title font-bold text-brand-blue hover:text-brand-darkblue mt-3 transition-colors"><span>Visiter le site</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>` : '';
+
+                        partnersContainer.innerHTML += `
+                            <div class="bg-white rounded-3xl p-6 shadow-sm border border-amber-100 flex flex-col items-center text-center justify-between hover:shadow-md transition-shadow">
+                                <div class="w-full flex flex-col items-center">
+                                    <div class="w-24 h-24 rounded-2xl bg-amber-50/60 p-2 border border-amber-100/80 flex items-center justify-center mb-4 overflow-hidden">
+                                        <img src="${p.logo || 'image_251ba6.png'}" alt="${p.name || 'Partenaire'}" class="max-w-full max-h-full object-contain">
+                                    </div>
+                                    <h3 class="font-title font-bold text-lg text-gray-900 mb-2">${p.name || ''}</h3>
+                                    <p class="text-gray-600 text-xs leading-relaxed">${p.desc || ''}</p>
+                                </div>
+                                ${linkHTML}
+                            </div>
+                        `;
+                    });
+                }
             }
 
             if (document.getElementById('contact-tag')) document.getElementById('contact-tag').textContent = ct.tag || defaultSiteData.contact.tag;
