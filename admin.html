@@ -91,7 +91,7 @@
                         <div class="flex gap-3">
                             <input type="text" id="cfg-headerIcon" placeholder="fa-heart ou URL image" class="w-full px-4 py-3 glass-input rounded-2xl text-sm">
                             <label class="cursor-pointer px-4 py-3 bg-cyber-cyan text-slate-900 font-bold text-xs rounded-2xl flex items-center shrink-0">
-                                Image <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-headerIcon')">
+                                Img <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-headerIcon', 200)">
                             </label>
                         </div>
                     </div>
@@ -115,7 +115,7 @@
                         <h4 class="font-title font-bold text-white text-sm">Bloc 1 (Mission)</h4>
                         <input type="text" id="cfg-aboutBlock1Title" class="w-full px-3 py-2 glass-input rounded-xl text-xs mb-2">
                         <textarea id="cfg-aboutBlock1Text" rows="3" class="w-full px-3 py-2 glass-input rounded-xl text-xs"></textarea>
-                        <div class="flex gap-3"><input type="text" id="cfg-aboutBlock1Img" class="w-full px-3 py-2 glass-input rounded-xl text-xs"><label class="cursor-pointer px-4 py-2 bg-cyber-cyan text-slate-900 font-bold text-xs rounded-xl flex items-center">Photo<input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-aboutBlock1Img')"></label></div>
+                        <div class="flex gap-3"><input type="text" id="cfg-aboutBlock1Img" class="w-full px-3 py-2 glass-input rounded-xl text-xs"><label class="cursor-pointer px-4 py-2 bg-cyber-cyan text-slate-900 font-bold text-xs rounded-xl flex items-center">Photo<input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-aboutBlock1Img', 600)"></label></div>
                     </div>
                     <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
                         <h4 class="font-title font-bold text-white text-sm">Bloc 2 (Mot du Bureau & Statuts)</h4>
@@ -132,12 +132,12 @@
                     <h3 class="font-title text-lg font-bold text-white border-b border-cyber-border pb-4">Affiches & Boutons</h3>
                     <div class="p-6 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
                         <h4 class="font-title font-bold text-white text-sm">Logo APE</h4>
-                        <div class="flex gap-3"><input type="text" id="cfg-logoImg" class="w-full px-4 py-3 glass-input rounded-2xl text-xs"><label class="cursor-pointer px-5 py-3 bg-cyber-pink text-white font-bold text-xs rounded-2xl flex items-center">Logo<input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-logoImg')"></label></div>
+                        <div class="flex gap-3"><input type="text" id="cfg-logoImg" class="w-full px-4 py-3 glass-input rounded-2xl text-xs"><label class="cursor-pointer px-5 py-3 bg-cyber-pink text-white font-bold text-xs rounded-2xl flex items-center">Logo<input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-logoImg', 500)"></label></div>
                     </div>
                     <div class="p-6 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
                         <h4 class="font-title font-bold text-white text-sm">Affiche Principale</h4>
                         <div class="grid grid-cols-2 gap-3"><input type="text" id="cfg-posterHeading" placeholder="Titre" class="px-3 py-2 glass-input rounded-xl text-xs"><input type="text" id="cfg-posterCaption" placeholder="Légende" class="px-3 py-2 glass-input rounded-xl text-xs"></div>
-                        <div class="flex gap-3"><input type="text" id="cfg-posterImg" class="w-full px-4 py-3 glass-input rounded-2xl text-xs"><label class="cursor-pointer px-5 py-3 bg-cyber-cyan text-slate-900 font-bold text-xs rounded-2xl flex items-center">Image<input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-posterImg')"></label></div>
+                        <div class="flex gap-3"><input type="text" id="cfg-posterImg" class="w-full px-4 py-3 glass-input rounded-2xl text-xs"><label class="cursor-pointer px-5 py-3 bg-cyber-cyan text-slate-900 font-bold text-xs rounded-2xl flex items-center">Image<input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-posterImg', 700)"></label></div>
                     </div>
                     <div class="p-6 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
                         <div class="flex justify-between items-center border-b border-cyber-border pb-3"><h4 class="font-title font-bold text-white text-sm">Boutons sous l'affiche</h4><button type="button" onclick="addPosterBtnItem()" class="px-4 py-2 bg-amber-400 text-slate-900 font-bold text-xs rounded-xl">+ Ajouter</button></div>
@@ -257,7 +257,10 @@
                             <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Site Web</label><input type="text" value="${p.link || ''}" class="p-link w-full px-3 py-2 glass-input rounded-xl text-xs"></div>
                         </div>
                         <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Description</label><input type="text" value="${p.desc || ''}" class="p-desc w-full px-3 py-2 glass-input rounded-xl text-xs"></div>
-                        <div class="flex gap-3"><input type="text" value="${p.logo || ''}" class="p-logo w-full px-3 py-2 glass-input rounded-xl text-xs"></div>
+                        <div class="flex gap-3">
+                            <input type="text" id="partner-logo-${index}" value="${p.logo || ''}" class="p-logo w-full px-3 py-2 glass-input rounded-xl text-xs">
+                            <label class="cursor-pointer px-3 py-2 bg-emerald-400 text-slate-900 font-bold text-xs rounded-xl flex items-center shrink-0">Logo<input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'partner-logo-${index}', 300)"></label>
+                        </div>
                     </div>`;
             });
         }
@@ -323,15 +326,19 @@
 
         function addPhotoToAlbum(e, index) {
             const f = e.target.files[0]; if (!f) return;
+            showStatusToast("Optimisation de la photo...", "info");
             const r = new FileReader(); r.onload = (evt) => {
                 const img = new Image(); img.onload = () => {
-                    const canvas = document.createElement('canvas'); const MAX = 600;
-                    let w = img.width, h = img.height; if (w > MAX) { h *= MAX / w; w = MAX; }
+                    const canvas = document.createElement('canvas'); const MAX = 650;
+                    let w = img.width, h = img.height; if (w > MAX || h > MAX) {
+                        if (w > h) { h = Math.round((h * MAX) / w); w = MAX; }
+                        else { w = Math.round((w * MAX) / h); h = MAX; }
+                    }
                     canvas.width = w; canvas.height = h; canvas.getContext('2d').drawImage(img, 0, 0, w, h);
                     if (!appData.pastEvents[index].photos) appData.pastEvents[index].photos = [];
-                    appData.pastEvents[index].photos.push(canvas.toDataURL('image/jpeg', 0.5));
+                    appData.pastEvents[index].photos.push(canvas.toDataURL('image/jpeg', 0.65));
                     renderPastEvents();
-                    showStatusToast("Photo ajoutée à l'album !");
+                    showStatusToast("Photo ajoutée ! N'oubliez pas d'enregistrer.");
                 }; img.src = evt.target.result;
             }; r.readAsDataURL(f);
         }
@@ -345,7 +352,6 @@
                 
                 appData.partners.tag = getV('cfg-partnersTag'); appData.partners.title = getV('cfg-partnersTitle'); appData.partners.desc = getV('cfg-partnersDesc');
                 
-                // Récupération Partenaires
                 appData.partners.list = [];
                 document.querySelectorAll('.partner-item').forEach(card => {
                     appData.partners.list.push({
@@ -356,7 +362,6 @@
                     });
                 });
 
-                // Récupération Boutons Affiche
                 appData.general.posterButtons = [];
                 document.querySelectorAll('.poster-btn-item').forEach(card => {
                     appData.general.posterButtons.push({
@@ -365,7 +370,6 @@
                     });
                 });
 
-                // Récupération Événements à venir
                 appData.upcomingEvents = [];
                 document.querySelectorAll('.event-item').forEach(card => {
                     appData.upcomingEvents.push({
@@ -375,7 +379,6 @@
                     });
                 });
 
-                // Récupération Galerie & Albums Photos (Correction critique ici)
                 const newPastEvents = [];
                 document.querySelectorAll('.gallery-item').forEach((card, idx) => {
                     if (appData.pastEvents[idx]) {
@@ -423,14 +426,19 @@
         }
 
         function processGenericFile(e, targetId) { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = (evt) => { document.getElementById(targetId).value = evt.target.result; showStatusToast("Fichier chargé !"); }; r.readAsDataURL(f); }
-        function processImageCompressed(e, targetId) {
+        function processImageCompressed(e, targetId, maxPx = 500) {
             const f = e.target.files[0]; if (!f) return;
+            showStatusToast("Optimisation...", "info");
             const r = new FileReader(); r.onload = (evt) => {
                 const img = new Image(); img.onload = () => {
-                    const canvas = document.createElement('canvas'); const MAX = 500;
-                    let w = img.width, h = img.height; if (w > MAX) { h *= MAX / w; w = MAX; }
+                    const canvas = document.createElement('canvas');
+                    let w = img.width, h = img.height;
+                    if (w > maxPx || h > maxPx) {
+                        if (w > h) { h = Math.round((h * maxPx) / w); w = maxPx; }
+                        else { w = Math.round((w * maxPx) / h); h = maxPx; }
+                    }
                     canvas.width = w; canvas.height = h; canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                    document.getElementById(targetId).value = canvas.toDataURL('image/jpeg', 0.5);
+                    document.getElementById(targetId).value = canvas.toDataURL('image/jpeg', 0.7);
                     showStatusToast("Image optimisée !");
                 }; img.src = evt.target.result;
             }; r.readAsDataURL(f);
