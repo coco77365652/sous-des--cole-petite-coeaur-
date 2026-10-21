@@ -1,134 +1,639 @@
 <!DOCTYPE html>
 <html lang="fr" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APE de Petit-Cœur</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APE de Petit-Cœur - La Léchère</title>
+
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <script>tailwind.config={theme:{extend:{colors:{brand:{yellow:'#FFD166',blue:'#4EA8DE',darkblue:'#2B6CB0',green:'#06D6A0',red:'#EF476F'}},fontFamily:{title:['Fredoka'],body:['Inter']}}}}</script>
-    <style>body{font-family:'Inter',sans-serif;background:#FFF9F2;color:#2D3748}h1,h2,h3,.ft{font-family:'Fredoka',cursive}.hero{background:#4EA8DE radial-gradient(#FFD166 2px,transparent 2px);background-size:50px 50px}</style>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            yellow: '#FFD166',
+                            blue: '#4EA8DE',
+                            darkblue: '#2B6CB0',
+                            green: '#06D6A0',
+                            red: '#EF476F',
+                            cream: '#FFF9F2',
+                            text: '#2D3748'
+                        }
+                    },
+                    fontFamily: {
+                        title: ['Fredoka', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #2D3748;
+            background-color: #FFF9F2;
+        }
+        h1, h2, h3, h4, .font-title {
+            font-family: 'Fredoka', cursive, sans-serif;
+        }
+        .hero-pattern {
+            background-color: #4EA8DE;
+            background-image: radial-gradient(#FFD166 2px, transparent 2px), radial-gradient(#06D6A0 2px, #4EA8DE 2px);
+            background-size: 80px 80px;
+            background-position: 0 0, 40px 40px;
+            opacity: 0.95;
+        }
+    </style>
 </head>
-<body class="flex flex-col min-h-screen">
-    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-amber-100">
-        <div class="max-w-7xl mx-auto px-4 flex justify-between h-16 items-center">
-            <a href="#accueil" class="flex items-center gap-2">
-                <div class="w-9 h-9 bg-brand-yellow rounded-xl flex items-center justify-center text-brand-red font-bold"><i class="fa-solid fa-heart"></i></div>
-                <div><span id="h-name" class="ft text-base leading-none block">APE de Petit-Cœur</span><span id="h-sub" class="text-[9px] text-brand-darkblue uppercase font-bold">La Léchère</span></div>
-            </a>
-            <nav class="hidden md:flex gap-6 text-xs font-semibold text-gray-700">
-                <a href="#accueil">Accueil</a><a href="#qui-sommes-nous">Qui sommes-nous</a><a href="#evenements">Événements</a><a href="#galerie">Galerie</a><a href="#partenaires">Partenaires</a><a href="#contact">Contact</a>
-            </nav>
+<body class="antialiased flex flex-col min-h-screen">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-32 opacity-0 transition-all duration-300 bg-emerald-600 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3">
+        <i class="fa-solid fa-circle-check text-2xl"></i>
+        <span id="toast-message">Mise à jour en direct !</span>
+    </div>
+
+    <!-- HEADER / NAVIGATION PUBLIQUE -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md shadow-sm border-b border-amber-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <a href="#accueil" class="flex items-center gap-3 group">
+                    <div class="w-12 h-12 bg-brand-yellow rounded-2xl flex items-center justify-center text-brand-red text-2xl font-bold shadow-md transform group-hover:rotate-6 transition-transform">
+                        <i class="fa-solid fa-heart text-brand-red"></i>
+                    </div>
+                    <div>
+                        <span id="header-assoc-name" class="font-title font-bold text-xl text-gray-800 tracking-wide block leading-none">APE de Petit-Cœur</span>
+                        <span id="header-assoc-sub" class="text-xs font-semibold text-brand-darkblue tracking-wider uppercase">Petit-Cœur • La Léchère</span>
+                    </div>
+                </a>
+
+                <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-gray-700">
+                    <a href="#accueil" class="hover:text-brand-blue transition-colors">Accueil</a>
+                    <a href="#qui-sommes-nous" class="hover:text-brand-blue transition-colors">Qui sommes-nous ?</a>
+                    <a href="#evenements" class="hover:text-brand-blue transition-colors">Événements</a>
+                    <a href="#galerie" class="hover:text-brand-blue transition-colors">Galerie</a>
+                    <a href="#partenaires" class="hover:text-brand-blue transition-colors">Nos Partenaires</a>
+                    <a href="#contact" class="hover:text-brand-blue transition-colors">Nous Contacter</a>
+                </nav>
+
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-200 px-4 pt-2 pb-6 space-y-3">
+            <a href="#accueil" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Accueil</a>
+            <a href="#qui-sommes-nous" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Qui sommes-nous ?</a>
+            <a href="#evenements" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Événements</a>
+            <a href="#galerie" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Galerie</a>
+            <a href="#partenaires" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Nos Partenaires</a>
+            <a href="#contact" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-amber-50">Nous Contacter</a>
         </div>
     </header>
 
+    <!-- MAIN SITE PUBLIC VIEW -->
     <main class="flex-grow">
-        <section id="accueil" class="hero text-white py-10 md:py-16">
-            <div class="max-w-7xl mx-auto px-4 grid lg:grid-cols-3 gap-6 items-center text-center lg:text-left">
-                <div class="flex justify-center"><img id="i-logo" src="image_251ba6.png" class="w-36 rounded-xl shadow-lg cursor-pointer" onclick="openL(this.src)"></div>
-                <div class="space-y-3">
-                    <span id="h-tag" class="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold">Savoie</span>
-                    <h1 id="h-title" class="ft text-2xl md:text-4xl font-bold">Ensemble pour les enfants !</h1>
-                    <p id="h-desc" class="text-xs text-sky-50 leading-relaxed"></p>
+        <!-- SECTION ACCUEIL -->
+        <section id="accueil" class="relative hero-pattern text-white py-12 md:py-20 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                    
+                    <!-- LOGO -->
+                    <div class="flex justify-center">
+                        <div class="p-2 max-w-xs transform -rotate-2 hover:rotate-0 transition-all cursor-pointer group hover:scale-105" onclick="openLightbox(document.getElementById('logo-img').src, 'Logo Sou des Écoles - Petit-Cœur')">
+                            <img id="logo-img" 
+                                 src="image_251ba6.png" 
+                                 alt="Logo Sou des Écoles Petit-Cœur" 
+                                 class="w-full h-auto rounded-2xl object-contain drop-shadow-2xl">
+                            <p class="text-[10px] text-sky-100 text-center mt-2 group-hover:text-brand-yellow transition-colors font-medium"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Cliquer pour agrandir</p>
+                        </div>
+                    </div>
+
+                    <!-- TEXTE -->
+                    <div class="text-center space-y-6">
+                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-white text-sm font-medium border border-white/30">
+                            <i class="fa-solid fa-mountain-sun text-brand-yellow"></i>
+                            <span id="hero-location-tag">Savoie - Commune de La Léchère</span>
+                        </div>
+                        <h1 id="hero-title" class="font-title text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight drop-shadow-md">
+                            Ensemble pour les enfants de Petit-Cœur !
+                        </h1>
+                        <div id="hero-description" class="text-base sm:text-lg text-sky-50 font-light leading-relaxed">
+                            Association de parents d'élèves (APE) bénévoles dédiée au financement des sorties scolaires, projets pédagogiques et animations des écoles de notre village.
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+                            <a href="#evenements" class="bg-brand-yellow hover:bg-amber-300 text-gray-900 font-title font-semibold px-5 py-3 rounded-2xl shadow-lg transition-all text-center flex items-center justify-center gap-2 text-sm">
+                                <i class="fa-solid fa-calendar-star text-brand-red"></i> Prochains Événements
+                            </a>
+                            <a href="#qui-sommes-nous" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/40 text-white font-title font-semibold px-5 py-3 rounded-2xl transition-all text-center flex items-center justify-center gap-2 text-sm">
+                                <i class="fa-solid fa-users text-brand-yellow"></i> Qui sommes-nous ?
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- AFFICHE ET BOUTONS -->
+                    <div class="flex justify-center">
+                        <div class="p-4 max-w-xs transform rotate-1 hover:rotate-0 transition-all w-full text-center bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl shadow-2xl">
+                            <h3 class="font-title font-bold text-white text-base mb-3 flex items-center justify-center gap-2 drop-shadow-md">
+                                <i class="fa-solid fa-bullhorn text-brand-yellow"></i>
+                                <span id="poster-heading">À l'Affiche !</span>
+                            </h3>
+
+                            <div class="overflow-hidden cursor-pointer group rounded-2xl aspect-[4/5] bg-white shadow-xl flex items-center justify-center p-2 border border-white/30 hover:scale-105 transition-transform" onclick="openLightbox(document.getElementById('poster-img').src, document.getElementById('poster-caption').textContent || 'Affiche')">
+                                <img id="poster-img" 
+                                     src="image_251ba6.png" 
+                                     alt="Affiche événement" 
+                                     class="w-full h-full object-contain rounded-xl">
+                            </div>
+
+                            <p id="poster-caption" class="text-xs text-sky-100 mt-2 font-semibold">Le Bureau du Sou des Écoles</p>
+                            <div id="poster-buttons-container" class="mt-4 flex flex-col gap-2"></div>
+                        </div>
+                    </div>
+
                 </div>
-                <div class="flex justify-center">
-                    <div class="p-4 bg-white/10 backdrop-blur rounded-2xl border border-white/20 max-w-xs w-full text-center space-y-2">
-                        <h3 id="p-head" class="ft text-xs font-bold text-white">À l'Affiche !</h3>
-                        <img id="i-poster" src="image_251ba6.png" class="w-full h-40 object-contain rounded-lg bg-white p-1 cursor-pointer" onclick="openL(this.src)">
-                        <p id="p-cap" class="text-[10px] text-sky-100 font-medium"></p>
-                        <div id="c-btns" class="space-y-1"></div>
+            </div>
+        </section>
+
+        <!-- SECTION QUI SOMMES-NOUS ? -->
+        <section id="qui-sommes-nous" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span id="about-tag" class="text-brand-blue font-title font-bold text-sm tracking-wider uppercase bg-blue-50 px-4 py-1.5 rounded-full">Présentation</span>
+                <h2 id="about-title" class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Qui sommes-nous ?</h2>
+                <div id="about-desc" class="text-gray-600 mt-4 text-lg leading-relaxed">
+                    Une équipe de parents bénévoles et enthousiastes dédiée aux enfants des écoles de Petit-Cœur.
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch mb-12">
+                <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-sm space-y-4 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <h3 id="about-block1-title" class="font-title text-2xl font-bold text-gray-900 flex items-center gap-3">
+                            <i class="fa-solid fa-users text-brand-blue"></i> Notre Mission
+                        </h3>
+                        <div id="about-block1-img-box" class="hidden overflow-hidden rounded-2xl my-3 cursor-pointer group border border-amber-100/60 bg-amber-50/40 p-2" onclick="openLightbox(document.getElementById('about-block1-img').src, 'Photo - Notre Mission')">
+                            <img id="about-block1-img" src="" alt="Notre Mission" class="w-full h-auto max-h-64 object-contain mx-auto group-hover:scale-105 transition-transform duration-300 rounded-xl">
+                        </div>
+                        <div id="about-block1-text" class="text-gray-600 leading-relaxed text-base">
+                            Organiser des manifestations tout au long de l'année afin de financer les projets éducatifs, sorties scolaires, achats de matériel et spectacles pour nos enfants.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-sm space-y-4 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <h3 id="about-block2-title" class="font-title text-2xl font-bold text-gray-900 flex items-center gap-3">
+                            <i class="fa-solid fa-heart text-brand-red"></i> Le Mot du Bureau
+                        </h3>
+                        <div id="about-block2-text" class="text-gray-600 italic leading-relaxed text-base">
+                            « Chaque événement est une belle aventure humaine. Un grand merci à tous les parents, enseignants et partenaires de la commune de La Léchère pour leur précieux soutien ! »
+                        </div>
+                    </div>
+
+                    <div id="about-file-box" class="pt-4 border-t border-amber-100 hidden">
+                        <a id="about-file-link" href="#" target="_blank" class="inline-flex items-center gap-2 bg-brand-red hover:bg-rose-600 text-white font-title font-semibold text-sm px-5 py-3 rounded-2xl shadow-md transition-all">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            <span id="about-file-btn-text">Consulter les Statuts</span>
+                        </a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="qui-sommes-nous" class="py-12 max-w-7xl mx-auto px-4">
-            <div class="text-center max-w-lg mx-auto mb-8">
-                <span id="a-tag" class="text-brand-blue ft text-[10px] bg-blue-50 px-2.5 py-1 rounded-full uppercase">Présentation</span>
-                <h2 id="a-title" class="ft text-2xl font-bold mt-2">Qui sommes-nous ?</h2>
-                <p id="a-desc" class="text-xs text-gray-600 mt-1"></p>
-            </div>
-            <div class="grid md:grid-cols-2 gap-4">
-                <div class="bg-white p-5 rounded-2xl border border-amber-100 space-y-2"><h3 id="a-b1t" class="ft text-lg font-bold">Mission</h3><p id="a-b1d" class="text-xs text-gray-600"></p></div>
-                <div class="bg-white p-5 rounded-2xl border border-amber-100 space-y-2 flex flex-col justify-between">
-                    <div><h3 id="a-b2t" class="ft text-lg font-bold">Mot du Bureau</h3><p id="a-b2d" class="text-xs text-gray-600 italic"></p></div>
-                    <div id="a-file-box" class="hidden"><a id="a-file" href="#" target="_blank" class="inline-flex items-center gap-2 bg-brand-red text-white text-xs font-bold px-3 py-1.5 rounded-lg"><i class="fa-solid fa-file-pdf"></i> <span id="a-file-txt">Statuts</span></a></div>
+        <!-- ÉVÉNEMENTS À VENIR -->
+        <section id="evenements" class="py-20 bg-amber-50/50 border-y border-amber-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12 text-center md:text-left">
+                    <span class="text-brand-red font-title font-bold text-sm tracking-wider uppercase bg-rose-100/60 px-4 py-1.5 rounded-full">Agenda des écoliers</span>
+                    <h2 class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Prochains Événements</h2>
                 </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="events-upcoming-container"></div>
             </div>
         </section>
 
-        <section id="evenements" class="py-12 bg-amber-50/50 border-y border-amber-100">
-            <div class="max-w-7xl mx-auto px-4"><h2 class="ft text-xl font-bold mb-6">Événements</h2><div id="c-events" class="grid md:grid-cols-3 gap-4"></div></div>
+        <!-- GALERIE -->
+        <section id="galerie" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 text-center md:text-left">
+                <span class="text-brand-yellow font-title font-bold text-sm tracking-wider uppercase bg-amber-100/60 px-4 py-1.5 rounded-full text-amber-900">Souvenirs</span>
+                <h2 class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Galerie & Photos</h2>
+            </div>
+            <div class="space-y-12" id="past-events-container"></div>
         </section>
 
-        <section id="galerie" class="py-12 max-w-7xl mx-auto px-4"><h2 class="ft text-xl font-bold mb-6">Galerie Photos</h2><div id="c-gallery" class="space-y-6"></div></section>
+        <!-- NOS PARTENAIRES -->
+        <section id="partenaires" class="py-20 bg-amber-50/40 border-t border-amber-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <span id="partners-tag" class="text-brand-purple font-title font-bold text-sm tracking-wider uppercase bg-purple-100/80 px-4 py-1.5 rounded-full text-purple-900">Soutien & Collaborations</span>
+                    <h2 id="partners-title" class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Nos Partenaires</h2>
+                    <p id="partners-desc" class="text-gray-600 mt-4 text-lg leading-relaxed">
+                        Un grand merci aux entreprises, commerçants et institutions qui soutiennent les projets des enfants de Petit-Cœur !
+                    </p>
+                </div>
 
-        <section id="partenaires" class="py-12 bg-amber-50/40 border-t border-amber-100 text-center">
-            <div class="max-w-7xl mx-auto px-4">
-                <span id="pt-tag" class="text-purple-700 ft text-[10px] bg-purple-100 px-2.5 py-1 rounded-full uppercase">Soutien</span>
-                <h2 id="pt-title" class="ft text-2xl font-bold mt-2">Partenaires</h2>
-                <p id="pt-desc" class="text-xs text-gray-600 mt-1 mb-6"></p>
-                <div id="c-partners" class="grid sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
+                <div id="partners-list-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
             </div>
         </section>
 
-        <section id="contact" class="py-12 bg-white border-t border-amber-100 text-center">
-            <div class="max-w-xl mx-auto px-4 space-y-4">
-                <h2 id="c-title" class="ft text-2xl font-bold">Contact</h2>
-                <p id="c-desc" class="text-xs text-gray-600"></p>
-                <div class="grid sm:grid-cols-3 gap-3 text-xs font-semibold">
-                    <div class="p-3 bg-amber-50/50 rounded-xl"><i class="fa-solid fa-envelope text-brand-blue mb-1 block"></i><a id="c-mail" href="#" class="break-all"></a></div>
-                    <div class="p-3 bg-amber-50/50 rounded-xl"><i class="fa-solid fa-phone text-brand-green mb-1 block"></i><a id="c-phone" href="#"></a></div>
-                    <div class="p-3 bg-amber-50/50 rounded-xl"><i class="fa-solid fa-location-dot text-brand-yellow mb-1 block"></i><p id="c-addr"></p></div>
+        <!-- NOUS CONTACTER -->
+        <section id="contact" class="py-20 bg-white border-t border-amber-100">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <span id="contact-tag" class="text-brand-green font-title font-bold text-sm tracking-wider uppercase bg-emerald-100/60 px-4 py-1.5 rounded-full text-emerald-900">Coordonnées</span>
+                    <h2 id="contact-title" class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Nous Contacter</h2>
+                    <div id="contact-desc" class="text-gray-600 mt-4 text-lg leading-relaxed">
+                        Pour toute question, information ou proposition, vous pouvez nous joindre directement via nos coordonnées ci-dessous.
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-sm grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div id="contact-email-box" class="flex flex-col items-center text-center p-4 rounded-2xl bg-amber-50/50 border border-amber-100/60">
+                        <div class="w-12 h-12 rounded-2xl bg-brand-blue/20 text-brand-darkblue flex items-center justify-center text-xl mb-3">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                        <p class="text-xs font-bold uppercase text-gray-400 mb-1">Email</p>
+                        <a id="contact-email-link" href="mailto:ape.petitcoeur@gmail.com" class="font-semibold text-gray-800 hover:text-brand-blue transition-colors text-sm break-all">ape.petitcoeur@gmail.com</a>
+                    </div>
+
+                    <div id="contact-phone-box" class="flex flex-col items-center text-center p-4 rounded-2xl bg-amber-50/50 border border-amber-100/60">
+                        <div class="w-12 h-12 rounded-2xl bg-brand-green/20 text-emerald-800 flex items-center justify-center text-xl mb-3">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <p class="text-xs font-bold uppercase text-gray-400 mb-1">Téléphone</p>
+                        <a id="contact-phone-link" href="tel:0600000000" class="font-semibold text-gray-800 hover:text-brand-blue transition-colors text-sm">06 00 00 00 00</a>
+                    </div>
+
+                    <div id="contact-address-box" class="flex flex-col items-center text-center p-4 rounded-2xl bg-amber-50/50 border border-amber-100/60">
+                        <div class="w-12 h-12 rounded-2xl bg-brand-yellow/30 text-amber-900 flex items-center justify-center text-xl mb-3">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <p class="text-xs font-bold uppercase text-gray-400 mb-1">Adresse / École</p>
+                        <p id="contact-address-text" class="font-semibold text-gray-800 text-sm leading-relaxed">École Primaire de Petit-Cœur, 73260 La Léchère</p>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="bg-gray-900 text-white py-6 text-center text-xs text-gray-400">&copy; 2026 APE Petit-Cœur</footer>
+    <footer class="bg-gray-900 text-white py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-400">
+            <p>&copy; 2026 APE de Petit-Cœur (La Léchère). Tous droits réservés.</p>
+        </div>
+    </footer>
 
-    <div id="lightbox" class="fixed inset-0 z-50 hidden bg-black/80 flex items-center justify-center p-4" onclick="this.classList.add('hidden')">
-        <img id="lb-img" class="max-h-[80vh] max-w-full rounded-lg object-contain">
+    <!-- LIGHTBOX -->
+    <div id="modal-lightbox" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex flex-col items-center justify-center p-4 transition-all duration-300" onclick="closeLightbox()">
+        <button onclick="closeLightbox()" class="absolute top-5 right-5 z-10 bg-white/20 hover:bg-brand-red text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-lg border border-white/30 backdrop-blur-md flex items-center gap-2 transition-all active:scale-95 cursor-pointer">
+            <i class="fa-solid fa-xmark text-lg"></i>
+            <span>Fermer (Échap)</span>
+        </button>
+
+        <div class="relative max-w-4xl w-full max-h-[85vh] flex flex-col items-center justify-center p-2" onclick="event.stopPropagation()">
+            <div class="bg-white p-3 sm:p-4 rounded-3xl shadow-2xl flex items-center justify-center">
+                <img id="lightbox-img" src="" alt="Agrandissement" class="max-h-[75vh] w-auto max-w-full rounded-2xl object-contain shadow-md">
+            </div>
+            <p id="lightbox-caption" class="text-white font-title text-center mt-4 text-sm sm:text-base bg-black/50 backdrop-blur-md px-6 py-2 rounded-full border border-white/20 shadow-lg"></p>
+        </div>
     </div>
 
+    <!-- SCRIPTS -->
     <script>
-        const SB = supabase.createClient('https://gdbktvxramksondbobns.supabase.co', 'sb_publishable_6Q9vML3WwH7_8n5Ipvo-3g_DRZx_VPK');
-        let D = {};
-        window.onload = () => { load(); SB.from('site_content').select('content').eq('id',1).single().then(({data})=>{if(data?.content){D=data.content;render()}}) };
-        function load(){let r=localStorage.getItem('site_d');if(r)try{D=JSON.parse(r)}catch(e){}render();}
-        function render(){
-            let g=D.general||{}, a=D.about||{}, p=D.partners||{}, c=D.contact||{};
-            set('h-name',g.assocName); set('h-sub',g.assocSub); set('h-tag',g.locationTag); set('h-title',g.heroTitle); set('h-desc',g.heroDesc);
-            set('p-head',g.posterHeading); set('p-cap',g.posterCaption);
-            if(g.logoImg) document.getElementById('i-logo').src=g.logoImg;
-            if(g.posterImg) document.getElementById('i-poster').src=g.posterImg;
+        const SUPABASE_URL = 'https://gdbktvxramksondbobns.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_6Q9vML3WwH7_8n5Ipvo-3g_DRZx_VPK';
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-            let bc=document.getElementById('c-btns'); bc.innerHTML='';
-            (g.posterButtons||[]).forEach(b=>{bc.innerHTML+=`<a href="${b.url||'#'}" target="_blank" download class="block bg-brand-yellow hover:bg-amber-300 text-gray-900 ft font-bold text-[10px] py-1.5 rounded-lg shadow"><i class="fa-solid fa-download mr-1"></i>${b.label||'Télécharger'}</a>`});
+        const defaultSiteData = {
+            general: {
+                assocName: "APE de Petit-Cœur",
+                assocSub: "Petit-Cœur • La Léchère",
+                locationTag: "Savoie - Commune de La Léchère",
+                heroTitle: "Ensemble pour les enfants de Petit-Cœur !",
+                heroDesc: "Association de parents d'élèves (APE) bénévoles dédiée au financement des sorties scolaires, projets pédagogiques et animations des écoles de notre village.",
+                logoImg: "image_251ba6.png",
+                posterImg: "image_251ba6.png",
+                posterHeading: "À l'Affiche !",
+                posterCaption: "Le Bureau du Sou des Écoles",
+                posterButtons: [
+                    {
+                        label: "Télécharger l'affiche",
+                        url: "image_251ba6.png"
+                    }
+                ]
+            },
+            about: {
+                tag: "Présentation",
+                title: "Qui sommes-nous ?",
+                desc: "Une équipe de parents bénévoles et enthousiastes dédiée aux enfants des écoles de Petit-Cœur.",
+                block1Title: "Notre Mission",
+                block1Text: "Organiser des manifestations tout au long de l'année afin de financer les projets éducatifs, sorties scolaires, achats de matériel et spectacles pour nos enfants.",
+                block1Img: "",
+                block2Title: "Le Mot du Bureau",
+                block2Text: "« Chaque événement est une belle aventure humaine. Un grand merci à tous les parents, enseignants et partenaires de la commune de La Léchère pour leur précieux soutien ! »",
+                fileUrl: "image_251ba6.png",
+                fileBtnText: "Consulter les Statuts"
+            },
+            partners: {
+                tag: "Soutien & Collaborations",
+                title: "Nos Partenaires",
+                desc: "Un grand merci aux entreprises, commerçants et institutions qui soutiennent les projets des enfants de Petit-Cœur !",
+                list: [
+                    {
+                        name: "Mairie de La Léchère",
+                        desc: "Soutien institutionnel et mise à disposition des équipements communaux.",
+                        logo: "image_251ba6.png",
+                        link: "https://www.la-lechere.fr"
+                    }
+                ]
+            },
+            contact: {
+                tag: "Coordonnées",
+                title: "Nous Contacter",
+                desc: "Pour toute question, information ou proposition, vous pouvez nous joindre directement via nos coordonnées ci-dessous.",
+                email: "ape.petitcoeur@gmail.com",
+                phone: "06 00 00 00 00",
+                address: "École Primaire de Petit-Cœur, 73260 La Léchère"
+            },
+            upcomingEvents: [],
+            pastEvents: []
+        };
 
-            set('a-tag',a.tag); set('a-title',a.title); set('a-desc',a.desc); set('a-b1t',a.block1Title); set('a-b1d',a.block1Text); set('a-b2t',a.block2Title); set('a-b2d',a.block2Text);
-            if(a.fileUrl){document.getElementById('a-file').href=a.fileUrl;document.getElementById('a-file-txt').textContent=a.fileBtnText||'Statuts';document.getElementById('a-file-box').classList.remove('hidden')}
+        let siteData = Object.assign({}, defaultSiteData);
 
-            set('pt-tag',p.tag); set('pt-title',p.title); set('pt-desc',p.desc);
-            let pc=document.getElementById('c-partners'); pc.innerHTML='';
-            (p.list||[]).forEach(pt=>{pc.innerHTML+=`<div class="bg-white p-3 rounded-xl border border-amber-100 flex flex-col items-center shadow-sm"><img src="${pt.logo||'image_251ba6.png'}" class="h-12 object-contain mb-1"><h3 class="ft font-bold text-xs">${pt.name||''}</h3><p class="text-[10px] text-gray-500">${pt.desc||''}</p>${pt.link?`<a href="${pt.link}" target="_blank" class="text-[10px] font-bold text-brand-blue mt-1">Visiter</a>`:''}</div>`});
+        function renderSite() {
+            const gen = siteData.general || {};
+            const ab = siteData.about || {};
+            const pt = siteData.partners || {};
+            const ct = siteData.contact || {};
+            
+            if (document.getElementById('header-assoc-name')) document.getElementById('header-assoc-name').textContent = gen.assocName || defaultSiteData.general.assocName;
+            if (document.getElementById('header-assoc-sub')) document.getElementById('header-assoc-sub').textContent = gen.assocSub || defaultSiteData.general.assocSub;
+            
+            if (document.getElementById('hero-location-tag')) document.getElementById('hero-location-tag').textContent = gen.locationTag || defaultSiteData.general.locationTag;
+            if (document.getElementById('hero-title')) document.getElementById('hero-title').textContent = gen.heroTitle || defaultSiteData.general.heroTitle;
+            if (document.getElementById('hero-description')) document.getElementById('hero-description').textContent = gen.heroDesc || defaultSiteData.general.heroDesc;
 
-            set('c-title',c.title); set('c-desc',c.desc); set('c-addr',c.address);
-            let em=document.getElementById('c-mail'); if(em){em.textContent=c.email||'';em.href='mailto:'+c.email}
-            let ph=document.getElementById('c-phone'); if(ph){ph.textContent=c.phone||'';ph.href='tel:'+c.phone}
+            const logoImg = document.getElementById('logo-img');
+            if (logoImg) {
+                const targetSrc = gen.logoImg || defaultSiteData.general.logoImg;
+                if (targetSrc && logoImg.src !== targetSrc) logoImg.src = targetSrc;
+            }
 
-            let ec=document.getElementById('c-events'); ec.innerHTML='';
-            (D.upcomingEvents||[]).forEach(ev=>{ec.innerHTML+=`<div class="bg-white rounded-xl p-4 border border-amber-100 shadow-sm space-y-1"><span class="bg-brand-yellow text-gray-900 font-bold text-[9px] px-2 py-0.5 rounded">${ev.date||''}</span><h3 class="ft font-bold text-sm">${ev.title||''}</h3><p class="text-[11px] text-gray-600">${ev.desc||''}</p></div>`});
+            const posterImg = document.getElementById('poster-img');
+            if (posterImg) {
+                const targetPoster = gen.posterImg || defaultSiteData.general.posterImg;
+                if (targetPoster && posterImg.src !== targetPoster) posterImg.src = targetPoster;
+            }
 
-            let gc=document.getElementById('c-gallery'); gc.innerHTML='';
-            (D.pastEvents||[]).forEach(ev=>{
-                let phs=(ev.photos||[]).map(img=>`<img src="${img}" class="h-20 w-full object-cover rounded-lg cursor-pointer" onclick="openL('${img}')">`).join('');
-                gc.innerHTML+=`<div class="bg-white rounded-xl p-4 border border-amber-100 space-y-2"><div class="flex justify-between items-center"><h3 class="ft font-bold text-base">${ev.title||''}</h3><span class="text-[10px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full">${ev.date||''}</span></div><div class="grid grid-cols-2 sm:grid-cols-4 gap-2">${phs}</div></div>`;
-            });
+            if (document.getElementById('poster-heading')) document.getElementById('poster-heading').textContent = gen.posterHeading || defaultSiteData.general.posterHeading;
+            if (document.getElementById('poster-caption')) document.getElementById('poster-caption').textContent = gen.posterCaption || defaultSiteData.general.posterCaption;
+
+            const btnContainer = document.getElementById('poster-buttons-container');
+            if (btnContainer) {
+                btnContainer.innerHTML = '';
+                let buttons = gen.posterButtons;
+
+                if (!buttons || buttons.length === 0) {
+                    buttons = [{
+                        label: "Télécharger l'affiche",
+                        url: gen.posterImg || defaultSiteData.general.posterImg
+                    }];
+                }
+
+                buttons.forEach(b => {
+                    const label = b.label || 'Télécharger';
+                    const fileUrl = b.url || gen.posterImg || '#';
+
+                    btnContainer.innerHTML += `
+                        <a href="${fileUrl}" target="_blank" download class="w-full inline-flex items-center justify-center gap-2 bg-brand-yellow hover:bg-amber-300 text-gray-900 font-title font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition-all active:scale-95">
+                            <i class="fa-solid fa-download"></i>
+                            <span>${label}</span>
+                        </a>
+                    `;
+                });
+            }
+
+            if (document.getElementById('about-tag')) document.getElementById('about-tag').textContent = ab.tag || defaultSiteData.about.tag;
+            if (document.getElementById('about-title')) document.getElementById('about-title').textContent = ab.title || defaultSiteData.about.title;
+            if (document.getElementById('about-desc')) document.getElementById('about-desc').textContent = ab.desc || defaultSiteData.about.desc;
+            if (document.getElementById('about-block1-title')) document.getElementById('about-block1-title').innerHTML = `<i class="fa-solid fa-users text-brand-blue"></i> ${ab.block1Title || defaultSiteData.about.block1Title}`;
+            if (document.getElementById('about-block1-text')) document.getElementById('about-block1-text').textContent = ab.block1Text || defaultSiteData.about.block1Text;
+            
+            const b1ImgBox = document.getElementById('about-block1-img-box');
+            const b1Img = document.getElementById('about-block1-img');
+            const block1Photo = ab.block1Img || ab.block1Photo || "";
+            
+            if (block1Photo && block1Photo.trim() !== '') {
+                b1Img.src = block1Photo;
+                b1ImgBox.classList.remove('hidden');
+            } else {
+                b1ImgBox.classList.add('hidden');
+            }
+
+            if (document.getElementById('about-block2-title')) document.getElementById('about-block2-title').innerHTML = `<i class="fa-solid fa-heart text-brand-red"></i> ${ab.block2Title || defaultSiteData.about.block2Title}`;
+            if (document.getElementById('about-block2-text')) document.getElementById('about-block2-text').textContent = ab.block2Text || defaultSiteData.about.block2Text;
+
+            const fileBox = document.getElementById('about-file-box');
+            const fileLink = document.getElementById('about-file-link');
+            const fileBtnText = document.getElementById('about-file-btn-text');
+            
+            if (ab.fileUrl && ab.fileUrl.trim() !== '') {
+                fileLink.href = ab.fileUrl;
+                fileBtnText.textContent = ab.fileBtnText || "Consulter les Statuts";
+                fileBox.classList.remove('hidden');
+            } else {
+                fileBox.classList.add('hidden');
+            }
+
+            // PARTENAIRES
+            if (document.getElementById('partners-tag')) document.getElementById('partners-tag').textContent = pt.tag || defaultSiteData.partners.tag;
+            if (document.getElementById('partners-title')) document.getElementById('partners-title').textContent = pt.title || defaultSiteData.partners.title;
+            if (document.getElementById('partners-desc')) document.getElementById('partners-desc').textContent = pt.desc || defaultSiteData.partners.desc;
+
+            const partnersContainer = document.getElementById('partners-list-container');
+            if (partnersContainer) {
+                partnersContainer.innerHTML = '';
+                const pList = pt.list || defaultSiteData.partners.list;
+
+                if (!pList || pList.length === 0) {
+                    partnersContainer.innerHTML = '<p class="text-gray-500 col-span-3 text-center py-8">Aucun partenaire affiché pour le moment.</p>';
+                } else {
+                    pList.forEach(p => {
+                        const linkHTML = p.link ? `<a href="${p.link}" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-title font-bold text-brand-blue hover:text-brand-darkblue mt-3 transition-colors"><span>Visiter le site</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>` : '';
+
+                        partnersContainer.innerHTML += `
+                            <div class="bg-white rounded-3xl p-6 shadow-sm border border-amber-100 flex flex-col items-center text-center justify-between hover:shadow-md transition-shadow">
+                                <div class="w-full flex flex-col items-center">
+                                    <div class="w-24 h-24 rounded-2xl bg-amber-50/60 p-2 border border-amber-100/80 flex items-center justify-center mb-4 overflow-hidden">
+                                        <img src="${p.logo || 'image_251ba6.png'}" alt="${p.name || 'Partenaire'}" class="max-w-full max-h-full object-contain">
+                                    </div>
+                                    <h3 class="font-title font-bold text-lg text-gray-900 mb-2">${p.name || ''}</h3>
+                                    <p class="text-gray-600 text-xs leading-relaxed">${p.desc || ''}</p>
+                                </div>
+                                ${linkHTML}
+                            </div>
+                        `;
+                    });
+                }
+            }
+
+            if (document.getElementById('contact-tag')) document.getElementById('contact-tag').textContent = ct.tag || defaultSiteData.contact.tag;
+            if (document.getElementById('contact-title')) document.getElementById('contact-title').textContent = ct.title || defaultSiteData.contact.title;
+            if (document.getElementById('contact-desc')) document.getElementById('contact-desc').textContent = ct.desc || defaultSiteData.contact.desc;
+
+            const contactEmailLink = document.getElementById('contact-email-link');
+            if (contactEmailLink) {
+                const em = ct.email || defaultSiteData.contact.email;
+                contactEmailLink.textContent = em;
+                contactEmailLink.href = `mailto:${em}`;
+            }
+
+            const contactPhoneLink = document.getElementById('contact-phone-link');
+            if (contactPhoneLink) {
+                const ph = ct.phone || defaultSiteData.contact.phone;
+                contactPhoneLink.textContent = ph;
+                contactPhoneLink.href = `tel:${ph.replace(/\s+/g, '')}`;
+            }
+
+            if (document.getElementById('contact-address-text')) {
+                document.getElementById('contact-address-text').textContent = ct.address || defaultSiteData.contact.address;
+            }
+
+            const upContainer = document.getElementById('events-upcoming-container');
+            if (upContainer) {
+                upContainer.innerHTML = '';
+                const upcoming = siteData.upcomingEvents || [];
+                if (upcoming.length === 0) {
+                    upContainer.innerHTML = '<p class="text-gray-500 col-span-3 text-center py-8">Aucun événement à venir pour le moment.</p>';
+                } else {
+                    upcoming.forEach(ev => {
+                        upContainer.innerHTML += `
+                            <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-amber-100 flex flex-col justify-between">
+                                <div class="relative bg-brand-yellow p-6 flex justify-between items-start">
+                                    <span class="bg-white/90 text-gray-900 font-title font-bold text-xs px-3 py-1.5 rounded-full">${ev.date || ''}</span>
+                                    <span class="bg-amber-800/20 text-amber-900 text-xs px-2.5 py-1 rounded-md font-semibold">${ev.badge || 'Événement'}</span>
+                                </div>
+                                <div class="p-6 flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h3 class="font-title font-bold text-xl text-gray-900 mb-2">${ev.title || ''}</h3>
+                                        <div class="text-gray-600 text-sm mb-4">${ev.desc || ev.description || ''}</div>
+                                        <div class="space-y-2 text-xs text-gray-500">
+                                            <p class="flex items-center gap-2"><i class="fa-regular fa-clock text-brand-blue"></i> ${ev.time || 'Non précisé'}</p>
+                                            <p class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-brand-red"></i> ${ev.location || 'École de Petit-Cœur'}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            }
+
+            const pastContainer = document.getElementById('past-events-container');
+            if (pastContainer) {
+                pastContainer.innerHTML = '';
+                const past = siteData.pastEvents || [];
+                if (past.length === 0) {
+                    pastContainer.innerHTML = '<p class="text-gray-500 text-center py-8">Aucun album photo dans la galerie pour le moment.</p>';
+                } else {
+                    past.forEach(pev => {
+                        let photosHTML = '';
+                        if (pev.photos && pev.photos.length > 0) {
+                            photosHTML = `<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">`;
+                            pev.photos.forEach(imgUrl => {
+                                photosHTML += `
+                                    <div class="relative overflow-hidden rounded-2xl group cursor-pointer h-40 bg-gray-100 border border-gray-100" onclick="openLightbox('${imgUrl}', '${(pev.title || '').replace(/'/g, "\\'")}')">
+                                        <img src="${imgUrl}" alt="${pev.title || ''}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-lg"><i class="fa-solid fa-expand"></i></div>
+                                    </div>
+                                `;
+                            });
+                            photosHTML += `</div>`;
+                        }
+
+                        pastContainer.innerHTML += `
+                            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-amber-100">
+                                <div class="flex justify-between items-start flex-wrap gap-2 mb-2">
+                                    <h3 class="font-title text-2xl font-bold text-gray-900">${pev.title || ''}</h3>
+                                    <span class="bg-amber-100 text-amber-800 font-title text-xs font-bold px-3 py-1 rounded-full">${pev.date || ''}</span>
+                                </div>
+                                <div class="text-gray-600 text-sm leading-relaxed">${pev.desc || pev.description || ''}</div>
+                                ${photosHTML}
+                            </div>
+                        `;
+                    });
+                }
+            }
         }
-        function set(id,v){let e=document.getElementById(id);if(e)e.textContent=v||''}
-        function openL(u){if(!u)return;document.getElementById('lb-img').src=u;document.getElementById('lightbox').classList.remove('hidden')}
+
+        function loadInitialData() {
+            const rawData = localStorage.getItem('sou_petit_coeur_data') || localStorage.getItem('sou_app_data');
+            if (rawData) {
+                try { siteData = Object.assign({}, defaultSiteData, JSON.parse(rawData)); } catch(e){}
+            }
+            renderSite();
+        }
+
+        async function fetchRemoteData() {
+            try {
+                const { data, error } = await _supabase
+                    .from('site_content')
+                    .select('content')
+                    .eq('id', 1)
+                    .single();
+
+                if (error) throw error;
+                if (data && data.content) {
+                    siteData = Object.assign({}, defaultSiteData, data.content);
+                    localStorage.setItem('sou_petit_coeur_data', JSON.stringify(siteData));
+                    renderSite();
+                }
+            } catch (err) {}
+        }
+
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'sou_petit_coeur_data' || e.key === 'sou_app_data') {
+                loadInitialData();
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadInitialData();
+            fetchRemoteData();
+        });
+
+        function openLightbox(imgUrl, caption) {
+            if (!imgUrl) return;
+            document.getElementById('lightbox-img').src = imgUrl;
+            document.getElementById('lightbox-caption').textContent = caption || '';
+            document.getElementById('modal-lightbox').classList.remove('hidden');
+        }
+
+        function closeLightbox() {
+            document.getElementById('modal-lightbox').classList.add('hidden');
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") closeLightbox();
+        });
+
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+        }
     </script>
 </body>
 </html>
