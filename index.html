@@ -142,15 +142,31 @@
                         </div>
                     </div>
 
-                    <!-- 3. À DROITE : DOCUMENTS & AFFICHES TÉLÉCHARGABLES -->
-                    <div class="flex flex-col items-center w-full">
-                        <h3 class="font-title font-bold text-white text-base mb-4 flex items-center justify-center gap-2 drop-shadow-md">
-                            <i class="fa-solid fa-download text-brand-yellow"></i>
-                            <span id="poster-heading">Documents & Affiches</span>
-                        </h3>
-                        
-                        <!-- CONTENEUR DE BOUTONS D'AFFICHES & DOCS -->
-                        <div id="posters-list-container" class="w-full max-w-xs space-y-3"></div>
+                    <!-- 3. À DROITE : AFFICHE ET SES BOUTONS DE TÉLÉCHARGEMENT EN DESSOUS -->
+                    <div class="flex justify-center">
+                        <div class="p-4 max-w-xs transform rotate-1 hover:rotate-0 transition-all w-full text-center bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl shadow-2xl">
+                            
+                            <!-- TITRE -->
+                            <h3 class="font-title font-bold text-white text-base mb-3 flex items-center justify-center gap-2 drop-shadow-md">
+                                <i class="fa-solid fa-bullhorn text-brand-yellow"></i>
+                                <span id="poster-heading">À l'Affiche !</span>
+                            </h3>
+
+                            <!-- IMAGE DE L'AFFICHE -->
+                            <div class="overflow-hidden cursor-pointer group rounded-2xl aspect-[4/5] bg-white shadow-xl flex items-center justify-center p-2 border border-white/30 hover:scale-105 transition-transform" onclick="openLightbox(document.getElementById('poster-img').src, document.getElementById('poster-caption').textContent || 'Affiche')">
+                                <img id="poster-img" 
+                                     src="image_251ba6.png" 
+                                     alt="Affiche événement" 
+                                     class="w-full h-full object-contain rounded-xl">
+                            </div>
+
+                            <!-- LÉGENDE DE L'AFFICHE -->
+                            <p id="poster-caption" class="text-xs text-sky-100 mt-2 font-semibold">Le Bureau du Sou des Écoles</p>
+
+                            <!-- LISTE DES BOUTONS EN DESSOUS DE L'AFFICHE -->
+                            <div id="poster-buttons-container" class="mt-4 flex flex-col gap-2"></div>
+
+                        </div>
                     </div>
 
                 </div>
@@ -297,12 +313,13 @@
                 heroTitle: "Ensemble pour les enfants de Petit-Cœur !",
                 heroDesc: "Association de parents d'élèves (APE) bénévoles dédiée au financement des sorties scolaires, projets pédagogiques et animations des écoles de notre village.",
                 logoImg: "image_251ba6.png",
-                posterHeading: "Documents & Affiches",
-                postersList: [
+                posterImg: "image_251ba6.png",
+                posterHeading: "À l'Affiche !",
+                posterCaption: "Le Bureau du Sou des Écoles",
+                posterButtons: [
                     {
-                        title: "Télécharger la fiche du bureau",
-                        imgUrl: "image_251ba6.png",
-                        btnText: "Télécharger"
+                        label: "Télécharger l'affiche",
+                        url: "image_251ba6.png"
                     }
                 ]
             },
@@ -367,42 +384,45 @@
             if (document.getElementById('hero-title')) document.getElementById('hero-title').textContent = gen.heroTitle || defaultSiteData.general.heroTitle;
             if (document.getElementById('hero-description')) document.getElementById('hero-description').innerHTML = parseTextLinks(gen.heroDesc || defaultSiteData.general.heroDesc);
 
-            // LOGO
+            // LOGO (GAUCHE)
             const logoImg = document.getElementById('logo-img');
             if (logoImg) {
                 const targetSrc = gen.logoImg || gen.heroImg || defaultSiteData.general.logoImg;
                 if (targetSrc && logoImg.src !== targetSrc) logoImg.src = targetSrc;
             }
 
-            // RENDU DES BOUTONS DE TÉLÉCHARGEMENT DIRECTS (DROITE)
+            // AFFICHE (DROITE)
+            const posterImg = document.getElementById('poster-img');
+            if (posterImg) {
+                const targetPoster = gen.posterImg || defaultSiteData.general.posterImg;
+                if (targetPoster && posterImg.src !== targetPoster) posterImg.src = targetPoster;
+            }
+
             if (document.getElementById('poster-heading')) document.getElementById('poster-heading').textContent = gen.posterHeading || defaultSiteData.general.posterHeading;
-            
-            const postersContainer = document.getElementById('posters-list-container');
-            if (postersContainer) {
-                postersContainer.innerHTML = '';
-                let posters = gen.postersList;
-                
-                if (!posters || posters.length === 0) {
-                    posters = defaultSiteData.general.postersList;
+            if (document.getElementById('poster-caption')) document.getElementById('poster-caption').textContent = gen.posterCaption || defaultSiteData.general.posterCaption;
+
+            // BOUTONS DE TÉLÉCHARGEMENT SOUS L'AFFICHE
+            const btnContainer = document.getElementById('poster-buttons-container');
+            if (btnContainer) {
+                btnContainer.innerHTML = '';
+                let buttons = gen.posterButtons;
+
+                // Rétrocompatibilité
+                if (!buttons || buttons.length === 0) {
+                    buttons = [{
+                        label: "Télécharger l'affiche",
+                        url: gen.posterImg || defaultSiteData.general.posterImg
+                    }];
                 }
 
-                posters.forEach(p => {
-                    const docTitle = p.title || 'Document téléchargeable';
-                    const fileUrl = p.imgUrl || '#';
-                    const btnLabel = p.btnText || 'Télécharger';
+                buttons.forEach(b => {
+                    const label = b.label || 'Télécharger';
+                    const fileUrl = b.url || gen.posterImg || '#';
 
-                    postersContainer.innerHTML += `
-                        <a href="${fileUrl}" target="_blank" download class="w-full bg-white/10 hover:bg-white/20 backdrop-blur-md p-4 rounded-2xl border border-white/30 shadow-lg flex items-center justify-between gap-3 transition-all hover:scale-[1.02] active:scale-95 group">
-                            <div class="flex items-center gap-3 text-left overflow-hidden">
-                                <div class="w-10 h-10 rounded-xl bg-brand-yellow/30 text-brand-yellow flex items-center justify-center text-lg shrink-0 group-hover:scale-110 transition-transform">
-                                    <i class="fa-solid fa-file-arrow-down"></i>
-                                </div>
-                                <span class="font-title font-bold text-sm text-white truncate">${docTitle}</span>
-                            </div>
-                            <div class="bg-brand-yellow hover:bg-amber-300 text-gray-900 font-title font-bold text-xs px-3.5 py-2 rounded-xl shadow-md shrink-0 flex items-center gap-1.5">
-                                <span>${btnLabel}</span>
-                                <i class="fa-solid fa-download text-xs"></i>
-                            </div>
+                    btnContainer.innerHTML += `
+                        <a href="${fileUrl}" target="_blank" download class="w-full inline-flex items-center justify-center gap-2 bg-brand-yellow hover:bg-amber-300 text-gray-900 font-title font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition-all active:scale-95">
+                            <i class="fa-solid fa-download"></i>
+                            <span>${label}</span>
                         </a>
                     `;
                 });

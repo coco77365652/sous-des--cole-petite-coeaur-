@@ -147,8 +147,8 @@
                         <span>Générateur de Liens</span>
                     </button>
                     <button type="button" onclick="switchTab('tab-images')" id="nav-tab-images" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
-                        <i class="fas fa-download w-5 text-cyber-pink"></i>
-                        <span>Logo & Boutons Docs</span>
+                        <i class="fas fa-bullhorn w-5 text-cyber-pink"></i>
+                        <span>Affiche & Boutons Docs</span>
                     </button>
                     <button type="button" onclick="switchTab('tab-events')" id="nav-tab-events" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-white/5">
                         <i class="fas fa-calendar-star w-5 text-amber-400"></i>
@@ -323,11 +323,11 @@
                 </div>
             </div>
 
-            <!-- ONGLET 4 : LOGO ET BOUTONS DOCS TÉLÉCHARGABLES -->
+            <!-- ONGLET 4 : AFFICHE & BOUTONS MULTIPLES DE TÉLÉCHARGEMENT -->
             <div id="tab-images" class="tab-content hidden space-y-6">
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
                     <h3 class="font-title text-lg font-bold text-white flex items-center gap-2 border-b border-cyber-border pb-4">
-                        <i class="fas fa-download text-cyber-pink"></i> Logo & Boutons Téléchargeables (Section Droite)
+                        <i class="fas fa-bullhorn text-cyber-pink"></i> Logo, Image Affiche & Boutons de Téléchargement
                     </h3>
 
                     <!-- LOGO -->
@@ -346,22 +346,48 @@
                         </div>
                     </div>
 
-                    <!-- GESTION DYNAMIQUE DES BOUTONS DOCS / AFFICHES TÉLÉCHARGABLES -->
-                    <div class="p-6 bg-cyber-card rounded-2xl border border-cyber-border space-y-6">
+                    <!-- IMAGE DE L'AFFICHE (DROITE) -->
+                    <div class="p-6 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
+                        <h4 class="font-title font-bold text-white text-sm"><i class="fas fa-image text-cyber-cyan mr-2"></i> Image de l'Affiche (Section Droite)</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Titre Haut (ex: À l'Affiche !)</label>
+                                <input type="text" id="cfg-posterHeading" placeholder="À l'Affiche !" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Légende Sous l'Image</label>
+                                <input type="text" id="cfg-posterCaption" placeholder="Le Bureau du Sou des Écoles" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                            <input type="text" id="cfg-posterImg" placeholder="Image de l'affiche..." class="w-full px-4 py-3 glass-input rounded-2xl text-xs">
+                            <label class="cursor-pointer px-5 py-3 bg-cyber-cyan hover:bg-cyan-400 text-slate-900 font-title font-bold text-xs rounded-2xl flex items-center justify-center gap-2 shrink-0 transition-all glow-cyan">
+                                <i class="fas fa-file-image"></i> Importer l'Affiche
+                                <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-posterImg', 'preview-poster')">
+                            </label>
+                        </div>
+                        <div id="preview-poster-box" class="mt-2 hidden">
+                            <p class="text-[10px] text-slate-400 mb-1">Aperçu Affiche :</p>
+                            <img id="preview-poster" src="" class="h-32 w-auto object-contain bg-white/10 p-2 rounded-xl">
+                        </div>
+                    </div>
+
+                    <!-- BOUTONS DE TÉLÉCHARGEMENT SOUS L'AFFICHE -->
+                    <div class="p-6 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
                         <div class="flex justify-between items-center border-b border-cyber-border pb-3">
-                            <h4 class="font-title font-bold text-white text-sm"><i class="fas fa-file-arrow-down text-amber-400 mr-2"></i> Boutons de Téléchargement (Section Droite)</h4>
-                            <button type="button" onclick="addPosterItem()" class="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-900 font-title font-bold text-xs rounded-xl transition-all flex items-center gap-2">
-                                <i class="fas fa-plus"></i> Ajouter un Bouton Doc
+                            <div>
+                                <h4 class="font-title font-bold text-white text-sm"><i class="fas fa-download text-amber-400 mr-2"></i> Boutons de Téléchargement (Placés sous l'affiche)</h4>
+                                <p class="text-[11px] text-slate-400">Ajoutez autant de boutons que vous voulez sous l'image.</p>
+                            </div>
+                            <button type="button" onclick="addPosterBtnItem()" class="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-900 font-title font-bold text-xs rounded-xl transition-all flex items-center gap-2">
+                                <i class="fas fa-plus"></i> Ajouter un Bouton
                             </button>
                         </div>
 
-                        <div>
-                            <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Titre de la section (Haut)</label>
-                            <input type="text" id="cfg-posterHeading" placeholder="Documents & Affiches" class="w-full px-4 py-2.5 glass-input rounded-xl text-xs mb-3">
-                        </div>
-
-                        <div id="posters-admin-container" class="space-y-4"></div>
+                        <div id="poster-buttons-admin-container" class="space-y-3"></div>
                     </div>
+
                 </div>
             </div>
 
@@ -460,12 +486,13 @@
                 heroTitle: "Ensemble pour les enfants de Petit-Cœur !",
                 heroDesc: "Association de parents d'élèves (APE) bénévoles dédiée au financement des sorties scolaires, projets pédagogiques et animations des écoles de notre village.",
                 logoImg: "image_251ba6.png",
-                posterHeading: "Documents & Affiches",
-                postersList: [
+                posterImg: "image_251ba6.png",
+                posterHeading: "À l'Affiche !",
+                posterCaption: "Le Bureau du Sou des Écoles",
+                posterButtons: [
                     {
-                        title: "Télécharger la fiche du bureau",
-                        imgUrl: "image_251ba6.png",
-                        btnText: "Télécharger"
+                        label: "Télécharger l'affiche",
+                        url: "image_251ba6.png"
                     }
                 ],
                 adminPassword: "admin123"
@@ -562,7 +589,9 @@
             document.getElementById('cfg-heroTitle').value = g.heroTitle || '';
             document.getElementById('cfg-heroDesc').value = g.heroDesc || '';
             document.getElementById('cfg-logoImg').value = g.logoImg || '';
-            document.getElementById('cfg-posterHeading').value = g.posterHeading || 'Documents & Affiches';
+            document.getElementById('cfg-posterImg').value = g.posterImg || '';
+            document.getElementById('cfg-posterHeading').value = g.posterHeading || 'À l\'Affiche !';
+            document.getElementById('cfg-posterCaption').value = g.posterCaption || '';
 
             document.getElementById('cfg-aboutTag').value = ab.tag || DEFAULT_DATA.about.tag;
             document.getElementById('cfg-aboutTitle').value = ab.title || DEFAULT_DATA.about.title;
@@ -594,50 +623,45 @@
             document.getElementById('cfg-contactPhone').value = ct.phone || DEFAULT_DATA.contact.phone;
             document.getElementById('cfg-contactAddress').value = ct.address || DEFAULT_DATA.contact.address;
 
-            renderPostersAdmin();
+            renderPosterButtonsAdmin();
             renderDocumentsAdmin();
             renderUpcomingEvents();
             renderPastEvents();
         }
 
-        function renderPostersAdmin() {
-            const container = document.getElementById('posters-admin-container');
+        // GESTION DES BOUTONS DE TÉLÉCHARGEMENT SOUS L'AFFICHE
+        function renderPosterButtonsAdmin() {
+            const container = document.getElementById('poster-buttons-admin-container');
             container.innerHTML = '';
-            
-            if (!appData.general.postersList) {
-                appData.general.postersList = DEFAULT_DATA.general.postersList;
+
+            if (!appData.general.posterButtons) {
+                appData.general.posterButtons = DEFAULT_DATA.general.posterButtons;
             }
 
-            const list = appData.general.postersList;
+            const list = appData.general.posterButtons;
 
             if (list.length === 0) {
-                container.innerHTML = '<p class="text-slate-500 text-xs italic">Aucun bouton créé. Cliquez sur "Ajouter un Bouton Doc".</p>';
+                container.innerHTML = '<p class="text-slate-500 text-xs italic">Aucun bouton sous l\'affiche. Cliquez sur "Ajouter un Bouton".</p>';
                 return;
             }
 
-            list.forEach((p, index) => {
+            list.forEach((b, index) => {
                 container.innerHTML += `
                     <div class="p-4 bg-cyber-bg rounded-2xl border border-cyber-border space-y-3 relative">
-                        <button type="button" onclick="removePosterItem(${index})" class="absolute top-4 right-4 text-cyber-pink hover:text-rose-400 text-xs font-bold">
+                        <button type="button" onclick="removePosterBtnItem(${index})" class="absolute top-4 right-4 text-cyber-pink hover:text-rose-400 text-xs font-bold">
                             <i class="fas fa-trash-can mr-1"></i> Supprimer
                         </button>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-20">
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Nom du document</label>
-                                <input type="text" value="${p.title || ''}" onchange="appData.general.postersList[${index}].title = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-bold">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-400 mb-1">Texte du bouton</label>
-                                <input type="text" value="${p.btnText || 'Télécharger'}" onchange="appData.general.postersList[${index}].btnText = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
-                            </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 mb-1">Texte du bouton</label>
+                            <input type="text" value="${b.label || ''}" onchange="appData.general.posterButtons[${index}].label = this.value" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-bold">
                         </div>
 
                         <div class="flex flex-col sm:flex-row gap-3">
-                            <input type="text" id="poster-url-${index}" value="${p.imgUrl || ''}" onchange="appData.general.postersList[${index}].imgUrl = this.value" placeholder="Lien du document ou fichier encodé..." class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                            <input type="text" id="poster-btn-url-${index}" value="${b.url || ''}" onchange="appData.general.posterButtons[${index}].url = this.value" placeholder="Lien du fichier ou document encodé..." class="w-full px-3 py-2 glass-input rounded-xl text-xs">
                             <label class="cursor-pointer px-4 py-2 bg-cyber-cyan hover:bg-cyan-400 text-slate-900 font-title font-bold text-xs rounded-xl flex items-center justify-center gap-2 shrink-0 transition-all glow-cyan">
-                                <i class="fas fa-file-arrow-up"></i> Importer le document
-                                <input type="file" accept="application/pdf,image/*,.doc,.docx" class="hidden" onchange="processPosterFile(event, ${index})">
+                                <i class="fas fa-file-arrow-up"></i> Importer Fichier / PDF
+                                <input type="file" accept="application/pdf,image/*,.doc,.docx" class="hidden" onchange="processPosterBtnFile(event, ${index})">
                             </label>
                         </div>
                     </div>
@@ -645,30 +669,29 @@
             });
         }
 
-        function addPosterItem() {
-            if (!appData.general.postersList) appData.general.postersList = [];
-            appData.general.postersList.push({
-                title: "Nouveau Document",
-                imgUrl: "image_251ba6.png",
-                btnText: "Télécharger"
+        function addPosterBtnItem() {
+            if (!appData.general.posterButtons) appData.general.posterButtons = [];
+            appData.general.posterButtons.push({
+                label: "Télécharger un document",
+                url: appData.general.posterImg || "image_251ba6.png"
             });
-            renderPostersAdmin();
+            renderPosterButtonsAdmin();
         }
 
-        function removePosterItem(index) {
-            appData.general.postersList.splice(index, 1);
-            renderPostersAdmin();
+        function removePosterBtnItem(index) {
+            appData.general.posterButtons.splice(index, 1);
+            renderPosterButtonsAdmin();
         }
 
-        function processPosterFile(e, index) {
+        function processPosterBtnFile(e, index) {
             const file = e.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
             reader.onload = function(evt) {
-                appData.general.postersList[index].imgUrl = evt.target.result;
-                document.getElementById(`poster-url-${index}`).value = evt.target.result;
-                showStatusToast("Document importé avec succès !", "success");
+                appData.general.posterButtons[index].url = evt.target.result;
+                document.getElementById(`poster-btn-url-${index}`).value = evt.target.result;
+                showStatusToast("Fichier chargé dans le bouton !", "success");
             };
             reader.readAsDataURL(file);
         }
@@ -922,7 +945,9 @@
             appData.general.heroTitle = document.getElementById('cfg-heroTitle').value;
             appData.general.heroDesc = document.getElementById('cfg-heroDesc').value;
             appData.general.logoImg = document.getElementById('cfg-logoImg').value;
+            appData.general.posterImg = document.getElementById('cfg-posterImg').value;
             appData.general.posterHeading = document.getElementById('cfg-posterHeading').value;
+            appData.general.posterCaption = document.getElementById('cfg-posterCaption').value;
 
             if (!appData.about) appData.about = {};
             appData.about.tag = document.getElementById('cfg-aboutTag').value;
