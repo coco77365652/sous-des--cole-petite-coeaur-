@@ -1,223 +1,134 @@
 <!DOCTYPE html>
 <html lang="fr" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APE de Petit-Cœur - La Léchère</title>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APE de Petit-Cœur</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = { theme: { extend: { colors: { brand: { yellow: '#FFD166', blue: '#4EA8DE', darkblue: '#2B6CB0', green: '#06D6A0', red: '#EF476F' } }, fontFamily: { title: ['Fredoka'], body: ['Inter'] } } } }
-    </script>
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #FFF9F2; color: #2D3748; }
-        h1, h2, h3, .font-title { font-family: 'Fredoka', cursive; }
-        .hero-pattern { background-color: #4EA8DE; background-image: radial-gradient(#FFD166 2px, transparent 2px); background-size: 60px 60px; }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <script>tailwind.config={theme:{extend:{colors:{brand:{yellow:'#FFD166',blue:'#4EA8DE',darkblue:'#2B6CB0',green:'#06D6A0',red:'#EF476F'}},fontFamily:{title:['Fredoka'],body:['Inter']}}}}</script>
+    <style>body{font-family:'Inter',sans-serif;background:#FFF9F2;color:#2D3748}h1,h2,h3,.ft{font-family:'Fredoka',cursive}.hero{background:#4EA8DE radial-gradient(#FFD166 2px,transparent 2px);background-size:50px 50px}</style>
 </head>
-<body class="antialiased flex flex-col min-h-screen">
-
-    <!-- HEADER -->
-    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md shadow-sm border-b border-amber-100">
-        <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-20">
-            <a href="#accueil" class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-brand-yellow rounded-xl flex items-center justify-center text-brand-red text-xl font-bold shadow-sm">
-                    <i class="fa-solid fa-heart"></i>
-                </div>
-                <div>
-                    <span id="header-assoc-name" class="font-title font-bold text-lg text-gray-800 leading-none block">APE de Petit-Cœur</span>
-                    <span id="header-assoc-sub" class="text-[10px] font-semibold text-brand-darkblue uppercase tracking-wider">Petit-Cœur • La Léchère</span>
-                </div>
+<body class="flex flex-col min-h-screen">
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-amber-100">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between h-16 items-center">
+            <a href="#accueil" class="flex items-center gap-2">
+                <div class="w-9 h-9 bg-brand-yellow rounded-xl flex items-center justify-center text-brand-red font-bold"><i class="fa-solid fa-heart"></i></div>
+                <div><span id="h-name" class="ft text-base leading-none block">APE de Petit-Cœur</span><span id="h-sub" class="text-[9px] text-brand-darkblue uppercase font-bold">La Léchère</span></div>
             </a>
-            <nav class="hidden md:flex items-center space-x-6 text-sm font-semibold text-gray-700">
-                <a href="#accueil" class="hover:text-brand-blue">Accueil</a>
-                <a href="#qui-sommes-nous" class="hover:text-brand-blue">Qui sommes-nous ?</a>
-                <a href="#evenements" class="hover:text-brand-blue">Événements</a>
-                <a href="#galerie" class="hover:text-brand-blue">Galerie</a>
-                <a href="#partenaires" class="hover:text-brand-blue">Nos Partenaires</a>
-                <a href="#contact" class="hover:text-brand-blue">Nous Contacter</a>
+            <nav class="hidden md:flex gap-6 text-xs font-semibold text-gray-700">
+                <a href="#accueil">Accueil</a><a href="#qui-sommes-nous">Qui sommes-nous</a><a href="#evenements">Événements</a><a href="#galerie">Galerie</a><a href="#partenaires">Partenaires</a><a href="#contact">Contact</a>
             </nav>
         </div>
     </header>
 
     <main class="flex-grow">
-        <!-- SECTION ACCUEIL -->
-        <section id="accueil" class="hero-pattern text-white py-12 md:py-16">
-            <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-8 items-center text-center lg:text-left">
-                <div class="flex justify-center">
-                    <img id="logo-img" src="image_251ba6.png" class="w-48 h-auto rounded-2xl drop-shadow-xl cursor-pointer" onclick="openLightbox(this.src, 'Logo')">
-                </div>
-                <div class="space-y-4">
-                    <span id="hero-location-tag" class="px-3 py-1 rounded-full bg-white/20 text-xs font-semibold">Savoie - La Léchère</span>
-                    <h1 id="hero-title" class="font-title text-3xl sm:text-4xl font-bold">Ensemble pour les enfants !</h1>
-                    <p id="hero-description" class="text-sm text-sky-50 leading-relaxed"></p>
+        <section id="accueil" class="hero text-white py-10 md:py-16">
+            <div class="max-w-7xl mx-auto px-4 grid lg:grid-cols-3 gap-6 items-center text-center lg:text-left">
+                <div class="flex justify-center"><img id="i-logo" src="image_251ba6.png" class="w-36 rounded-xl shadow-lg cursor-pointer" onclick="openL(this.src)"></div>
+                <div class="space-y-3">
+                    <span id="h-tag" class="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold">Savoie</span>
+                    <h1 id="h-title" class="ft text-2xl md:text-4xl font-bold">Ensemble pour les enfants !</h1>
+                    <p id="h-desc" class="text-xs text-sky-50 leading-relaxed"></p>
                 </div>
                 <div class="flex justify-center">
-                    <div class="p-4 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 max-w-xs w-full text-center space-y-3">
-                        <h3 id="poster-heading" class="font-title font-bold text-white text-sm">À l'Affiche !</h3>
-                        <img id="poster-img" src="image_251ba6.png" class="w-full h-48 object-contain rounded-xl bg-white p-1 cursor-pointer" onclick="openLightbox(this.src, 'Affiche')">
-                        <p id="poster-caption" class="text-xs text-sky-100 font-medium"></p>
-                        <div id="poster-buttons-container" class="space-y-2"></div>
+                    <div class="p-4 bg-white/10 backdrop-blur rounded-2xl border border-white/20 max-w-xs w-full text-center space-y-2">
+                        <h3 id="p-head" class="ft text-xs font-bold text-white">À l'Affiche !</h3>
+                        <img id="i-poster" src="image_251ba6.png" class="w-full h-40 object-contain rounded-lg bg-white p-1 cursor-pointer" onclick="openL(this.src)">
+                        <p id="p-cap" class="text-[10px] text-sky-100 font-medium"></p>
+                        <div id="c-btns" class="space-y-1"></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- QUI SOMMES-NOUS -->
-        <section id="qui-sommes-nous" class="py-16 max-w-7xl mx-auto px-4">
-            <div class="text-center max-w-2xl mx-auto mb-10">
-                <span id="about-tag" class="text-brand-blue font-title font-bold text-xs bg-blue-50 px-3 py-1 rounded-full uppercase">Présentation</span>
-                <h2 id="about-title" class="font-title text-3xl font-bold text-gray-900 mt-2">Qui sommes-nous ?</h2>
-                <p id="about-desc" class="text-gray-600 text-sm mt-2"></p>
+        <section id="qui-sommes-nous" class="py-12 max-w-7xl mx-auto px-4">
+            <div class="text-center max-w-lg mx-auto mb-8">
+                <span id="a-tag" class="text-brand-blue ft text-[10px] bg-blue-50 px-2.5 py-1 rounded-full uppercase">Présentation</span>
+                <h2 id="a-title" class="ft text-2xl font-bold mt-2">Qui sommes-nous ?</h2>
+                <p id="a-desc" class="text-xs text-gray-600 mt-1"></p>
             </div>
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="bg-white p-6 rounded-2xl border border-amber-100 shadow-sm space-y-3">
-                    <h3 id="about-block1-title" class="font-title text-xl font-bold text-gray-900">Notre Mission</h3>
-                    <p id="about-block1-text" class="text-gray-600 text-sm leading-relaxed"></p>
-                </div>
-                <div class="bg-white p-6 rounded-2xl border border-amber-100 shadow-sm space-y-3 flex flex-col justify-between">
-                    <div>
-                        <h3 id="about-block2-title" class="font-title text-xl font-bold text-gray-900">Le Mot du Bureau</h3>
-                        <p id="about-block2-text" class="text-gray-600 text-sm italic leading-relaxed"></p>
-                    </div>
-                    <div id="about-file-box" class="pt-3 hidden">
-                        <a id="about-file-link" href="#" target="_blank" class="inline-flex items-center gap-2 bg-brand-red text-white text-xs font-bold px-4 py-2 rounded-xl"><i class="fa-solid fa-file-pdf"></i> <span id="about-file-btn-text">Statuts</span></a>
-                    </div>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-white p-5 rounded-2xl border border-amber-100 space-y-2"><h3 id="a-b1t" class="ft text-lg font-bold">Mission</h3><p id="a-b1d" class="text-xs text-gray-600"></p></div>
+                <div class="bg-white p-5 rounded-2xl border border-amber-100 space-y-2 flex flex-col justify-between">
+                    <div><h3 id="a-b2t" class="ft text-lg font-bold">Mot du Bureau</h3><p id="a-b2d" class="text-xs text-gray-600 italic"></p></div>
+                    <div id="a-file-box" class="hidden"><a id="a-file" href="#" target="_blank" class="inline-flex items-center gap-2 bg-brand-red text-white text-xs font-bold px-3 py-1.5 rounded-lg"><i class="fa-solid fa-file-pdf"></i> <span id="a-file-txt">Statuts</span></a></div>
                 </div>
             </div>
         </section>
 
-        <!-- ÉVÉNEMENTS -->
-        <section id="evenements" class="py-16 bg-amber-50/50 border-y border-amber-100">
+        <section id="evenements" class="py-12 bg-amber-50/50 border-y border-amber-100">
+            <div class="max-w-7xl mx-auto px-4"><h2 class="ft text-xl font-bold mb-6">Événements</h2><div id="c-events" class="grid md:grid-cols-3 gap-4"></div></div>
+        </section>
+
+        <section id="galerie" class="py-12 max-w-7xl mx-auto px-4"><h2 class="ft text-xl font-bold mb-6">Galerie Photos</h2><div id="c-gallery" class="space-y-6"></div></section>
+
+        <section id="partenaires" class="py-12 bg-amber-50/40 border-t border-amber-100 text-center">
             <div class="max-w-7xl mx-auto px-4">
-                <h2 class="font-title text-2xl font-bold text-gray-900 mb-8">Prochains Événements</h2>
-                <div id="events-upcoming-container" class="grid md:grid-cols-3 gap-6"></div>
+                <span id="pt-tag" class="text-purple-700 ft text-[10px] bg-purple-100 px-2.5 py-1 rounded-full uppercase">Soutien</span>
+                <h2 id="pt-title" class="ft text-2xl font-bold mt-2">Partenaires</h2>
+                <p id="pt-desc" class="text-xs text-gray-600 mt-1 mb-6"></p>
+                <div id="c-partners" class="grid sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
             </div>
         </section>
 
-        <!-- GALERIE -->
-        <section id="galerie" class="py-16 max-w-7xl mx-auto px-4">
-            <h2 class="font-title text-2xl font-bold text-gray-900 mb-8">Galerie Photos</h2>
-            <div id="past-events-container" class="space-y-8"></div>
-        </section>
-
-        <!-- NOS PARTENAIRES -->
-        <section id="partenaires" class="py-16 bg-amber-50/40 border-t border-amber-100">
-            <div class="max-w-7xl mx-auto px-4 text-center">
-                <span id="partners-tag" class="text-purple-700 font-title font-bold text-xs bg-purple-100 px-3 py-1 rounded-full uppercase">Soutien</span>
-                <h2 id="partners-title" class="font-title text-3xl font-bold text-gray-900 mt-2">Nos Partenaires</h2>
-                <p id="partners-desc" class="text-gray-600 text-sm mt-2 mb-8"></p>
-                <div id="partners-list-container" class="grid sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
-            </div>
-        </section>
-
-        <!-- CONTACT -->
-        <section id="contact" class="py-16 bg-white border-t border-amber-100">
-            <div class="max-w-3xl mx-auto px-4 text-center space-y-6">
-                <h2 id="contact-title" class="font-title text-3xl font-bold text-gray-900">Nous Contacter</h2>
-                <p id="contact-desc" class="text-gray-600 text-sm"></p>
-                <div class="grid sm:grid-cols-3 gap-4 text-xs font-semibold">
-                    <div class="p-4 bg-amber-50/50 rounded-xl"><i class="fa-solid fa-envelope text-brand-blue text-lg mb-1 block"></i><a id="contact-email-link" href="#" class="break-all"></a></div>
-                    <div class="p-4 bg-amber-50/50 rounded-xl"><i class="fa-solid fa-phone text-brand-green text-lg mb-1 block"></i><a id="contact-phone-link" href="#"></a></div>
-                    <div class="p-4 bg-amber-50/50 rounded-xl"><i class="fa-solid fa-location-dot text-brand-yellow text-lg mb-1 block"></i><p id="contact-address-text"></p></div>
+        <section id="contact" class="py-12 bg-white border-t border-amber-100 text-center">
+            <div class="max-w-xl mx-auto px-4 space-y-4">
+                <h2 id="c-title" class="ft text-2xl font-bold">Contact</h2>
+                <p id="c-desc" class="text-xs text-gray-600"></p>
+                <div class="grid sm:grid-cols-3 gap-3 text-xs font-semibold">
+                    <div class="p-3 bg-amber-50/50 rounded-xl"><i class="fa-solid fa-envelope text-brand-blue mb-1 block"></i><a id="c-mail" href="#" class="break-all"></a></div>
+                    <div class="p-3 bg-amber-50/50 rounded-xl"><i class="fa-solid fa-phone text-brand-green mb-1 block"></i><a id="c-phone" href="#"></a></div>
+                    <div class="p-3 bg-amber-50/50 rounded-xl"><i class="fa-solid fa-location-dot text-brand-yellow mb-1 block"></i><p id="c-addr"></p></div>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="bg-gray-900 text-white py-8 text-center text-xs text-gray-400">&copy; 2026 APE de Petit-Cœur</footer>
+    <footer class="bg-gray-900 text-white py-6 text-center text-xs text-gray-400">&copy; 2026 APE Petit-Cœur</footer>
 
-    <!-- LIGHTBOX -->
-    <div id="modal-lightbox" class="fixed inset-0 z-50 hidden bg-black/80 flex items-center justify-center p-4" onclick="closeLightbox()">
-        <img id="lightbox-img" src="" class="max-h-[80vh] max-w-full rounded-xl object-contain">
+    <div id="lightbox" class="fixed inset-0 z-50 hidden bg-black/80 flex items-center justify-center p-4" onclick="this.classList.add('hidden')">
+        <img id="lb-img" class="max-h-[80vh] max-w-full rounded-lg object-contain">
     </div>
 
     <script>
-        const _supabase = supabase.createClient('https://gdbktvxramksondbobns.supabase.co', 'sb_publishable_6Q9vML3WwH7_8n5Ipvo-3g_DRZx_VPK');
-        let siteData = {};
+        const SB = supabase.createClient('https://gdbktvxramksondbobns.supabase.co', 'sb_publishable_6Q9vML3WwH7_8n5Ipvo-3g_DRZx_VPK');
+        let D = {};
+        window.onload = () => { load(); SB.from('site_content').select('content').eq('id',1).single().then(({data})=>{if(data?.content){D=data.content;render()}}) };
+        function load(){let r=localStorage.getItem('site_d');if(r)try{D=JSON.parse(r)}catch(e){}render();}
+        function render(){
+            let g=D.general||{}, a=D.about||{}, p=D.partners||{}, c=D.contact||{};
+            set('h-name',g.assocName); set('h-sub',g.assocSub); set('h-tag',g.locationTag); set('h-title',g.heroTitle); set('h-desc',g.heroDesc);
+            set('p-head',g.posterHeading); set('p-cap',g.posterCaption);
+            if(g.logoImg) document.getElementById('i-logo').src=g.logoImg;
+            if(g.posterImg) document.getElementById('i-poster').src=g.posterImg;
 
-        function renderSite() {
-            const g = siteData.general || {}, ab = siteData.about || {}, pt = siteData.partners || {}, ct = siteData.contact || {};
-            const setT = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v || ''; };
-            setT('header-assoc-name', g.assocName); setT('header-assoc-sub', g.assocSub); setT('hero-location-tag', g.locationTag); setT('hero-title', g.heroTitle); setT('hero-description', g.heroDesc);
-            setT('poster-heading', g.posterHeading); setT('poster-caption', g.posterCaption);
-            
-            const logo = document.getElementById('logo-img'); if (logo && g.logoImg) logo.src = g.logoImg;
-            const poster = document.getElementById('poster-img'); if (poster && g.posterImg) poster.src = g.posterImg;
+            let bc=document.getElementById('c-btns'); bc.innerHTML='';
+            (g.posterButtons||[]).forEach(b=>{bc.innerHTML+=`<a href="${b.url||'#'}" target="_blank" download class="block bg-brand-yellow hover:bg-amber-300 text-gray-900 ft font-bold text-[10px] py-1.5 rounded-lg shadow"><i class="fa-solid fa-download mr-1"></i>${b.label||'Télécharger'}</a>`});
 
-            const btnC = document.getElementById('poster-buttons-container');
-            if (btnC) {
-                btnC.innerHTML = '';
-                (g.posterButtons || []).forEach(b => {
-                    btnC.innerHTML += `<a href="${b.url||'#'}" target="_blank" download class="block bg-brand-yellow hover:bg-amber-300 text-gray-900 font-title font-bold text-xs py-2 rounded-xl shadow"><i class="fa-solid fa-download mr-1"></i> ${b.label||'Télécharger'}</a>`;
-                });
-            }
+            set('a-tag',a.tag); set('a-title',a.title); set('a-desc',a.desc); set('a-b1t',a.block1Title); set('a-b1d',a.block1Text); set('a-b2t',a.block2Title); set('a-b2d',a.block2Text);
+            if(a.fileUrl){document.getElementById('a-file').href=a.fileUrl;document.getElementById('a-file-txt').textContent=a.fileBtnText||'Statuts';document.getElementById('a-file-box').classList.remove('hidden')}
 
-            setT('about-tag', ab.tag); setT('about-title', ab.title); setT('about-desc', ab.desc); setT('about-block1-title', ab.block1Title); setT('about-block1-text', ab.block1Text); setT('about-block2-title', ab.block2Title); setT('about-block2-text', ab.block2Text);
-            const fileBox = document.getElementById('about-file-box');
-            if (fileBox && ab.fileUrl) { document.getElementById('about-file-link').href = ab.fileUrl; document.getElementById('about-file-btn-text').textContent = ab.fileBtnText || 'Statuts'; fileBox.classList.remove('hidden'); }
+            set('pt-tag',p.tag); set('pt-title',p.title); set('pt-desc',p.desc);
+            let pc=document.getElementById('c-partners'); pc.innerHTML='';
+            (p.list||[]).forEach(pt=>{pc.innerHTML+=`<div class="bg-white p-3 rounded-xl border border-amber-100 flex flex-col items-center shadow-sm"><img src="${pt.logo||'image_251ba6.png'}" class="h-12 object-contain mb-1"><h3 class="ft font-bold text-xs">${pt.name||''}</h3><p class="text-[10px] text-gray-500">${pt.desc||''}</p>${pt.link?`<a href="${pt.link}" target="_blank" class="text-[10px] font-bold text-brand-blue mt-1">Visiter</a>`:''}</div>`});
 
-            setT('partners-tag', pt.tag); setT('partners-title', pt.title); setT('partners-desc', pt.desc);
-            const ptC = document.getElementById('partners-list-container');
-            if (ptC) {
-                ptC.innerHTML = '';
-                (pt.list || []).forEach(p => {
-                    ptC.innerHTML += `<div class="bg-white p-4 rounded-2xl border border-amber-100 flex flex-col items-center shadow-sm">
-                        <img src="${p.logo||'image_251ba6.png'}" class="h-16 object-contain mb-2">
-                        <h3 class="font-title font-bold text-sm text-gray-900">${p.name||''}</h3>
-                        <p class="text-xs text-gray-500">${p.desc||''}</p>
-                        ${p.link ? `<a href="${p.link}" target="_blank" class="text-xs font-bold text-brand-blue mt-2">Visiter <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a>` : ''}
-                    </div>`;
-                });
-            }
+            set('c-title',c.title); set('c-desc',c.desc); set('c-addr',c.address);
+            let em=document.getElementById('c-mail'); if(em){em.textContent=c.email||'';em.href='mailto:'+c.email}
+            let ph=document.getElementById('c-phone'); if(ph){ph.textContent=c.phone||'';ph.href='tel:'+c.phone}
 
-            setT('contact-title', ct.title); setT('contact-desc', ct.desc); setT('contact-address-text', ct.address);
-            const em = document.getElementById('contact-email-link'); if(em) { em.textContent = ct.email||''; em.href = `mailto:${ct.email}`; }
-            const ph = document.getElementById('contact-phone-link'); if(ph) { ph.textContent = ct.phone||''; ph.href = `tel:${ct.phone}`; }
+            let ec=document.getElementById('c-events'); ec.innerHTML='';
+            (D.upcomingEvents||[]).forEach(ev=>{ec.innerHTML+=`<div class="bg-white rounded-xl p-4 border border-amber-100 shadow-sm space-y-1"><span class="bg-brand-yellow text-gray-900 font-bold text-[9px] px-2 py-0.5 rounded">${ev.date||''}</span><h3 class="ft font-bold text-sm">${ev.title||''}</h3><p class="text-[11px] text-gray-600">${ev.desc||''}</p></div>`});
 
-            const upC = document.getElementById('events-upcoming-container');
-            if (upC) {
-                upC.innerHTML = '';
-                (siteData.upcomingEvents || []).forEach(ev => {
-                    upC.innerHTML += `<div class="bg-white rounded-2xl p-5 border border-amber-100 shadow-sm space-y-2">
-                        <span class="bg-brand-yellow text-gray-900 font-bold text-[10px] px-2 py-1 rounded-md">${ev.date||''}</span>
-                        <h3 class="font-title font-bold text-lg text-gray-900">${ev.title||''}</h3>
-                        <p class="text-xs text-gray-600">${ev.desc||ev.description||''}</p>
-                    </div>`;
-                });
-            }
-
-            const pastC = document.getElementById('past-events-container');
-            if (pastC) {
-                pastC.innerHTML = '';
-                (siteData.pastEvents || []).forEach(pev => {
-                    let photos = (pev.photos||[]).map(img => `<img src="${img}" class="h-28 w-full object-cover rounded-xl cursor-pointer" onclick="openLightbox('${img}', '${pev.title}')">`).join('');
-                    pastC.innerHTML += `<div class="bg-white rounded-2xl p-6 border border-amber-100 space-y-3">
-                        <div class="flex justify-between items-center"><h3 class="font-title font-bold text-xl">${pev.title||''}</h3><span class="text-xs font-bold text-amber-800 bg-amber-100 px-2.5 py-1 rounded-full">${pev.date||''}</span></div>
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">${photos}</div>
-                    </div>`;
-                });
-            }
+            let gc=document.getElementById('c-gallery'); gc.innerHTML='';
+            (D.pastEvents||[]).forEach(ev=>{
+                let phs=(ev.photos||[]).map(img=>`<img src="${img}" class="h-20 w-full object-cover rounded-lg cursor-pointer" onclick="openL('${img}')">`).join('');
+                gc.innerHTML+=`<div class="bg-white rounded-xl p-4 border border-amber-100 space-y-2"><div class="flex justify-between items-center"><h3 class="ft font-bold text-base">${ev.title||''}</h3><span class="text-[10px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full">${ev.date||''}</span></div><div class="grid grid-cols-2 sm:grid-cols-4 gap-2">${phs}</div></div>`;
+            });
         }
-
-        function loadInitialData() {
-            const raw = localStorage.getItem('sou_petit_coeur_data') || localStorage.getItem('sou_app_data');
-            if (raw) try { siteData = JSON.parse(raw); } catch(e){}
-            renderSite();
-        }
-
-        async function fetchRemoteData() {
-            try {
-                const { data } = await _supabase.from('site_content').select('content').eq('id', 1).single();
-                if (data && data.content) { siteData = data.content; renderSite(); }
-            } catch(e){}
-        }
-
-        window.addEventListener('DOMContentLoaded', () => { loadInitialData(); fetchRemoteData(); });
-        function openLightbox(url) { if(!url) return; document.getElementById('lightbox-img').src = url; document.getElementById('modal-lightbox').classList.remove('hidden'); }
-        function closeLightbox() { document.getElementById('modal-lightbox').classList.add('hidden'); }
+        function set(id,v){let e=document.getElementById(id);if(e)e.textContent=v||''}
+        function openL(u){if(!u)return;document.getElementById('lb-img').src=u;document.getElementById('lightbox').classList.remove('hidden')}
     </script>
 </body>
 </html>
