@@ -12,9 +12,7 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        brand: { yellow: '#FFD166', blue: '#4EA8DE', darkblue: '#2B6CB0', green: '#06D6A0', red: '#EF476F', cream: '#FFF9F2', text: '#2D3748' }
-                    },
+                    colors: { brand: { yellow: '#FFD166', blue: '#4EA8DE', darkblue: '#2B6CB0', green: '#06D6A0', red: '#EF476F', cream: '#FFF9F2', text: '#2D3748' } },
                     fontFamily: { title: ['Fredoka', 'sans-serif'], body: ['Inter', 'sans-serif'] }
                 }
             }
@@ -36,8 +34,8 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <a href="#accueil" class="flex items-center gap-3 group">
-                    <div class="w-12 h-12 bg-brand-yellow rounded-2xl flex items-center justify-center text-brand-red text-2xl font-bold shadow-md transform group-hover:rotate-6 transition-transform">
-                        <i class="fa-solid fa-heart"></i>
+                    <div id="header-icon-box" class="w-12 h-12 bg-brand-yellow rounded-2xl flex items-center justify-center text-brand-red text-2xl font-bold shadow-md transform group-hover:rotate-6 transition-transform overflow-hidden p-1">
+                        <i id="header-icon" class="fa-solid fa-heart text-brand-red"></i>
                     </div>
                     <div>
                         <span id="header-assoc-name" class="font-title font-bold text-xl text-gray-800 tracking-wide block leading-none">APE de Petit-Cœur</span>
@@ -62,7 +60,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
                     <div class="flex justify-center">
                         <div class="p-2 max-w-xs transform -rotate-2 hover:rotate-0 transition-all cursor-pointer group hover:scale-105" onclick="openLightbox(document.getElementById('logo-img').src, 'Logo')">
-                            <img id="logo-img" src="image_251ba6.png" class="w-full h-auto rounded-2xl object-contain drop-shadow-2xl">
+                            <img id="logo-img" src="" class="w-full h-auto rounded-2xl object-contain drop-shadow-2xl">
                             <p class="text-[10px] text-sky-100 text-center mt-2 group-hover:text-brand-yellow transition-colors font-medium"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Agrandir</p>
                         </div>
                     </div>
@@ -81,7 +79,7 @@
                                 <span id="poster-heading">À l'Affiche !</span>
                             </h3>
                             <div class="overflow-hidden cursor-pointer group rounded-2xl aspect-[4/5] bg-white shadow-xl flex items-center justify-center p-2 border border-white/30 hover:scale-105 transition-transform" onclick="openLightbox(document.getElementById('poster-img').src, 'Affiche')">
-                                <img id="poster-img" src="image_251ba6.png" class="w-full h-full object-contain rounded-xl">
+                                <img id="poster-img" src="" class="w-full h-full object-contain rounded-xl">
                             </div>
                             <p id="poster-caption" class="text-xs text-sky-100 mt-2 font-semibold"></p>
                             <div id="poster-buttons-container" class="mt-4 flex flex-col gap-2"></div>
@@ -202,9 +200,9 @@
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         const defaultSiteData = {
-            general: { assocName: "APE de Petit-Cœur", assocSub: "Petit-Cœur • La Léchère", locationTag: "Savoie - Commune de La Léchère", heroTitle: "Ensemble pour les enfants de Petit-Cœur !", heroDesc: "Association de parents d'élèves (APE) bénévoles.", logoImg: "image_251ba6.png", posterImg: "image_251ba6.png", posterHeading: "À l'Affiche !", posterCaption: "Le Bureau du Sou des Écoles", posterButtons: [{ label: "Télécharger l'affiche", url: "image_251ba6.png" }] },
-            about: { tag: "Présentation", title: "Qui sommes-nous ?", desc: "Une équipe de parents bénévoles.", block1Title: "Notre Mission", block1Text: "Financer les projets éducatifs et sorties scolaires.", block1Img: "", block2Title: "Le Mot du Bureau", block2Text: "Merci à tous !", fileUrl: "image_251ba6.png", fileBtnText: "Consulter les Statuts" },
-            partners: { tag: "Soutien", title: "Nos Partenaires", desc: "Merci à nos partenaires.", list: [{ name: "Mairie de La Léchère", desc: "Soutien institutionnel.", logo: "image_251ba6.png", link: "https://www.la-lechere.fr" }] },
+            general: { assocName: "APE de Petit-Cœur", assocSub: "Petit-Cœur • La Léchère", headerIcon: "fa-heart", locationTag: "Savoie - Commune de La Léchère", heroTitle: "Ensemble pour les enfants de Petit-Cœur !", heroDesc: "Association de parents d'élèves (APE) bénévoles.", logoImg: "", posterImg: "", posterHeading: "À l'Affiche !", posterCaption: "Le Bureau du Sou des Écoles", posterButtons: [] },
+            about: { tag: "Présentation", title: "Qui sommes-nous ?", desc: "Une équipe de parents bénévoles.", block1Title: "Notre Mission", block1Text: "Financer les projets éducatifs et sorties scolaires.", block1Img: "", block2Title: "Le Mot du Bureau", block2Text: "Merci à tous !", fileUrl: "", fileBtnText: "Consulter les Statuts" },
+            partners: { tag: "Soutien", title: "Nos Partenaires", desc: "Merci à nos partenaires.", list: [] },
             contact: { tag: "Coordonnées", title: "Nous Contacter", desc: "Contactez-nous directement.", email: "ape.petitcoeur@gmail.com", phone: "06 00 00 00 00", address: "École Primaire, 73260 La Léchère" },
             upcomingEvents: [], pastEvents: []
         };
@@ -214,20 +212,46 @@
         function renderSite() {
             const gen = siteData.general || {}, ab = siteData.about || {}, pt = siteData.partners || {}, ct = siteData.contact || {};
             
-            if (document.getElementById('header-assoc-name')) document.getElementById('header-assoc-name').textContent = gen.assocName || '';
-            if (document.getElementById('header-assoc-sub')) document.getElementById('header-assoc-sub').textContent = gen.assocSub || '';
-            if (document.getElementById('hero-location-tag')) document.getElementById('hero-location-tag').textContent = gen.locationTag || '';
-            if (document.getElementById('hero-title')) document.getElementById('hero-title').textContent = gen.heroTitle || '';
-            if (document.getElementById('hero-description')) document.getElementById('hero-description').textContent = gen.heroDesc || '';
+            if (document.getElementById('header-assoc-name')) document.getElementById('header-assoc-name').textContent = gen.assocName || defaultSiteData.general.assocName;
+            if (document.getElementById('header-assoc-sub')) document.getElementById('header-assoc-sub').textContent = gen.assocSub || defaultSiteData.general.assocSub;
+            
+            const headerBox = document.getElementById('header-icon-box');
+            if (headerBox) {
+                const iconVal = gen.headerIcon || 'fa-heart';
+                if (iconVal.startsWith('http') || iconVal.startsWith('data:image')) {
+                    headerBox.innerHTML = `<img src="${iconVal}" class="w-full h-full object-cover rounded-xl">`;
+                } else {
+                    const cleanClass = iconVal.replace(/^fa-solid\s+/, '');
+                    headerBox.innerHTML = `<i id="header-icon" class="fa-solid ${cleanClass} text-brand-red"></i>`;
+                }
+            }
+
+            if (document.getElementById('hero-location-tag')) document.getElementById('hero-location-tag').textContent = gen.locationTag || defaultSiteData.general.locationTag;
+            if (document.getElementById('hero-title')) document.getElementById('hero-title').textContent = gen.heroTitle || defaultSiteData.general.heroTitle;
+            if (document.getElementById('hero-description')) document.getElementById('hero-description').textContent = gen.heroDesc || defaultSiteData.general.heroDesc;
 
             const logoImg = document.getElementById('logo-img');
-            if (logoImg && gen.logoImg) logoImg.src = gen.logoImg;
+            if (logoImg) {
+                if (gen.logoImg && gen.logoImg.trim() !== '') {
+                    logoImg.src = gen.logoImg;
+                    logoImg.parentElement.style.display = 'block';
+                } else {
+                    logoImg.parentElement.style.display = 'none';
+                }
+            }
 
             const posterImg = document.getElementById('poster-img');
-            if (posterImg && gen.posterImg) posterImg.src = gen.posterImg;
+            if (posterImg) {
+                if (gen.posterImg && gen.posterImg.trim() !== '') {
+                    posterImg.src = gen.posterImg;
+                    posterImg.parentElement.style.display = 'flex';
+                } else {
+                    posterImg.parentElement.style.display = 'none';
+                }
+            }
 
-            if (document.getElementById('poster-heading')) document.getElementById('poster-heading').textContent = gen.posterHeading || '';
-            if (document.getElementById('poster-caption')) document.getElementById('poster-caption').textContent = gen.posterCaption || '';
+            if (document.getElementById('poster-heading')) document.getElementById('poster-heading').textContent = gen.posterHeading || defaultSiteData.general.posterHeading;
+            if (document.getElementById('poster-caption')) document.getElementById('poster-caption').textContent = gen.posterCaption || defaultSiteData.general.posterCaption;
 
             const btnContainer = document.getElementById('poster-buttons-container');
             if (btnContainer) {
@@ -237,17 +261,17 @@
                 });
             }
 
-            if (document.getElementById('about-tag')) document.getElementById('about-tag').textContent = ab.tag || '';
-            if (document.getElementById('about-title')) document.getElementById('about-title').textContent = ab.title || '';
-            if (document.getElementById('about-desc')) document.getElementById('about-desc').textContent = ab.desc || '';
-            if (document.getElementById('about-block1-title')) document.getElementById('about-block1-title').innerHTML = `<i class="fa-solid fa-users text-brand-blue"></i> ${ab.block1Title || ''}`;
-            if (document.getElementById('about-block1-text')) document.getElementById('about-block1-text').textContent = ab.block1Text || '';
+            if (document.getElementById('about-tag')) document.getElementById('about-tag').textContent = ab.tag || defaultSiteData.about.tag;
+            if (document.getElementById('about-title')) document.getElementById('about-title').textContent = ab.title || defaultSiteData.about.title;
+            if (document.getElementById('about-desc')) document.getElementById('about-desc').textContent = ab.desc || defaultSiteData.about.desc;
+            if (document.getElementById('about-block1-title')) document.getElementById('about-block1-title').innerHTML = `<i class="fa-solid fa-users text-brand-blue"></i> ${ab.block1Title || defaultSiteData.about.block1Title}`;
+            if (document.getElementById('about-block1-text')) document.getElementById('about-block1-text').textContent = ab.block1Text || defaultSiteData.about.block1Text;
             
             const b1ImgBox = document.getElementById('about-block1-img-box'), b1Img = document.getElementById('about-block1-img'), block1Photo = ab.block1Img || ab.block1Photo || "";
             if (block1Photo.trim() !== '') { b1Img.src = block1Photo; b1ImgBox.classList.remove('hidden'); } else { b1ImgBox.classList.add('hidden'); }
 
-            if (document.getElementById('about-block2-title')) document.getElementById('about-block2-title').innerHTML = `<i class="fa-solid fa-heart text-brand-red"></i> ${ab.block2Title || ''}`;
-            if (document.getElementById('about-block2-text')) document.getElementById('about-block2-text').textContent = ab.block2Text || '';
+            if (document.getElementById('about-block2-title')) document.getElementById('about-block2-title').innerHTML = `<i class="fa-solid fa-heart text-brand-red"></i> ${ab.block2Title || defaultSiteData.about.block2Title}`;
+            if (document.getElementById('about-block2-text')) document.getElementById('about-block2-text').textContent = ab.block2Text || defaultSiteData.about.block2Text;
 
             const fileBox = document.getElementById('about-file-box');
             if (ab.fileUrl && ab.fileUrl.trim() !== '') {
@@ -256,34 +280,40 @@
                 fileBox.classList.remove('hidden');
             } else { fileBox.classList.add('hidden'); }
 
-            if (document.getElementById('partners-tag')) document.getElementById('partners-tag').textContent = pt.tag || '';
-            if (document.getElementById('partners-title')) document.getElementById('partners-title').textContent = pt.title || '';
-            if (document.getElementById('partners-desc')) document.getElementById('partners-desc').textContent = pt.desc || '';
+            if (document.getElementById('partners-tag')) document.getElementById('partners-tag').textContent = pt.tag || defaultSiteData.partners.tag;
+            if (document.getElementById('partners-title')) document.getElementById('partners-title').textContent = pt.title || defaultSiteData.partners.title;
+            if (document.getElementById('partners-desc')) document.getElementById('partners-desc').textContent = pt.desc || defaultSiteData.partners.desc;
 
             const partnersContainer = document.getElementById('partners-list-container');
             if (partnersContainer) {
                 partnersContainer.innerHTML = '';
-                (pt.list || []).forEach(p => {
-                    partnersContainer.innerHTML += `
-                        <div class="bg-white rounded-3xl p-6 shadow-sm border border-amber-100 flex flex-col items-center text-center justify-between">
-                            <div class="w-full flex flex-col items-center">
-                                <div class="w-24 h-24 rounded-2xl bg-amber-50/60 p-2 border border-amber-100/80 flex items-center justify-center mb-4 overflow-hidden">
-                                    <img src="${p.logo || 'image_251ba6.png'}" class="max-w-full max-h-full object-contain">
+                const parts = pt.list || [];
+                if (parts.length === 0) {
+                    document.getElementById('partenaires').style.display = 'none';
+                } else {
+                    document.getElementById('partenaires').style.display = 'block';
+                    parts.forEach(p => {
+                        partnersContainer.innerHTML += `
+                            <div class="bg-white rounded-3xl p-6 shadow-sm border border-amber-100 flex flex-col items-center text-center justify-between">
+                                <div class="w-full flex flex-col items-center">
+                                    <div class="w-24 h-24 rounded-2xl bg-amber-50/60 p-2 border border-amber-100/80 flex items-center justify-center mb-4 overflow-hidden">
+                                        <img src="${p.logo || ''}" class="max-w-full max-h-full object-contain">
+                                    </div>
+                                    <h3 class="font-title font-bold text-lg text-gray-900 mb-2">${p.name || ''}</h3>
+                                    <p class="text-gray-600 text-xs leading-relaxed">${p.desc || ''}</p>
                                 </div>
-                                <h3 class="font-title font-bold text-lg text-gray-900 mb-2">${p.name || ''}</h3>
-                                <p class="text-gray-600 text-xs leading-relaxed">${p.desc || ''}</p>
-                            </div>
-                            ${p.link ? `<a href="${p.link}" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-title font-bold text-brand-blue hover:text-brand-darkblue mt-3"><span>Visiter le site</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>` : ''}
-                        </div>`;
-                });
+                                ${p.link ? `<a href="${p.link}" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-title font-bold text-brand-blue hover:text-brand-darkblue mt-3"><span>Visiter le site</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>` : ''}
+                            </div>`;
+                    });
+                }
             }
 
-            if (document.getElementById('contact-tag')) document.getElementById('contact-tag').textContent = ct.tag || '';
-            if (document.getElementById('contact-title')) document.getElementById('contact-title').textContent = ct.title || '';
-            if (document.getElementById('contact-desc')) document.getElementById('contact-desc').textContent = ct.desc || '';
-            const cel = document.getElementById('contact-email-link'); if (cel) { cel.textContent = ct.email || ''; cel.href = `mailto:${ct.email || ''}`; }
-            const cph = document.getElementById('contact-phone-link'); if (cph) { cph.textContent = ct.phone || ''; cph.href = `tel:${(ct.phone || '').replace(/\s+/g, '')}`; }
-            if (document.getElementById('contact-address-text')) document.getElementById('contact-address-text').textContent = ct.address || '';
+            if (document.getElementById('contact-tag')) document.getElementById('contact-tag').textContent = ct.tag || defaultSiteData.contact.tag;
+            if (document.getElementById('contact-title')) document.getElementById('contact-title').textContent = ct.title || defaultSiteData.contact.title;
+            if (document.getElementById('contact-desc')) document.getElementById('contact-desc').textContent = ct.desc || defaultSiteData.contact.desc;
+            const cel = document.getElementById('contact-email-link'); if (cel) { cel.textContent = ct.email || defaultSiteData.contact.email; cel.href = `mailto:${ct.email || defaultSiteData.contact.email}`; }
+            const cph = document.getElementById('contact-phone-link'); if (cph) { cph.textContent = ct.phone || defaultSiteData.contact.phone; cph.href = `tel:${(ct.phone || defaultSiteData.contact.phone).replace(/\s+/g, '')}`; }
+            if (document.getElementById('contact-address-text')) document.getElementById('contact-address-text').textContent = ct.address || defaultSiteData.contact.address;
 
             const upContainer = document.getElementById('events-upcoming-container');
             if (upContainer) {
@@ -304,39 +334,52 @@
             const pastContainer = document.getElementById('past-events-container');
             if (pastContainer) {
                 pastContainer.innerHTML = '';
-                (siteData.pastEvents || []).forEach(pev => {
-                    let photosHTML = '';
-                    if (pev.photos && pev.photos.length > 0) {
-                        photosHTML = `<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">`;
-                        pev.photos.forEach(imgUrl => {
-                            photosHTML += `<div class="relative overflow-hidden rounded-2xl group cursor-pointer h-40 bg-gray-100 border border-gray-100" onclick="openLightbox('${imgUrl}', '${(pev.title || '').replace(/'/g, "\\'")}')"><img src="${imgUrl}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"></div>`;
-                        });
-                        photosHTML += `</div>`;
-                    }
-                    pastContainer.innerHTML += `
-                        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-amber-100">
-                            <div class="flex justify-between items-start flex-wrap gap-2 mb-2"><h3 class="font-title text-2xl font-bold text-gray-900">${pev.title || ''}</h3><span class="bg-amber-100 text-amber-800 font-title text-xs font-bold px-3 py-1 rounded-full">${pev.date || ''}</span></div>
-                            <div class="text-gray-600 text-sm leading-relaxed">${pev.desc || pev.description || ''}</div>
-                            ${photosHTML}
-                        </div>`;
-                });
+                const pastList = siteData.pastEvents || [];
+                if (pastList.length === 0) {
+                    document.getElementById('galerie').style.display = 'none';
+                } else {
+                    document.getElementById('galerie').style.display = 'block';
+                    pastList.forEach(pev => {
+                        let photosHTML = '';
+                        if (pev.photos && pev.photos.length > 0) {
+                            photosHTML = `<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">`;
+                            pev.photos.forEach(imgUrl => {
+                                photosHTML += `<div class="relative overflow-hidden rounded-2xl group cursor-pointer h-40 bg-gray-100 border border-gray-100" onclick="openLightbox('${imgUrl}', '${(pev.title || '').replace(/'/g, "\\'")}')"><img src="${imgUrl}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"></div>`;
+                            });
+                            photosHTML += `</div>`;
+                        }
+                        pastContainer.innerHTML += `
+                            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-amber-100 mb-6">
+                                <div class="flex justify-between items-start flex-wrap gap-2 mb-2"><h3 class="font-title text-2xl font-bold text-gray-900">${pev.title || ''}</h3><span class="bg-amber-100 text-amber-800 font-title text-xs font-bold px-3 py-1 rounded-full">${pev.date || ''}</span></div>
+                                <div class="text-gray-600 text-sm leading-relaxed">${pev.desc || ''}</div>
+                                ${photosHTML}
+                            </div>`;
+                    });
+                }
             }
         }
 
-        function loadInitialData() {
-            const rawData = localStorage.getItem('sou_petit_coeur_data') || localStorage.getItem('sou_app_data');
-            if (rawData) { try { siteData = Object.assign({}, defaultSiteData, JSON.parse(rawData)); } catch(e){} }
+        async function loadAndSyncData() {
+            try {
+                const { data } = await _supabase.from('site_content').select('content').eq('id', 1).single();
+                if (data && data.content) {
+                    siteData = Object.assign({}, defaultSiteData, data.content);
+                    localStorage.setItem('sou_petit_coeur_data', JSON.stringify(siteData));
+                } else {
+                    const rawData = localStorage.getItem('sou_petit_coeur_data') || localStorage.getItem('sou_app_data');
+                    if (rawData) { try { siteData = Object.assign({}, defaultSiteData, JSON.parse(rawData)); } catch(e){} }
+                }
+            } catch (err) {
+                const rawData = localStorage.getItem('sou_petit_coeur_data') || localStorage.getItem('sou_app_data');
+                if (rawData) { try { siteData = Object.assign({}, defaultSiteData, JSON.parse(rawData)); } catch(e){} }
+            }
             renderSite();
         }
 
-        async function fetchRemoteData() {
-            try {
-                const { data } = await _supabase.from('site_content').select('content').eq('id', 1).single();
-                if (data && data.content) { siteData = Object.assign({}, defaultSiteData, data.content); localStorage.setItem('sou_petit_coeur_data', JSON.stringify(siteData)); renderSite(); }
-            } catch (err) {}
-        }
+        window.addEventListener('DOMContentLoaded', () => {
+            loadAndSyncData();
+        });
 
-        window.addEventListener('DOMContentLoaded', () => { loadInitialData(); fetchRemoteData(); });
         function openLightbox(imgUrl, caption) { if (!imgUrl) return; document.getElementById('lightbox-img').src = imgUrl; document.getElementById('lightbox-caption').textContent = caption || ''; document.getElementById('modal-lightbox').classList.remove('hidden'); }
         function closeLightbox() { document.getElementById('modal-lightbox').classList.add('hidden'); }
     </script>

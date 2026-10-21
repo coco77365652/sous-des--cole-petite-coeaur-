@@ -81,10 +81,19 @@
         <main class="flex-1 p-6 md:p-10 overflow-y-auto">
             <div id="tab-general" class="tab-content hidden space-y-6">
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
-                    <h3 class="font-title text-lg font-bold text-white border-b border-cyber-border pb-4">Textes d'Accueil</h3>
+                    <h3 class="font-title text-lg font-bold text-white border-b border-cyber-border pb-4">Textes d'Accueil & En-tête</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div><label class="block text-xs font-bold uppercase text-slate-400 mb-2">Nom Association</label><input type="text" id="cfg-siteName" class="w-full px-4 py-3 glass-input rounded-2xl text-sm"></div>
                         <div><label class="block text-xs font-bold uppercase text-slate-400 mb-2">Sous-titre</label><input type="text" id="cfg-siteLocation" class="w-full px-4 py-3 glass-input rounded-2xl text-sm"></div>
+                    </div>
+                    <div class="p-4 bg-cyber-card rounded-2xl border border-cyber-border space-y-3">
+                        <label class="block text-xs font-bold uppercase text-slate-400">Petit Logo d'en-tête (Carré jaune haut gauche)</label>
+                        <div class="flex gap-3">
+                            <input type="text" id="cfg-headerIcon" placeholder="fa-heart ou URL image" class="w-full px-4 py-3 glass-input rounded-2xl text-sm">
+                            <label class="cursor-pointer px-4 py-3 bg-cyber-cyan text-slate-900 font-bold text-xs rounded-2xl flex items-center shrink-0">
+                                Image <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-headerIcon')">
+                            </label>
+                        </div>
                     </div>
                     <div class="space-y-4">
                         <div><label class="block text-xs font-bold uppercase text-slate-400 mb-2">Tag Supérieur</label><input type="text" id="cfg-locationTag" class="w-full px-4 py-3 glass-input rounded-2xl text-sm"></div>
@@ -146,7 +155,10 @@
 
             <div id="tab-gallery" class="tab-content hidden space-y-6">
                 <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
-                    <div class="flex justify-between items-center border-b border-cyber-border pb-4"><h3 class="font-title text-lg font-bold text-white">Galerie Photos</h3><button type="button" onclick="addPastEvent()" class="px-4 py-2 bg-cyber-purple text-white font-bold text-xs rounded-xl">+ Album</button></div>
+                    <div class="flex justify-between items-center border-b border-cyber-border pb-4">
+                        <h3 class="font-title text-lg font-bold text-white">Galerie Photos</h3>
+                        <button type="button" onclick="addPastEvent()" class="px-4 py-2 bg-cyber-purple text-white font-bold text-xs rounded-xl">+ Ajouter un Album</button>
+                    </div>
                     <div id="past-events-container" class="space-y-6"></div>
                 </div>
             </div>
@@ -178,16 +190,19 @@
 
     <script>
         const DEFAULT_DATA = {
-            general: { assocName: "APE de Petit-Cœur", assocSub: "Petit-Cœur • La Léchère", locationTag: "Savoie - Commune de La Léchère", heroTitle: "Ensemble pour les enfants de Petit-Cœur !", heroDesc: "Association de parents d'élèves.", logoImg: "image_251ba6.png", posterImg: "image_251ba6.png", posterHeading: "À l'Affiche !", posterCaption: "Le Bureau du Sou des Écoles", posterButtons: [{ label: "Télécharger l'affiche", url: "image_251ba6.png" }], adminPassword: "admin123" },
-            about: { tag: "Présentation", title: "Qui sommes-nous ?", desc: "Une équipe dédiée aux enfants.", block1Title: "Notre Mission", block1Text: "Financer les projets scolaires.", block1Img: "", block2Title: "Le Mot du Bureau", block2Text: "Merci à tous !", fileUrl: "image_251ba6.png", fileBtnText: "Consulter les Statuts" },
-            partners: { tag: "Soutien", title: "Nos Partenaires", desc: "Merci à nos partenaires !", list: [{ name: "Mairie de La Léchère", desc: "Soutien institutionnel.", logo: "image_251ba6.png", link: "https://www.la-lechere.fr" }] },
+            general: { assocName: "APE de Petit-Cœur", assocSub: "Petit-Cœur • La Léchère", headerIcon: "fa-heart", locationTag: "Savoie - Commune de La Léchère", heroTitle: "Ensemble pour les enfants de Petit-Cœur !", heroDesc: "Association de parents d'élèves.", logoImg: "", posterImg: "", posterHeading: "À l'Affiche !", posterCaption: "Le Bureau du Sou des Écoles", posterButtons: [], adminPassword: "admin123" },
+            about: { tag: "Présentation", title: "Qui sommes-nous ?", desc: "Une équipe dédiée aux enfants.", block1Title: "Notre Mission", block1Text: "Financer les projets scolaires.", block1Img: "", block2Title: "Le Mot du Bureau", block2Text: "Merci à tous !", fileUrl: "", fileBtnText: "Consulter les Statuts" },
+            partners: { tag: "Soutien", title: "Nos Partenaires", desc: "Merci à nos partenaires !", list: [] },
             contact: { tag: "Coordonnées", title: "Nous Contacter", desc: "Contactez-nous.", email: "ape.petitcoeur@gmail.com", phone: "06 00 00 00 00", address: "École Primaire, 73260 La Léchère" },
             upcomingEvents: [], pastEvents: []
         };
 
         let appData = Object.assign({}, DEFAULT_DATA);
 
-        document.addEventListener('DOMContentLoaded', () => { loadInitialData(); checkSession(); });
+        document.addEventListener('DOMContentLoaded', async () => { 
+            await loadInitialData(); 
+            checkSession(); 
+        });
 
         function checkSession() {
             if (sessionStorage.getItem('sou_admin_logged') === 'true') {
@@ -220,7 +235,7 @@
             const g = appData.general || {}, ab = appData.about || {}, pt = appData.partners || {}, ct = appData.contact || {};
             const setV = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || ''; };
 
-            setV('cfg-siteName', g.assocName); setV('cfg-siteLocation', g.assocSub); setV('cfg-locationTag', g.locationTag); setV('cfg-heroTitle', g.heroTitle); setV('cfg-heroDesc', g.heroDesc);
+            setV('cfg-siteName', g.assocName); setV('cfg-siteLocation', g.assocSub); setV('cfg-headerIcon', g.headerIcon || 'fa-heart'); setV('cfg-locationTag', g.locationTag); setV('cfg-heroTitle', g.heroTitle); setV('cfg-heroDesc', g.heroDesc);
             setV('cfg-logoImg', g.logoImg); setV('cfg-posterImg', g.posterImg); setV('cfg-posterHeading', g.posterHeading); setV('cfg-posterCaption', g.posterCaption);
             setV('cfg-aboutTag', ab.tag); setV('cfg-aboutTitle', ab.title); setV('cfg-aboutDesc', ab.desc); setV('cfg-aboutBlock1Title', ab.block1Title); setV('cfg-aboutBlock1Text', ab.block1Text);
             setV('cfg-aboutBlock1Img', ab.block1Img || ab.block1Photo); setV('cfg-aboutBlock2Title', ab.block2Title); setV('cfg-aboutBlock2Text', ab.block2Text);
@@ -235,27 +250,27 @@
             const container = document.getElementById('partners-admin-container'); if (!container) return; container.innerHTML = '';
             (appData.partners.list || []).forEach((p, index) => {
                 container.innerHTML += `
-                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-4 relative">
+                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-4 relative partner-item">
                         <button type="button" onclick="appData.partners.list.splice(${index},1);renderPartnersAdmin()" class="absolute top-4 right-4 text-cyber-pink text-xs font-bold"><i class="fas fa-trash-can mr-1"></i> Supprimer</button>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-24">
-                            <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Nom</label><input type="text" value="${p.name || ''}" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-bold"></div>
-                            <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Site Web</label><input type="text" value="${p.link || ''}" class="w-full px-3 py-2 glass-input rounded-xl text-xs"></div>
+                            <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Nom</label><input type="text" value="${p.name || ''}" class="p-name w-full px-3 py-2 glass-input rounded-xl text-xs font-bold"></div>
+                            <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Site Web</label><input type="text" value="${p.link || ''}" class="p-link w-full px-3 py-2 glass-input rounded-xl text-xs"></div>
                         </div>
-                        <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Description</label><input type="text" value="${p.desc || ''}" class="w-full px-3 py-2 glass-input rounded-xl text-xs"></div>
-                        <div class="flex gap-3"><input type="text" value="${p.logo || ''}" class="w-full px-3 py-2 glass-input rounded-xl text-xs"></div>
+                        <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Description</label><input type="text" value="${p.desc || ''}" class="p-desc w-full px-3 py-2 glass-input rounded-xl text-xs"></div>
+                        <div class="flex gap-3"><input type="text" value="${p.logo || ''}" class="p-logo w-full px-3 py-2 glass-input rounded-xl text-xs"></div>
                     </div>`;
             });
         }
-        function addPartnerItem() { (appData.partners.list = appData.partners.list || []).push({ name: "Nouveau Partenaire", desc: "", logo: "image_251ba6.png", link: "" }); renderPartnersAdmin(); }
+        function addPartnerItem() { (appData.partners.list = appData.partners.list || []).push({ name: "Nouveau Partenaire", desc: "", logo: "", link: "" }); renderPartnersAdmin(); }
 
         function renderPosterButtonsAdmin() {
             const container = document.getElementById('poster-buttons-admin-container'); if (!container) return; container.innerHTML = '';
             (appData.general.posterButtons || []).forEach((b, index) => {
                 container.innerHTML += `
-                    <div class="p-4 bg-cyber-bg rounded-2xl border border-cyber-border space-y-3 relative">
+                    <div class="p-4 bg-cyber-bg rounded-2xl border border-cyber-border space-y-3 relative poster-btn-item">
                         <button type="button" onclick="appData.general.posterButtons.splice(${index},1);renderPosterButtonsAdmin()" class="absolute top-4 right-4 text-cyber-pink text-xs font-bold"><i class="fas fa-trash-can mr-1"></i> Supprimer</button>
-                        <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Texte</label><input type="text" value="${b.label || ''}" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-bold"></div>
-                        <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Lien / URL</label><input type="text" value="${b.url || ''}" class="w-full px-3 py-2 glass-input rounded-xl text-xs"></div>
+                        <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Texte</label><input type="text" value="${b.label || ''}" class="pb-label w-full px-3 py-2 glass-input rounded-xl text-xs font-bold"></div>
+                        <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Lien / URL</label><input type="text" value="${b.url || ''}" class="pb-url w-full px-3 py-2 glass-input rounded-xl text-xs"></div>
                     </div>`;
             });
         }
@@ -265,13 +280,13 @@
             const container = document.getElementById('upcoming-events-container'); if (!container) return; container.innerHTML = '';
             (appData.upcomingEvents || []).forEach((ev, index) => {
                 container.innerHTML += `
-                    <div class="p-4 bg-cyber-card rounded-2xl border border-cyber-border space-y-3 relative">
+                    <div class="p-4 bg-cyber-card rounded-2xl border border-cyber-border space-y-3 relative event-item">
                         <button type="button" onclick="appData.upcomingEvents.splice(${index},1);renderUpcomingEvents()" class="absolute top-4 right-4 text-cyber-pink text-xs font-bold">Supprimer</button>
                         <div class="grid grid-cols-2 gap-3 pr-20">
-                            <input type="text" value="${ev.title || ''}" class="px-3 py-2 glass-input rounded-xl text-xs">
-                            <input type="text" value="${ev.date || ''}" class="px-3 py-2 glass-input rounded-xl text-xs">
+                            <input type="text" value="${ev.title || ''}" class="ev-title px-3 py-2 glass-input rounded-xl text-xs font-bold">
+                            <input type="text" value="${ev.date || ''}" class="ev-date px-3 py-2 glass-input rounded-xl text-xs">
                         </div>
-                        <textarea rows="2" class="w-full px-3 py-2 glass-input rounded-xl text-xs">${ev.desc || ''}</textarea>
+                        <textarea rows="2" class="ev-desc w-full px-3 py-2 glass-input rounded-xl text-xs">${ev.desc || ''}</textarea>
                     </div>`;
             });
         }
@@ -280,65 +295,129 @@
         function renderPastEvents() {
             const container = document.getElementById('past-events-container'); if (!container) return; container.innerHTML = '';
             (appData.pastEvents || []).forEach((pev, index) => {
-                let photosHTML = (pev.photos || []).map((pUrl, pIdx) => `<div class="relative"><img src="${pUrl}" class="h-20 w-full object-cover rounded-xl"><button type="button" onclick="appData.pastEvents[${index}].photos.splice(${pIdx},1);renderPastEvents()" class="absolute top-1 right-1 bg-rose-600 text-white w-5 h-5 rounded-full text-[9px]">✕</button></div>`).join('');
+                let photosHTML = (pev.photos || []).map((pUrl, pIdx) => `
+                    <div class="relative group">
+                        <img src="${pUrl}" class="h-20 w-full object-cover rounded-xl border border-white/10">
+                        <button type="button" onclick="appData.pastEvents[${index}].photos.splice(${pIdx},1);renderPastEvents()" class="absolute top-1 right-1 bg-rose-600 text-white w-5 h-5 rounded-full text-[9px] font-bold shadow">✕</button>
+                    </div>`).join('');
+
                 container.innerHTML += `
-                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-4 relative">
-                        <button type="button" onclick="appData.pastEvents.splice(${index},1);renderPastEvents()" class="absolute top-4 right-4 text-cyber-pink text-xs font-bold">Supprimer</button>
+                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-4 relative gallery-item">
+                        <button type="button" onclick="appData.pastEvents.splice(${index},1);renderPastEvents()" class="absolute top-4 right-4 text-cyber-pink text-xs font-bold"><i class="fas fa-trash-can mr-1"></i> Supprimer Album</button>
                         <div class="grid grid-cols-2 gap-3 pr-28">
-                            <input type="text" value="${pev.title || ''}" class="px-3 py-2 glass-input rounded-xl text-xs">
-                            <input type="text" value="${pev.date || ''}" class="px-3 py-2 glass-input rounded-xl text-xs">
+                            <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Titre de l'Album</label><input type="text" value="${pev.title || ''}" class="gal-title px-3 py-2 glass-input rounded-xl text-xs font-bold w-full"></div>
+                            <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Date</label><input type="text" value="${pev.date || ''}" class="gal-date px-3 py-2 glass-input rounded-xl text-xs w-full"></div>
                         </div>
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-2">${photosHTML}</div>
+                        <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Description</label><textarea rows="2" class="gal-desc w-full px-3 py-2 glass-input rounded-xl text-xs">${pev.desc || ''}</textarea></div>
+                        <div class="pt-2 border-t border-cyber-border/40">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs font-bold text-cyber-purple">Photos (${(pev.photos || []).length})</span>
+                                <label class="cursor-pointer px-3 py-1.5 bg-cyber-purple text-white font-bold text-xs rounded-xl flex items-center gap-1">+ Photo <input type="file" accept="image/*" class="hidden" onchange="addPhotoToAlbum(event, ${index})"></label>
+                            </div>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">${photosHTML}</div>
+                        </div>
                     </div>`;
             });
         }
-        function addPastEvent() { (appData.pastEvents = appData.pastEvents || []).push({ title: "Album", date: "2026", photos: [] }); renderPastEvents(); }
+        function addPastEvent() { (appData.pastEvents = appData.pastEvents || []).push({ title: "Album Souvenir", date: "2026", desc: "", photos: [] }); renderPastEvents(); }
+
+        function addPhotoToAlbum(e, index) {
+            const f = e.target.files[0]; if (!f) return;
+            const r = new FileReader(); r.onload = (evt) => {
+                const img = new Image(); img.onload = () => {
+                    const canvas = document.createElement('canvas'); const MAX = 600;
+                    let w = img.width, h = img.height; if (w > MAX) { h *= MAX / w; w = MAX; }
+                    canvas.width = w; canvas.height = h; canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                    if (!appData.pastEvents[index].photos) appData.pastEvents[index].photos = [];
+                    appData.pastEvents[index].photos.push(canvas.toDataURL('image/jpeg', 0.5));
+                    renderPastEvents();
+                    showStatusToast("Photo ajoutée à l'album !");
+                }; img.src = evt.target.result;
+            }; r.readAsDataURL(f);
+        }
 
         async function globalSaveData() {
             const btn = document.getElementById('save-btn'); btn.disabled = true; btn.innerHTML = 'ENREGISTREMENT...';
             try {
                 const getV = (id) => document.getElementById(id)?.value || '';
-                appData.general.assocName = getV('cfg-siteName'); appData.general.assocSub = getV('cfg-siteLocation'); appData.general.locationTag = getV('cfg-locationTag'); appData.general.heroTitle = getV('cfg-heroTitle'); appData.general.heroDesc = getV('cfg-heroDesc'); appData.general.logoImg = getV('cfg-logoImg'); appData.general.posterImg = getV('cfg-posterImg'); appData.general.posterHeading = getV('cfg-posterHeading'); appData.general.posterCaption = getV('cfg-posterCaption');
+                appData.general.assocName = getV('cfg-siteName'); appData.general.assocSub = getV('cfg-siteLocation'); appData.general.headerIcon = getV('cfg-headerIcon'); appData.general.locationTag = getV('cfg-locationTag'); appData.general.heroTitle = getV('cfg-heroTitle'); appData.general.heroDesc = getV('cfg-heroDesc'); appData.general.logoImg = getV('cfg-logoImg'); appData.general.posterImg = getV('cfg-posterImg'); appData.general.posterHeading = getV('cfg-posterHeading'); appData.general.posterCaption = getV('cfg-posterCaption');
                 appData.about.tag = getV('cfg-aboutTag'); appData.about.title = getV('cfg-aboutTitle'); appData.about.desc = getV('cfg-aboutDesc'); appData.about.block1Title = getV('cfg-aboutBlock1Title'); appData.about.block1Text = getV('cfg-aboutBlock1Text'); appData.about.block1Img = getV('cfg-aboutBlock1Img'); appData.about.block2Title = getV('cfg-aboutBlock2Title'); appData.about.block2Text = getV('cfg-aboutBlock2Text'); appData.about.fileUrl = getV('cfg-aboutFileUrl'); appData.about.fileBtnText = getV('cfg-aboutFileBtnText');
                 
                 appData.partners.tag = getV('cfg-partnersTag'); appData.partners.title = getV('cfg-partnersTitle'); appData.partners.desc = getV('cfg-partnersDesc');
                 
-                // Correction ciblée : Récupération stricte des partenaires modifiés
-                const partnerCards = document.querySelectorAll('#partners-admin-container > div');
-                if (partnerCards.length > 0) {
-                    appData.partners.list = [];
-                    partnerCards.forEach(card => {
-                        const inputs = card.querySelectorAll('input');
-                        if (inputs.length >= 3) {
-                            appData.partners.list.push({ name: inputs[0].value, link: inputs[1].value, desc: inputs[2].value, logo: inputs[3] ? inputs[3].value : 'image_251ba6.png' });
-                        }
+                // Récupération Partenaires
+                appData.partners.list = [];
+                document.querySelectorAll('.partner-item').forEach(card => {
+                    appData.partners.list.push({
+                        name: card.querySelector('.p-name')?.value || '',
+                        link: card.querySelector('.p-link')?.value || '',
+                        desc: card.querySelector('.p-desc')?.value || '',
+                        logo: card.querySelector('.p-logo')?.value || ''
                     });
-                }
+                });
 
-                // Récupération boutons affiche
-                const posterBtnCards = document.querySelectorAll('#poster-buttons-admin-container > div');
-                if (posterBtnCards.length > 0) {
-                    appData.general.posterButtons = [];
-                    posterBtnCards.forEach(card => {
-                        const inputs = card.querySelectorAll('input');
-                        if (inputs.length >= 2) {
-                            appData.general.posterButtons.push({ label: inputs[0].value, url: inputs[1].value });
-                        }
+                // Récupération Boutons Affiche
+                appData.general.posterButtons = [];
+                document.querySelectorAll('.poster-btn-item').forEach(card => {
+                    appData.general.posterButtons.push({
+                        label: card.querySelector('.pb-label')?.value || '',
+                        url: card.querySelector('.pb-url')?.value || ''
                     });
-                }
+                });
+
+                // Récupération Événements à venir
+                appData.upcomingEvents = [];
+                document.querySelectorAll('.event-item').forEach(card => {
+                    appData.upcomingEvents.push({
+                        title: card.querySelector('.ev-title')?.value || '',
+                        date: card.querySelector('.ev-date')?.value || '',
+                        desc: card.querySelector('.ev-desc')?.value || ''
+                    });
+                });
+
+                // Récupération Galerie & Albums Photos (Correction critique ici)
+                const newPastEvents = [];
+                document.querySelectorAll('.gallery-item').forEach((card, idx) => {
+                    if (appData.pastEvents[idx]) {
+                        appData.pastEvents[idx].title = card.querySelector('.gal-title')?.value || '';
+                        appData.pastEvents[idx].date = card.querySelector('.gal-date')?.value || '';
+                        appData.pastEvents[idx].desc = card.querySelector('.gal-desc')?.value || '';
+                        newPastEvents.push(appData.pastEvents[idx]);
+                    }
+                });
+                appData.pastEvents = newPastEvents;
 
                 appData.contact.tag = getV('cfg-contactTag'); appData.contact.title = getV('cfg-contactTitle'); appData.contact.desc = getV('cfg-contactDesc'); appData.contact.email = getV('cfg-contactEmail'); appData.contact.phone = getV('cfg-contactPhone'); appData.contact.address = getV('cfg-contactAddress');
 
                 const serialized = JSON.stringify(appData);
                 localStorage.setItem('sou_petit_coeur_data', serialized);
-                if (_supabase) await _supabase.from('site_content').upsert({ id: 1, content: appData });
+                localStorage.setItem('sou_app_data', serialized);
+
+                if (_supabase) {
+                    await _supabase.from('site_content').upsert({ id: 1, content: appData });
+                }
 
                 showStatusToast("Sauvegarde réussie !");
-            } catch (err) { showStatusToast("Erreur de sauvegarde", "error"); }
-            finally { btn.disabled = false; btn.innerHTML = 'ENREGISTRER TOUTES LES MODIFICATIONS'; }
+            } catch (err) { 
+                console.error(err);
+                showStatusToast("Erreur de sauvegarde", "error"); 
+            } finally { 
+                btn.disabled = false; 
+                btn.innerHTML = 'ENREGISTRER TOUTES LES MODIFICATIONS'; 
+            }
         }
 
-        function loadInitialData() {
+        async function loadInitialData() {
+            if (_supabase) {
+                try {
+                    const { data } = await _supabase.from('site_content').select('content').eq('id', 1).single();
+                    if (data && data.content) {
+                        appData = Object.assign({}, DEFAULT_DATA, data.content);
+                        localStorage.setItem('sou_petit_coeur_data', JSON.stringify(appData));
+                        return;
+                    }
+                } catch(e) {}
+            }
             const raw = localStorage.getItem('sou_petit_coeur_data') || localStorage.getItem('sou_app_data');
             if (raw) try { appData = Object.assign({}, DEFAULT_DATA, JSON.parse(raw)); } catch(e){}
         }
