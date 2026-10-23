@@ -24,7 +24,7 @@
         }
     </script>
     <style>
-        body { background-color: #0B0F19; }
+        body { background-color: #294792; }
         .glass-card { background: rgba(21, 28, 44, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
         .glass-input { background: rgba(11, 15, 25, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); color: #FFFFFF; }
         .glass-input:focus { border-color: #05D9E8; }
@@ -47,7 +47,7 @@
             <form onsubmit="handleLogin(event)" class="space-y-5 relative z-10">
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Code d'accès sécurisé</label>
-                    <input type="password" id="admin-pass-input" placeholder="admin123" required class="w-full px-4 py-3.5 glass-input rounded-2xl focus:outline-none text-sm font-semibold">
+                    <input type="password" id="admin-pass-input" placeholder="admin" required class="w-full px-4 py-3.5 glass-input rounded-2xl focus:outline-none text-sm font-semibold">
                     <p id="login-error" class="text-cyber-pink text-xs font-semibold mt-2 hidden"><i class="fas fa-circle-exclamation mr-1"></i> Mot de passe incorrect.</p>
                 </div>
                 <button type="submit" class="w-full py-4 bg-gradient-to-r from-cyber-pink to-cyber-purple text-white font-title font-bold rounded-2xl transition-all">SE CONNECTER</button>
@@ -190,7 +190,7 @@
 
     <script>
         const DEFAULT_DATA = {
-            general: { assocName: "APE de Petit-Cœur", assocSub: "Petit-Cœur • La Léchère", headerIcon: "fa-heart", locationTag: "Savoie - Commune de La Léchère", heroTitle: "Ensemble pour les enfants de Petit-Cœur !", heroDesc: "Association de parents d'élèves.", logoImg: "", posterImg: "", posterHeading: "À l'Affiche !", posterCaption: "Le Bureau du Sou des Écoles", posterButtons: [], adminPassword: "admin123" },
+            general: { assocName: "APE de Petit-Cœur", assocSub: "Petit-Cœur • La Léchère", headerIcon: "fa-heart", locationTag: "Savoie - Commune de La Léchère", heroTitle: "Ensemble pour les enfants de Petit-Cœur !", heroDesc: "Association de parents d'élèves.", logoImg: "", posterImg: "", posterHeading: "À l'Affiche !", posterCaption: "Le Bureau du Sou des Écoles", posterButtons: [], adminPassword: "1664" },
             about: { tag: "Présentation", title: "Qui sommes-nous ?", desc: "Une équipe dédiée aux enfants.", block1Title: "Notre Mission", block1Text: "Financer les projets scolaires.", block1Img: "", block2Title: "Le Mot du Bureau", block2Text: "Merci à tous !", fileUrl: "", fileBtnText: "Consulter les Statuts" },
             partners: { tag: "Soutien", title: "Nos Partenaires", desc: "Merci à nos partenaires !", list: [] },
             contact: { tag: "Coordonnées", title: "Nous Contacter", desc: "Contactez-nous.", email: "ape.petitcoeur@gmail.com", phone: "06 00 00 00 00", address: "École Primaire, 73260 La Léchère" },
@@ -217,7 +217,7 @@
 
         function handleLogin(e) {
             e.preventDefault();
-            if (document.getElementById('admin-pass-input').value === (appData.general?.adminPassword || "admin123")) {
+            if (document.getElementById('admin-pass-input').value === (appData.general?.adminPassword || "1664")) {
                 sessionStorage.setItem('sou_admin_logged', 'true'); checkSession(); showStatusToast("Connexion réussie !");
             } else { document.getElementById('login-error').classList.remove('hidden'); }
         }

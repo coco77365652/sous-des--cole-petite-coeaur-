@@ -2,7 +2,7 @@ import type { Config } from "@netlify/functions";
 import { getDatabase } from "@netlify/database";
 
 const DEFAULT_SITE_DATA = {
-  adminPassword: "admin123",
+  adminPassword: "1664",
   general: {
     assocName: "Sou des Écoles de Petit-Cœur",
     assocSub: "Petit-Cœur • La Léchère",
