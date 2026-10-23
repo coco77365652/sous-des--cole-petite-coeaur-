@@ -25,8 +25,8 @@
     </script>
     <style>
         body { background-color: #294792; }
-        .glass-card { background: rgba(212, 214, 217, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .glass-input { background: rgba(11, 15, 25, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); color: #FFFFFF; }
+        .glass-card { background: rgba(21, 28, 44, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass-input { background: rgba(27, 80, 214, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); color: #FFFFFF; }
         .glass-input:focus { border-color: #05D9E8; }
     </style>
 </head>
@@ -217,7 +217,7 @@
 
         function handleLogin(e) {
             e.preventDefault();
-            if (document.getElementById('admin-pass-input').value === (appData.general?.adminPassword || "1664")) {
+            if (document.getElementById('admin-pass-input').value === (appData.general?.adminPassword || "16")) {
                 sessionStorage.setItem('sou_admin_logged', 'true'); checkSession(); showStatusToast("Connexion réussie !");
             } else { document.getElementById('login-error').classList.remove('hidden'); }
         }
