@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="fr" class="dark">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Studio Admin - APE Petit-Cœur</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SUPABASE_URL = 'https://gdbktvxramksondbobns.supabase.co';
@@ -14,176 +14,236 @@
         let _supabase = null;
         try { _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); } catch(e) {}
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
-                    colors: { cyber: { bg: '#0B0F19', card: '#151C2C', border: '#232D42', pink: '#FF2A6D', cyan: '#05D9E8', purple: '#7B2CBF', green: '#00F5D4' } },
-                    fontFamily: { title: ['Outfit', 'sans-serif'], sans: ['Plus Jakarta Sans', 'sans-serif'] }
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] }
                 }
             }
         }
     </script>
     <style>
-        body { background-color: #294792; }
-        .glass-card { background: rgba(21, 28, 44, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .glass-input { background: rgba(27, 80, 214, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); color: #FFFFFF; }
-        .glass-input:focus { border-color: #05D9E8; }
+        body { background-color: #F8FAFC; color: #334155; }
+        .admin-card { background: #FFFFFF; border: 1px solid #E2E8F0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+        .admin-input { background: #FFFFFF; border: 1px solid #CBD5E1; color: #0F172A; transition: all 0.2s; }
+        .admin-input:focus { border-color: #4F46E5; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15); outline: none; }
     </style>
 </head>
-<body class="font-sans text-slate-200 antialiased min-h-screen flex flex-col">
+<body class="font-sans antialiased min-h-screen flex flex-col text-slate-800">
 
-    <div id="status-toast" class="fixed top-6 right-6 z-50 transform translate-x-full opacity-0 transition-all duration-500 px-6 py-4 rounded-2xl glass-card flex items-center gap-4 border text-white font-title font-bold text-sm">
-        <div id="status-icon-bg" class="w-10 h-10 rounded-xl flex items-center justify-center text-lg"><i id="status-icon" class="fas"></i></div>
-        <div><p id="status-title" class="text-xs font-semibold uppercase tracking-wider text-slate-400">Notification</p><p id="status-message">Action effectuée</p></div>
+    <!-- Toast de notification -->
+    <div id="status-toast" class="fixed top-6 right-6 z-50 transform translate-x-full opacity-0 transition-all duration-300 px-5 py-3.5 rounded-xl bg-slate-900 text-white shadow-xl flex items-center gap-3 border border-slate-700 text-sm font-semibold">
+        <i id="status-icon" class="fas fa-circle-check text-emerald-400 text-lg"></i>
+        <span id="status-message">Action effectuée avec succès</span>
     </div>
 
-    <div id="login-view" class="fixed inset-0 z-50 bg-[#0B0F19]/95 backdrop-blur-2xl flex items-center justify-center p-4">
-        <div class="max-w-md w-full glass-card rounded-3xl p-8 border border-white/10 relative overflow-hidden shadow-2xl">
-            <div class="text-center mb-8 relative z-10">
-                <div class="w-16 h-16 bg-gradient-to-tr from-cyber-pink to-cyber-purple rounded-2xl flex items-center justify-center text-white mx-auto mb-4 text-2xl shadow-lg"><i class="fas fa-bolt"></i></div>
-                <h1 class="font-title text-3xl font-extrabold text-white tracking-wide">STUDIO ADMIN</h1>
-                <p class="text-slate-400 text-xs mt-1 font-medium">APE de Petit-Cœur</p>
-            </div>
-            <form onsubmit="handleLogin(event)" class="space-y-5 relative z-10">
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Code d'accès sécurisé</label>
-                    <input type="password" id="admin-pass-input" placeholder="admin" required class="w-full px-4 py-3.5 glass-input rounded-2xl focus:outline-none text-sm font-semibold">
-                    <p id="login-error" class="text-cyber-pink text-xs font-semibold mt-2 hidden"><i class="fas fa-circle-exclamation mr-1"></i> Mot de passe incorrect.</p>
+    <!-- Écran de Connexion -->
+    <div id="login-view" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="max-w-md w-full bg-white rounded-2xl p-8 border border-slate-200 shadow-2xl">
+            <div class="text-center mb-6">
+                <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl shadow-inner">
+                    <i class="fas fa-lock"></i>
                 </div>
-                <button type="submit" class="w-full py-4 bg-gradient-to-r from-cyber-pink to-cyber-purple text-white font-title font-bold rounded-2xl transition-all">SE CONNECTER</button>
+                <h1 class="text-2xl font-extrabold text-slate-900">Espace Administration</h1>
+                <p class="text-slate-500 text-xs mt-1">APE de Petit-Cœur</p>
+            </div>
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Mot de passe</label>
+                    <input type="password" id="admin-pass-input" placeholder="••••••••" required class="w-full px-4 py-3 admin-input rounded-xl text-sm font-medium">
+                    <p id="login-error" class="text-rose-600 text-xs font-medium mt-1.5 hidden"><i class="fas fa-circle-exclamation mr-1"></i> Mot de passe incorrect.</p>
+                </div>
+                <button type="submit" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-all shadow-md shadow-indigo-200 text-sm">SE CONNECTER</button>
             </form>
         </div>
     </div>
 
+    <!-- Tableau de bord Administration -->
     <div id="admin-dashboard" class="hidden min-h-screen flex flex-col md:flex-row">
-        <aside class="w-full md:w-72 bg-cyber-card/80 backdrop-blur-xl border-r border-cyber-border flex-shrink-0 flex flex-col justify-between p-6">
+        <!-- Sidebar Navigation -->
+        <aside class="w-full md:w-64 bg-slate-900 text-slate-300 flex-shrink-0 flex flex-col justify-between p-5">
             <div>
-                <div class="flex items-center gap-3 pb-6 border-b border-cyber-border">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyber-cyan to-brand-blue flex items-center justify-center text-slate-900 font-black text-xl"><i class="fas fa-cube"></i></div>
-                    <div><h2 class="font-title font-bold text-base text-white">APE Petit-Cœur</h2></div>
+                <div class="flex items-center gap-3 pb-5 border-b border-slate-800">
+                    <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-black text-lg"><i class="fas fa-shapes"></i></div>
+                    <div>
+                        <h2 class="font-bold text-sm text-white">APE Petit-Cœur</h2>
+                        <p class="text-[10px] text-slate-400">Panneau de gestion</p>
+                    </div>
                 </div>
-                <nav class="mt-8 space-y-2">
-                    <button type="button" onclick="switchTab('tab-general')" id="nav-tab-general" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm text-slate-400 hover:text-white hover:bg-white/5"><i class="fas fa-sliders w-5 text-cyber-cyan"></i><span>Textes Accueil</span></button>
-                    <button type="button" onclick="switchTab('tab-about')" id="nav-tab-about" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm text-slate-400 hover:text-white hover:bg-white/5"><i class="fas fa-users w-5 text-cyber-green"></i><span>Qui sommes-nous ?</span></button>
-                    <button type="button" onclick="switchTab('tab-images')" id="nav-tab-images" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm text-slate-400 hover:text-white hover:bg-white/5"><i class="fas fa-bullhorn w-5 text-cyber-pink"></i><span>Affiche & Docs</span></button>
-                    <button type="button" onclick="switchTab('tab-events')" id="nav-tab-events" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm text-slate-400 hover:text-white hover:bg-white/5"><i class="fas fa-calendar-star w-5 text-amber-400"></i><span>Événements</span></button>
-                    <button type="button" onclick="switchTab('tab-gallery')" id="nav-tab-gallery" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm text-slate-400 hover:text-white hover:bg-white/5"><i class="fas fa-photo-film w-5 text-cyber-purple"></i><span>Galerie Photos</span></button>
-                    <button type="button" onclick="switchTab('tab-partners')" id="nav-tab-partners" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm text-slate-400 hover:text-white hover:bg-white/5"><i class="fas fa-handshake w-5 text-emerald-400"></i><span>Nos Partenaires</span></button>
-                    <button type="button" onclick="switchTab('tab-contact')" id="nav-tab-contact" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl font-title font-semibold text-sm text-slate-400 hover:text-white hover:bg-white/5"><i class="fas fa-envelope w-5 text-sky-400"></i><span>Nous Contacter</span></button>
+                <nav class="mt-6 space-y-1">
+                    <button type="button" onclick="switchTab('tab-general')" id="nav-tab-general" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-sliders w-4 text-indigo-400"></i><span>Textes Accueil</span></button>
+                    <button type="button" onclick="switchTab('tab-about')" id="nav-tab-about" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-users w-4 text-emerald-400"></i><span>Qui sommes-nous ?</span></button>
+                    <button type="button" onclick="switchTab('tab-images')" id="nav-tab-images" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-bullhorn w-4 text-rose-400"></i><span>Affiche & Docs</span></button>
+                    <button type="button" onclick="switchTab('tab-events')" id="nav-tab-events" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-calendar-alt w-4 text-amber-400"></i><span>Événements</span></button>
+                    <button type="button" onclick="switchTab('tab-gallery')" id="nav-tab-gallery" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-images w-4 text-purple-400"></i><span>Galerie Photos</span></button>
+                    <button type="button" onclick="switchTab('tab-partners')" id="nav-tab-partners" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-handshake w-4 text-teal-400"></i><span>Nos Partenaires</span></button>
+                    <button type="button" onclick="switchTab('tab-contact')" id="nav-tab-contact" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-envelope w-4 text-sky-400"></i><span>Nous Contacter</span></button>
                 </nav>
             </div>
-            <div class="pt-6 border-t border-cyber-border space-y-3">
-                <a href="index.html" target="_blank" class="w-full flex items-center justify-between px-4 py-3 rounded-2xl text-xs font-title font-bold text-slate-300 glass-card"><span class="hover:text-cyber-cyan"><i class="fas fa-globe mr-2"></i> Voir le site public</span></a>
-                <button type="button" onclick="logoutAdmin()" class="w-full flex items-center gap-2 px-4 py-3 rounded-2xl text-xs font-title font-bold text-cyber-pink hover:bg-cyber-pink/10"><i class="fas fa-power-off"></i><span>Déconnexion</span></button>
+            <div class="pt-5 border-t border-slate-800 space-y-2">
+                <a href="index.html" target="_blank" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 transition-colors">
+                    <span><i class="fas fa-globe mr-2 text-indigo-400"></i>Voir le site</span>
+                    <i class="fas fa-external-link-alt text-[10px] text-slate-400"></i>
+                </a>
+                <button type="button" onclick="logoutAdmin()" class="w-full flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-rose-400 hover:bg-rose-500/10 transition-colors"><i class="fas fa-sign-out-alt"></i><span>Déconnexion</span></button>
             </div>
         </aside>
 
-        <main class="flex-1 p-6 md:p-10 overflow-y-auto">
+        <!-- Main Content Area -->
+        <main class="flex-1 p-6 md:p-8 overflow-y-auto max-w-6xl mx-auto w-full">
+            
+            <!-- Tab: General -->
             <div id="tab-general" class="tab-content hidden space-y-6">
-                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
-                    <h3 class="font-title text-lg font-bold text-white border-b border-cyber-border pb-4">Textes d'Accueil & En-tête</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div><label class="block text-xs font-bold uppercase text-slate-400 mb-2">Nom Association</label><input type="text" id="cfg-siteName" class="w-full px-4 py-3 glass-input rounded-2xl text-sm"></div>
-                        <div><label class="block text-xs font-bold uppercase text-slate-400 mb-2">Sous-titre</label><input type="text" id="cfg-siteLocation" class="w-full px-4 py-3 glass-input rounded-2xl text-sm"></div>
+                <div class="admin-card rounded-2xl p-6 space-y-5">
+                    <h3 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-3"><i class="fas fa-sliders text-indigo-600 mr-2"></i>Textes d'Accueil & En-tête</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div><label class="block text-xs font-bold text-slate-600 mb-1">Nom Association</label><input type="text" id="cfg-siteName" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-sm"></div>
+                        <div><label class="block text-xs font-bold text-slate-600 mb-1">Sous-titre / Ville</label><input type="text" id="cfg-siteLocation" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-sm"></div>
                     </div>
-                    <div class="p-4 bg-cyber-card rounded-2xl border border-cyber-border space-y-3">
-                        <label class="block text-xs font-bold uppercase text-slate-400">Petit Logo d'en-tête (Carré jaune haut gauche)</label>
-                        <div class="flex gap-3">
-                            <input type="text" id="cfg-headerIcon" placeholder="fa-heart ou URL image" class="w-full px-4 py-3 glass-input rounded-2xl text-sm">
-                            <label class="cursor-pointer px-4 py-3 bg-cyber-cyan text-slate-900 font-bold text-xs rounded-2xl flex items-center shrink-0">
-                                Img <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-headerIcon', 200)">
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+                        <label class="block text-xs font-bold text-slate-600">Logo d'en-tête (Icône ou URL image)</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="cfg-headerIcon" placeholder="fa-heart ou URL" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-sm">
+                            <label class="cursor-pointer px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded-xl flex items-center shrink-0 shadow-sm">
+                                Charger <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-headerIcon', 200)">
                             </label>
                         </div>
                     </div>
                     <div class="space-y-4">
-                        <div><label class="block text-xs font-bold uppercase text-slate-400 mb-2">Tag Supérieur</label><input type="text" id="cfg-locationTag" class="w-full px-4 py-3 glass-input rounded-2xl text-sm"></div>
-                        <div><label class="block text-xs font-bold uppercase text-slate-400 mb-2">Grand Titre</label><input type="text" id="cfg-heroTitle" class="w-full px-4 py-3 glass-input rounded-2xl text-sm text-cyber-cyan"></div>
-                        <div><label class="block text-xs font-bold uppercase text-slate-400 mb-2">Description</label><textarea id="cfg-heroDesc" rows="3" class="w-full px-4 py-3 glass-input rounded-2xl text-sm"></textarea></div>
+                        <div><label class="block text-xs font-bold text-slate-600 mb-1">Tag Supérieur</label><input type="text" id="cfg-locationTag" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-sm"></div>
+                        <div><label class="block text-xs font-bold text-slate-600 mb-1">Grand Titre</label><input type="text" id="cfg-heroTitle" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-sm font-bold text-indigo-600"></div>
+                        <div><label class="block text-xs font-bold text-slate-600 mb-1">Description</label><textarea id="cfg-heroDesc" rows="3" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-sm"></textarea></div>
                     </div>
                 </div>
             </div>
 
+            <!-- Tab: About -->
             <div id="tab-about" class="tab-content hidden space-y-6">
-                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
-                    <h3 class="font-title text-lg font-bold text-white border-b border-cyber-border pb-4">Qui sommes-nous ? & Statuts</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div><label class="block text-xs font-bold uppercase text-slate-400 mb-2">Tag</label><input type="text" id="cfg-aboutTag" class="w-full px-4 py-3 glass-input rounded-2xl text-sm"></div>
-                        <div><label class="block text-xs font-bold uppercase text-slate-400 mb-2">Titre</label><input type="text" id="cfg-aboutTitle" class="w-full px-4 py-3 glass-input rounded-2xl text-sm text-cyber-green"></div>
+                <div class="admin-card rounded-2xl p-6 space-y-5">
+                    <h3 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-3"><i class="fas fa-users text-emerald-600 mr-2"></i>Qui sommes-nous & Statuts</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div><label class="block text-xs font-bold text-slate-600 mb-1">Tag Section</label><input type="text" id="cfg-aboutTag" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-sm"></div>
+                        <div><label class="block text-xs font-bold text-slate-600 mb-1">Titre Principal</label><input type="text" id="cfg-aboutTitle" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-sm font-bold text-emerald-600"></div>
                     </div>
-                    <div><label class="block text-xs font-bold uppercase text-slate-400 mb-2">Intro</label><textarea id="cfg-aboutDesc" rows="2" class="w-full px-4 py-3 glass-input rounded-2xl text-sm"></textarea></div>
-                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
-                        <h4 class="font-title font-bold text-white text-sm">Bloc 1 (Mission)</h4>
-                        <input type="text" id="cfg-aboutBlock1Title" class="w-full px-3 py-2 glass-input rounded-xl text-xs mb-2">
-                        <textarea id="cfg-aboutBlock1Text" rows="3" class="w-full px-3 py-2 glass-input rounded-xl text-xs"></textarea>
-                        <div class="flex gap-3"><input type="text" id="cfg-aboutBlock1Img" class="w-full px-3 py-2 glass-input rounded-xl text-xs"><label class="cursor-pointer px-4 py-2 bg-cyber-cyan text-slate-900 font-bold text-xs rounded-xl flex items-center">Photo<input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-aboutBlock1Img', 600)"></label></div>
+                    <div><label class="block text-xs font-bold text-slate-600 mb-1">Introduction</label><textarea id="cfg-aboutDesc" rows="2" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-sm"></textarea></div>
+                    
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                        <h4 class="font-bold text-slate-800 text-xs">Bloc 1 : Notre Mission</h4>
+                        <input type="text" id="cfg-aboutBlock1Title" placeholder="Titre Bloc 1" class="w-full px-3 py-2 admin-input rounded-lg text-xs font-semibold">
+                        <textarea id="cfg-aboutBlock1Text" rows="3" placeholder="Texte de la mission..." class="w-full px-3 py-2 admin-input rounded-lg text-xs"></textarea>
+                        <div class="flex gap-2">
+                            <input type="text" id="cfg-aboutBlock1Img" placeholder="URL Image" class="w-full px-3 py-2 admin-input rounded-lg text-xs">
+                            <label class="cursor-pointer px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white font-semibold text-xs rounded-lg flex items-center shrink-0">Photo <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-aboutBlock1Img', 600)"></label>
+                        </div>
                     </div>
-                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
-                        <h4 class="font-title font-bold text-white text-sm">Bloc 2 (Mot du Bureau & Statuts)</h4>
-                        <input type="text" id="cfg-aboutBlock2Title" class="w-full px-3 py-2 glass-input rounded-xl text-xs mb-2">
-                        <textarea id="cfg-aboutBlock2Text" rows="3" class="w-full px-3 py-2 glass-input rounded-xl text-xs"></textarea>
-                        <input type="text" id="cfg-aboutFileBtnText" placeholder="Texte bouton PDF" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
-                        <div class="flex gap-3"><input type="text" id="cfg-aboutFileUrl" placeholder="URL PDF" class="w-full px-3 py-2 glass-input rounded-xl text-xs"><label class="cursor-pointer px-4 py-2 bg-cyber-pink text-white font-bold text-xs rounded-xl flex items-center">PDF<input type="file" accept="application/pdf,image/*" class="hidden" onchange="processGenericFile(event, 'cfg-aboutFileUrl')"></label></div>
+
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                        <h4 class="font-bold text-slate-800 text-xs">Bloc 2 : Le Mot du Bureau & Statuts</h4>
+                        <input type="text" id="cfg-aboutBlock2Title" placeholder="Titre Bloc 2" class="w-full px-3 py-2 admin-input rounded-lg text-xs font-semibold">
+                        <textarea id="cfg-aboutBlock2Text" rows="3" placeholder="Texte du mot du bureau..." class="w-full px-3 py-2 admin-input rounded-lg text-xs"></textarea>
+                        <input type="text" id="cfg-aboutFileBtnText" placeholder="Texte du bouton PDF (ex: Télécharger Statuts)" class="w-full px-3 py-2 admin-input rounded-lg text-xs">
+                        <div class="flex gap-2">
+                            <input type="text" id="cfg-aboutFileUrl" placeholder="URL ou fichier PDF" class="w-full px-3 py-2 admin-input rounded-lg text-xs">
+                            <label class="cursor-pointer px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded-lg flex items-center shrink-0">Joindre PDF <input type="file" accept="application/pdf,image/*" class="hidden" onchange="processGenericFile(event, 'cfg-aboutFileUrl')"></label>
+                        </div>
                     </div>
                 </div>
             </div>
 
+            <!-- Tab: Posters & Images -->
             <div id="tab-images" class="tab-content hidden space-y-6">
-                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
-                    <h3 class="font-title text-lg font-bold text-white border-b border-cyber-border pb-4">Affiches & Boutons</h3>
-                    <div class="p-6 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
-                        <h4 class="font-title font-bold text-white text-sm">Logo APE</h4>
-                        <div class="flex gap-3"><input type="text" id="cfg-logoImg" class="w-full px-4 py-3 glass-input rounded-2xl text-xs"><label class="cursor-pointer px-5 py-3 bg-cyber-pink text-white font-bold text-xs rounded-2xl flex items-center">Logo<input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-logoImg', 500)"></label></div>
+                <div class="admin-card rounded-2xl p-6 space-y-5">
+                    <h3 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-3"><i class="fas fa-bullhorn text-rose-600 mr-2"></i>Affiches & Documents</h3>
+                    
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                        <h4 class="font-bold text-slate-800 text-xs">Logo de l'Association</h4>
+                        <div class="flex gap-2">
+                            <input type="text" id="cfg-logoImg" placeholder="URL de l'image" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs">
+                            <label class="cursor-pointer px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs rounded-xl flex items-center shrink-0 shadow-sm">Changer Logo <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-logoImg', 500)"></label>
+                        </div>
                     </div>
-                    <div class="p-6 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
-                        <h4 class="font-title font-bold text-white text-sm">Affiche Principale</h4>
-                        <div class="grid grid-cols-2 gap-3"><input type="text" id="cfg-posterHeading" placeholder="Titre" class="px-3 py-2 glass-input rounded-xl text-xs"><input type="text" id="cfg-posterCaption" placeholder="Légende" class="px-3 py-2 glass-input rounded-xl text-xs"></div>
-                        <div class="flex gap-3"><input type="text" id="cfg-posterImg" class="w-full px-4 py-3 glass-input rounded-2xl text-xs"><label class="cursor-pointer px-5 py-3 bg-cyber-cyan text-slate-900 font-bold text-xs rounded-2xl flex items-center">Image<input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-posterImg', 700)"></label></div>
+
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                        <h4 class="font-bold text-slate-800 text-xs">Affiche Principale</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input type="text" id="cfg-posterHeading" placeholder="Titre de l'affiche" class="px-3 py-2 admin-input rounded-lg text-xs">
+                            <input type="text" id="cfg-posterCaption" placeholder="Légende" class="px-3 py-2 admin-input rounded-lg text-xs">
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" id="cfg-posterImg" placeholder="URL de l'image" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs">
+                            <label class="cursor-pointer px-4 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-semibold text-xs rounded-xl flex items-center shrink-0 shadow-sm">Changer Affiche <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-posterImg', 700)"></label>
+                        </div>
                     </div>
-                    <div class="p-6 bg-cyber-card rounded-2xl border border-cyber-border space-y-4">
-                        <div class="flex justify-between items-center border-b border-cyber-border pb-3"><h4 class="font-title font-bold text-white text-sm">Boutons sous l'affiche</h4><button type="button" onclick="addPosterBtnItem()" class="px-4 py-2 bg-amber-400 text-slate-900 font-bold text-xs rounded-xl">+ Ajouter</button></div>
-                        <div id="poster-buttons-admin-container" class="space-y-3"></div>
+
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                        <div class="flex justify-between items-center pb-2 border-b border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-xs">Boutons de téléchargement sous l'affiche</h4>
+                            <button type="button" onclick="addPosterBtnItem()" class="px-3 py-1.5 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 font-bold text-xs rounded-lg transition-colors">+ Ajouter un bouton</button>
+                        </div>
+                        <div id="poster-buttons-admin-container" class="space-y-2"></div>
                     </div>
                 </div>
             </div>
 
+            <!-- Tab: Events -->
             <div id="tab-events" class="tab-content hidden space-y-6">
-                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
-                    <div class="flex justify-between items-center border-b border-cyber-border pb-4"><h3 class="font-title text-lg font-bold text-white">Événements</h3><button type="button" onclick="addUpcomingEvent()" class="px-4 py-2 bg-amber-400 text-slate-900 font-bold text-xs rounded-xl">+ Ajouter</button></div>
-                    <div id="upcoming-events-container" class="space-y-4"></div>
-                </div>
-            </div>
-
-            <div id="tab-gallery" class="tab-content hidden space-y-6">
-                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
-                    <div class="flex justify-between items-center border-b border-cyber-border pb-4">
-                        <h3 class="font-title text-lg font-bold text-white">Galerie Photos</h3>
-                        <button type="button" onclick="addPastEvent()" class="px-4 py-2 bg-cyber-purple text-white font-bold text-xs rounded-xl">+ Ajouter un Album</button>
+                <div class="admin-card rounded-2xl p-6 space-y-5">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                        <h3 class="text-base font-bold text-slate-900"><i class="fas fa-calendar-alt text-amber-500 mr-2"></i>Événements à venir</h3>
+                        <button type="button" onclick="addUpcomingEvent()" class="px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-xl transition-colors shadow-sm">+ Nouvel Événement</button>
                     </div>
-                    <div id="past-events-container" class="space-y-6"></div>
+                    <div id="upcoming-events-container" class="space-y-3"></div>
                 </div>
             </div>
 
+            <!-- Tab: Gallery -->
+            <div id="tab-gallery" class="tab-content hidden space-y-6">
+                <div class="admin-card rounded-2xl p-6 space-y-5">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                        <h3 class="text-base font-bold text-slate-900"><i class="fas fa-images text-purple-600 mr-2"></i>Galerie Photos</h3>
+                        <button type="button" onclick="addPastEvent()" class="px-3.5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl transition-colors shadow-sm">+ Nouvel Album</button>
+                    </div>
+                    <div id="past-events-container" class="space-y-4"></div>
+                </div>
+            </div>
+
+            <!-- Tab: Partners -->
             <div id="tab-partners" class="tab-content hidden space-y-6">
-                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
-                    <div class="flex justify-between items-center border-b border-cyber-border pb-4"><h3 class="font-title text-lg font-bold text-white">Nos Partenaires</h3><button type="button" onclick="addPartnerItem()" class="px-4 py-2 bg-emerald-400 text-slate-900 font-bold text-xs rounded-xl">+ Ajouter</button></div>
-                    <div class="grid grid-cols-2 gap-6"><input type="text" id="cfg-partnersTag" placeholder="Tag" class="px-4 py-3 glass-input rounded-2xl text-sm"><input type="text" id="cfg-partnersTitle" placeholder="Titre" class="px-4 py-3 glass-input rounded-2xl text-sm text-emerald-400 font-bold"></div>
-                    <textarea id="cfg-partnersDesc" rows="2" placeholder="Description générale" class="w-full px-4 py-3 glass-input rounded-2xl text-sm"></textarea>
-                    <div id="partners-admin-container" class="space-y-4 pt-4 border-t border-cyber-border"></div>
+                <div class="admin-card rounded-2xl p-6 space-y-5">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                        <h3 class="text-base font-bold text-slate-900"><i class="fas fa-handshake text-teal-600 mr-2"></i>Nos Partenaires</h3>
+                        <button type="button" onclick="addPartnerItem()" class="px-3.5 py-2 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs rounded-xl transition-colors shadow-sm">+ Ajouter Partenaire</button>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <input type="text" id="cfg-partnersTag" placeholder="Tag Section" class="px-3.5 py-2.5 admin-input rounded-xl text-xs">
+                        <input type="text" id="cfg-partnersTitle" placeholder="Titre Section" class="px-3.5 py-2.5 admin-input rounded-xl text-xs font-bold text-teal-600">
+                    </div>
+                    <textarea id="cfg-partnersDesc" rows="2" placeholder="Description générale" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs"></textarea>
+                    <div id="partners-admin-container" class="space-y-3 pt-3 border-t border-slate-100"></div>
                 </div>
             </div>
 
+            <!-- Tab: Contact -->
             <div id="tab-contact" class="tab-content hidden space-y-6">
-                <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
-                    <h3 class="font-title text-lg font-bold text-white border-b border-cyber-border pb-4">Contact</h3>
-                    <div class="grid grid-cols-2 gap-6"><input type="text" id="cfg-contactTag" class="px-4 py-3 glass-input rounded-2xl text-sm"><input type="text" id="cfg-contactTitle" class="px-4 py-3 glass-input rounded-2xl text-sm text-sky-400 font-bold"></div>
-                    <textarea id="cfg-contactDesc" rows="2" class="w-full px-4 py-3 glass-input rounded-2xl text-sm"></textarea>
-                    <div class="grid grid-cols-2 gap-4"><input type="email" id="cfg-contactEmail" placeholder="Email" class="px-3 py-2 glass-input rounded-xl text-xs"><input type="text" id="cfg-contactPhone" placeholder="Téléphone" class="px-3 py-2 glass-input rounded-xl text-xs"></div>
-                    <input type="text" id="cfg-contactAddress" placeholder="Adresse" class="w-full px-3 py-2 glass-input rounded-xl text-xs">
+                <div class="admin-card rounded-2xl p-6 space-y-5">
+                    <h3 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-3"><i class="fas fa-envelope text-sky-500 mr-2"></i>Informations de Contact</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <input type="text" id="cfg-contactTag" placeholder="Tag Section" class="px-3.5 py-2.5 admin-input rounded-xl text-xs">
+                        <input type="text" id="cfg-contactTitle" placeholder="Titre Section" class="px-3.5 py-2.5 admin-input rounded-xl text-xs font-bold text-sky-600">
+                    </div>
+                    <textarea id="cfg-contactDesc" rows="2" placeholder="Description courte..." class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs"></textarea>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div><label class="block text-xs font-bold text-slate-600 mb-1">Email</label><input type="email" id="cfg-contactEmail" placeholder="Email" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs"></div>
+                        <div><label class="block text-xs font-bold text-slate-600 mb-1">Téléphone</label><input type="text" id="cfg-contactPhone" placeholder="Téléphone" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs"></div>
+                    </div>
+                    <div><label class="block text-xs font-bold text-slate-600 mb-1">Adresse</label><input type="text" id="cfg-contactAddress" placeholder="Adresse complète" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs"></div>
                 </div>
             </div>
 
-            <div class="mt-8 pt-6 border-t border-cyber-border flex justify-end">
-                <button type="button" onclick="globalSaveData()" id="save-btn" class="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-cyber-cyan via-brand-blue to-cyber-pink text-slate-900 font-title font-black text-sm uppercase rounded-2xl shadow-2xl transition-all cursor-pointer">ENREGISTRER TOUTES LES MODIFICATIONS</button>
+            <!-- Bouton d'enregistrement Global -->
+            <div class="pt-4 border-t border-slate-200 flex justify-end">
+                <button type="button" onclick="globalSaveData()" id="save-btn" class="w-full sm:w-auto px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-indigo-200 transition-all cursor-pointer">
+                    <i class="fas fa-save mr-2"></i>Enregistrer les modifications
+                </button>
             </div>
         </main>
     </div>
@@ -217,18 +277,24 @@
 
         function handleLogin(e) {
             e.preventDefault();
-            if (document.getElementById('admin-pass-input').value === (appData.general?.adminPassword || "16")) {
-                sessionStorage.setItem('sou_admin_logged', 'true'); checkSession(); showStatusToast("Connexion réussie !");
-            } else { document.getElementById('login-error').classList.remove('hidden'); }
+            const inputPass = document.getElementById('admin-pass-input').value;
+            const requiredPass = appData.general?.adminPassword || "1664";
+            if (inputPass === requiredPass) {
+                sessionStorage.setItem('sou_admin_logged', 'true'); 
+                checkSession(); 
+                showStatusToast("Connexion réussie !");
+            } else { 
+                document.getElementById('login-error').classList.remove('hidden'); 
+            }
         }
 
         function logoutAdmin() { sessionStorage.removeItem('sou_admin_logged'); checkSession(); }
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-white/10', 'text-white'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-slate-800', 'text-white'));
             document.getElementById(tabId)?.classList.remove('hidden');
-            document.getElementById('nav-' + tabId)?.classList.add('bg-white/10', 'text-white');
+            document.getElementById('nav-' + tabId)?.classList.add('bg-slate-800', 'text-white');
         }
 
         function renderUI() {
@@ -250,16 +316,16 @@
             const container = document.getElementById('partners-admin-container'); if (!container) return; container.innerHTML = '';
             (appData.partners.list || []).forEach((p, index) => {
                 container.innerHTML += `
-                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-4 relative partner-item">
-                        <button type="button" onclick="appData.partners.list.splice(${index},1);renderPartnersAdmin()" class="absolute top-4 right-4 text-cyber-pink text-xs font-bold"><i class="fas fa-trash-can mr-1"></i> Supprimer</button>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-24">
-                            <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Nom</label><input type="text" value="${p.name || ''}" class="p-name w-full px-3 py-2 glass-input rounded-xl text-xs font-bold"></div>
-                            <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Site Web</label><input type="text" value="${p.link || ''}" class="p-link w-full px-3 py-2 glass-input rounded-xl text-xs"></div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3 relative partner-item">
+                        <button type="button" onclick="appData.partners.list.splice(${index},1);renderPartnersAdmin()" class="absolute top-3 right-3 text-rose-600 hover:text-rose-700 text-xs font-semibold"><i class="fas fa-trash mr-1"></i>Supprimer</button>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-20">
+                            <div><label class="block text-[10px] font-bold text-slate-500 mb-1">Nom du Partenaire</label><input type="text" value="${p.name || ''}" class="p-name w-full px-3 py-2 admin-input rounded-lg text-xs font-bold"></div>
+                            <div><label class="block text-[10px] font-bold text-slate-500 mb-1">Site Web</label><input type="text" value="${p.link || ''}" class="p-link w-full px-3 py-2 admin-input rounded-lg text-xs"></div>
                         </div>
-                        <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Description</label><input type="text" value="${p.desc || ''}" class="p-desc w-full px-3 py-2 glass-input rounded-xl text-xs"></div>
-                        <div class="flex gap-3">
-                            <input type="text" id="partner-logo-${index}" value="${p.logo || ''}" class="p-logo w-full px-3 py-2 glass-input rounded-xl text-xs">
-                            <label class="cursor-pointer px-3 py-2 bg-emerald-400 text-slate-900 font-bold text-xs rounded-xl flex items-center shrink-0">Logo<input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'partner-logo-${index}', 300)"></label>
+                        <div><label class="block text-[10px] font-bold text-slate-500 mb-1">Description</label><input type="text" value="${p.desc || ''}" class="p-desc w-full px-3 py-2 admin-input rounded-lg text-xs"></div>
+                        <div class="flex gap-2">
+                            <input type="text" id="partner-logo-${index}" value="${p.logo || ''}" class="p-logo w-full px-3 py-2 admin-input rounded-lg text-xs">
+                            <label class="cursor-pointer px-3 py-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold text-xs rounded-lg flex items-center shrink-0">Logo<input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'partner-logo-${index}', 300)"></label>
                         </div>
                     </div>`;
             });
@@ -270,10 +336,12 @@
             const container = document.getElementById('poster-buttons-admin-container'); if (!container) return; container.innerHTML = '';
             (appData.general.posterButtons || []).forEach((b, index) => {
                 container.innerHTML += `
-                    <div class="p-4 bg-cyber-bg rounded-2xl border border-cyber-border space-y-3 relative poster-btn-item">
-                        <button type="button" onclick="appData.general.posterButtons.splice(${index},1);renderPosterButtonsAdmin()" class="absolute top-4 right-4 text-cyber-pink text-xs font-bold"><i class="fas fa-trash-can mr-1"></i> Supprimer</button>
-                        <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Texte</label><input type="text" value="${b.label || ''}" class="pb-label w-full px-3 py-2 glass-input rounded-xl text-xs font-bold"></div>
-                        <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Lien / URL</label><input type="text" value="${b.url || ''}" class="pb-url w-full px-3 py-2 glass-input rounded-xl text-xs"></div>
+                    <div class="p-3 bg-white rounded-lg border border-slate-200 flex items-center gap-3 relative poster-btn-item">
+                        <div class="flex-1 space-y-1">
+                            <input type="text" value="${b.label || ''}" placeholder="Intitulé bouton" class="pb-label w-full px-2.5 py-1.5 admin-input rounded-md text-xs font-bold">
+                            <input type="text" value="${b.url || ''}" placeholder="Lien ou document" class="pb-url w-full px-2.5 py-1.5 admin-input rounded-md text-xs">
+                        </div>
+                        <button type="button" onclick="appData.general.posterButtons.splice(${index},1);renderPosterButtonsAdmin()" class="text-rose-600 hover:text-rose-700 p-2 text-xs font-bold"><i class="fas fa-trash"></i></button>
                     </div>`;
             });
         }
@@ -283,41 +351,41 @@
             const container = document.getElementById('upcoming-events-container'); if (!container) return; container.innerHTML = '';
             (appData.upcomingEvents || []).forEach((ev, index) => {
                 container.innerHTML += `
-                    <div class="p-4 bg-cyber-card rounded-2xl border border-cyber-border space-y-3 relative event-item">
-                        <button type="button" onclick="appData.upcomingEvents.splice(${index},1);renderUpcomingEvents()" class="absolute top-4 right-4 text-cyber-pink text-xs font-bold">Supprimer</button>
-                        <div class="grid grid-cols-2 gap-3 pr-20">
-                            <input type="text" value="${ev.title || ''}" class="ev-title px-3 py-2 glass-input rounded-xl text-xs font-bold">
-                            <input type="text" value="${ev.date || ''}" class="ev-date px-3 py-2 glass-input rounded-xl text-xs">
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3 relative event-item">
+                        <button type="button" onclick="appData.upcomingEvents.splice(${index},1);renderUpcomingEvents()" class="absolute top-3 right-3 text-rose-600 hover:text-rose-700 text-xs font-semibold"><i class="fas fa-trash mr-1"></i>Supprimer</button>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-20">
+                            <div><label class="block text-[10px] font-bold text-slate-500 mb-1">Titre de l'événement</label><input type="text" value="${ev.title || ''}" class="ev-title px-3 py-2 admin-input rounded-lg text-xs font-bold w-full"></div>
+                            <div><label class="block text-[10px] font-bold text-slate-500 mb-1">Date / Horaires</label><input type="text" value="${ev.date || ''}" class="ev-date px-3 py-2 admin-input rounded-lg text-xs w-full"></div>
                         </div>
-                        <textarea rows="2" class="ev-desc w-full px-3 py-2 glass-input rounded-xl text-xs">${ev.desc || ''}</textarea>
+                        <textarea rows="2" placeholder="Description de l'événement..." class="ev-desc w-full px-3 py-2 admin-input rounded-lg text-xs">${ev.desc || ''}</textarea>
                     </div>`;
             });
         }
-        function addUpcomingEvent() { (appData.upcomingEvents = appData.upcomingEvents || []).push({ title: "Nouvel Événement", date: "Bientôt", desc: "" }); renderUpcomingEvents(); }
+        function addUpcomingEvent() { (appData.upcomingEvents = appData.upcomingEvents || []).push({ title: "Nouvel Événement", date: "Prochainement", desc: "" }); renderUpcomingEvents(); }
 
         function renderPastEvents() {
             const container = document.getElementById('past-events-container'); if (!container) return; container.innerHTML = '';
             (appData.pastEvents || []).forEach((pev, index) => {
                 let photosHTML = (pev.photos || []).map((pUrl, pIdx) => `
                     <div class="relative group">
-                        <img src="${pUrl}" class="h-20 w-full object-cover rounded-xl border border-white/10">
-                        <button type="button" onclick="appData.pastEvents[${index}].photos.splice(${pIdx},1);renderPastEvents()" class="absolute top-1 right-1 bg-rose-600 text-white w-5 h-5 rounded-full text-[9px] font-bold shadow">✕</button>
+                        <img src="${pUrl}" class="h-20 w-full object-cover rounded-lg border border-slate-200">
+                        <button type="button" onclick="appData.pastEvents[${index}].photos.splice(${pIdx},1);renderPastEvents()" class="absolute -top-1 -right-1 bg-rose-600 text-white w-5 h-5 rounded-full text-[10px] font-bold shadow flex items-center justify-center">✕</button>
                     </div>`).join('');
 
                 container.innerHTML += `
-                    <div class="p-5 bg-cyber-card rounded-2xl border border-cyber-border space-y-4 relative gallery-item">
-                        <button type="button" onclick="appData.pastEvents.splice(${index},1);renderPastEvents()" class="absolute top-4 right-4 text-cyber-pink text-xs font-bold"><i class="fas fa-trash-can mr-1"></i> Supprimer Album</button>
-                        <div class="grid grid-cols-2 gap-3 pr-28">
-                            <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Titre de l'Album</label><input type="text" value="${pev.title || ''}" class="gal-title px-3 py-2 glass-input rounded-xl text-xs font-bold w-full"></div>
-                            <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Date</label><input type="text" value="${pev.date || ''}" class="gal-date px-3 py-2 glass-input rounded-xl text-xs w-full"></div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3 relative gallery-item">
+                        <button type="button" onclick="appData.pastEvents.splice(${index},1);renderPastEvents()" class="absolute top-3 right-3 text-rose-600 hover:text-rose-700 text-xs font-semibold"><i class="fas fa-trash mr-1"></i>Supprimer Album</button>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-28">
+                            <div><label class="block text-[10px] font-bold text-slate-500 mb-1">Titre de l'Album</label><input type="text" value="${pev.title || ''}" class="gal-title px-3 py-2 admin-input rounded-lg text-xs font-bold w-full"></div>
+                            <div><label class="block text-[10px] font-bold text-slate-500 mb-1">Date</label><input type="text" value="${pev.date || ''}" class="gal-date px-3 py-2 admin-input rounded-lg text-xs w-full"></div>
                         </div>
-                        <div><label class="block text-[10px] font-bold text-slate-400 mb-1">Description</label><textarea rows="2" class="gal-desc w-full px-3 py-2 glass-input rounded-xl text-xs">${pev.desc || ''}</textarea></div>
-                        <div class="pt-2 border-t border-cyber-border/40">
+                        <div><label class="block text-[10px] font-bold text-slate-500 mb-1">Description</label><textarea rows="2" class="gal-desc w-full px-3 py-2 admin-input rounded-lg text-xs">${pev.desc || ''}</textarea></div>
+                        <div class="pt-2 border-t border-slate-200">
                             <div class="flex justify-between items-center mb-2">
-                                <span class="text-xs font-bold text-cyber-purple">Photos (${(pev.photos || []).length})</span>
-                                <label class="cursor-pointer px-3 py-1.5 bg-cyber-purple text-white font-bold text-xs rounded-xl flex items-center gap-1">+ Photo <input type="file" accept="image/*" class="hidden" onchange="addPhotoToAlbum(event, ${index})"></label>
+                                <span class="text-xs font-bold text-purple-700">Photos (${(pev.photos || []).length})</span>
+                                <label class="cursor-pointer px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white font-semibold text-xs rounded-lg flex items-center gap-1">+ Photo <input type="file" accept="image/*" class="hidden" onchange="addPhotoToAlbum(event, ${index})"></label>
                             </div>
-                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">${photosHTML}</div>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">${photosHTML}</div>
                         </div>
                     </div>`;
             });
@@ -338,13 +406,13 @@
                     if (!appData.pastEvents[index].photos) appData.pastEvents[index].photos = [];
                     appData.pastEvents[index].photos.push(canvas.toDataURL('image/jpeg', 0.65));
                     renderPastEvents();
-                    showStatusToast("Photo ajoutée ! N'oubliez pas d'enregistrer.");
+                    showStatusToast("Photo ajoutée ! Pensez à enregistrer.");
                 }; img.src = evt.target.result;
             }; r.readAsDataURL(f);
         }
 
         async function globalSaveData() {
-            const btn = document.getElementById('save-btn'); btn.disabled = true; btn.innerHTML = 'ENREGISTREMENT...';
+            const btn = document.getElementById('save-btn'); btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Enregistrement...';
             try {
                 const getV = (id) => document.getElementById(id)?.value || '';
                 appData.general.assocName = getV('cfg-siteName'); appData.general.assocSub = getV('cfg-siteLocation'); appData.general.headerIcon = getV('cfg-headerIcon'); appData.general.locationTag = getV('cfg-locationTag'); appData.general.heroTitle = getV('cfg-heroTitle'); appData.general.heroDesc = getV('cfg-heroDesc'); appData.general.logoImg = getV('cfg-logoImg'); appData.general.posterImg = getV('cfg-posterImg'); appData.general.posterHeading = getV('cfg-posterHeading'); appData.general.posterCaption = getV('cfg-posterCaption');
@@ -400,13 +468,13 @@
                     await _supabase.from('site_content').upsert({ id: 1, content: appData });
                 }
 
-                showStatusToast("Sauvegarde réussie !");
+                showStatusToast("Modifications enregistrées !");
             } catch (err) { 
                 console.error(err);
-                showStatusToast("Erreur de sauvegarde", "error"); 
+                showStatusToast("Erreur lors de la sauvegarde", "error"); 
             } finally { 
                 btn.disabled = false; 
-                btn.innerHTML = 'ENREGISTRER TOUTES LES MODIFICATIONS'; 
+                btn.innerHTML = '<i class="fas fa-save mr-2"></i>Enregistrer les modifications'; 
             }
         }
 
@@ -428,7 +496,7 @@
         function processGenericFile(e, targetId) { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = (evt) => { document.getElementById(targetId).value = evt.target.result; showStatusToast("Fichier chargé !"); }; r.readAsDataURL(f); }
         function processImageCompressed(e, targetId, maxPx = 500) {
             const f = e.target.files[0]; if (!f) return;
-            showStatusToast("Optimisation...", "info");
+            showStatusToast("Optimisation de l'image...", "info");
             const r = new FileReader(); r.onload = (evt) => {
                 const img = new Image(); img.onload = () => {
                     const canvas = document.createElement('canvas');
@@ -439,13 +507,14 @@
                     }
                     canvas.width = w; canvas.height = h; canvas.getContext('2d').drawImage(img, 0, 0, w, h);
                     document.getElementById(targetId).value = canvas.toDataURL('image/jpeg', 0.7);
-                    showStatusToast("Image optimisée !");
+                    showStatusToast("Image chargée avec succès !");
                 }; img.src = evt.target.result;
             }; r.readAsDataURL(f);
         }
 
         function showStatusToast(msg, type = "success") {
-            const t = document.getElementById('status-toast'); document.getElementById('status-message').textContent = msg;
+            const t = document.getElementById('status-toast'); 
+            document.getElementById('status-message').textContent = msg;
             t.classList.remove('translate-x-full', 'opacity-0');
             setTimeout(() => t.classList.add('translate-x-full', 'opacity-0'), 3000);
         }
