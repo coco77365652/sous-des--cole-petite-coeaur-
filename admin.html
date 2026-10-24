@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,43 +16,44 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] }
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+                    colors: { brand: { primary: '#4F46E5', dark: '#0F172A' } }
                 }
             }
         }
     </script>
     <style>
-        body { background-color: #F8FAFC; color: #334155; }
-        .admin-card { background: #FFFFFF; border: 1px solid #E2E8F0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
-        .admin-input { background: #FFFFFF; border: 1px solid #CBD5E1; color: #0F172A; transition: all 0.2s; }
-        .admin-input:focus { border-color: #4F46E5; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15); outline: none; }
+        body { background-color: #F8FAFC; color: #1E293B; }
+        .admin-card { background: #FFFFFF; border: 1px solid #E2E8F0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -2px rgba(0, 0, 0, 0.02); }
+        .admin-input { background: #FFFFFF; border: 1px solid #CBD5E1; color: #0F172A; transition: all 0.2s ease; }
+        .admin-input:focus { border-color: #4F46E5; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12); outline: none; }
     </style>
 </head>
-<body class="font-sans antialiased min-h-screen flex flex-col text-slate-800">
+<body class="font-sans antialiased h-full flex flex-col text-slate-800">
 
     <!-- Toast de notification -->
-    <div id="status-toast" class="fixed top-6 right-6 z-50 transform translate-x-full opacity-0 transition-all duration-300 px-5 py-3.5 rounded-xl bg-slate-900 text-white shadow-xl flex items-center gap-3 border border-slate-700 text-sm font-semibold">
+    <div id="status-toast" class="fixed top-6 right-6 z-50 transform translate-x-full opacity-0 transition-all duration-300 px-5 py-3.5 rounded-2xl bg-slate-900 text-white shadow-2xl flex items-center gap-3 border border-slate-700/80 text-sm font-semibold">
         <i id="status-icon" class="fas fa-circle-check text-emerald-400 text-lg"></i>
         <span id="status-message">Action effectuée avec succès</span>
     </div>
 
     <!-- Écran de Connexion -->
-    <div id="login-view" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="max-w-md w-full bg-white rounded-2xl p-8 border border-slate-200 shadow-2xl">
-            <div class="text-center mb-6">
-                <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl shadow-inner">
+    <div id="login-view" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="max-w-md w-full bg-white rounded-3xl p-8 sm:p-10 border border-slate-100 shadow-2xl transform transition-all">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl shadow-inner border border-indigo-100/50">
                     <i class="fas fa-lock"></i>
                 </div>
-                <h1 class="text-2xl font-extrabold text-slate-900">Espace Administration</h1>
-                <p class="text-slate-500 text-xs mt-1">APE de Petit-Cœur</p>
+                <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Espace Administration</h1>
+                <p class="text-slate-500 text-xs font-semibold mt-1 uppercase tracking-wider">APE de Petit-Cœur • La Léchère</p>
             </div>
-            <form onsubmit="handleLogin(event)" class="space-y-4">
+            <form onsubmit="handleLogin(event)" class="space-y-5">
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Mot de passe</label>
-                    <input type="password" id="admin-pass-input" placeholder="••••••••" required class="w-full px-4 py-3 admin-input rounded-xl text-sm font-medium">
-                    <p id="login-error" class="text-rose-600 text-xs font-medium mt-1.5 hidden"><i class="fas fa-circle-exclamation mr-1"></i> Mot de passe incorrect.</p>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Mot de passe administrateur</label>
+                    <input type="password" id="admin-pass-input" placeholder="••••••••" required class="w-full px-4.5 py-3.5 admin-input rounded-2xl text-sm font-medium">
+                    <p id="login-error" class="text-rose-600 text-xs font-semibold mt-2 hidden"><i class="fas fa-circle-exclamation mr-1"></i> Mot de passe incorrect.</p>
                 </div>
-                <button type="submit" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-all shadow-md shadow-indigo-200 text-sm">SE CONNECTER</button>
+                <button type="submit" class="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl transition-all shadow-lg shadow-indigo-200 text-sm tracking-wide">SE CONNECTER</button>
             </form>
         </div>
     </div>
@@ -60,90 +61,90 @@
     <!-- Tableau de bord Administration -->
     <div id="admin-dashboard" class="hidden min-h-screen flex flex-col md:flex-row">
         <!-- Sidebar Navigation -->
-        <aside class="w-full md:w-64 bg-slate-900 text-slate-300 flex-shrink-0 flex flex-col justify-between p-5">
+        <aside class="w-full md:w-72 bg-slate-900 text-slate-300 flex-shrink-0 flex flex-col justify-between p-6 border-r border-slate-800">
             <div>
-                <div class="flex items-center gap-3 pb-5 border-b border-slate-800">
-                    <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-black text-lg"><i class="fas fa-shapes"></i></div>
+                <div class="flex items-center gap-3.5 pb-6 border-b border-slate-800/80">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-black text-lg shadow-md shadow-indigo-500/20"><i class="fas fa-shapes"></i></div>
                     <div>
-                        <h2 class="font-bold text-sm text-white">APE Petit-Cœur</h2>
-                        <p class="text-[10px] text-slate-400">Panneau de gestion</p>
+                        <h2 class="font-bold text-sm text-white tracking-tight">APE Petit-Cœur</h2>
+                        <p class="text-[11px] text-slate-400 font-medium">Panneau de gestion</p>
                     </div>
                 </div>
-                <nav class="mt-6 space-y-1">
-                    <button type="button" onclick="switchTab('tab-general')" id="nav-tab-general" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-sliders w-4 text-indigo-400"></i><span>Textes Accueil</span></button>
-                    <button type="button" onclick="switchTab('tab-about')" id="nav-tab-about" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-users w-4 text-emerald-400"></i><span>Qui sommes-nous ?</span></button>
-                    <button type="button" onclick="switchTab('tab-images')" id="nav-tab-images" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-bullhorn w-4 text-rose-400"></i><span>Affiche & Docs</span></button>
-                    <button type="button" onclick="switchTab('tab-events')" id="nav-tab-events" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-calendar-alt w-4 text-amber-400"></i><span>Événements</span></button>
-                    <button type="button" onclick="switchTab('tab-gallery')" id="nav-tab-gallery" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-images w-4 text-purple-400"></i><span>Galerie Photos</span></button>
-                    <button type="button" onclick="switchTab('tab-partners')" id="nav-tab-partners" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-handshake w-4 text-teal-400"></i><span>Nos Partenaires</span></button>
-                    <button type="button" onclick="switchTab('tab-contact')" id="nav-tab-contact" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-envelope w-4 text-sky-400"></i><span>Nous Contacter</span></button>
+                <nav class="mt-6 space-y-1.5">
+                    <button type="button" onclick="switchTab('tab-general')" id="nav-tab-general" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-sliders w-4 text-indigo-400"></i><span>Textes Accueil</span></button>
+                    <button type="button" onclick="switchTab('tab-about')" id="nav-tab-about" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-users w-4 text-emerald-400"></i><span>Qui sommes-nous ?</span></button>
+                    <button type="button" onclick="switchTab('tab-images')" id="nav-tab-images" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-bullhorn w-4 text-rose-400"></i><span>Affiche & Docs</span></button>
+                    <button type="button" onclick="switchTab('tab-events')" id="nav-tab-events" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-calendar-alt w-4 text-amber-400"></i><span>Événements</span></button>
+                    <button type="button" onclick="switchTab('tab-gallery')" id="nav-tab-gallery" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-images w-4 text-purple-400"></i><span>Galerie Photos</span></button>
+                    <button type="button" onclick="switchTab('tab-partners')" id="nav-tab-partners" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-handshake w-4 text-teal-400"></i><span>Nos Partenaires</span></button>
+                    <button type="button" onclick="switchTab('tab-contact')" id="nav-tab-contact" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-envelope w-4 text-sky-400"></i><span>Nous Contacter</span></button>
                 </nav>
             </div>
-            <div class="pt-5 border-t border-slate-800 space-y-2">
-                <a href="index.html" target="_blank" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 transition-colors">
-                    <span><i class="fas fa-globe mr-2 text-indigo-400"></i>Voir le site</span>
+            <div class="pt-6 border-t border-slate-800/80 space-y-2.5">
+                <a href="index.html" target="_blank" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-xs font-semibold bg-slate-800/80 hover:bg-slate-800 text-slate-200 transition-colors">
+                    <span><i class="fas fa-globe mr-2 text-indigo-400"></i>Voir le site public</span>
                     <i class="fas fa-external-link-alt text-[10px] text-slate-400"></i>
                 </a>
-                <button type="button" onclick="logoutAdmin()" class="w-full flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-rose-400 hover:bg-rose-500/10 transition-colors"><i class="fas fa-sign-out-alt"></i><span>Déconnexion</span></button>
+                <button type="button" onclick="logoutAdmin()" class="w-full flex items-center gap-2.5 px-4 py-3 rounded-xl text-xs font-semibold text-rose-400 hover:bg-rose-500/10 transition-colors"><i class="fas fa-sign-out-alt"></i><span>Déconnexion</span></button>
             </div>
         </aside>
 
         <!-- Main Content Area -->
-        <main class="flex-1 p-6 md:p-8 overflow-y-auto max-w-6xl mx-auto w-full">
+        <main class="flex-1 p-6 sm:p-10 overflow-y-auto max-w-5xl mx-auto w-full space-y-8">
             
             <!-- Tab: General -->
             <div id="tab-general" class="tab-content hidden space-y-6">
-                <div class="admin-card rounded-2xl p-6 space-y-5">
-                    <h3 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-3"><i class="fas fa-sliders text-indigo-600 mr-2"></i>Textes d'Accueil & En-tête</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div><label class="block text-xs font-bold text-slate-600 mb-1">Nom Association</label><input type="text" id="cfg-siteName" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-sm"></div>
-                        <div><label class="block text-xs font-bold text-slate-600 mb-1">Sous-titre / Ville</label><input type="text" id="cfg-siteLocation" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-sm"></div>
+                <div class="admin-card rounded-3xl p-6 sm:p-8 space-y-6">
+                    <h3 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-4 flex items-center"><i class="fas fa-sliders text-indigo-600 mr-2.5 text-lg"></i>Textes d'Accueil & En-tête</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div><label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Nom Association</label><input type="text" id="cfg-siteName" class="w-full px-4 py-3 admin-input rounded-xl text-sm font-medium"></div>
+                        <div><label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Sous-titre / Ville</label><input type="text" id="cfg-siteLocation" class="w-full px-4 py-3 admin-input rounded-xl text-sm font-medium"></div>
                     </div>
-                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
-                        <label class="block text-xs font-bold text-slate-600">Logo d'en-tête (Icône ou URL image)</label>
-                        <div class="flex gap-2">
-                            <input type="text" id="cfg-headerIcon" placeholder="fa-heart ou URL" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-sm">
-                            <label class="cursor-pointer px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded-xl flex items-center shrink-0 shadow-sm">
+                    <div class="p-5 bg-slate-50/70 rounded-2xl border border-slate-200/80 space-y-2.5">
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Logo d'en-tête (Icône FontAwesome ou URL image)</label>
+                        <div class="flex gap-3">
+                            <input type="text" id="cfg-headerIcon" placeholder="fa-heart ou URL" class="w-full px-4 py-3 admin-input rounded-xl text-sm">
+                            <label class="cursor-pointer px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl flex items-center shrink-0 shadow-sm transition-colors">
                                 Charger <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-headerIcon', 200)">
                             </label>
                         </div>
                     </div>
                     <div class="space-y-4">
-                        <div><label class="block text-xs font-bold text-slate-600 mb-1">Tag Supérieur</label><input type="text" id="cfg-locationTag" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-sm"></div>
-                        <div><label class="block text-xs font-bold text-slate-600 mb-1">Grand Titre</label><input type="text" id="cfg-heroTitle" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-sm font-bold text-indigo-600"></div>
-                        <div><label class="block text-xs font-bold text-slate-600 mb-1">Description</label><textarea id="cfg-heroDesc" rows="3" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-sm"></textarea></div>
+                        <div><label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Tag Supérieur (Badge)</label><input type="text" id="cfg-locationTag" class="w-full px-4 py-3 admin-input rounded-xl text-sm font-medium"></div>
+                        <div><label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Grand Titre (Hero)</label><input type="text" id="cfg-heroTitle" class="w-full px-4 py-3 admin-input rounded-xl text-sm font-bold text-indigo-600"></div>
+                        <div><label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Description</label><textarea id="cfg-heroDesc" rows="3" class="w-full px-4 py-3 admin-input rounded-xl text-sm font-medium"></textarea></div>
                     </div>
                 </div>
             </div>
 
             <!-- Tab: About -->
             <div id="tab-about" class="tab-content hidden space-y-6">
-                <div class="admin-card rounded-2xl p-6 space-y-5">
-                    <h3 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-3"><i class="fas fa-users text-emerald-600 mr-2"></i>Qui sommes-nous & Statuts</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div><label class="block text-xs font-bold text-slate-600 mb-1">Tag Section</label><input type="text" id="cfg-aboutTag" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-sm"></div>
-                        <div><label class="block text-xs font-bold text-slate-600 mb-1">Titre Principal</label><input type="text" id="cfg-aboutTitle" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-sm font-bold text-emerald-600"></div>
+                <div class="admin-card rounded-3xl p-6 sm:p-8 space-y-6">
+                    <h3 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-4 flex items-center"><i class="fas fa-users text-emerald-600 mr-2.5 text-lg"></i>Qui sommes-nous & Statuts</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div><label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Tag Section</label><input type="text" id="cfg-aboutTag" class="w-full px-4 py-3 admin-input rounded-xl text-sm font-medium"></div>
+                        <div><label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Titre Principal</label><input type="text" id="cfg-aboutTitle" class="w-full px-4 py-3 admin-input rounded-xl text-sm font-bold text-emerald-600"></div>
                     </div>
-                    <div><label class="block text-xs font-bold text-slate-600 mb-1">Introduction</label><textarea id="cfg-aboutDesc" rows="2" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-sm"></textarea></div>
+                    <div><label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Introduction</label><textarea id="cfg-aboutDesc" rows="2" class="w-full px-4 py-3 admin-input rounded-xl text-sm font-medium"></textarea></div>
                     
-                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
-                        <h4 class="font-bold text-slate-800 text-xs">Bloc 1 : Notre Mission</h4>
-                        <input type="text" id="cfg-aboutBlock1Title" placeholder="Titre Bloc 1" class="w-full px-3 py-2 admin-input rounded-lg text-xs font-semibold">
-                        <textarea id="cfg-aboutBlock1Text" rows="3" placeholder="Texte de la mission..." class="w-full px-3 py-2 admin-input rounded-lg text-xs"></textarea>
-                        <div class="flex gap-2">
-                            <input type="text" id="cfg-aboutBlock1Img" placeholder="URL Image" class="w-full px-3 py-2 admin-input rounded-lg text-xs">
-                            <label class="cursor-pointer px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white font-semibold text-xs rounded-lg flex items-center shrink-0">Photo <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-aboutBlock1Img', 600)"></label>
+                    <div class="p-5 bg-slate-50/70 rounded-2xl border border-slate-200/80 space-y-3.5">
+                        <h4 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">Bloc 1 : Notre Mission</h4>
+                        <input type="text" id="cfg-aboutBlock1Title" placeholder="Titre Bloc 1" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs font-bold">
+                        <textarea id="cfg-aboutBlock1Text" rows="3" placeholder="Texte de la mission..." class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs"></textarea>
+                        <div class="flex gap-3">
+                            <input type="text" id="cfg-aboutBlock1Img" placeholder="URL Image" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs">
+                            <label class="cursor-pointer px-4 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl flex items-center shrink-0 transition-colors">Photo <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-aboutBlock1Img', 600)"></label>
                         </div>
                     </div>
 
-                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
-                        <h4 class="font-bold text-slate-800 text-xs">Bloc 2 : Le Mot du Bureau & Statuts</h4>
-                        <input type="text" id="cfg-aboutBlock2Title" placeholder="Titre Bloc 2" class="w-full px-3 py-2 admin-input rounded-lg text-xs font-semibold">
-                        <textarea id="cfg-aboutBlock2Text" rows="3" placeholder="Texte du mot du bureau..." class="w-full px-3 py-2 admin-input rounded-lg text-xs"></textarea>
-                        <input type="text" id="cfg-aboutFileBtnText" placeholder="Texte du bouton PDF (ex: Télécharger Statuts)" class="w-full px-3 py-2 admin-input rounded-lg text-xs">
-                        <div class="flex gap-2">
-                            <input type="text" id="cfg-aboutFileUrl" placeholder="URL ou fichier PDF" class="w-full px-3 py-2 admin-input rounded-lg text-xs">
-                            <label class="cursor-pointer px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded-lg flex items-center shrink-0">Joindre PDF <input type="file" accept="application/pdf,image/*" class="hidden" onchange="processGenericFile(event, 'cfg-aboutFileUrl')"></label>
+                    <div class="p-5 bg-slate-50/70 rounded-2xl border border-slate-200/80 space-y-3.5">
+                        <h4 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">Bloc 2 : Le Mot du Bureau & Statuts</h4>
+                        <input type="text" id="cfg-aboutBlock2Title" placeholder="Titre Bloc 2" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs font-bold">
+                        <textarea id="cfg-aboutBlock2Text" rows="3" placeholder="Texte du mot du bureau..." class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs"></textarea>
+                        <input type="text" id="cfg-aboutFileBtnText" placeholder="Texte du bouton PDF (ex: Télécharger Statuts)" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs font-medium">
+                        <div class="flex gap-3">
+                            <input type="text" id="cfg-aboutFileUrl" placeholder="URL ou fichier PDF" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs">
+                            <label class="cursor-pointer px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl flex items-center shrink-0 transition-colors">Joindre PDF <input type="file" accept="application/pdf,image/*" class="hidden" onchange="processGenericFile(event, 'cfg-aboutFileUrl')"></label>
                         </div>
                     </div>
                 </div>
@@ -151,98 +152,98 @@
 
             <!-- Tab: Posters & Images -->
             <div id="tab-images" class="tab-content hidden space-y-6">
-                <div class="admin-card rounded-2xl p-6 space-y-5">
-                    <h3 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-3"><i class="fas fa-bullhorn text-rose-600 mr-2"></i>Affiches & Documents</h3>
+                <div class="admin-card rounded-3xl p-6 sm:p-8 space-y-6">
+                    <h3 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-4 flex items-center"><i class="fas fa-bullhorn text-rose-600 mr-2.5 text-lg"></i>Affiches & Documents</h3>
                     
-                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
-                        <h4 class="font-bold text-slate-800 text-xs">Logo de l'Association</h4>
-                        <div class="flex gap-2">
-                            <input type="text" id="cfg-logoImg" placeholder="URL de l'image" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs">
-                            <label class="cursor-pointer px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs rounded-xl flex items-center shrink-0 shadow-sm">Changer Logo <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-logoImg', 500)"></label>
+                    <div class="p-5 bg-slate-50/70 rounded-2xl border border-slate-200/80 space-y-3">
+                        <h4 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">Logo de l'Association</h4>
+                        <div class="flex gap-3">
+                            <input type="text" id="cfg-logoImg" placeholder="URL de l'image" class="w-full px-4 py-3 admin-input rounded-xl text-xs font-medium">
+                            <label class="cursor-pointer px-5 py-3 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl flex items-center shrink-0 shadow-sm transition-colors">Changer Logo <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-logoImg', 500)"></label>
                         </div>
                     </div>
 
-                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
-                        <h4 class="font-bold text-slate-800 text-xs">Affiche Principale</h4>
+                    <div class="p-5 bg-slate-50/70 rounded-2xl border border-slate-200/80 space-y-3">
+                        <h4 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">Affiche Principale</h4>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <input type="text" id="cfg-posterHeading" placeholder="Titre de l'affiche" class="px-3 py-2 admin-input rounded-lg text-xs">
-                            <input type="text" id="cfg-posterCaption" placeholder="Légende" class="px-3 py-2 admin-input rounded-lg text-xs">
+                            <input type="text" id="cfg-posterHeading" placeholder="Titre de l'affiche" class="px-3.5 py-2.5 admin-input rounded-xl text-xs font-medium">
+                            <input type="text" id="cfg-posterCaption" placeholder="Légende" class="px-3.5 py-2.5 admin-input rounded-xl text-xs font-medium">
                         </div>
-                        <div class="flex gap-2">
-                            <input type="text" id="cfg-posterImg" placeholder="URL de l'image" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs">
-                            <label class="cursor-pointer px-4 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-semibold text-xs rounded-xl flex items-center shrink-0 shadow-sm">Changer Affiche <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-posterImg', 700)"></label>
+                        <div class="flex gap-3">
+                            <input type="text" id="cfg-posterImg" placeholder="URL de l'image" class="w-full px-4 py-3 admin-input rounded-xl text-xs font-medium">
+                            <label class="cursor-pointer px-5 py-3 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl flex items-center shrink-0 shadow-sm transition-colors">Changer Affiche <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-posterImg', 700)"></label>
                         </div>
                     </div>
 
-                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
-                        <div class="flex justify-between items-center pb-2 border-b border-slate-200">
-                            <h4 class="font-bold text-slate-800 text-xs">Boutons de téléchargement sous l'affiche</h4>
-                            <button type="button" onclick="addPosterBtnItem()" class="px-3 py-1.5 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 font-bold text-xs rounded-lg transition-colors">+ Ajouter un bouton</button>
+                    <div class="p-5 bg-slate-50/70 rounded-2xl border border-slate-200/80 space-y-3">
+                        <div class="flex justify-between items-center pb-3 border-b border-slate-200/60">
+                            <h4 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">Boutons de téléchargement sous l'affiche</h4>
+                            <button type="button" onclick="addPosterBtnItem()" class="px-3.5 py-2 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 font-bold text-xs rounded-xl transition-colors">+ Ajouter un bouton</button>
                         </div>
-                        <div id="poster-buttons-admin-container" class="space-y-2"></div>
+                        <div id="poster-buttons-admin-container" class="space-y-3"></div>
                     </div>
                 </div>
             </div>
 
             <!-- Tab: Events -->
             <div id="tab-events" class="tab-content hidden space-y-6">
-                <div class="admin-card rounded-2xl p-6 space-y-5">
-                    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-                        <h3 class="text-base font-bold text-slate-900"><i class="fas fa-calendar-alt text-amber-500 mr-2"></i>Événements à venir</h3>
-                        <button type="button" onclick="addUpcomingEvent()" class="px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-xl transition-colors shadow-sm">+ Nouvel Événement</button>
+                <div class="admin-card rounded-3xl p-6 sm:p-8 space-y-6">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+                        <h3 class="text-base font-bold text-slate-900 flex items-center"><i class="fas fa-calendar-alt text-amber-500 mr-2.5 text-lg"></i>Événements à venir</h3>
+                        <button type="button" onclick="addUpcomingEvent()" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-xl transition-colors shadow-sm">+ Nouvel Événement</button>
                     </div>
-                    <div id="upcoming-events-container" class="space-y-3"></div>
+                    <div id="upcoming-events-container" class="space-y-4"></div>
                 </div>
             </div>
 
             <!-- Tab: Gallery -->
             <div id="tab-gallery" class="tab-content hidden space-y-6">
-                <div class="admin-card rounded-2xl p-6 space-y-5">
-                    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-                        <h3 class="text-base font-bold text-slate-900"><i class="fas fa-images text-purple-600 mr-2"></i>Galerie Photos</h3>
-                        <button type="button" onclick="addPastEvent()" class="px-3.5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl transition-colors shadow-sm">+ Nouvel Album</button>
+                <div class="admin-card rounded-3xl p-6 sm:p-8 space-y-6">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+                        <h3 class="text-base font-bold text-slate-900 flex items-center"><i class="fas fa-images text-purple-600 mr-2.5 text-lg"></i>Galerie Photos</h3>
+                        <button type="button" onclick="addPastEvent()" class="px-4 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl transition-colors shadow-sm">+ Nouvel Album</button>
                     </div>
-                    <div id="past-events-container" class="space-y-4"></div>
+                    <div id="past-events-container" class="space-y-5"></div>
                 </div>
             </div>
 
             <!-- Tab: Partners -->
             <div id="tab-partners" class="tab-content hidden space-y-6">
-                <div class="admin-card rounded-2xl p-6 space-y-5">
-                    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-                        <h3 class="text-base font-bold text-slate-900"><i class="fas fa-handshake text-teal-600 mr-2"></i>Nos Partenaires</h3>
-                        <button type="button" onclick="addPartnerItem()" class="px-3.5 py-2 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs rounded-xl transition-colors shadow-sm">+ Ajouter Partenaire</button>
+                <div class="admin-card rounded-3xl p-6 sm:p-8 space-y-6">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+                        <h3 class="text-base font-bold text-slate-900 flex items-center"><i class="fas fa-handshake text-teal-600 mr-2.5 text-lg"></i>Nos Partenaires</h3>
+                        <button type="button" onclick="addPartnerItem()" class="px-4 py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs rounded-xl transition-colors shadow-sm">+ Ajouter Partenaire</button>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <input type="text" id="cfg-partnersTag" placeholder="Tag Section" class="px-3.5 py-2.5 admin-input rounded-xl text-xs">
-                        <input type="text" id="cfg-partnersTitle" placeholder="Titre Section" class="px-3.5 py-2.5 admin-input rounded-xl text-xs font-bold text-teal-600">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                        <input type="text" id="cfg-partnersTag" placeholder="Tag Section" class="px-4 py-3 admin-input rounded-xl text-xs font-medium">
+                        <input type="text" id="cfg-partnersTitle" placeholder="Titre Section" class="px-4 py-3 admin-input rounded-xl text-xs font-bold text-teal-600">
                     </div>
-                    <textarea id="cfg-partnersDesc" rows="2" placeholder="Description générale" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs"></textarea>
-                    <div id="partners-admin-container" class="space-y-3 pt-3 border-t border-slate-100"></div>
+                    <textarea id="cfg-partnersDesc" rows="2" placeholder="Description générale" class="w-full px-4 py-3 admin-input rounded-xl text-xs font-medium"></textarea>
+                    <div id="partners-admin-container" class="space-y-4 pt-4 border-t border-slate-100"></div>
                 </div>
             </div>
 
             <!-- Tab: Contact -->
             <div id="tab-contact" class="tab-content hidden space-y-6">
-                <div class="admin-card rounded-2xl p-6 space-y-5">
-                    <h3 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-3"><i class="fas fa-envelope text-sky-500 mr-2"></i>Informations de Contact</h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <input type="text" id="cfg-contactTag" placeholder="Tag Section" class="px-3.5 py-2.5 admin-input rounded-xl text-xs">
-                        <input type="text" id="cfg-contactTitle" placeholder="Titre Section" class="px-3.5 py-2.5 admin-input rounded-xl text-xs font-bold text-sky-600">
+                <div class="admin-card rounded-3xl p-6 sm:p-8 space-y-6">
+                    <h3 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-4 flex items-center"><i class="fas fa-envelope text-sky-500 mr-2.5 text-lg"></i>Informations de Contact</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                        <input type="text" id="cfg-contactTag" placeholder="Tag Section" class="px-4 py-3 admin-input rounded-xl text-xs font-medium">
+                        <input type="text" id="cfg-contactTitle" placeholder="Titre Section" class="px-4 py-3 admin-input rounded-xl text-xs font-bold text-sky-600">
                     </div>
-                    <textarea id="cfg-contactDesc" rows="2" placeholder="Description courte..." class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs"></textarea>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div><label class="block text-xs font-bold text-slate-600 mb-1">Email</label><input type="email" id="cfg-contactEmail" placeholder="Email" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs"></div>
-                        <div><label class="block text-xs font-bold text-slate-600 mb-1">Téléphone</label><input type="text" id="cfg-contactPhone" placeholder="Téléphone" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs"></div>
+                    <textarea id="cfg-contactDesc" rows="2" placeholder="Description courte..." class="w-full px-4 py-3 admin-input rounded-xl text-xs font-medium"></textarea>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                        <div><label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Email</label><input type="email" id="cfg-contactEmail" placeholder="Email" class="w-full px-4 py-3 admin-input rounded-xl text-xs font-medium"></div>
+                        <div><label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Téléphone</label><input type="text" id="cfg-contactPhone" placeholder="Téléphone" class="w-full px-4 py-3 admin-input rounded-xl text-xs font-medium"></div>
                     </div>
-                    <div><label class="block text-xs font-bold text-slate-600 mb-1">Adresse</label><input type="text" id="cfg-contactAddress" placeholder="Adresse complète" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs"></div>
+                    <div><label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Adresse</label><input type="text" id="cfg-contactAddress" placeholder="Adresse complète" class="w-full px-4 py-3 admin-input rounded-xl text-xs font-medium"></div>
                 </div>
             </div>
 
-            <!-- Bouton d'enregistrement Global -->
-            <div class="pt-4 border-t border-slate-200 flex justify-end">
-                <button type="button" onclick="globalSaveData()" id="save-btn" class="w-full sm:w-auto px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-indigo-200 transition-all cursor-pointer">
-                    <i class="fas fa-save mr-2"></i>Enregistrer les modifications
+            <!-- Bouton d'enregistrement Global Fixe ou en bas -->
+            <div class="pt-6 border-t border-slate-200/80 flex justify-end pb-12">
+                <button type="button" onclick="globalSaveData()" id="save-btn" class="w-full sm:w-auto px-10 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs uppercase tracking-widest rounded-2xl shadow-xl shadow-indigo-200 transition-all cursor-pointer flex items-center justify-center gap-2">
+                    <i class="fas fa-save text-sm"></i>Enregistrer les modifications
                 </button>
             </div>
         </main>
@@ -292,9 +293,9 @@
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-slate-800', 'text-white'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-slate-800', 'text-white', 'shadow-sm'));
             document.getElementById(tabId)?.classList.remove('hidden');
-            document.getElementById('nav-' + tabId)?.classList.add('bg-slate-800', 'text-white');
+            document.getElementById('nav-' + tabId)?.classList.add('bg-slate-800', 'text-white', 'shadow-sm');
         }
 
         function renderUI() {
@@ -316,16 +317,16 @@
             const container = document.getElementById('partners-admin-container'); if (!container) return; container.innerHTML = '';
             (appData.partners.list || []).forEach((p, index) => {
                 container.innerHTML += `
-                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3 relative partner-item">
-                        <button type="button" onclick="appData.partners.list.splice(${index},1);renderPartnersAdmin()" class="absolute top-3 right-3 text-rose-600 hover:text-rose-700 text-xs font-semibold"><i class="fas fa-trash mr-1"></i>Supprimer</button>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-20">
-                            <div><label class="block text-[10px] font-bold text-slate-500 mb-1">Nom du Partenaire</label><input type="text" value="${p.name || ''}" class="p-name w-full px-3 py-2 admin-input rounded-lg text-xs font-bold"></div>
-                            <div><label class="block text-[10px] font-bold text-slate-500 mb-1">Site Web</label><input type="text" value="${p.link || ''}" class="p-link w-full px-3 py-2 admin-input rounded-lg text-xs"></div>
+                    <div class="p-4 bg-slate-50/70 rounded-2xl border border-slate-200/80 space-y-3 relative partner-item">
+                        <button type="button" onclick="appData.partners.list.splice(${index},1);renderPartnersAdmin()" class="absolute top-4 right-4 text-rose-600 hover:text-rose-700 text-xs font-bold bg-white px-2.5 py-1.5 rounded-lg border border-slate-200 shadow-sm"><i class="fas fa-trash mr-1"></i>Supprimer</button>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pr-28">
+                            <div><label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Nom du Partenaire</label><input type="text" value="${p.name || ''}" class="p-name w-full px-3.5 py-2.5 admin-input rounded-xl text-xs font-bold"></div>
+                            <div><label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Site Web</label><input type="text" value="${p.link || ''}" class="p-link w-full px-3.5 py-2.5 admin-input rounded-xl text-xs"></div>
                         </div>
-                        <div><label class="block text-[10px] font-bold text-slate-500 mb-1">Description</label><input type="text" value="${p.desc || ''}" class="p-desc w-full px-3 py-2 admin-input rounded-lg text-xs"></div>
-                        <div class="flex gap-2">
-                            <input type="text" id="partner-logo-${index}" value="${p.logo || ''}" class="p-logo w-full px-3 py-2 admin-input rounded-lg text-xs">
-                            <label class="cursor-pointer px-3 py-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold text-xs rounded-lg flex items-center shrink-0">Logo<input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'partner-logo-${index}', 300)"></label>
+                        <div><label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Description</label><input type="text" value="${p.desc || ''}" class="p-desc w-full px-3.5 py-2.5 admin-input rounded-xl text-xs"></div>
+                        <div class="flex gap-3">
+                            <input type="text" id="partner-logo-${index}" value="${p.logo || ''}" class="p-logo w-full px-3.5 py-2.5 admin-input rounded-xl text-xs">
+                            <label class="cursor-pointer px-4 py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-semibold text-xs rounded-xl flex items-center shrink-0 transition-colors">Logo<input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'partner-logo-${index}', 300)"></label>
                         </div>
                     </div>`;
             });
@@ -336,10 +337,10 @@
             const container = document.getElementById('poster-buttons-admin-container'); if (!container) return; container.innerHTML = '';
             (appData.general.posterButtons || []).forEach((b, index) => {
                 container.innerHTML += `
-                    <div class="p-3 bg-white rounded-lg border border-slate-200 flex items-center gap-3 relative poster-btn-item">
-                        <div class="flex-1 space-y-1">
-                            <input type="text" value="${b.label || ''}" placeholder="Intitulé bouton" class="pb-label w-full px-2.5 py-1.5 admin-input rounded-md text-xs font-bold">
-                            <input type="text" value="${b.url || ''}" placeholder="Lien ou document" class="pb-url w-full px-2.5 py-1.5 admin-input rounded-md text-xs">
+                    <div class="p-3.5 bg-white rounded-xl border border-slate-200/80 flex items-center gap-3 relative poster-btn-item shadow-sm">
+                        <div class="flex-1 space-y-2">
+                            <input type="text" value="${b.label || ''}" placeholder="Intitulé bouton" class="pb-label w-full px-3 py-2 admin-input rounded-lg text-xs font-bold">
+                            <input type="text" value="${b.url || ''}" placeholder="Lien ou document" class="pb-url w-full px-3 py-2 admin-input rounded-lg text-xs">
                         </div>
                         <button type="button" onclick="appData.general.posterButtons.splice(${index},1);renderPosterButtonsAdmin()" class="text-rose-600 hover:text-rose-700 p-2 text-xs font-bold"><i class="fas fa-trash"></i></button>
                     </div>`;
@@ -351,13 +352,13 @@
             const container = document.getElementById('upcoming-events-container'); if (!container) return; container.innerHTML = '';
             (appData.upcomingEvents || []).forEach((ev, index) => {
                 container.innerHTML += `
-                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3 relative event-item">
-                        <button type="button" onclick="appData.upcomingEvents.splice(${index},1);renderUpcomingEvents()" class="absolute top-3 right-3 text-rose-600 hover:text-rose-700 text-xs font-semibold"><i class="fas fa-trash mr-1"></i>Supprimer</button>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-20">
-                            <div><label class="block text-[10px] font-bold text-slate-500 mb-1">Titre de l'événement</label><input type="text" value="${ev.title || ''}" class="ev-title px-3 py-2 admin-input rounded-lg text-xs font-bold w-full"></div>
-                            <div><label class="block text-[10px] font-bold text-slate-500 mb-1">Date / Horaires</label><input type="text" value="${ev.date || ''}" class="ev-date px-3 py-2 admin-input rounded-lg text-xs w-full"></div>
+                    <div class="p-4 sm:p-5 bg-slate-50/70 rounded-2xl border border-slate-200/85 space-y-3.5 relative event-item">
+                        <button type="button" onclick="appData.upcomingEvents.splice(${index},1);renderUpcomingEvents()" class="absolute top-4 right-4 text-rose-600 hover:text-rose-700 text-xs font-bold bg-white px-2.5 py-1.5 rounded-lg border border-slate-200 shadow-sm"><i class="fas fa-trash mr-1"></i>Supprimer</button>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pr-28">
+                            <div><label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Titre de l'événement</label><input type="text" value="${ev.title || ''}" class="ev-title px-3.5 py-2.5 admin-input rounded-xl text-xs font-bold w-full"></div>
+                            <div><label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Date / Horaires</label><input type="text" value="${ev.date || ''}" class="ev-date px-3.5 py-2.5 admin-input rounded-xl text-xs w-full"></div>
                         </div>
-                        <textarea rows="2" placeholder="Description de l'événement..." class="ev-desc w-full px-3 py-2 admin-input rounded-lg text-xs">${ev.desc || ''}</textarea>
+                        <div><label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Description</label><textarea rows="2" placeholder="Description de l'événement..." class="ev-desc w-full px-3.5 py-2.5 admin-input rounded-xl text-xs">${ev.desc || ''}</textarea></div>
                     </div>`;
             });
         }
@@ -368,24 +369,24 @@
             (appData.pastEvents || []).forEach((pev, index) => {
                 let photosHTML = (pev.photos || []).map((pUrl, pIdx) => `
                     <div class="relative group">
-                        <img src="${pUrl}" class="h-20 w-full object-cover rounded-lg border border-slate-200">
-                        <button type="button" onclick="appData.pastEvents[${index}].photos.splice(${pIdx},1);renderPastEvents()" class="absolute -top-1 -right-1 bg-rose-600 text-white w-5 h-5 rounded-full text-[10px] font-bold shadow flex items-center justify-center">✕</button>
+                        <img src="${pUrl}" class="h-20 w-full object-cover rounded-xl border border-slate-200 shadow-inner">
+                        <button type="button" onclick="appData.pastEvents[${index}].photos.splice(${pIdx},1);renderPastEvents()" class="absolute -top-1.5 -right-1.5 bg-rose-600 text-white w-5.5 h-5.5 rounded-full text-[10px] font-bold shadow-md flex items-center justify-center">✕</button>
                     </div>`).join('');
 
                 container.innerHTML += `
-                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3 relative gallery-item">
-                        <button type="button" onclick="appData.pastEvents.splice(${index},1);renderPastEvents()" class="absolute top-3 right-3 text-rose-600 hover:text-rose-700 text-xs font-semibold"><i class="fas fa-trash mr-1"></i>Supprimer Album</button>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-28">
-                            <div><label class="block text-[10px] font-bold text-slate-500 mb-1">Titre de l'Album</label><input type="text" value="${pev.title || ''}" class="gal-title px-3 py-2 admin-input rounded-lg text-xs font-bold w-full"></div>
-                            <div><label class="block text-[10px] font-bold text-slate-500 mb-1">Date</label><input type="text" value="${pev.date || ''}" class="gal-date px-3 py-2 admin-input rounded-lg text-xs w-full"></div>
+                    <div class="p-5 bg-slate-50/70 rounded-2xl border border-slate-200/85 space-y-4 relative gallery-item">
+                        <button type="button" onclick="appData.pastEvents.splice(${index},1);renderPastEvents()" class="absolute top-4 right-4 text-rose-600 hover:text-rose-700 text-xs font-bold bg-white px-2.5 py-1.5 rounded-lg border border-slate-200 shadow-sm"><i class="fas fa-trash mr-1"></i>Supprimer Album</button>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pr-32">
+                            <div><label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Titre de l'Album</label><input type="text" value="${pev.title || ''}" class="gal-title px-3.5 py-2.5 admin-input rounded-xl text-xs font-bold w-full"></div>
+                            <div><label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Date</label><input type="text" value="${pev.date || ''}" class="gal-date px-3.5 py-2.5 admin-input rounded-xl text-xs w-full"></div>
                         </div>
-                        <div><label class="block text-[10px] font-bold text-slate-500 mb-1">Description</label><textarea rows="2" class="gal-desc w-full px-3 py-2 admin-input rounded-lg text-xs">${pev.desc || ''}</textarea></div>
-                        <div class="pt-2 border-t border-slate-200">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-xs font-bold text-purple-700">Photos (${(pev.photos || []).length})</span>
-                                <label class="cursor-pointer px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white font-semibold text-xs rounded-lg flex items-center gap-1">+ Photo <input type="file" accept="image/*" class="hidden" onchange="addPhotoToAlbum(event, ${index})"></label>
+                        <div><label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Description</label><textarea rows="2" class="gal-desc w-full px-3.5 py-2.5 admin-input rounded-xl text-xs">${pev.desc || ''}</textarea></div>
+                        <div class="pt-3 border-t border-slate-200/60">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-xs font-extrabold text-purple-700 uppercase tracking-wider">Photos (${(pev.photos || []).length})</span>
+                                <label class="cursor-pointer px-3.5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 transition-colors shadow-sm">+ Photo <input type="file" accept="image/*" class="hidden" onchange="addPhotoToAlbum(event, ${index})"></label>
                             </div>
-                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">${photosHTML}</div>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">${photosHTML}</div>
                         </div>
                     </div>`;
             });
