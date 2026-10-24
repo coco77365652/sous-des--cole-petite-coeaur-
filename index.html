@@ -19,18 +19,18 @@
         }
     </script>
     <style>
-        body { font-family: 'Inter', sans-serif; color: #2D3748; background-color: #FFF9F2; }
+        body { font-family: 'Inter', sans-serif; color: #2D3748; background: linear-gradient(135deg, #FFF9F2 0%, #FFF3E2 100%); min-height: 100vh; }
         h1, h2, h3, h4, .font-title { font-family: 'Fredoka', cursive, sans-serif; }
         .hero-pattern {
-            background-color: #4EA8DE;
-            background-image: radial-gradient(#FFD166 2px, transparent 2px), radial-gradient(#06D6A0 2px, #4EA8DE 2px);
-            background-size: 80px 80px; background-position: 0 0, 40px 40px; opacity: 0.95;
+            background: linear-gradient(135deg, #3A92C8 0%, #2B6CB0 100%);
+            background-image: radial-gradient(rgba(255, 209, 102, 0.25) 2px, transparent 2px), radial-gradient(rgba(6, 214, 160, 0.2) 2px, transparent 2px);
+            background-size: 60px 60px; background-position: 0 0, 30px 30px;
         }
     </style>
 </head>
 <body class="antialiased flex flex-col min-h-screen">
 
-    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md shadow-sm border-b border-amber-100">
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md shadow-sm border-b border-amber-100/80">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <a href="#accueil" class="flex items-center gap-3 group">
@@ -55,17 +55,17 @@
     </header>
 
     <main class="flex-grow">
-        <section id="accueil" class="relative hero-pattern text-white py-12 md:py-20 overflow-hidden">
+        <section id="accueil" class="relative hero-pattern text-white py-14 md:py-24 overflow-hidden shadow-inner">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
                     <div class="flex justify-center">
                         <div class="p-2 max-w-xs transform -rotate-2 hover:rotate-0 transition-all cursor-pointer group hover:scale-105" onclick="openLightbox(document.getElementById('logo-img').src, 'Logo')">
                             <img id="logo-img" src="" class="w-full h-auto rounded-2xl object-contain drop-shadow-2xl">
-                            <p class="text-[10px] text-sky-100 text-center mt-2 group-hover:text-brand-yellow transition-colors font-medium"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Agrandir</p>
+                            <p class="text-[11px] text-sky-100 text-center mt-2 group-hover:text-brand-yellow transition-colors font-medium"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Agrandir</p>
                         </div>
                     </div>
                     <div class="text-center space-y-6">
-                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-white text-sm font-medium border border-white/30">
+                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-white text-sm font-medium border border-white/25 shadow-sm">
                             <i class="fa-solid fa-mountain-sun text-brand-yellow"></i>
                             <span id="hero-location-tag">Savoie - Commune de La Léchère</span>
                         </div>
@@ -73,7 +73,7 @@
                         <div id="hero-description" class="text-base sm:text-lg text-sky-50 font-light leading-relaxed"></div>
                     </div>
                     <div class="flex justify-center">
-                        <div class="p-4 max-w-xs transform rotate-1 hover:rotate-0 transition-all w-full text-center bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl shadow-2xl">
+                        <div class="p-5 max-w-xs transform rotate-1 hover:rotate-0 transition-all w-full text-center bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl shadow-2xl">
                             <h3 class="font-title font-bold text-white text-base mb-3 flex items-center justify-center gap-2 drop-shadow-md">
                                 <i class="fa-solid fa-bullhorn text-brand-yellow"></i>
                                 <span id="poster-heading">À l'Affiche !</span>
@@ -81,7 +81,7 @@
                             <div class="overflow-hidden cursor-pointer group rounded-2xl aspect-[4/5] bg-white shadow-xl flex items-center justify-center p-2 border border-white/30 hover:scale-105 transition-transform" onclick="openLightbox(document.getElementById('poster-img').src, 'Affiche')">
                                 <img id="poster-img" src="" class="w-full h-full object-contain rounded-xl">
                             </div>
-                            <p id="poster-caption" class="text-xs text-sky-100 mt-2 font-semibold"></p>
+                            <p id="poster-caption" class="text-xs text-sky-100 mt-3 font-semibold"></p>
                             <div id="poster-buttons-container" class="mt-4 flex flex-col gap-2"></div>
                         </div>
                     </div>
@@ -91,12 +91,12 @@
 
         <section id="qui-sommes-nous" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-12">
-                <span id="about-tag" class="text-brand-blue font-title font-bold text-sm tracking-wider uppercase bg-blue-50 px-4 py-1.5 rounded-full">Présentation</span>
+                <span id="about-tag" class="text-brand-blue font-title font-bold text-sm tracking-wider uppercase bg-blue-50 px-4 py-1.5 rounded-full border border-blue-100">Présentation</span>
                 <h2 id="about-title" class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Qui sommes-nous ?</h2>
                 <div id="about-desc" class="text-gray-600 mt-4 text-lg leading-relaxed"></div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch mb-12">
-                <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-sm space-y-4 flex flex-col justify-between">
+                <div class="bg-white/90 backdrop-blur-sm rounded-3xl p-8 sm:p-10 border border-amber-100/80 shadow-md space-y-4 flex flex-col justify-between">
                     <div class="space-y-4">
                         <h3 id="about-block1-title" class="font-title text-2xl font-bold text-gray-900 flex items-center gap-3"><i class="fa-solid fa-users text-brand-blue"></i> Notre Mission</h3>
                         <div id="about-block1-img-box" class="hidden overflow-hidden rounded-2xl my-3 cursor-pointer group border border-amber-100/60 bg-amber-50/40 p-2" onclick="openLightbox(document.getElementById('about-block1-img').src, 'Photo')">
@@ -105,7 +105,7 @@
                         <div id="about-block1-text" class="text-gray-600 leading-relaxed text-base"></div>
                     </div>
                 </div>
-                <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-sm space-y-4 flex flex-col justify-between">
+                <div class="bg-white/90 backdrop-blur-sm rounded-3xl p-8 sm:p-10 border border-amber-100/80 shadow-md space-y-4 flex flex-col justify-between">
                     <div class="space-y-4">
                         <h3 id="about-block2-title" class="font-title text-2xl font-bold text-gray-900 flex items-center gap-3"><i class="fa-solid fa-heart text-brand-red"></i> Le Mot du Bureau</h3>
                         <div id="about-block2-text" class="text-gray-600 italic leading-relaxed text-base"></div>
@@ -119,10 +119,10 @@
             </div>
         </section>
 
-        <section id="evenements" class="py-20 bg-amber-50/50 border-y border-amber-100">
+        <section id="evenements" class="py-20 bg-white/60 backdrop-blur-sm border-y border-amber-100/60 shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="mb-12 text-center md:text-left">
-                    <span class="text-brand-red font-title font-bold text-sm tracking-wider uppercase bg-rose-100/60 px-4 py-1.5 rounded-full">Agenda</span>
+                    <span class="text-brand-red font-title font-bold text-sm tracking-wider uppercase bg-rose-100/60 px-4 py-1.5 rounded-full border border-rose-200/50">Agenda</span>
                     <h2 class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Prochains Événements</h2>
                 </div>
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="events-upcoming-container"></div>
@@ -131,16 +131,16 @@
 
         <section id="galerie" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mb-12 text-center md:text-left">
-                <span class="text-brand-yellow font-title font-bold text-sm tracking-wider uppercase bg-amber-100/60 px-4 py-1.5 rounded-full text-amber-900">Souvenirs</span>
+                <span class="text-amber-900 font-title font-bold text-sm tracking-wider uppercase bg-amber-100/80 px-4 py-1.5 rounded-full border border-amber-200">Souvenirs</span>
                 <h2 class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Galerie & Photos</h2>
             </div>
             <div class="space-y-12" id="past-events-container"></div>
         </section>
 
-        <section id="partenaires" class="py-20 bg-amber-50/40 border-t border-amber-100">
+        <section id="partenaires" class="py-20 bg-white/60 backdrop-blur-sm border-t border-amber-100/60 shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-12">
-                    <span id="partners-tag" class="text-purple-900 font-title font-bold text-sm tracking-wider uppercase bg-purple-100/80 px-4 py-1.5 rounded-full">Soutien</span>
+                    <span id="partners-tag" class="text-purple-900 font-title font-bold text-sm tracking-wider uppercase bg-purple-100/80 px-4 py-1.5 rounded-full border border-purple-200">Soutien</span>
                     <h2 id="partners-title" class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Nos Partenaires</h2>
                     <p id="partners-desc" class="text-gray-600 mt-4 text-lg leading-relaxed"></p>
                 </div>
@@ -148,26 +148,26 @@
             </div>
         </section>
 
-        <section id="contact" class="py-20 bg-white border-t border-amber-100">
+        <section id="contact" class="py-20 bg-white/90 backdrop-blur-md border-t border-amber-100 shadow-sm">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-12">
-                    <span id="contact-tag" class="text-emerald-900 font-title font-bold text-sm tracking-wider uppercase bg-emerald-100/60 px-4 py-1.5 rounded-full">Coordonnées</span>
+                    <span id="contact-tag" class="text-emerald-900 font-title font-bold text-sm tracking-wider uppercase bg-emerald-100/60 px-4 py-1.5 rounded-full border border-emerald-200">Coordonnées</span>
                     <h2 id="contact-title" class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Nous Contacter</h2>
                     <div id="contact-desc" class="text-gray-600 mt-4 text-lg leading-relaxed"></div>
                 </div>
-                <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-sm grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="flex flex-col items-center text-center p-4 rounded-2xl bg-amber-50/50 border border-amber-100/60">
-                        <div class="w-12 h-12 rounded-2xl bg-brand-blue/20 text-brand-darkblue flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-envelope"></i></div>
+                <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-md grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="flex flex-col items-center text-center p-5 rounded-2xl bg-amber-50/40 border border-amber-100/60 hover:shadow-sm transition-shadow">
+                        <div class="w-12 h-12 rounded-2xl bg-brand-blue/15 text-brand-darkblue flex items-center justify-center text-xl mb-3 shadow-inner"><i class="fa-solid fa-envelope"></i></div>
                         <p class="text-xs font-bold uppercase text-gray-400 mb-1">Email</p>
                         <a id="contact-email-link" href="#" class="font-semibold text-gray-800 hover:text-brand-blue transition-colors text-sm break-all"></a>
                     </div>
-                    <div class="flex flex-col items-center text-center p-4 rounded-2xl bg-amber-50/50 border border-amber-100/60">
-                        <div class="w-12 h-12 rounded-2xl bg-brand-green/20 text-emerald-800 flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-phone"></i></div>
+                    <div class="flex flex-col items-center text-center p-5 rounded-2xl bg-amber-50/40 border border-amber-100/60 hover:shadow-sm transition-shadow">
+                        <div class="w-12 h-12 rounded-2xl bg-brand-green/15 text-emerald-800 flex items-center justify-center text-xl mb-3 shadow-inner"><i class="fa-solid fa-phone"></i></div>
                         <p class="text-xs font-bold uppercase text-gray-400 mb-1">Téléphone</p>
                         <a id="contact-phone-link" href="#" class="font-semibold text-gray-800 hover:text-brand-blue transition-colors text-sm"></a>
                     </div>
-                    <div class="flex flex-col items-center text-center p-4 rounded-2xl bg-amber-50/50 border border-amber-100/60">
-                        <div class="w-12 h-12 rounded-2xl bg-brand-yellow/30 text-amber-900 flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-location-dot"></i></div>
+                    <div class="flex flex-col items-center text-center p-5 rounded-2xl bg-amber-50/40 border border-amber-100/60 hover:shadow-sm transition-shadow">
+                        <div class="w-12 h-12 rounded-2xl bg-brand-yellow/30 text-amber-900 flex items-center justify-center text-xl mb-3 shadow-inner"><i class="fa-solid fa-location-dot"></i></div>
                         <p class="text-xs font-bold uppercase text-gray-400 mb-1">Adresse</p>
                         <p id="contact-address-text" class="font-semibold text-gray-800 text-sm leading-relaxed"></p>
                     </div>
@@ -176,14 +176,14 @@
         </section>
     </main>
 
-    <footer class="bg-gray-900 text-white py-12 border-t border-gray-800">
+    <footer class="bg-gray-900 text-white py-10 border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-400">
             <p>&copy; 2026 APE de Petit-Cœur (La Léchère). Tous droits réservés.</p>
         </div>
     </footer>
 
     <div id="modal-lightbox" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex flex-col items-center justify-center p-4 transition-all duration-300" onclick="closeLightbox()">
-        <button onclick="closeLightbox()" class="absolute top-5 right-5 z-10 bg-white/20 hover:bg-brand-red text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-lg border border-white/30 backdrop-blur-md flex items-center gap-2 cursor-pointer">
+        <button onclick="closeLightbox()" class="absolute top-5 right-5 z-10 bg-white/20 hover:bg-brand-red text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-lg border border-white/30 backdrop-blur-md flex items-center gap-2 cursor-pointer transition-colors">
             <i class="fa-solid fa-xmark text-lg"></i> <span>Fermer</span>
         </button>
         <div class="relative max-w-4xl w-full max-h-[85vh] flex flex-col items-center justify-center p-2" onclick="event.stopPropagation()">
@@ -294,9 +294,9 @@
                     document.getElementById('partenaires').style.display = 'block';
                     parts.forEach(p => {
                         partnersContainer.innerHTML += `
-                            <div class="bg-white rounded-3xl p-6 shadow-sm border border-amber-100 flex flex-col items-center text-center justify-between">
+                            <div class="bg-white rounded-3xl p-6 shadow-sm border border-amber-100/80 flex flex-col items-center text-center justify-between hover:shadow-md transition-shadow">
                                 <div class="w-full flex flex-col items-center">
-                                    <div class="w-24 h-24 rounded-2xl bg-amber-50/60 p-2 border border-amber-100/80 flex items-center justify-center mb-4 overflow-hidden">
+                                    <div class="w-24 h-24 rounded-2xl bg-amber-50/60 p-2 border border-amber-100/80 flex items-center justify-center mb-4 overflow-hidden shadow-inner">
                                         <img src="${p.logo || ''}" class="max-w-full max-h-full object-contain">
                                     </div>
                                     <h3 class="font-title font-bold text-lg text-gray-900 mb-2">${p.name || ''}</h3>
@@ -320,9 +320,9 @@
                 upContainer.innerHTML = '';
                 (siteData.upcomingEvents || []).forEach(ev => {
                     upContainer.innerHTML += `
-                        <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-amber-100 flex flex-col justify-between">
+                        <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-amber-100/80 flex flex-col justify-between hover:shadow-md transition-shadow">
                             <div class="relative bg-brand-yellow p-6 flex justify-between items-start">
-                                <span class="bg-white/90 text-gray-900 font-title font-bold text-xs px-3 py-1.5 rounded-full">${ev.date || ''}</span>
+                                <span class="bg-white/90 text-gray-900 font-title font-bold text-xs px-3 py-1.5 rounded-full shadow-sm">${ev.date || ''}</span>
                             </div>
                             <div class="p-6 flex-1 flex flex-col justify-between">
                                 <div><h3 class="font-title font-bold text-xl text-gray-900 mb-2">${ev.title || ''}</h3><div class="text-gray-600 text-sm mb-4">${ev.desc || ev.description || ''}</div></div>
@@ -344,13 +344,13 @@
                         if (pev.photos && pev.photos.length > 0) {
                             photosHTML = `<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">`;
                             pev.photos.forEach(imgUrl => {
-                                photosHTML += `<div class="relative overflow-hidden rounded-2xl group cursor-pointer h-40 bg-gray-100 border border-gray-100" onclick="openLightbox('${imgUrl}', '${(pev.title || '').replace(/'/g, "\\'")}')"><img src="${imgUrl}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"></div>`;
+                                photosHTML += `<div class="relative overflow-hidden rounded-2xl group cursor-pointer h-40 bg-gray-100 border border-gray-100 shadow-sm" onclick="openLightbox('${imgUrl}', '${(pev.title || '').replace(/'/g, "\\'")}')"><img src="${imgUrl}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"></div>`;
                             });
                             photosHTML += `</div>`;
                         }
                         pastContainer.innerHTML += `
-                            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-amber-100 mb-6">
-                                <div class="flex justify-between items-start flex-wrap gap-2 mb-2"><h3 class="font-title text-2xl font-bold text-gray-900">${pev.title || ''}</h3><span class="bg-amber-100 text-amber-800 font-title text-xs font-bold px-3 py-1 rounded-full">${pev.date || ''}</span></div>
+                            <div class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-8 shadow-sm border border-amber-100/80 mb-6">
+                                <div class="flex justify-between items-start flex-wrap gap-2 mb-2"><h3 class="font-title text-2xl font-bold text-gray-900">${pev.title || ''}</h3><span class="bg-amber-100 text-amber-800 font-title text-xs font-bold px-3 py-1 rounded-full border border-amber-200/60">${pev.date || ''}</span></div>
                                 <div class="text-gray-600 text-sm leading-relaxed">${pev.desc || ''}</div>
                                 ${photosHTML}
                             </div>`;
