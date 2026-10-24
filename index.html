@@ -1,217 +1,453 @@
+```html
 <!DOCTYPE html>
 <html lang="fr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APE de Petit-Cœur - La Léchère</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: { brand: { yellow: '#FFD166', blue: '#4EA8DE', darkblue: '#2B6CB0', green: '#06D6A0', red: '#EF476F', cream: '#FFF9F2', text: '#2D3748' } },
-                    fontFamily: { title: ['Fredoka', 'sans-serif'], body: ['Inter', 'sans-serif'] }
+                    colors: {
+                        brand: {
+                            yellow: '#FFD166',
+                            amber: '#F59E0B',
+                            blue: '#3B82F6',
+                            darkblue: '#1E40AF',
+                            cyan: '#06B6D4',
+                            green: '#10B981',
+                            red: '#F43F5E',
+                            rose: '#FB7185',
+                            cream: '#FFFDF9',
+                            slate: '#1E293B'
+                        }
+                    },
+                    fontFamily: {
+                        title: ['Fredoka', 'sans-serif'],
+                        body: ['"Plus Jakarta Sans"', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                        'glass-hover': '0 14px 40px 0 rgba(31, 38, 135, 0.15)',
+                        'glow': '0 0 25px rgba(255, 209, 102, 0.4)',
+                        'glow-blue': '0 0 25px rgba(59, 130, 246, 0.3)'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-8px) rotate(1deg)' }
+                        },
+                        pulseSlow: {
+                            '0%, 100%': { opacity: '0.6', transform: 'scale(1)' },
+                            '50%': { opacity: '0.9', transform: 'scale(1.04)' }
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulseSlow 8s ease-in-out infinite'
+                    }
                 }
             }
         }
     </script>
     <style>
-        body { font-family: 'Inter', sans-serif; color: #2D3748; background: linear-gradient(135deg, #FFF9F2 0%, #FFF3E2 100%); min-height: 100vh; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            color: #1E293B; 
+            background: linear-gradient(145deg, #FFFDF9 0%, #F4F0EA 50%, #FAF6EE 100%); 
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
         h1, h2, h3, h4, .font-title { font-family: 'Fredoka', cursive, sans-serif; }
+        
+        /* Modern Aurora Mesh Overlay */
+        .aurora-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+        .aurora-blob {
+            position: absolute;
+            filter: blur(80px);
+            opacity: 0.45;
+            border-radius: 50%;
+        }
+
+        /* Hero Dynamic Curved Pattern */
         .hero-pattern {
-            background: linear-gradient(135deg, #3A92C8 0%, #2B6CB0 100%);
-            background-image: radial-gradient(rgba(255, 209, 102, 0.25) 2px, transparent 2px), radial-gradient(rgba(6, 214, 160, 0.2) 2px, transparent 2px);
-            background-size: 60px 60px; background-position: 0 0, 30px 30px;
+            background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #0284C7 100%);
+            position: relative;
+        }
+
+        .hero-pattern::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle at 20% 30%, rgba(255, 209, 102, 0.25) 0%, transparent 25%),
+                              radial-gradient(circle at 80% 70%, rgba(16, 185, 129, 0.2) 0%, transparent 30%);
+            pointer-events: none;
+        }
+
+        /* Custom Glassmorphism Utility */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .glass-dark {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        /* Smooth Image Lightbox Transition */
+        #modal-lightbox {
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1F5F9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
         }
     </style>
 </head>
-<body class="antialiased flex flex-col min-h-screen">
+<body class="antialiased flex flex-col min-h-screen relative selection:bg-brand-yellow selection:text-gray-900">
 
-    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md shadow-sm border-b border-amber-100/80">
+    <!-- Subtle Floating Decorative Ambient Bubbles -->
+    <div class="aurora-bg">
+        <div class="aurora-blob w-96 h-96 bg-amber-200/50 top-10 -left-20 animate-pulse-slow"></div>
+        <div class="aurora-blob w-[30rem] h-[30rem] bg-sky-200/40 top-1/3 -right-32 animate-float"></div>
+        <div class="aurora-blob w-80 h-80 bg-rose-200/40 bottom-20 left-10 animate-pulse-slow"></div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-xl shadow-glass border-b border-white/60 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
-                <a href="#accueil" class="flex items-center gap-3 group">
-                    <div id="header-icon-box" class="w-12 h-12 bg-brand-yellow rounded-2xl flex items-center justify-center text-brand-red text-2xl font-bold shadow-md transform group-hover:rotate-6 transition-transform overflow-hidden p-1">
-                        <i id="header-icon" class="fa-solid fa-heart text-brand-red"></i>
+                <!-- Brand Logo & Name -->
+                <a href="#accueil" class="flex items-center gap-3.5 group">
+                    <div id="header-icon-box" class="w-12 h-12 bg-gradient-to-tr from-brand-yellow to-amber-300 rounded-2xl flex items-center justify-center text-brand-red text-2xl font-bold shadow-md transform group-hover:rotate-12 group-hover:scale-110 transition-all duration-300 overflow-hidden p-1 border border-amber-200/60">
+                        <i id="header-icon" class="fa-solid fa-heart text-brand-red drop-shadow-sm"></i>
                     </div>
                     <div>
-                        <span id="header-assoc-name" class="font-title font-bold text-xl text-gray-800 tracking-wide block leading-none">APE de Petit-Cœur</span>
-                        <span id="header-assoc-sub" class="text-xs font-semibold text-brand-darkblue tracking-wider uppercase">Petit-Cœur • La Léchère</span>
+                        <span id="header-assoc-name" class="font-title font-bold text-xl sm:text-2xl text-gray-900 tracking-wide block leading-none group-hover:text-brand-blue transition-colors">APE de Petit-Cœur</span>
+                        <span id="header-assoc-sub" class="text-[11px] font-bold text-brand-blue tracking-widest uppercase mt-1 block">Petit-Cœur • La Léchère</span>
                     </div>
                 </a>
-                <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-gray-700">
-                    <a href="#accueil" class="hover:text-brand-blue transition-colors">Accueil</a>
-                    <a href="#qui-sommes-nous" class="hover:text-brand-blue transition-colors">Qui sommes-nous ?</a>
-                    <a href="#evenements" class="hover:text-brand-blue transition-colors">Événements</a>
-                    <a href="#galerie" class="hover:text-brand-blue transition-colors">Galerie</a>
-                    <a href="#partenaires" class="hover:text-brand-blue transition-colors">Nos Partenaires</a>
-                    <a href="#contact" class="hover:text-brand-blue transition-colors">Nous Contacter</a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 text-sm font-semibold text-slate-700">
+                    <a href="#accueil" class="px-3.5 py-2 rounded-xl hover:text-brand-blue hover:bg-blue-50/80 transition-all duration-200">Accueil</a>
+                    <a href="#qui-sommes-nous" class="px-3.5 py-2 rounded-xl hover:text-brand-blue hover:bg-blue-50/80 transition-all duration-200">Qui sommes-nous ?</a>
+                    <a href="#evenements" class="px-3.5 py-2 rounded-xl hover:text-brand-blue hover:bg-blue-50/80 transition-all duration-200">Événements</a>
+                    <a href="#galerie" class="px-3.5 py-2 rounded-xl hover:text-brand-blue hover:bg-blue-50/80 transition-all duration-200">Galerie</a>
+                    <a href="#partenaires" class="px-3.5 py-2 rounded-xl hover:text-brand-blue hover:bg-blue-50/80 transition-all duration-200">Nos Partenaires</a>
+                    <a href="#contact" class="ml-2 px-5 py-2.5 rounded-2xl bg-gradient-to-r from-brand-blue to-sky-500 text-white font-title font-semibold shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 active:scale-95">Contact</a>
                 </nav>
+
+                <!-- Mobile Menu Toggle Button -->
+                <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden w-11 h-11 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition-colors focus:outline-none">
+                    <i id="mobile-menu-icon" class="fa-solid fa-bars text-lg"></i>
+                </button>
             </div>
+        </div>
+
+        <!-- Mobile Menu Container -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-2xl border-b border-slate-100 px-4 pt-3 pb-6 space-y-2 shadow-xl animate-fadeIn">
+            <a href="#accueil" onclick="toggleMobileMenu()" class="block px-4 py-3 rounded-2xl text-base font-semibold text-slate-700 hover:bg-blue-50 hover:text-brand-blue transition-all">Accueil</a>
+            <a href="#qui-sommes-nous" onclick="toggleMobileMenu()" class="block px-4 py-3 rounded-2xl text-base font-semibold text-slate-700 hover:bg-blue-50 hover:text-brand-blue transition-all">Qui sommes-nous ?</a>
+            <a href="#evenements" onclick="toggleMobileMenu()" class="block px-4 py-3 rounded-2xl text-base font-semibold text-slate-700 hover:bg-blue-50 hover:text-brand-blue transition-all">Événements</a>
+            <a href="#galerie" onclick="toggleMobileMenu()" class="block px-4 py-3 rounded-2xl text-base font-semibold text-slate-700 hover:bg-blue-50 hover:text-brand-blue transition-all">Galerie</a>
+            <a href="#partenaires" onclick="toggleMobileMenu()" class="block px-4 py-3 rounded-2xl text-base font-semibold text-slate-700 hover:bg-blue-50 hover:text-brand-blue transition-all">Nos Partenaires</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="block px-4 py-3 rounded-2xl text-center font-title font-bold text-white bg-gradient-to-r from-brand-blue to-sky-500 shadow-md">Nous Contacter</a>
         </div>
     </header>
 
-    <main class="flex-grow">
-        <section id="accueil" class="relative hero-pattern text-white py-14 md:py-24 overflow-hidden shadow-inner">
+    <main class="flex-grow z-10">
+        <!-- HERO SECTION -->
+        <section id="accueil" class="relative hero-pattern text-white py-16 lg:py-24 overflow-hidden shadow-2xl rounded-b-[2.5rem] lg:rounded-b-[4rem]">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-                    <div class="flex justify-center">
-                        <div class="p-2 max-w-xs transform -rotate-2 hover:rotate-0 transition-all cursor-pointer group hover:scale-105" onclick="openLightbox(document.getElementById('logo-img').src, 'Logo')">
-                            <img id="logo-img" src="" class="w-full h-auto rounded-2xl object-contain drop-shadow-2xl">
-                            <p class="text-[11px] text-sky-100 text-center mt-2 group-hover:text-brand-yellow transition-colors font-medium"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Agrandir</p>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-12 items-center">
+                    
+                    <!-- Left: Logo Display Card -->
+                    <div class="flex justify-center lg:justify-start">
+                        <div class="p-3 bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl transform -rotate-2 hover:rotate-0 hover:scale-105 transition-all duration-300 cursor-pointer group max-w-xs w-full" onclick="openLightbox(document.getElementById('logo-img').src, 'Logo APE')">
+                            <div class="bg-white rounded-2xl p-4 shadow-inner flex items-center justify-center overflow-hidden min-h-[200px]">
+                                <img id="logo-img" src="" alt="Logo" class="w-full h-auto max-h-56 object-contain rounded-xl transition-transform duration-500 group-hover:scale-110">
+                            </div>
+                            <p class="text-xs text-sky-100 text-center mt-3 font-semibold group-hover:text-brand-yellow transition-colors flex items-center justify-center gap-1.5">
+                                <i class="fa-solid fa-up-right-and-down-left-from-center text-[10px]"></i> Agrandir le logo
+                            </p>
                         </div>
                     </div>
+
+                    <!-- Center: Main Hero Text -->
                     <div class="text-center space-y-6">
-                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-white text-sm font-medium border border-white/25 shadow-sm">
-                            <i class="fa-solid fa-mountain-sun text-brand-yellow"></i>
+                        <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/15 backdrop-blur-md text-white text-xs sm:text-sm font-semibold border border-white/25 shadow-glow">
+                            <i class="fa-solid fa-mountain-sun text-brand-yellow animate-bounce"></i>
                             <span id="hero-location-tag">Savoie - Commune de La Léchère</span>
                         </div>
-                        <h1 id="hero-title" class="font-title text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight drop-shadow-md">Ensemble pour les enfants !</h1>
-                        <div id="hero-description" class="text-base sm:text-lg text-sky-50 font-light leading-relaxed"></div>
+                        <h1 id="hero-title" class="font-title text-3xl sm:text-5xl lg:text-5xl font-bold leading-tight tracking-tight drop-shadow-lg text-white">
+                            Ensemble pour les enfants !
+                        </h1>
+                        <div id="hero-description" class="text-base sm:text-lg text-sky-100 font-light leading-relaxed max-w-xl mx-auto drop-shadow-sm"></div>
                     </div>
-                    <div class="flex justify-center">
-                        <div class="p-5 max-w-xs transform rotate-1 hover:rotate-0 transition-all w-full text-center bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl shadow-2xl">
-                            <h3 class="font-title font-bold text-white text-base mb-3 flex items-center justify-center gap-2 drop-shadow-md">
-                                <i class="fa-solid fa-bullhorn text-brand-yellow"></i>
+
+                    <!-- Right: Poster / Event Spotlight -->
+                    <div class="flex justify-center lg:justify-end">
+                        <div class="p-5 max-w-xs w-full text-center glass-dark rounded-3xl shadow-2xl transform rotate-1 hover:rotate-0 transition-all duration-300 hover:scale-105 border border-white/20">
+                            <h3 class="font-title font-bold text-white text-lg mb-3 flex items-center justify-center gap-2 drop-shadow-md">
+                                <i class="fa-solid fa-bullhorn text-brand-yellow text-xl"></i>
                                 <span id="poster-heading">À l'Affiche !</span>
                             </h3>
-                            <div class="overflow-hidden cursor-pointer group rounded-2xl aspect-[4/5] bg-white shadow-xl flex items-center justify-center p-2 border border-white/30 hover:scale-105 transition-transform" onclick="openLightbox(document.getElementById('poster-img').src, 'Affiche')">
-                                <img id="poster-img" src="" class="w-full h-full object-contain rounded-xl">
+                            <div class="overflow-hidden cursor-pointer group rounded-2xl aspect-[4/5] bg-white/90 shadow-2xl flex items-center justify-center p-2 border border-white/40 hover:border-brand-yellow transition-colors" onclick="openLightbox(document.getElementById('poster-img').src, 'Affiche')">
+                                <img id="poster-img" src="" alt="Affiche" class="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform duration-500">
                             </div>
-                            <p id="poster-caption" class="text-xs text-sky-100 mt-3 font-semibold"></p>
+                            <p id="poster-caption" class="text-xs text-sky-200 mt-3 font-medium line-clamp-2"></p>
                             <div id="poster-buttons-container" class="mt-4 flex flex-col gap-2"></div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>
 
-        <section id="qui-sommes-nous" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-12">
-                <span id="about-tag" class="text-brand-blue font-title font-bold text-sm tracking-wider uppercase bg-blue-50 px-4 py-1.5 rounded-full border border-blue-100">Présentation</span>
-                <h2 id="about-title" class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Qui sommes-nous ?</h2>
-                <div id="about-desc" class="text-gray-600 mt-4 text-lg leading-relaxed"></div>
+        <!-- QUI SOMMES NOUS -->
+        <section id="qui-sommes-nous" class="py-20 lg:py-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span id="about-tag" class="text-brand-blue font-title font-bold text-xs tracking-widest uppercase bg-blue-100/70 px-4 py-2 rounded-full border border-blue-200/80 shadow-sm inline-block mb-3">Présentation</span>
+                <h2 id="about-title" class="font-title text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 tracking-tight">Qui sommes-nous ?</h2>
+                <div id="about-desc" class="text-slate-600 mt-5 text-base sm:text-lg leading-relaxed"></div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch mb-12">
-                <div class="bg-white/90 backdrop-blur-sm rounded-3xl p-8 sm:p-10 border border-amber-100/80 shadow-md space-y-4 flex flex-col justify-between">
-                    <div class="space-y-4">
-                        <h3 id="about-block1-title" class="font-title text-2xl font-bold text-gray-900 flex items-center gap-3"><i class="fa-solid fa-users text-brand-blue"></i> Notre Mission</h3>
-                        <div id="about-block1-img-box" class="hidden overflow-hidden rounded-2xl my-3 cursor-pointer group border border-amber-100/60 bg-amber-50/40 p-2" onclick="openLightbox(document.getElementById('about-block1-img').src, 'Photo')">
-                            <img id="about-block1-img" src="" class="w-full h-auto max-h-64 object-contain mx-auto group-hover:scale-105 transition-transform duration-300 rounded-xl">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 items-stretch">
+                <!-- Mission Card -->
+                <div class="glass-card rounded-3xl p-8 sm:p-10 border border-white/80 shadow-glass hover:shadow-glass-hover hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group">
+                    <div class="space-y-5">
+                        <div class="w-14 h-14 rounded-2xl bg-blue-500/10 text-brand-blue flex items-center justify-center text-2xl font-bold group-hover:scale-110 group-hover:bg-brand-blue group-hover:text-white transition-all duration-300 shadow-sm">
+                            <i class="fa-solid fa-users"></i>
                         </div>
-                        <div id="about-block1-text" class="text-gray-600 leading-relaxed text-base"></div>
+                        <h3 id="about-block1-title" class="font-title text-2xl font-bold text-slate-900 flex items-center gap-3">Notre Mission</h3>
+                        <div id="about-block1-img-box" class="hidden overflow-hidden rounded-2xl my-4 cursor-pointer group/img border border-slate-200/60 bg-slate-50 p-2 shadow-inner" onclick="openLightbox(document.getElementById('about-block1-img').src, 'Photo Mission')">
+                            <img id="about-block1-img" src="" alt="Mission Photo" class="w-full h-auto max-h-64 object-cover mx-auto group-hover/img:scale-105 transition-transform duration-500 rounded-xl">
+                        </div>
+                        <div id="about-block1-text" class="text-slate-600 leading-relaxed text-base"></div>
                     </div>
                 </div>
-                <div class="bg-white/90 backdrop-blur-sm rounded-3xl p-8 sm:p-10 border border-amber-100/80 shadow-md space-y-4 flex flex-col justify-between">
-                    <div class="space-y-4">
-                        <h3 id="about-block2-title" class="font-title text-2xl font-bold text-gray-900 flex items-center gap-3"><i class="fa-solid fa-heart text-brand-red"></i> Le Mot du Bureau</h3>
-                        <div id="about-block2-text" class="text-gray-600 italic leading-relaxed text-base"></div>
+
+                <!-- Word from Bureau Card -->
+                <div class="glass-card rounded-3xl p-8 sm:p-10 border border-white/80 shadow-glass hover:shadow-glass-hover hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group">
+                    <div class="space-y-5">
+                        <div class="w-14 h-14 rounded-2xl bg-rose-500/10 text-brand-red flex items-center justify-center text-2xl font-bold group-hover:scale-110 group-hover:bg-brand-red group-hover:text-white transition-all duration-300 shadow-sm">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                        <h3 id="about-block2-title" class="font-title text-2xl font-bold text-slate-900 flex items-center gap-3">Le Mot du Bureau</h3>
+                        <div id="about-block2-text" class="text-slate-600 italic leading-relaxed text-base bg-amber-50/50 p-5 rounded-2xl border border-amber-100/80"></div>
                     </div>
-                    <div id="about-file-box" class="pt-4 border-t border-amber-100 hidden">
-                        <a id="about-file-link" href="#" target="_blank" class="inline-flex items-center gap-2 bg-brand-red hover:bg-rose-600 text-white font-title font-semibold text-sm px-5 py-3 rounded-2xl shadow-md transition-all">
-                            <i class="fa-solid fa-file-pdf"></i> <span id="about-file-btn-text">Consulter les Statuts</span>
+                    <div id="about-file-box" class="pt-6 border-t border-slate-200/60 hidden mt-6">
+                        <a id="about-file-link" href="#" target="_blank" class="inline-flex items-center gap-2.5 bg-gradient-to-r from-brand-red to-rose-600 hover:from-rose-600 hover:to-brand-red text-white font-title font-semibold text-sm px-6 py-3.5 rounded-2xl shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200">
+                            <i class="fa-solid fa-file-pdf text-lg"></i> <span id="about-file-btn-text">Consulter les Statuts</span>
                         </a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="evenements" class="py-20 bg-white/60 backdrop-blur-sm border-y border-amber-100/60 shadow-sm">
+        <!-- EVENEMENTS -->
+        <section id="evenements" class="py-20 lg:py-28 bg-white/70 backdrop-blur-md border-y border-slate-200/60 shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="mb-12 text-center md:text-left">
-                    <span class="text-brand-red font-title font-bold text-sm tracking-wider uppercase bg-rose-100/60 px-4 py-1.5 rounded-full border border-rose-200/50">Agenda</span>
-                    <h2 class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Prochains Événements</h2>
+                <div class="mb-14 text-center md:text-left flex flex-col md:flex-row md:items-end justify-between gap-4">
+                    <div>
+                        <span class="text-brand-red font-title font-bold text-xs tracking-widest uppercase bg-rose-100/80 px-4 py-2 rounded-full border border-rose-200/60 inline-block mb-3">Agenda</span>
+                        <h2 class="font-title text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 tracking-tight">Prochains Événements</h2>
+                    </div>
+                    <p class="text-slate-500 text-sm max-w-md">Venez participer aux activités organisées pour la vie de l'école !</p>
                 </div>
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="events-upcoming-container"></div>
             </div>
         </section>
 
-        <section id="galerie" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="mb-12 text-center md:text-left">
-                <span class="text-amber-900 font-title font-bold text-sm tracking-wider uppercase bg-amber-100/80 px-4 py-1.5 rounded-full border border-amber-200">Souvenirs</span>
-                <h2 class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Galerie & Photos</h2>
+        <!-- GALERIE -->
+        <section id="galerie" class="py-20 lg:py-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-14 text-center md:text-left">
+                <span class="text-amber-800 font-title font-bold text-xs tracking-widest uppercase bg-amber-100/80 px-4 py-2 rounded-full border border-amber-200/80 inline-block mb-3">Souvenirs</span>
+                <h2 class="font-title text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 tracking-tight">Galerie & Photos</h2>
             </div>
             <div class="space-y-12" id="past-events-container"></div>
         </section>
 
-        <section id="partenaires" class="py-20 bg-white/60 backdrop-blur-sm border-t border-amber-100/60 shadow-sm">
+        <!-- PARTENAIRES -->
+        <section id="partenaires" class="py-20 lg:py-28 bg-white/70 backdrop-blur-md border-t border-slate-200/60 shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center max-w-3xl mx-auto mb-12">
-                    <span id="partners-tag" class="text-purple-900 font-title font-bold text-sm tracking-wider uppercase bg-purple-100/80 px-4 py-1.5 rounded-full border border-purple-200">Soutien</span>
-                    <h2 id="partners-title" class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Nos Partenaires</h2>
-                    <p id="partners-desc" class="text-gray-600 mt-4 text-lg leading-relaxed"></p>
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span id="partners-tag" class="text-purple-800 font-title font-bold text-xs tracking-widest uppercase bg-purple-100/80 px-4 py-2 rounded-full border border-purple-200/80 inline-block mb-3">Soutien</span>
+                    <h2 id="partners-title" class="font-title text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 tracking-tight">Nos Partenaires</h2>
+                    <p id="partners-desc" class="text-slate-600 mt-4 text-base sm:text-lg leading-relaxed"></p>
                 </div>
                 <div id="partners-list-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
             </div>
         </section>
 
-        <section id="contact" class="py-20 bg-white/90 backdrop-blur-md border-t border-amber-100 shadow-sm">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center max-w-3xl mx-auto mb-12">
-                    <span id="contact-tag" class="text-emerald-900 font-title font-bold text-sm tracking-wider uppercase bg-emerald-100/60 px-4 py-1.5 rounded-full border border-emerald-200">Coordonnées</span>
-                    <h2 id="contact-title" class="font-title text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Nous Contacter</h2>
-                    <div id="contact-desc" class="text-gray-600 mt-4 text-lg leading-relaxed"></div>
+        <!-- CONTACT -->
+        <section id="contact" class="py-20 lg:py-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center max-w-3xl mx-auto mb-14">
+                    <span id="contact-tag" class="text-emerald-800 font-title font-bold text-xs tracking-widest uppercase bg-emerald-100/80 px-4 py-2 rounded-full border border-emerald-200/80 inline-block mb-3">Coordonnées</span>
+                    <h2 id="contact-title" class="font-title text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 tracking-tight">Nous Contacter</h2>
+                    <div id="contact-desc" class="text-slate-600 mt-4 text-base sm:text-lg leading-relaxed"></div>
                 </div>
-                <div class="bg-white rounded-3xl p-8 sm:p-10 border border-amber-100 shadow-md grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="flex flex-col items-center text-center p-5 rounded-2xl bg-amber-50/40 border border-amber-100/60 hover:shadow-sm transition-shadow">
-                        <div class="w-12 h-12 rounded-2xl bg-brand-blue/15 text-brand-darkblue flex items-center justify-center text-xl mb-3 shadow-inner"><i class="fa-solid fa-envelope"></i></div>
-                        <p class="text-xs font-bold uppercase text-gray-400 mb-1">Email</p>
-                        <a id="contact-email-link" href="#" class="font-semibold text-gray-800 hover:text-brand-blue transition-colors text-sm break-all"></a>
+
+                <div class="glass-card rounded-3xl p-8 sm:p-12 border border-white shadow-glass grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Email -->
+                    <div class="flex flex-col items-center text-center p-6 rounded-2xl bg-white/80 border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+                        <div class="w-14 h-14 rounded-2xl bg-blue-50 text-brand-blue flex items-center justify-center text-2xl mb-4 shadow-inner">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                        <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Email</p>
+                        <a id="contact-email-link" href="#" class="font-bold text-slate-800 hover:text-brand-blue transition-colors text-sm break-all"></a>
                     </div>
-                    <div class="flex flex-col items-center text-center p-5 rounded-2xl bg-amber-50/40 border border-amber-100/60 hover:shadow-sm transition-shadow">
-                        <div class="w-12 h-12 rounded-2xl bg-brand-green/15 text-emerald-800 flex items-center justify-center text-xl mb-3 shadow-inner"><i class="fa-solid fa-phone"></i></div>
-                        <p class="text-xs font-bold uppercase text-gray-400 mb-1">Téléphone</p>
-                        <a id="contact-phone-link" href="#" class="font-semibold text-gray-800 hover:text-brand-blue transition-colors text-sm"></a>
+                    <!-- Phone -->
+                    <div class="flex flex-col items-center text-center p-6 rounded-2xl bg-white/80 border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-brand-green flex items-center justify-center text-2xl mb-4 shadow-inner">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Téléphone</p>
+                        <a id="contact-phone-link" href="#" class="font-bold text-slate-800 hover:text-brand-blue transition-colors text-sm"></a>
                     </div>
-                    <div class="flex flex-col items-center text-center p-5 rounded-2xl bg-amber-50/40 border border-amber-100/60 hover:shadow-sm transition-shadow">
-                        <div class="w-12 h-12 rounded-2xl bg-brand-yellow/30 text-amber-900 flex items-center justify-center text-xl mb-3 shadow-inner"><i class="fa-solid fa-location-dot"></i></div>
-                        <p class="text-xs font-bold uppercase text-gray-400 mb-1">Adresse</p>
-                        <p id="contact-address-text" class="font-semibold text-gray-800 text-sm leading-relaxed"></p>
+                    <!-- Address -->
+                    <div class="flex flex-col items-center text-center p-6 rounded-2xl bg-white/80 border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+                        <div class="w-14 h-14 rounded-2xl bg-amber-50 text-brand-amber flex items-center justify-center text-2xl mb-4 shadow-inner">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Adresse</p>
+                        <p id="contact-address-text" class="font-bold text-slate-800 text-sm leading-relaxed"></p>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="bg-gray-900 text-white py-10 border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-400">
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-white py-12 border-t border-slate-800 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-400 space-y-3">
+            <div class="flex items-center justify-center gap-2 text-brand-yellow text-lg font-title">
+                <i class="fa-solid fa-heart text-brand-red"></i> APE Petit-Cœur
+            </div>
             <p>&copy; 2026 APE de Petit-Cœur (La Léchère). Tous droits réservés.</p>
         </div>
     </footer>
 
-    <div id="modal-lightbox" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex flex-col items-center justify-center p-4 transition-all duration-300" onclick="closeLightbox()">
-        <button onclick="closeLightbox()" class="absolute top-5 right-5 z-10 bg-white/20 hover:bg-brand-red text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-lg border border-white/30 backdrop-blur-md flex items-center gap-2 cursor-pointer transition-colors">
+    <!-- LIGHTBOX MODAL -->
+    <div id="modal-lightbox" class="fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-xl flex flex-col items-center justify-center p-4 transition-all duration-300 opacity-0" onclick="closeLightbox()">
+        <button onclick="closeLightbox()" class="absolute top-6 right-6 z-10 bg-white/15 hover:bg-brand-red text-white text-sm font-bold px-6 py-3 rounded-full shadow-2xl border border-white/20 backdrop-blur-md flex items-center gap-2 cursor-pointer transition-all hover:scale-105">
             <i class="fa-solid fa-xmark text-lg"></i> <span>Fermer</span>
         </button>
         <div class="relative max-w-4xl w-full max-h-[85vh] flex flex-col items-center justify-center p-2" onclick="event.stopPropagation()">
-            <div class="bg-white p-3 sm:p-4 rounded-3xl shadow-2xl flex items-center justify-center">
-                <img id="lightbox-img" src="" class="max-h-[75vh] w-auto max-w-full rounded-2xl object-contain shadow-md">
+            <div class="bg-white p-3 rounded-3xl shadow-2xl flex items-center justify-center border border-white/40 max-h-[75vh]">
+                <img id="lightbox-img" src="" alt="Enlarged" class="max-h-[70vh] w-auto max-w-full rounded-2xl object-contain shadow-md">
             </div>
-            <p id="lightbox-caption" class="text-white font-title text-center mt-4 text-sm sm:text-base bg-black/50 backdrop-blur-md px-6 py-2 rounded-full border border-white/20 shadow-lg"></p>
+            <p id="lightbox-caption" class="text-white font-title text-center mt-4 text-sm sm:text-base bg-white/10 backdrop-blur-md px-6 py-2.5 rounded-full border border-white/20 shadow-lg max-w-xl"></p>
         </div>
     </div>
 
+    <!-- JAVASCRIPT & SUPABASE SYNC -->
     <script>
         const SUPABASE_URL = 'https://gdbktvxramksondbobns.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_6Q9vML3WwH7_8n5Ipvo-3g_DRZx_VPK';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         const defaultSiteData = {
-            general: { assocName: "APE de Petit-Cœur", assocSub: "Petit-Cœur • La Léchère", headerIcon: "fa-heart", locationTag: "Savoie - Commune de La Léchère", heroTitle: "Ensemble pour les enfants de Petit-Cœur !", heroDesc: "Association de parents d'élèves (APE) bénévoles.", logoImg: "", posterImg: "", posterHeading: "À l'Affiche !", posterCaption: "Le Bureau du Sou des Écoles", posterButtons: [] },
-            about: { tag: "Présentation", title: "Qui sommes-nous ?", desc: "Une équipe de parents bénévoles.", block1Title: "Notre Mission", block1Text: "Financer les projets éducatifs et sorties scolaires.", block1Img: "", block2Title: "Le Mot du Bureau", block2Text: "Merci à tous !", fileUrl: "", fileBtnText: "Consulter les Statuts" },
-            partners: { tag: "Soutien", title: "Nos Partenaires", desc: "Merci à nos partenaires.", list: [] },
-            contact: { tag: "Coordonnées", title: "Nous Contacter", desc: "Contactez-nous directement.", email: "ape.petitcoeur@gmail.com", phone: "06 00 00 00 00", address: "École Primaire, 73260 La Léchère" },
-            upcomingEvents: [], pastEvents: []
+            general: { 
+                assocName: "APE de Petit-Cœur", 
+                assocSub: "Petit-Cœur • La Léchère", 
+                headerIcon: "fa-heart", 
+                locationTag: "Savoie - Commune de La Léchère", 
+                heroTitle: "Ensemble pour les enfants de Petit-Cœur !", 
+                heroDesc: "Association de parents d'élèves (APE) bénévoles organisant des événements conviviaux pour financer les sorties scolaires et projets pédagogiques.", 
+                logoImg: "", 
+                posterImg: "", 
+                posterHeading: "À l'Affiche !", 
+                posterCaption: "Événement à ne pas manquer !", 
+                posterButtons: [] 
+            },
+            about: { 
+                tag: "Présentation", 
+                title: "Qui sommes-nous ?", 
+                desc: "Une équipe dynamique de parents bénévoles dédiée à l'épanouissement des enfants de notre école.", 
+                block1Title: "Notre Mission", 
+                block1Text: "Organiser des manifestations festives pour financer les matériel pédagogique, sorties et activités scolaires.", 
+                block1Img: "", 
+                block2Title: "Le Mot du Bureau", 
+                block2Text: "Merci à l'ensemble des parents, enseignants et partenaires pour votre confiance et soutien continus !", 
+                fileUrl: "", 
+                fileBtnText: "Consulter les Statuts" 
+            },
+            partners: { 
+                tag: "Soutien", 
+                title: "Nos Partenaires", 
+                desc: "Un grand merci aux acteurs locaux qui soutiennent chaleureusement nos actions.", 
+                list: [] 
+            },
+            contact: { 
+                tag: "Coordonnées", 
+                title: "Nous Contacter", 
+                desc: "Une question ou envie d'aider ? N'hésitez pas à nous envoyer un message !", 
+                email: "ape.petitcoeur@gmail.com", 
+                phone: "06 00 00 00 00", 
+                address: "École Primaire, 73260 La Léchère" 
+            },
+            upcomingEvents: [], 
+            pastEvents: []
         };
 
         let siteData = Object.assign({}, defaultSiteData);
 
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('mobile-menu-icon');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.className = 'fa-solid fa-xmark text-lg';
+            } else {
+                menu.classList.add('hidden');
+                icon.className = 'fa-solid fa-bars text-lg';
+            }
+        }
+
         function renderSite() {
             const gen = siteData.general || {}, ab = siteData.about || {}, pt = siteData.partners || {}, ct = siteData.contact || {};
             
+            // Header
             if (document.getElementById('header-assoc-name')) document.getElementById('header-assoc-name').textContent = gen.assocName || defaultSiteData.general.assocName;
             if (document.getElementById('header-assoc-sub')) document.getElementById('header-assoc-sub').textContent = gen.assocSub || defaultSiteData.general.assocSub;
             
@@ -222,10 +458,11 @@
                     headerBox.innerHTML = `<img src="${iconVal}" class="w-full h-full object-cover rounded-xl">`;
                 } else {
                     const cleanClass = iconVal.replace(/^fa-solid\s+/, '');
-                    headerBox.innerHTML = `<i id="header-icon" class="fa-solid ${cleanClass} text-brand-red"></i>`;
+                    headerBox.innerHTML = `<i id="header-icon" class="fa-solid ${cleanClass} text-brand-red drop-shadow-sm"></i>`;
                 }
             }
 
+            // Hero
             if (document.getElementById('hero-location-tag')) document.getElementById('hero-location-tag').textContent = gen.locationTag || defaultSiteData.general.locationTag;
             if (document.getElementById('hero-title')) document.getElementById('hero-title').textContent = gen.heroTitle || defaultSiteData.general.heroTitle;
             if (document.getElementById('hero-description')) document.getElementById('hero-description').textContent = gen.heroDesc || defaultSiteData.general.heroDesc;
@@ -234,9 +471,9 @@
             if (logoImg) {
                 if (gen.logoImg && gen.logoImg.trim() !== '') {
                     logoImg.src = gen.logoImg;
-                    logoImg.parentElement.style.display = 'block';
+                    logoImg.parentElement.parentElement.style.display = 'block';
                 } else {
-                    logoImg.parentElement.style.display = 'none';
+                    logoImg.parentElement.parentElement.style.display = 'none';
                 }
             }
 
@@ -244,9 +481,9 @@
             if (posterImg) {
                 if (gen.posterImg && gen.posterImg.trim() !== '') {
                     posterImg.src = gen.posterImg;
-                    posterImg.parentElement.style.display = 'flex';
+                    posterImg.parentElement.parentElement.style.display = 'block';
                 } else {
-                    posterImg.parentElement.style.display = 'none';
+                    posterImg.parentElement.parentElement.style.display = 'none';
                 }
             }
 
@@ -257,20 +494,25 @@
             if (btnContainer) {
                 btnContainer.innerHTML = '';
                 (gen.posterButtons || []).forEach(b => {
-                    btnContainer.innerHTML += `<a href="${b.url || '#'}" target="_blank" download class="w-full inline-flex items-center justify-center gap-2 bg-brand-yellow hover:bg-amber-300 text-gray-900 font-title font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition-all"><i class="fa-solid fa-download"></i><span>${b.label || 'Télécharger'}</span></a>`;
+                    btnContainer.innerHTML += `
+                        <a href="${b.url || '#'}" target="_blank" download class="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-yellow to-amber-400 hover:from-amber-400 hover:to-brand-yellow text-slate-900 font-title font-bold text-xs px-4 py-3 rounded-xl shadow-md hover:shadow-lg transition-all duration-200">
+                            <i class="fa-solid fa-download"></i>
+                            <span>${b.label || 'Télécharger'}</span>
+                        </a>`;
                 });
             }
 
+            // About
             if (document.getElementById('about-tag')) document.getElementById('about-tag').textContent = ab.tag || defaultSiteData.about.tag;
             if (document.getElementById('about-title')) document.getElementById('about-title').textContent = ab.title || defaultSiteData.about.title;
             if (document.getElementById('about-desc')) document.getElementById('about-desc').textContent = ab.desc || defaultSiteData.about.desc;
-            if (document.getElementById('about-block1-title')) document.getElementById('about-block1-title').innerHTML = `<i class="fa-solid fa-users text-brand-blue"></i> ${ab.block1Title || defaultSiteData.about.block1Title}`;
+            if (document.getElementById('about-block1-title')) document.getElementById('about-block1-title').innerHTML = ab.block1Title || defaultSiteData.about.block1Title;
             if (document.getElementById('about-block1-text')) document.getElementById('about-block1-text').textContent = ab.block1Text || defaultSiteData.about.block1Text;
             
             const b1ImgBox = document.getElementById('about-block1-img-box'), b1Img = document.getElementById('about-block1-img'), block1Photo = ab.block1Img || ab.block1Photo || "";
             if (block1Photo.trim() !== '') { b1Img.src = block1Photo; b1ImgBox.classList.remove('hidden'); } else { b1ImgBox.classList.add('hidden'); }
 
-            if (document.getElementById('about-block2-title')) document.getElementById('about-block2-title').innerHTML = `<i class="fa-solid fa-heart text-brand-red"></i> ${ab.block2Title || defaultSiteData.about.block2Title}`;
+            if (document.getElementById('about-block2-title')) document.getElementById('about-block2-title').innerHTML = ab.block2Title || defaultSiteData.about.block2Title;
             if (document.getElementById('about-block2-text')) document.getElementById('about-block2-text').textContent = ab.block2Text || defaultSiteData.about.block2Text;
 
             const fileBox = document.getElementById('about-file-box');
@@ -280,6 +522,7 @@
                 fileBox.classList.remove('hidden');
             } else { fileBox.classList.add('hidden'); }
 
+            // Partners
             if (document.getElementById('partners-tag')) document.getElementById('partners-tag').textContent = pt.tag || defaultSiteData.partners.tag;
             if (document.getElementById('partners-title')) document.getElementById('partners-title').textContent = pt.title || defaultSiteData.partners.title;
             if (document.getElementById('partners-desc')) document.getElementById('partners-desc').textContent = pt.desc || defaultSiteData.partners.desc;
@@ -294,20 +537,21 @@
                     document.getElementById('partenaires').style.display = 'block';
                     parts.forEach(p => {
                         partnersContainer.innerHTML += `
-                            <div class="bg-white rounded-3xl p-6 shadow-sm border border-amber-100/80 flex flex-col items-center text-center justify-between hover:shadow-md transition-shadow">
+                            <div class="glass-card rounded-3xl p-6 shadow-glass border border-white/80 flex flex-col items-center text-center justify-between hover:shadow-glass-hover hover:-translate-y-1 transition-all duration-300 group">
                                 <div class="w-full flex flex-col items-center">
-                                    <div class="w-24 h-24 rounded-2xl bg-amber-50/60 p-2 border border-amber-100/80 flex items-center justify-center mb-4 overflow-hidden shadow-inner">
-                                        <img src="${p.logo || ''}" class="max-w-full max-h-full object-contain">
+                                    <div class="w-24 h-24 rounded-2xl bg-slate-50 p-3 border border-slate-100 flex items-center justify-center mb-4 overflow-hidden shadow-inner group-hover:scale-105 transition-transform">
+                                        <img src="${p.logo || ''}" alt="${p.name || ''}" class="max-w-full max-h-full object-contain">
                                     </div>
-                                    <h3 class="font-title font-bold text-lg text-gray-900 mb-2">${p.name || ''}</h3>
-                                    <p class="text-gray-600 text-xs leading-relaxed">${p.desc || ''}</p>
+                                    <h3 class="font-title font-bold text-lg text-slate-900 mb-2">${p.name || ''}</h3>
+                                    <p class="text-slate-600 text-xs leading-relaxed">${p.desc || ''}</p>
                                 </div>
-                                ${p.link ? `<a href="${p.link}" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-title font-bold text-brand-blue hover:text-brand-darkblue mt-3"><span>Visiter le site</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>` : ''}
+                                ${p.link ? `<a href="${p.link}" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-title font-bold text-brand-blue hover:text-brand-darkblue mt-4 hover:underline"><span>Visiter le site</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>` : ''}
                             </div>`;
                     });
                 }
             }
 
+            // Contact
             if (document.getElementById('contact-tag')) document.getElementById('contact-tag').textContent = ct.tag || defaultSiteData.contact.tag;
             if (document.getElementById('contact-title')) document.getElementById('contact-title').textContent = ct.title || defaultSiteData.contact.title;
             if (document.getElementById('contact-desc')) document.getElementById('contact-desc').textContent = ct.desc || defaultSiteData.contact.desc;
@@ -315,22 +559,30 @@
             const cph = document.getElementById('contact-phone-link'); if (cph) { cph.textContent = ct.phone || defaultSiteData.contact.phone; cph.href = `tel:${(ct.phone || defaultSiteData.contact.phone).replace(/\s+/g, '')}`; }
             if (document.getElementById('contact-address-text')) document.getElementById('contact-address-text').textContent = ct.address || defaultSiteData.contact.address;
 
+            // Upcoming Events
             const upContainer = document.getElementById('events-upcoming-container');
             if (upContainer) {
                 upContainer.innerHTML = '';
                 (siteData.upcomingEvents || []).forEach(ev => {
                     upContainer.innerHTML += `
-                        <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-amber-100/80 flex flex-col justify-between hover:shadow-md transition-shadow">
-                            <div class="relative bg-brand-yellow p-6 flex justify-between items-start">
-                                <span class="bg-white/90 text-gray-900 font-title font-bold text-xs px-3 py-1.5 rounded-full shadow-sm">${ev.date || ''}</span>
+                        <div class="glass-card rounded-3xl overflow-hidden shadow-glass border border-white/80 flex flex-col justify-between hover:shadow-glass-hover hover:-translate-y-1.5 transition-all duration-300 group">
+                            <div class="relative bg-gradient-to-r from-brand-yellow to-amber-300 p-6 flex justify-between items-start">
+                                <span class="bg-white/95 text-slate-900 font-title font-bold text-xs px-3.5 py-1.5 rounded-full shadow-sm">${ev.date || ''}</span>
+                                <div class="w-8 h-8 rounded-full bg-white/30 backdrop-blur-md flex items-center justify-center text-slate-800 text-sm">
+                                    <i class="fa-regular fa-calendar-check"></i>
+                                </div>
                             </div>
                             <div class="p-6 flex-1 flex flex-col justify-between">
-                                <div><h3 class="font-title font-bold text-xl text-gray-900 mb-2">${ev.title || ''}</h3><div class="text-gray-600 text-sm mb-4">${ev.desc || ev.description || ''}</div></div>
+                                <div>
+                                    <h3 class="font-title font-bold text-xl text-slate-900 mb-2 group-hover:text-brand-blue transition-colors">${ev.title || ''}</h3>
+                                    <div class="text-slate-600 text-sm leading-relaxed mb-4">${ev.desc || ev.description || ''}</div>
+                                </div>
                             </div>
                         </div>`;
                 });
             }
 
+            // Past Events
             const pastContainer = document.getElementById('past-events-container');
             if (pastContainer) {
                 pastContainer.innerHTML = '';
@@ -342,16 +594,25 @@
                     pastList.forEach(pev => {
                         let photosHTML = '';
                         if (pev.photos && pev.photos.length > 0) {
-                            photosHTML = `<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">`;
+                            photosHTML = `<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-6">`;
                             pev.photos.forEach(imgUrl => {
-                                photosHTML += `<div class="relative overflow-hidden rounded-2xl group cursor-pointer h-40 bg-gray-100 border border-gray-100 shadow-sm" onclick="openLightbox('${imgUrl}', '${(pev.title || '').replace(/'/g, "\\'")}')"><img src="${imgUrl}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"></div>`;
+                                photosHTML += `
+                                    <div class="relative overflow-hidden rounded-2xl group/img cursor-pointer h-44 bg-slate-100 border border-slate-200/60 shadow-sm" onclick="openLightbox('${imgUrl}', '${(pev.title || '').replace(/'/g, "\\'")}')">
+                                        <img src="${imgUrl}" alt="Photo" class="w-full h-full object-cover group-hover/img:scale-110 transition-transform duration-500">
+                                        <div class="absolute inset-0 bg-slate-900/20 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                            <i class="fa-solid fa-magnifying-glass-plus text-white text-xl drop-shadow"></i>
+                                        </div>
+                                    </div>`;
                             });
                             photosHTML += `</div>`;
                         }
                         pastContainer.innerHTML += `
-                            <div class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-8 shadow-sm border border-amber-100/80 mb-6">
-                                <div class="flex justify-between items-start flex-wrap gap-2 mb-2"><h3 class="font-title text-2xl font-bold text-gray-900">${pev.title || ''}</h3><span class="bg-amber-100 text-amber-800 font-title text-xs font-bold px-3 py-1 rounded-full border border-amber-200/60">${pev.date || ''}</span></div>
-                                <div class="text-gray-600 text-sm leading-relaxed">${pev.desc || ''}</div>
+                            <div class="glass-card rounded-3xl p-6 sm:p-8 shadow-glass border border-white/80 mb-6">
+                                <div class="flex justify-between items-start flex-wrap gap-2 mb-3">
+                                    <h3 class="font-title text-2xl font-bold text-slate-900">${pev.title || ''}</h3>
+                                    <span class="bg-amber-100/80 text-amber-900 font-title text-xs font-bold px-3.5 py-1.5 rounded-full border border-amber-200/80">${pev.date || ''}</span>
+                                </div>
+                                <div class="text-slate-600 text-sm sm:text-base leading-relaxed">${pev.desc || ''}</div>
                                 ${photosHTML}
                             </div>`;
                     });
@@ -380,8 +641,21 @@
             loadAndSyncData();
         });
 
-        function openLightbox(imgUrl, caption) { if (!imgUrl) return; document.getElementById('lightbox-img').src = imgUrl; document.getElementById('lightbox-caption').textContent = caption || ''; document.getElementById('modal-lightbox').classList.remove('hidden'); }
-        function closeLightbox() { document.getElementById('modal-lightbox').classList.add('hidden'); }
+        function openLightbox(imgUrl, caption) { 
+            if (!imgUrl) return; 
+            const modal = document.getElementById('modal-lightbox');
+            document.getElementById('lightbox-img').src = imgUrl; 
+            document.getElementById('lightbox-caption').textContent = caption || ''; 
+            modal.classList.remove('hidden'); 
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        function closeLightbox() { 
+            const modal = document.getElementById('modal-lightbox');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
     </script>
 </body>
 </html>
+```
