@@ -31,7 +31,6 @@
 </head>
 <body class="font-sans antialiased h-full flex flex-col text-slate-800">
 
-    <!-- Toast de notification -->
     <div id="status-toast" class="fixed top-6 right-6 z-50 transform translate-x-full opacity-0 transition-all duration-300 px-5 py-3.5 rounded-2xl bg-slate-900 text-white shadow-2xl flex items-center gap-3 border border-slate-700/80 text-sm font-semibold">
         <i id="status-icon" class="fas fa-circle-check text-emerald-400 text-lg"></i>
         <span id="status-message">Action effectuée avec succès</span>
@@ -76,6 +75,7 @@
                     <button type="button" onclick="switchTab('tab-images')" id="nav-tab-images" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-bullhorn w-4 text-rose-400"></i><span>Affiche & Docs</span></button>
                     <button type="button" onclick="switchTab('tab-events')" id="nav-tab-events" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-calendar-alt w-4 text-amber-400"></i><span>Événements</span></button>
                     <button type="button" onclick="switchTab('tab-gallery')" id="nav-tab-gallery" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-images w-4 text-purple-400"></i><span>Galerie Photos</span></button>
+                    <button type="button" onclick="switchTab('tab-locations')" id="nav-tab-locations" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-key w-4 text-blue-400"></i><span>Locations</span></button>
                     <button type="button" onclick="switchTab('tab-partners')" id="nav-tab-partners" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-handshake w-4 text-teal-400"></i><span>Nos Partenaires</span></button>
                     <button type="button" onclick="switchTab('tab-contact')" id="nav-tab-contact" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-envelope w-4 text-sky-400"></i><span>Nous Contacter</span></button>
                 </nav>
@@ -207,6 +207,22 @@
                 </div>
             </div>
 
+            <!-- Tab: Locations (NOUVEL ONGLET ADMIN) -->
+            <div id="tab-locations" class="tab-content hidden space-y-6">
+                <div class="admin-card rounded-3xl p-6 sm:p-8 space-y-6">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+                        <h3 class="text-base font-bold text-slate-900 flex items-center"><i class="fas fa-key text-blue-600 mr-2.5 text-lg"></i>Gestion des Locations</h3>
+                        <button type="button" onclick="addLocationItem()" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-colors shadow-sm">+ Ajouter une Location</button>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                        <input type="text" id="cfg-locationsTag" placeholder="Tag Section" class="px-4 py-3 admin-input rounded-xl text-xs font-medium">
+                        <input type="text" id="cfg-locationsTitle" placeholder="Titre Section" class="px-4 py-3 admin-input rounded-xl text-xs font-bold text-blue-600">
+                    </div>
+                    <textarea id="cfg-locationsDesc" rows="2" placeholder="Description générale des locations..." class="w-full px-4 py-3 admin-input rounded-xl text-xs font-medium"></textarea>
+                    <div id="locations-admin-container" class="space-y-4 pt-4 border-t border-slate-100"></div>
+                </div>
+            </div>
+
             <!-- Tab: Partners -->
             <div id="tab-partners" class="tab-content hidden space-y-6">
                 <div class="admin-card rounded-3xl p-6 sm:p-8 space-y-6">
@@ -240,7 +256,7 @@
                 </div>
             </div>
 
-            <!-- Bouton d'enregistrement Global Fixe ou en bas -->
+            <!-- Bouton d'enregistrement Global -->
             <div class="pt-6 border-t border-slate-200/80 flex justify-end pb-12">
                 <button type="button" onclick="globalSaveData()" id="save-btn" class="w-full sm:w-auto px-10 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs uppercase tracking-widest rounded-2xl shadow-xl shadow-indigo-200 transition-all cursor-pointer flex items-center justify-center gap-2">
                     <i class="fas fa-save text-sm"></i>Enregistrer les modifications
@@ -253,6 +269,7 @@
         const DEFAULT_DATA = {
             general: { assocName: "APE de Petit-Cœur", assocSub: "Petit-Cœur • La Léchère", headerIcon: "fa-heart", locationTag: "Savoie - Commune de La Léchère", heroTitle: "Ensemble pour les enfants de Petit-Cœur !", heroDesc: "Association de parents d'élèves.", logoImg: "", posterImg: "", posterHeading: "À l'Affiche !", posterCaption: "Le Bureau du Sou des Écoles", posterButtons: [], adminPassword: "1664" },
             about: { tag: "Présentation", title: "Qui sommes-nous ?", desc: "Une équipe dédiée aux enfants.", block1Title: "Notre Mission", block1Text: "Financer les projets scolaires.", block1Img: "", block2Title: "Le Mot du Bureau", block2Text: "Merci à tous !", fileUrl: "", fileBtnText: "Consulter les Statuts" },
+            locations: { tag: "Services", title: "Nos Locations", desc: "Découvrez nos offres de location disponibles pour vos événements.", list: [] },
             partners: { tag: "Soutien", title: "Nos Partenaires", desc: "Merci à nos partenaires !", list: [] },
             contact: { tag: "Coordonnées", title: "Nous Contacter", desc: "Contactez-nous.", email: "ape.petitcoeur@gmail.com", phone: "06 00 00 00 00", address: "École Primaire, 73260 La Léchère" },
             upcomingEvents: [], pastEvents: []
@@ -299,7 +316,7 @@
         }
 
         function renderUI() {
-            const g = appData.general || {}, ab = appData.about || {}, pt = appData.partners || {}, ct = appData.contact || {};
+            const g = appData.general || {}, ab = appData.about || {}, loc = appData.locations || {}, pt = appData.partners || {}, ct = appData.contact || {};
             const setV = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || ''; };
 
             setV('cfg-siteName', g.assocName); setV('cfg-siteLocation', g.assocSub); setV('cfg-headerIcon', g.headerIcon || 'fa-heart'); setV('cfg-locationTag', g.locationTag); setV('cfg-heroTitle', g.heroTitle); setV('cfg-heroDesc', g.heroDesc);
@@ -307,11 +324,37 @@
             setV('cfg-aboutTag', ab.tag); setV('cfg-aboutTitle', ab.title); setV('cfg-aboutDesc', ab.desc); setV('cfg-aboutBlock1Title', ab.block1Title); setV('cfg-aboutBlock1Text', ab.block1Text);
             setV('cfg-aboutBlock1Img', ab.block1Img || ab.block1Photo); setV('cfg-aboutBlock2Title', ab.block2Title); setV('cfg-aboutBlock2Text', ab.block2Text);
             setV('cfg-aboutFileUrl', ab.fileUrl); setV('cfg-aboutFileBtnText', ab.fileBtnText);
+            
+            setV('cfg-locationsTag', loc.tag); setV('cfg-locationsTitle', loc.title); setV('cfg-locationsDesc', loc.desc);
+
             setV('cfg-partnersTag', pt.tag); setV('cfg-partnersTitle', pt.title); setV('cfg-partnersDesc', pt.desc);
             setV('cfg-contactTag', ct.tag); setV('cfg-contactTitle', ct.title); setV('cfg-contactDesc', ct.desc); setV('cfg-contactEmail', ct.email); setV('cfg-contactPhone', ct.phone); setV('cfg-contactAddress', ct.address);
 
-            renderPosterButtonsAdmin(); renderPartnersAdmin(); renderUpcomingEvents(); renderPastEvents();
+            renderLocationsAdmin(); renderPartnersAdmin(); renderPosterButtonsAdmin(); renderUpcomingEvents(); renderPastEvents();
         }
+
+        function renderLocationsAdmin() {
+            const container = document.getElementById('locations-admin-container'); if (!container) return; container.innerHTML = '';
+            (appData.locations.list || []).forEach((l, index) => {
+                container.innerHTML += `
+                    <div class="p-4 bg-slate-50/70 rounded-2xl border border-slate-200/80 space-y-3 relative location-item">
+                        <button type="button" onclick="appData.locations.list.splice(${index},1);renderLocationsAdmin()" class="absolute top-4 right-4 text-rose-600 hover:text-rose-700 text-xs font-bold bg-white px-2.5 py-1.5 rounded-lg border border-slate-200 shadow-sm"><i class="fas fa-trash mr-1"></i>Supprimer</button>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pr-28">
+                            <div><label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Nom / Élément</label><input type="text" value="${l.name || ''}" class="l-name w-full px-3.5 py-2.5 admin-input rounded-xl text-xs font-bold"></div>
+                            <div><label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Tarif / Prix</label><input type="text" value="${l.price || ''}" class="l-price w-full px-3.5 py-2.5 admin-input rounded-xl text-xs"></div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                            <div><label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Lien de réservation / Détails</label><input type="text" value="${l.link || ''}" class="l-link w-full px-3.5 py-2.5 admin-input rounded-xl text-xs"></div>
+                            <div><label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Image URL</label><input type="text" id="loc-img-${index}" value="${l.image || ''}" class="l-image w-full px-3.5 py-2.5 admin-input rounded-xl text-xs"></div>
+                        </div>
+                        <div><label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Description</label><input type="text" value="${l.desc || ''}" class="l-desc w-full px-3.5 py-2.5 admin-input rounded-xl text-xs"></div>
+                        <div class="flex justify-end">
+                            <label class="cursor-pointer px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl flex items-center gap-1.5 transition-colors shadow-sm"><i class="fas fa-upload"></i> Charger une photo <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'loc-img-${index}', 500)"></label>
+                        </div>
+                    </div>`;
+            });
+        }
+        function addLocationItem() { (appData.locations.list = appData.locations.list || []).push({ name: "Nouvelle Location", price: "", desc: "", image: "", link: "" }); renderLocationsAdmin(); }
 
         function renderPartnersAdmin() {
             const container = document.getElementById('partners-admin-container'); if (!container) return; container.innerHTML = '';
@@ -419,6 +462,19 @@
                 appData.general.assocName = getV('cfg-siteName'); appData.general.assocSub = getV('cfg-siteLocation'); appData.general.headerIcon = getV('cfg-headerIcon'); appData.general.locationTag = getV('cfg-locationTag'); appData.general.heroTitle = getV('cfg-heroTitle'); appData.general.heroDesc = getV('cfg-heroDesc'); appData.general.logoImg = getV('cfg-logoImg'); appData.general.posterImg = getV('cfg-posterImg'); appData.general.posterHeading = getV('cfg-posterHeading'); appData.general.posterCaption = getV('cfg-posterCaption');
                 appData.about.tag = getV('cfg-aboutTag'); appData.about.title = getV('cfg-aboutTitle'); appData.about.desc = getV('cfg-aboutDesc'); appData.about.block1Title = getV('cfg-aboutBlock1Title'); appData.about.block1Text = getV('cfg-aboutBlock1Text'); appData.about.block1Img = getV('cfg-aboutBlock1Img'); appData.about.block2Title = getV('cfg-aboutBlock2Title'); appData.about.block2Text = getV('cfg-aboutBlock2Text'); appData.about.fileUrl = getV('cfg-aboutFileUrl'); appData.about.fileBtnText = getV('cfg-aboutFileBtnText');
                 
+                appData.locations.tag = getV('cfg-locationsTag'); appData.locations.title = getV('cfg-locationsTitle'); appData.locations.desc = getV('cfg-locationsDesc');
+                
+                appData.locations.list = [];
+                document.querySelectorAll('.location-item').forEach(card => {
+                    appData.locations.list.push({
+                        name: card.querySelector('.l-name')?.value || '',
+                        price: card.querySelector('.l-price')?.value || '',
+                        link: card.querySelector('.l-link')?.value || '',
+                        desc: card.querySelector('.l-desc')?.value || '',
+                        image: card.querySelector('.l-image')?.value || ''
+                    });
+                });
+
                 appData.partners.tag = getV('cfg-partnersTag'); appData.partners.title = getV('cfg-partnersTitle'); appData.partners.desc = getV('cfg-partnersDesc');
                 
                 appData.partners.list = [];
@@ -498,27 +554,4 @@
         function processImageCompressed(e, targetId, maxPx = 500) {
             const f = e.target.files[0]; if (!f) return;
             showStatusToast("Optimisation de l'image...", "info");
-            const r = new FileReader(); r.onload = (evt) => {
-                const img = new Image(); img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    let w = img.width, h = img.height;
-                    if (w > maxPx || h > maxPx) {
-                        if (w > h) { h = Math.round((h * maxPx) / w); w = maxPx; }
-                        else { w = Math.round((w * maxPx) / h); h = maxPx; }
-                    }
-                    canvas.width = w; canvas.height = h; canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                    document.getElementById(targetId).value = canvas.toDataURL('image/jpeg', 0.7);
-                    showStatusToast("Image chargée avec succès !");
-                }; img.src = evt.target.result;
-            }; r.readAsDataURL(f);
-        }
-
-        function showStatusToast(msg, type = "success") {
-            const t = document.getElementById('status-toast'); 
-            document.getElementById('status-message').textContent = msg;
-            t.classList.remove('translate-x-full', 'opacity-0');
-            setTimeout(() => t.classList.add('translate-x-full', 'opacity-0'), 3000);
-        }
-    </script>
-</body>
-</html>
+            const r = new FileReader(); r.onload = (evt
