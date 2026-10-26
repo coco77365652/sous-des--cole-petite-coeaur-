@@ -83,6 +83,7 @@
                     <button type="button" onclick="switchTab('tab-locations')" id="nav-tab-locations" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-key w-4 text-blue-400"></i><span>Locations</span></button>
                     <button type="button" onclick="switchTab('tab-partners')" id="nav-tab-partners" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-handshake w-4 text-teal-400"></i><span>Nos Partenaires</span></button>
                     <button type="button" onclick="switchTab('tab-contact')" id="nav-tab-contact" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-envelope w-4 text-sky-400"></i><span>Nous Contacter</span></button>
+                    <button type="button" onclick="switchTab('tab-generator')" id="nav-tab-generator" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-link w-4 text-amber-300"></i><span>🔗 Générateur de Liens</span></button>
                 </nav>
             </div>
             <div class="pt-6 border-t border-slate-800/80 space-y-2.5">
@@ -258,6 +259,31 @@
                         <div><label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Téléphone</label><input type="text" id="cfg-contactPhone" placeholder="Téléphone" class="w-full px-4 py-3 admin-input rounded-xl text-xs font-medium"></div>
                     </div>
                     <div><label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Adresse</label><input type="text" id="cfg-contactAddress" placeholder="Adresse complète" class="w-full px-4 py-3 admin-input rounded-xl text-xs font-medium"></div>
+                </div>
+            </div>
+
+            <!-- Tab: Link Generator -->
+            <div id="tab-generator" class="tab-content hidden space-y-6">
+                <div class="admin-card rounded-3xl p-6 sm:p-8 space-y-6">
+                    <h3 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-4 flex items-center"><i class="fas fa-link text-amber-500 mr-2.5 text-lg"></i>Générateur de Liens (Supabase Storage)</h3>
+                    <p class="text-xs text-slate-500">Sélectionnez n'importe quel fichier (PDF, image, flyer...) pour l'envoyer dans le cloud et obtenir instantanément un lien propre à copier-coller.</p>
+                    
+                    <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 text-center space-y-4">
+                        <label class="cursor-pointer inline-flex items-center gap-2 px-6 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-2xl shadow-md transition-all">
+                            <i class="fas fa-cloud-arrow-up text-base"></i> Choisir un fichier à uploader
+                            <input type="file" class="hidden" onchange="generatePublicLink(event)">
+                        </label>
+                    </div>
+
+                    <div id="generated-link-box" class="hidden p-5 bg-emerald-50/70 rounded-2xl border border-emerald-200 space-y-3">
+                        <label class="block text-xs font-bold text-emerald-800 uppercase tracking-wider">Lien public généré :</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="generated-url-output" readonly class="w-full px-4 py-3 bg-white border border-emerald-300 rounded-xl text-xs font-mono text-slate-800">
+                            <button type="button" onclick="copyGeneratedLink()" class="px-5 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-sm transition-all shrink-0">
+                                <i class="fas fa-copy mr-1.5"></i> Copier
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -502,6 +528,33 @@
                 console.error(err);
                 showStatusToast("Erreur d'envoi vers Supabase", "error");
             }
+        }
+
+        async function generatePublicLink(e) {
+            const f = e.target.files[0]; if (!f) return;
+            if (!_supabase) { alert("Supabase non connecté"); return; }
+            showStatusToast("Génération du lien en cours...", "info");
+            try {
+                const fileName = `doc_${Date.now()}_${f.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+                const { data, error } = await _supabase.storage.from('uploads').upload(fileName, f);
+                if (error) throw error;
+                const { data: publicURLData } = _supabase.storage.from('uploads').getPublicUrl(fileName);
+                
+                document.getElementById('generated-url-output').value = publicURLData.publicUrl;
+                document.getElementById('generated-link-box').classList.remove('hidden');
+                showStatusToast("Lien généré avec succès !");
+            } catch (err) {
+                console.error(err);
+                showStatusToast("Erreur lors de la génération du lien", "error");
+            }
+        }
+
+        function copyGeneratedLink() {
+            const input = document.getElementById('generated-url-output');
+            input.select();
+            input.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(input.value);
+            showStatusToast("Lien copié dans le presse-papier !");
         }
 
         function compressImageFile(file, maxPx = 800) {
