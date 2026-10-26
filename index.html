@@ -294,7 +294,7 @@
             <div class="space-y-12" id="past-events-container"></div>
         </section>
 
-        <!-- LOCATIONS (NOUVEL ONGLET) -->
+        <!-- LOCATIONS -->
         <section id="locations" class="py-20 lg:py-28 bg-white/70 backdrop-blur-md border-y border-slate-200/60 shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-16">
@@ -489,15 +489,21 @@
             if (document.getElementById('poster-heading')) document.getElementById('poster-heading').textContent = gen.posterHeading || defaultSiteData.general.posterHeading;
             if (document.getElementById('poster-caption')) document.getElementById('poster-caption').textContent = gen.posterCaption || defaultSiteData.general.posterCaption;
 
+            // Mise à jour : Double bouton (Ouvrir dans le navigateur + Option de téléchargement)
             const btnContainer = document.getElementById('poster-buttons-container');
             if (btnContainer) {
                 btnContainer.innerHTML = '';
                 (gen.posterButtons || []).forEach(b => {
                     btnContainer.innerHTML += `
-                        <a href="${b.url || '#'}" target="_blank" download class="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-yellow to-amber-400 hover:from-amber-400 hover:to-brand-yellow text-slate-900 font-title font-bold text-xs px-4 py-3 rounded-xl shadow-md hover:shadow-lg transition-all duration-200">
-                            <i class="fa-solid fa-download"></i>
-                            <span>${b.label || 'Télécharger'}</span>
-                        </a>`;
+                        <div class="flex gap-2 w-full">
+                            <a href="${b.url || '#'}" target="_blank" class="flex-1 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-yellow to-amber-400 hover:from-amber-400 hover:to-brand-yellow text-slate-900 font-title font-bold text-xs px-4 py-3 rounded-xl shadow-md hover:shadow-lg transition-all duration-200">
+                                <i class="fa-solid fa-eye"></i>
+                                <span>${b.label || 'Consulter'}</span>
+                            </a>
+                            <a href="${b.url || '#'}" target="_blank" download title="Télécharger le fichier" class="inline-flex items-center justify-center bg-slate-900/10 hover:bg-slate-900/20 text-slate-900 font-bold text-xs px-3.5 py-3 rounded-xl transition-all">
+                                <i class="fa-solid fa-download"></i>
+                            </a>
+                        </div>`;
                 });
             }
 
