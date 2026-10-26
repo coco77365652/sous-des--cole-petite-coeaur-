@@ -494,9 +494,9 @@
             showStatusToast("Envoi de la photo...", "info");
             try {
                 const fileName = `album_${Date.now()}_${f.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
-                const { data, error } = await _supabase.storage.from('uploads').upload(fileName, f);
+                const { data, error } = await _supabase.storage.from('téléchargements').upload(fileName, f);
                 if (error) throw error;
-                const { data: publicURLData } = _supabase.storage.from('uploads').getPublicUrl(fileName);
+                const { data: publicURLData } = _supabase.storage.from('téléchargements').getPublicUrl(fileName);
                 const fileUrl = publicURLData.publicUrl;
 
                 if (!appData.pastEvents[index].photos) appData.pastEvents[index].photos = [];
@@ -519,9 +519,9 @@
                     fileToUpload = await compressImageFile(f, 800);
                 }
                 const fileName = `${Date.now()}_${f.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
-                const { data, error } = await _supabase.storage.from('uploads').upload(fileName, fileToUpload);
+                const { data, error } = await _supabase.storage.from('téléchargements').upload(fileName, fileToUpload);
                 if (error) throw error;
-                const { data: publicURLData } = _supabase.storage.from('uploads').getPublicUrl(fileName);
+                const { data: publicURLData } = _supabase.storage.from('téléchargements').getPublicUrl(fileName);
                 document.getElementById(targetId).value = publicURLData.publicUrl;
                 showStatusToast("Fichier en ligne avec succès !");
             } catch (err) {
@@ -536,9 +536,9 @@
             showStatusToast("Génération du lien en cours...", "info");
             try {
                 const fileName = `doc_${Date.now()}_${f.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
-                const { data, error } = await _supabase.storage.from('uploads').upload(fileName, f);
+                const { data, error } = await _supabase.storage.from('téléchargements').upload(fileName, f);
                 if (error) throw error;
-                const { data: publicURLData } = _supabase.storage.from('uploads').getPublicUrl(fileName);
+                const { data: publicURLData } = _supabase.storage.from('téléchargements').getPublicUrl(fileName);
                 
                 document.getElementById('generated-url-output').value = publicURLData.publicUrl;
                 document.getElementById('generated-link-box').classList.remove('hidden');
