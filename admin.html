@@ -146,7 +146,7 @@
                         <h4 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">Bloc 2 : Le Mot du Bureau & Statuts</h4>
                         <input type="text" id="cfg-aboutBlock2Title" placeholder="Titre Bloc 2" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs font-bold">
                         <textarea id="cfg-aboutBlock2Text" rows="3" placeholder="Texte du mot du bureau..." class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs"></textarea>
-                        <input type="text" id="cfg-aboutFileBtnText" placeholder="Texte du bouton PDF (ex: Télécharger Statuts)" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs font-medium">
+                        <input type="text" id="cfg-aboutFileBtnText" placeholder="Texte du bouton PDF (ex: Consulter les Statuts)" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs font-medium">
                         <div class="flex gap-3">
                             <input type="text" id="cfg-aboutFileUrl" placeholder="URL ou fichier PDF" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs">
                             <label class="cursor-pointer px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl flex items-center shrink-0 transition-colors">Joindre PDF <input type="file" accept="application/pdf,image/*" class="hidden" onchange="processGenericFile(event, 'cfg-aboutFileUrl')"></label>
@@ -182,7 +182,7 @@
 
                     <div class="p-5 bg-slate-50/70 rounded-2xl border border-slate-200/80 space-y-3">
                         <div class="flex justify-between items-center pb-3 border-b border-slate-200/60">
-                            <h4 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">Boutons de téléchargement sous l'affiche</h4>
+                            <h4 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">Boutons sous l'affiche</h4>
                             <button type="button" onclick="addPosterBtnItem()" class="px-3.5 py-2 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 font-bold text-xs rounded-xl transition-colors">+ Ajouter un bouton</button>
                         </div>
                         <div id="poster-buttons-admin-container" class="space-y-3"></div>
@@ -377,7 +377,7 @@
                         <div class="flex justify-end">
                             <label class="cursor-pointer px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl flex items-center gap-1.5 transition-colors shadow-sm"><i class="fas fa-upload"></i> Charger une photo <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'loc-img-${index}', 500)"></label>
                         </div>
-                    </div>`;
+                    `;
             });
         }
         function addLocationItem() { (appData.locations.list = appData.locations.list || []).push({ name: "Nouvelle Location", price: "", desc: "", image: "", link: "" }); renderLocationsAdmin(); }
@@ -415,7 +415,7 @@
                     </div>`;
             });
         }
-        function addPosterBtnItem() { (appData.general.posterButtons = appData.general.posterButtons || []).push({ label: "Télécharger", url: "" }); renderPosterButtonsAdmin(); }
+        function addPosterBtnItem() { (appData.general.posterButtons = appData.general.posterButtons || []).push({ label: "Consulter", url: "" }); renderPosterButtonsAdmin(); }
 
         function renderUpcomingEvents() {
             const container = document.getElementById('upcoming-events-container'); if (!container) return; container.innerHTML = '';
