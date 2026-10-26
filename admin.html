@@ -110,7 +110,7 @@
                         <div class="flex gap-3">
                             <input type="text" id="cfg-headerIcon" placeholder="fa-heart ou URL" class="w-full px-4 py-3 admin-input rounded-xl text-sm">
                             <label class="cursor-pointer px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl flex items-center shrink-0 shadow-sm transition-colors">
-                                Charger <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-headerIcon', 200)">
+                                Charger <input type="file" accept="image/*" class="hidden" onchange="uploadFileToSupabase(event, 'cfg-headerIcon', true)">
                             </label>
                         </div>
                     </div>
@@ -138,7 +138,7 @@
                         <textarea id="cfg-aboutBlock1Text" rows="3" placeholder="Texte de la mission..." class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs"></textarea>
                         <div class="flex gap-3">
                             <input type="text" id="cfg-aboutBlock1Img" placeholder="URL Image" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs">
-                            <label class="cursor-pointer px-4 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl flex items-center shrink-0 transition-colors">Photo <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-aboutBlock1Img', 600)"></label>
+                            <label class="cursor-pointer px-4 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl flex items-center shrink-0 transition-colors">Photo <input type="file" accept="image/*" class="hidden" onchange="uploadFileToSupabase(event, 'cfg-aboutBlock1Img', true)"></label>
                         </div>
                     </div>
 
@@ -149,7 +149,7 @@
                         <input type="text" id="cfg-aboutFileBtnText" placeholder="Texte du bouton PDF (ex: Consulter les Statuts)" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs font-medium">
                         <div class="flex gap-3">
                             <input type="text" id="cfg-aboutFileUrl" placeholder="URL ou fichier PDF" class="w-full px-3.5 py-2.5 admin-input rounded-xl text-xs">
-                            <label class="cursor-pointer px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl flex items-center shrink-0 transition-colors">Joindre PDF <input type="file" accept="application/pdf,image/*" class="hidden" onchange="processGenericFile(event, 'cfg-aboutFileUrl')"></label>
+                            <label class="cursor-pointer px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl flex items-center shrink-0 transition-colors">Joindre PDF <input type="file" accept="application/pdf,image/*" class="hidden" onchange="uploadFileToSupabase(event, 'cfg-aboutFileUrl', false)"></label>
                         </div>
                     </div>
                 </div>
@@ -164,7 +164,7 @@
                         <h4 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">Logo de l'Association</h4>
                         <div class="flex gap-3">
                             <input type="text" id="cfg-logoImg" placeholder="URL de l'image" class="w-full px-4 py-3 admin-input rounded-xl text-xs font-medium">
-                            <label class="cursor-pointer px-5 py-3 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl flex items-center shrink-0 shadow-sm transition-colors">Changer Logo <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-logoImg', 500)"></label>
+                            <label class="cursor-pointer px-5 py-3 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl flex items-center shrink-0 shadow-sm transition-colors">Changer Logo <input type="file" accept="image/*" class="hidden" onchange="uploadFileToSupabase(event, 'cfg-logoImg', true)"></label>
                         </div>
                     </div>
 
@@ -176,7 +176,7 @@
                         </div>
                         <div class="flex gap-3">
                             <input type="text" id="cfg-posterImg" placeholder="URL de l'image" class="w-full px-4 py-3 admin-input rounded-xl text-xs font-medium">
-                            <label class="cursor-pointer px-5 py-3 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl flex items-center shrink-0 shadow-sm transition-colors">Changer Affiche <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'cfg-posterImg', 700)"></label>
+                            <label class="cursor-pointer px-5 py-3 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl flex items-center shrink-0 shadow-sm transition-colors">Changer Affiche <input type="file" accept="image/*" class="hidden" onchange="uploadFileToSupabase(event, 'cfg-posterImg', true)"></label>
                         </div>
                     </div>
 
@@ -375,9 +375,9 @@
                         </div>
                         <div><label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Description</label><input type="text" value="${l.desc || ''}" class="l-desc w-full px-3.5 py-2.5 admin-input rounded-xl text-xs"></div>
                         <div class="flex justify-end">
-                            <label class="cursor-pointer px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl flex items-center gap-1.5 transition-colors shadow-sm"><i class="fas fa-upload"></i> Charger une photo <input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'loc-img-${index}', 500)"></label>
+                            <label class="cursor-pointer px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl flex items-center gap-1.5 transition-colors shadow-sm"><i class="fas fa-upload"></i> Charger une photo <input type="file" accept="image/*" class="hidden" onchange="uploadFileToSupabase(event, 'loc-img-${index}', true)"></label>
                         </div>
-                    `;
+                    </div>`;
             });
         }
         function addLocationItem() { (appData.locations.list = appData.locations.list || []).push({ name: "Nouvelle Location", price: "", desc: "", image: "", link: "" }); renderLocationsAdmin(); }
@@ -395,7 +395,7 @@
                         <div><label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Description</label><input type="text" value="${p.desc || ''}" class="p-desc w-full px-3.5 py-2.5 admin-input rounded-xl text-xs"></div>
                         <div class="flex gap-3">
                             <input type="text" id="partner-logo-${index}" value="${p.logo || ''}" class="p-logo w-full px-3.5 py-2.5 admin-input rounded-xl text-xs">
-                            <label class="cursor-pointer px-4 py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-semibold text-xs rounded-xl flex items-center shrink-0 transition-colors">Logo<input type="file" accept="image/*" class="hidden" onchange="processImageCompressed(event, 'partner-logo-${index}', 300)"></label>
+                            <label class="cursor-pointer px-4 py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-semibold text-xs rounded-xl flex items-center shrink-0 transition-colors">Logo<input type="file" accept="image/*" class="hidden" onchange="uploadFileToSupabase(event, 'partner-logo-${index}', true)"></label>
                         </div>
                     </div>`;
             });
@@ -453,7 +453,7 @@
                         <div class="pt-3 border-t border-slate-200/60">
                             <div class="flex justify-between items-center mb-3">
                                 <span class="text-xs font-extrabold text-purple-700 uppercase tracking-wider">Photos (${(pev.photos || []).length})</span>
-                                <label class="cursor-pointer px-3.5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 transition-colors shadow-sm">+ Photo <input type="file" accept="image/*" class="hidden" onchange="addPhotoToAlbum(event, ${index})"></label>
+                                <label class="cursor-pointer px-3.5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 transition-colors shadow-sm">+ Photo <input type="file" accept="image/*" class="hidden" onchange="uploadPhotoToAlbumSupabase(event, ${index})"></label>
                             </div>
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">${photosHTML}</div>
                         </div>
@@ -462,23 +462,70 @@
         }
         function addPastEvent() { (appData.pastEvents = appData.pastEvents || []).push({ title: "Album Souvenir", date: "2026", desc: "", photos: [] }); renderPastEvents(); }
 
-        function addPhotoToAlbum(e, index) {
+        async function uploadPhotoToAlbumSupabase(e, index) {
             const f = e.target.files[0]; if (!f) return;
-            showStatusToast("Optimisation de la photo...", "info");
-            const r = new FileReader(); r.onload = (evt) => {
-                const img = new Image(); img.onload = () => {
-                    const canvas = document.createElement('canvas'); const MAX = 650;
-                    let w = img.width, h = img.height; if (w > MAX || h > MAX) {
-                        if (w > h) { h = Math.round((h * MAX) / w); w = MAX; }
-                        else { w = Math.round((w * MAX) / h); h = MAX; }
-                    }
-                    canvas.width = w; canvas.height = h; canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                    if (!appData.pastEvents[index].photos) appData.pastEvents[index].photos = [];
-                    appData.pastEvents[index].photos.push(canvas.toDataURL('image/jpeg', 0.65));
-                    renderPastEvents();
-                    showStatusToast("Photo ajoutée ! Pensez à enregistrer.");
-                }; img.src = evt.target.result;
-            }; r.readAsDataURL(f);
+            if (!_supabase) { alert("Supabase non connecté"); return; }
+            showStatusToast("Envoi de la photo...", "info");
+            try {
+                const fileName = `album_${Date.now()}_${f.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+                const { data, error } = await _supabase.storage.from('uploads').upload(fileName, f);
+                if (error) throw error;
+                const { data: publicURLData } = _supabase.storage.from('uploads').getPublicUrl(fileName);
+                const fileUrl = publicURLData.publicUrl;
+
+                if (!appData.pastEvents[index].photos) appData.pastEvents[index].photos = [];
+                appData.pastEvents[index].photos.push(fileUrl);
+                renderPastEvents();
+                showStatusToast("Photo ajoutée ! Pensez à enregistrer.");
+            } catch (err) {
+                console.error(err);
+                showStatusToast("Erreur lors de l'envoi de la photo", "error");
+            }
+        }
+
+        async function uploadFileToSupabase(e, targetId, isImage = true) {
+            const f = e.target.files[0]; if (!f) return;
+            if (!_supabase) { alert("Supabase non connecté"); return; }
+            showStatusToast("Envoi du fichier...", "info");
+            try {
+                let fileToUpload = f;
+                if (isImage) {
+                    fileToUpload = await compressImageFile(f, 800);
+                }
+                const fileName = `${Date.now()}_${f.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+                const { data, error } = await _supabase.storage.from('uploads').upload(fileName, fileToUpload);
+                if (error) throw error;
+                const { data: publicURLData } = _supabase.storage.from('uploads').getPublicUrl(fileName);
+                document.getElementById(targetId).value = publicURLData.publicUrl;
+                showStatusToast("Fichier en ligne avec succès !");
+            } catch (err) {
+                console.error(err);
+                showStatusToast("Erreur d'envoi vers Supabase", "error");
+            }
+        }
+
+        function compressImageFile(file, maxPx = 800) {
+            return new Promise((resolve) => {
+                const r = new FileReader();
+                r.onload = (evt) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let w = img.width, h = img.height;
+                        if (w > maxPx || h > maxPx) {
+                            if (w > h) { h = Math.round((h * maxPx) / w); w = maxPx; }
+                            else { w = Math.round((w * maxPx) / h); h = maxPx; }
+                        }
+                        canvas.width = w; canvas.height = h;
+                        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                        canvas.toBlob((blob) => {
+                            resolve(new File([blob], file.name, { type: 'image/jpeg' }));
+                        }, 'image/jpeg', 0.8);
+                    };
+                    img.src = evt.target.result;
+                };
+                r.readAsDataURL(file);
+            });
         }
 
         async function globalSaveData() {
@@ -580,25 +627,6 @@
             } catch(e) {
                 appData = Object.assign({}, DEFAULT_DATA);
             }
-        }
-
-        function processGenericFile(e, targetId) { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = (evt) => { document.getElementById(targetId).value = evt.target.result; showStatusToast("Fichier chargé !"); }; r.readAsDataURL(f); }
-        function processImageCompressed(e, targetId, maxPx = 500) {
-            const f = e.target.files[0]; if (!f) return;
-            showStatusToast("Optimisation de l'image...", "info");
-            const r = new FileReader(); r.onload = (evt) => {
-                const img = new Image(); img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    let w = img.width, h = img.height;
-                    if (w > maxPx || h > maxPx) {
-                        if (w > h) { h = Math.round((h * maxPx) / w); w = maxPx; }
-                        else { w = Math.round((w * maxPx) / h); h = maxPx; }
-                    }
-                    canvas.width = w; canvas.height = h; canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                    document.getElementById(targetId).value = canvas.toDataURL('image/jpeg', 0.7);
-                    showStatusToast("Image chargée avec succès !");
-                }; img.src = evt.target.result;
-            }; r.readAsDataURL(f);
         }
 
         function showStatusToast(msg, type = "success") {
