@@ -77,7 +77,7 @@
                 <nav class="mt-6 space-y-1.5">
                     <button type="button" onclick="switchTab('tab-general')" id="nav-tab-general" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-sliders w-4 text-indigo-400"></i><span>Textes Accueil</span></button>
                     <button type="button" onclick="switchTab('tab-about')" id="nav-tab-about" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-users w-4 text-emerald-400"></i><span>Qui sommes-nous ?</span></button>
-                    <button type="button" onclick="switchTab('tab-images')" id="nav-tab-images" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-bullhorn w-4 text-rose-400"></i><span>Affiches & Docs</span></button>
+                    <button type="button" onclick="switchTab('tab-images')" id="nav-tab-images" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-bullhorn w-4 text-rose-400"></i><span>Affiche & Docs</span></button>
                     <button type="button" onclick="switchTab('tab-events')" id="nav-tab-events" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-calendar-alt w-4 text-amber-400"></i><span>Événements</span></button>
                     <button type="button" onclick="switchTab('tab-gallery')" id="nav-tab-gallery" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-images w-4 text-purple-400"></i><span>Galerie Photos</span></button>
                     <button type="button" onclick="switchTab('tab-locations')" id="nav-tab-locations" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"><i class="fas fa-key w-4 text-blue-400"></i><span>Locations</span></button>
@@ -171,45 +171,46 @@
 
                     <!-- Premiere Affiche -->
                     <div class="p-5 bg-slate-50/70 rounded-2xl border border-slate-200/80 space-y-3">
-                        <h4 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">Affiche Principale (1ère Photo)</h4>
+                        <h4 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">Affiche Principale (Affiche 1)</h4>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <input type="text" id="cfg-posterHeading" placeholder="Titre de l'affiche" class="px-3.5 py-2.5 admin-input rounded-xl text-xs font-medium">
                             <input type="text" id="cfg-posterCaption" placeholder="Légende" class="px-3.5 py-2.5 admin-input rounded-xl text-xs font-medium">
                         </div>
                         <div class="flex gap-3">
                             <input type="text" id="cfg-posterImg" placeholder="URL de l'image" class="w-full px-4 py-3 admin-input rounded-xl text-xs font-medium">
-                            <label class="cursor-pointer px-5 py-3 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl flex items-center shrink-0 shadow-sm transition-colors">Changer Affiche 1 <input type="file" accept="image/*" class="hidden" onchange="uploadFileToSupabase(event, 'cfg-posterImg', true)"></label>
+                            <label class="cursor-pointer px-5 py-3 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl flex items-center shrink-0 shadow-sm transition-colors">Changer Affiche <input type="file" accept="image/*" class="hidden" onchange="uploadFileToSupabase(event, 'cfg-posterImg', true)"></label>
                         </div>
                     </div>
 
                     <div class="p-5 bg-slate-50/70 rounded-2xl border border-slate-200/80 space-y-3">
                         <div class="flex justify-between items-center pb-3 border-b border-slate-200/60">
-                            <h4 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">Boutons sous la 1ère affiche</h4>
+                            <h4 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">Boutons sous l'affiche 1</h4>
                             <button type="button" onclick="addPosterBtnItem()" class="px-3.5 py-2 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 font-bold text-xs rounded-xl transition-colors">+ Ajouter un bouton</button>
                         </div>
                         <div id="poster-buttons-admin-container" class="space-y-3"></div>
                     </div>
 
-                    <!-- Seconde Affiche -->
-                    <div class="p-5 bg-slate-50/70 rounded-2xl border border-slate-200/80 space-y-3 pt-6 border-t border-slate-300">
-                        <h4 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider text-indigo-600">Deuxième Affiche (En dessous de la 1ère)</h4>
+                    <!-- Deuxieme Affiche -->
+                    <div class="p-5 bg-slate-50/70 rounded-2xl border border-slate-200/80 space-y-3 pt-6 border-t border-slate-200">
+                        <h4 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">Deuxième Affiche (En dessous)</h4>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <input type="text" id="cfg-poster2Heading" placeholder="Titre de la deuxième affiche" class="px-3.5 py-2.5 admin-input rounded-xl text-xs font-medium">
                             <input type="text" id="cfg-poster2Caption" placeholder="Légende" class="px-3.5 py-2.5 admin-input rounded-xl text-xs font-medium">
                         </div>
                         <div class="flex gap-3">
                             <input type="text" id="cfg-poster2Img" placeholder="URL de l'image" class="w-full px-4 py-3 admin-input rounded-xl text-xs font-medium">
-                            <label class="cursor-pointer px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl flex items-center shrink-0 shadow-sm transition-colors">Changer Affiche 2 <input type="file" accept="image/*" class="hidden" onchange="uploadFileToSupabase(event, 'cfg-poster2Img', true)"></label>
+                            <label class="cursor-pointer px-5 py-3 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl flex items-center shrink-0 shadow-sm transition-colors">Changer Affiche 2 <input type="file" accept="image/*" class="hidden" onchange="uploadFileToSupabase(event, 'cfg-poster2Img', true)"></label>
                         </div>
                     </div>
 
                     <div class="p-5 bg-slate-50/70 rounded-2xl border border-slate-200/80 space-y-3">
                         <div class="flex justify-between items-center pb-3 border-b border-slate-200/60">
-                            <h4 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider text-indigo-600">Boutons sous la deuxième affiche</h4>
+                            <h4 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">Boutons sous la deuxième affiche</h4>
                             <button type="button" onclick="addPoster2BtnItem()" class="px-3.5 py-2 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 font-bold text-xs rounded-xl transition-colors">+ Ajouter un bouton</button>
                         </div>
                         <div id="poster2-buttons-admin-container" class="space-y-3"></div>
                     </div>
+
                 </div>
             </div>
 
@@ -287,8 +288,8 @@
             <!-- Tab: Link Generator -->
             <div id="tab-generator" class="tab-content hidden space-y-6">
                 <div class="admin-card rounded-3xl p-6 sm:p-8 space-y-6">
-                    <h3 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-4 flex items-center"><i class="fas fa-link text-amber-500 mr-2.5 text-lg"></i>Générateur de Liens (Supabase Storage)</h3>
-                    <p class="text-xs text-slate-500">Sélectionnez n'importe quel fichier (PDF, image, flyer...) pour l'envoyer dans le cloud et obtenir instantanément un lien propre à copier-coller.</p>
+                    <h3 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-4 flex items-center"><i class="fas fa-link text-amber-500 mr-2.5 text-lg"></i>Générateur de Liens</h3>
+                    <p class="text-xs text-slate-500">Sélectionnez n'importe quel fichier (PDF, image, flyer...) pour obtenir un lien prêt à copier-coller.</p>
                     
                     <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 text-center space-y-4">
                         <label class="cursor-pointer inline-flex items-center gap-2 px-6 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-2xl shadow-md transition-all">
@@ -527,59 +528,65 @@
         }
         function addPastEvent() { (appData.pastEvents = appData.pastEvents || []).push({ title: "Album Souvenir", date: "2026", desc: "", photos: [] }); renderPastEvents(); }
 
+        // Utilitaire pour convertir un fichier en Base64/DataURL
+        function fileToDataURL(file, compressImg = false, maxPx = 800) {
+            return new Promise((resolve, reject) => {
+                if (compressImg && file.type.startsWith('image/')) {
+                    compressImageFile(file, maxPx).then(compressedFile => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = reject;
+                        reader.readAsDataURL(compressedFile);
+                    }).catch(() => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = reject;
+                        reader.readAsDataURL(file);
+                    });
+                } else {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
         async function uploadPhotoToAlbumSupabase(e, index) {
             const f = e.target.files[0]; if (!f) return;
-            if (!_supabase) { alert("Supabase non connecté"); return; }
-            showStatusToast("Envoi de la photo...", "info");
+            showStatusToast("Traitement de la photo...", "info");
             try {
-                const fileName = `album_${Date.now()}_${f.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
-                const { data, error } = await _supabase.storage.from('documents').upload(fileName, f);
-                if (error) throw error;
-                const { data: publicURLData } = _supabase.storage.from('documents').getPublicUrl(fileName);
-                const fileUrl = publicURLData.publicUrl;
-
+                const fileUrl = await fileToDataURL(f, true, 800);
                 if (!appData.pastEvents[index].photos) appData.pastEvents[index].photos = [];
                 appData.pastEvents[index].photos.push(fileUrl);
                 renderPastEvents();
                 showStatusToast("Photo ajoutée ! Pensez à enregistrer.");
             } catch (err) {
                 console.error(err);
-                showStatusToast("Erreur lors de l'envoi de la photo", "error");
+                showStatusToast("Erreur lors de l'ajout de la photo", "error");
             }
         }
 
         async function uploadFileToSupabase(e, targetId, isImage = true) {
             const f = e.target.files[0]; if (!f) return;
-            if (!_supabase) { alert("Supabase non connecté"); return; }
-            showStatusToast("Envoi du fichier...", "info");
+            showStatusToast("Traitement du fichier...", "info");
             try {
-                let fileToUpload = f;
-                if (isImage) {
-                    fileToUpload = await compressImageFile(f, 800);
-                }
-                const fileName = `${Date.now()}_${f.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
-                const { data, error } = await _supabase.storage.from('documents').upload(fileName, fileToUpload);
-                if (error) throw error;
-                const { data: publicURLData } = _supabase.storage.from('documents').getPublicUrl(fileName);
-                document.getElementById(targetId).value = publicURLData.publicUrl;
-                showStatusToast("Fichier en ligne avec succès !");
+                const fileUrl = await fileToDataURL(f, isImage, 800);
+                const targetEl = document.getElementById(targetId);
+                if (targetEl) targetEl.value = fileUrl;
+                showStatusToast("Fichier chargé avec succès !");
             } catch (err) {
                 console.error(err);
-                showStatusToast("Erreur d'envoi vers Supabase", "error");
+                showStatusToast("Erreur lors du traitement du fichier", "error");
             }
         }
 
         async function generatePublicLink(e) {
             const f = e.target.files[0]; if (!f) return;
-            if (!_supabase) { alert("Supabase non connecté"); return; }
             showStatusToast("Génération du lien en cours...", "info");
             try {
-                const fileName = `doc_${Date.now()}_${f.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
-                const { data, error } = await _supabase.storage.from('documents').upload(fileName, f);
-                if (error) throw error;
-                const { data: publicURLData } = _supabase.storage.from('documents').getPublicUrl(fileName);
-                
-                document.getElementById('generated-url-output').value = publicURLData.publicUrl;
+                const fileUrl = await fileToDataURL(f, false);
+                document.getElementById('generated-url-output').value = fileUrl;
                 document.getElementById('generated-link-box').classList.remove('hidden');
                 showStatusToast("Lien généré avec succès !");
             } catch (err) {
@@ -624,11 +631,9 @@
             const btn = document.getElementById('save-btn'); btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Enregistrement...';
             try {
                 const getV = (id) => document.getElementById(id)?.value || '';
-                appData.general.assocName = getV('cfg-siteName'); appData.general.assocSub = getV('cfg-siteLocation'); appData.general.headerIcon = getV('cfg-headerIcon'); appData.general.locationTag = getV('cfg-locationTag'); appData.general.heroTitle = getV('cfg-heroTitle'); appData.general.heroDesc = getV('cfg-heroDesc'); appData.general.logoImg = getV('cfg-logoImg'); 
-                
-                appData.general.posterImg = getV('cfg-posterImg'); appData.general.posterHeading = getV('cfg-posterHeading'); appData.general.posterCaption = getV('cfg-posterCaption');
+                appData.general.assocName = getV('cfg-siteName'); appData.general.assocSub = getV('cfg-siteLocation'); appData.general.headerIcon = getV('cfg-headerIcon'); appData.general.locationTag = getV('cfg-locationTag'); appData.general.heroTitle = getV('cfg-heroTitle'); appData.general.heroDesc = getV('cfg-heroDesc'); appData.general.logoImg = getV('cfg-logoImg'); appData.general.posterImg = getV('cfg-posterImg'); appData.general.posterHeading = getV('cfg-posterHeading'); appData.general.posterCaption = getV('cfg-posterCaption');
                 appData.general.poster2Img = getV('cfg-poster2Img'); appData.general.poster2Heading = getV('cfg-poster2Heading'); appData.general.poster2Caption = getV('cfg-poster2Caption');
-                
+
                 appData.about.tag = getV('cfg-aboutTag'); appData.about.title = getV('cfg-aboutTitle'); appData.about.desc = getV('cfg-aboutDesc'); appData.about.block1Title = getV('cfg-aboutBlock1Title'); appData.about.block1Text = getV('cfg-aboutBlock1Text'); appData.about.block1Img = getV('cfg-aboutBlock1Img'); appData.about.block2Title = getV('cfg-aboutBlock2Title'); appData.about.block2Text = getV('cfg-aboutBlock2Text'); appData.about.fileUrl = getV('cfg-aboutFileUrl'); appData.about.fileBtnText = getV('cfg-aboutFileBtnText');
                 
                 appData.locations.tag = getV('cfg-locationsTag'); appData.locations.title = getV('cfg-locationsTitle'); appData.locations.desc = getV('cfg-locationsDesc');
@@ -699,7 +704,9 @@
                 localStorage.setItem('sou_app_data', serialized);
 
                 if (_supabase) {
-                    await _supabase.from('site_content').upsert({ id: 1, content: appData });
+                    try {
+                        await _supabase.from('site_content').upsert({ id: 1, content: appData });
+                    } catch(e){}
                 }
 
                 showStatusToast("Modifications enregistrées !");
