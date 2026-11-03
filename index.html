@@ -214,17 +214,31 @@
                         <div id="hero-description" class="text-base sm:text-lg text-sky-100 font-light leading-relaxed max-w-xl mx-auto drop-shadow-sm"></div>
                     </div>
 
-                    <div class="flex justify-center lg:justify-end">
-                        <div class="p-5 max-w-xs w-full text-center glass-dark rounded-3xl shadow-2xl transform rotate-1 hover:rotate-0 transition-all duration-300 hover:scale-105 border border-white/20">
+                    <div class="flex flex-col items-center lg:items-end justify-center gap-6">
+                        <!-- Première Affiche -->
+                        <div id="poster1-box" class="p-5 max-w-xs w-full text-center glass-dark rounded-3xl shadow-2xl transform rotate-1 hover:rotate-0 transition-all duration-300 hover:scale-105 border border-white/20">
                             <h3 class="font-title font-bold text-white text-lg mb-3 flex items-center justify-center gap-2 drop-shadow-md">
                                 <i class="fa-solid fa-bullhorn text-brand-yellow text-xl"></i>
                                 <span id="poster-heading">À l'Affiche !</span>
                             </h3>
-                            <div class="overflow-hidden cursor-pointer group rounded-2xl aspect-[4/5] bg-white/90 shadow-2xl flex items-center justify-center p-2 border border-white/40 hover:border-brand-yellow transition-colors" onclick="openLightbox(document.getElementById('poster-img').src, 'Affiche')">
+                            <div class="overflow-hidden cursor-pointer group rounded-2xl aspect-[4/5] bg-white/90 shadow-2xl flex items-center justify-center p-2 border border-white/40 hover:border-brand-yellow transition-colors" onclick="openLightbox(document.getElementById('poster-img').src, 'Affiche 1')">
                                 <img id="poster-img" src="" alt="Affiche" class="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform duration-500">
                             </div>
                             <p id="poster-caption" class="text-xs text-sky-200 mt-3 font-medium line-clamp-2"></p>
                             <div id="poster-buttons-container" class="mt-4 flex flex-col gap-2"></div>
+                        </div>
+
+                        <!-- Deuxième Affiche -->
+                        <div id="poster2-box" class="p-5 max-w-xs w-full text-center glass-dark rounded-3xl shadow-2xl transform -rotate-1 hover:rotate-0 transition-all duration-300 hover:scale-105 border border-white/20 hidden">
+                            <h3 class="font-title font-bold text-white text-lg mb-3 flex items-center justify-center gap-2 drop-shadow-md">
+                                <i class="fa-solid fa-bullhorn text-brand-yellow text-xl"></i>
+                                <span id="poster2-heading">Deuxième Affiche</span>
+                            </h3>
+                            <div class="overflow-hidden cursor-pointer group rounded-2xl aspect-[4/5] bg-white/90 shadow-2xl flex items-center justify-center p-2 border border-white/40 hover:border-brand-yellow transition-colors" onclick="openLightbox(document.getElementById('poster2-img').src, 'Affiche 2')">
+                                <img id="poster2-img" src="" alt="Deuxième Affiche" class="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform duration-500">
+                            </div>
+                            <p id="poster2-caption" class="text-xs text-sky-200 mt-3 font-medium line-clamp-2"></p>
+                            <div id="poster2-buttons-container" class="mt-4 flex flex-col gap-2"></div>
                         </div>
                     </div>
 
@@ -393,7 +407,11 @@
                 posterImg: "", 
                 posterHeading: "À l'Affiche !", 
                 posterCaption: "Événement à ne pas manquer !", 
-                posterButtons: [] 
+                posterButtons: [],
+                poster2Img: "",
+                poster2Heading: "Deuxième Affiche",
+                poster2Caption: "",
+                poster2Buttons: []
             },
             about: { 
                 tag: "Présentation", 
@@ -476,20 +494,21 @@
                 }
             }
 
+            // Première Affiche
             const posterImg = document.getElementById('poster-img');
-            if (posterImg) {
+            const poster1Box = document.getElementById('poster1-box');
+            if (posterImg && poster1Box) {
                 if (gen.posterImg && gen.posterImg.trim() !== '') {
                     posterImg.src = gen.posterImg;
-                    posterImg.parentElement.parentElement.style.display = 'block';
+                    poster1Box.style.display = 'block';
                 } else {
-                    posterImg.parentElement.parentElement.style.display = 'none';
+                    poster1Box.style.display = 'none';
                 }
             }
 
             if (document.getElementById('poster-heading')) document.getElementById('poster-heading').textContent = gen.posterHeading || defaultSiteData.general.posterHeading;
             if (document.getElementById('poster-caption')) document.getElementById('poster-caption').textContent = gen.posterCaption || defaultSiteData.general.posterCaption;
 
-            // Double bouton : Ouvrir dans le navigateur proprement + Option de téléchargement
             const btnContainer = document.getElementById('poster-buttons-container');
             if (btnContainer) {
                 btnContainer.innerHTML = '';
@@ -507,6 +526,39 @@
                 });
             }
 
+            // Deuxième Affiche
+            const poster2Img = document.getElementById('poster2-img');
+            const poster2Box = document.getElementById('poster2-box');
+            if (poster2Img && poster2Box) {
+                if (gen.poster2Img && gen.poster2Img.trim() !== '') {
+                    poster2Img.src = gen.poster2Img;
+                    poster2Box.classList.remove('hidden');
+                } else {
+                    poster2Box.classList.add('hidden');
+                }
+            }
+
+            if (document.getElementById('poster2-heading')) document.getElementById('poster2-heading').textContent = gen.poster2Heading || "Deuxième Affiche";
+            if (document.getElementById('poster2-caption')) document.getElementById('poster2-caption').textContent = gen.poster2Caption || "";
+
+            const btn2Container = document.getElementById('poster2-buttons-container');
+            if (btn2Container) {
+                btn2Container.innerHTML = '';
+                (gen.poster2Buttons || []).forEach(b => {
+                    btn2Container.innerHTML += `
+                        <div class="flex gap-2 w-full">
+                            <a href="${b.url || '#'}" target="_blank" class="flex-1 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-yellow to-amber-400 hover:from-amber-400 hover:to-brand-yellow text-slate-900 font-title font-bold text-xs px-4 py-3 rounded-xl shadow-md hover:shadow-lg transition-all duration-200">
+                                <i class="fa-solid fa-eye"></i>
+                                <span>${b.label || 'Consulter'}</span>
+                            </a>
+                            <a href="${b.url || '#'}" target="_blank" download title="Télécharger le fichier" class="inline-flex items-center justify-center bg-slate-900/10 hover:bg-slate-900/20 text-slate-900 font-bold text-xs px-3.5 py-3 rounded-xl transition-all">
+                                <i class="fa-solid fa-download"></i>
+                            </a>
+                        </div>`;
+                });
+            }
+
+            // About
             if (document.getElementById('about-tag')) document.getElementById('about-tag').textContent = ab.tag || defaultSiteData.about.tag;
             if (document.getElementById('about-title')) document.getElementById('about-title').textContent = ab.title || defaultSiteData.about.title;
             if (document.getElementById('about-desc')) document.getElementById('about-desc').textContent = ab.desc || defaultSiteData.about.desc;
