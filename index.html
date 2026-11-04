@@ -90,6 +90,12 @@
         #modal-lightbox {
             transition: opacity 0.3s ease-in-out;
         }
+
+        /* Style pour le zoom sur l'image de la lightbox */
+        .zoom-active {
+            cursor: zoom-out !important;
+            transform: scale(1.8) !important;
+        }
     </style>
 </head>
 <body class="antialiased flex flex-col min-h-screen relative selection:bg-brand-yellow selection:text-gray-900">
@@ -334,16 +340,17 @@
         </div>
     </footer>
 
-    <!-- LIGHTBOX MODAL -->
-    <div id="modal-lightbox" class="fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-xl flex flex-col items-center justify-center p-4 transition-all duration-300 opacity-0" onclick="closeLightbox()">
-        <button onclick="closeLightbox()" class="absolute top-6 right-6 z-10 bg-white/15 hover:bg-brand-red text-white text-sm font-bold px-6 py-3 rounded-full shadow-2xl border border-white/20 flex items-center gap-2 cursor-pointer transition-all hover:scale-105">
+    <!-- LIGHTBOX MODAL (AVEC ZOOM) -->
+    <div id="modal-lightbox" class="fixed inset-0 z-50 hidden bg-slate-950/90 backdrop-blur-xl flex flex-col items-center justify-center p-4 transition-all duration-300 opacity-0 overflow-auto" onclick="closeLightbox()">
+        <button onclick="closeLightbox()" class="absolute top-6 right-6 z-10 bg-white/20 hover:bg-brand-red text-white text-sm font-bold px-6 py-3 rounded-full shadow-2xl border border-white/30 flex items-center gap-2 cursor-pointer transition-all hover:scale-105">
             <i class="fa-solid fa-xmark text-lg"></i> <span>Fermer</span>
         </button>
-        <div class="relative max-w-4xl w-full max-h-[85vh] flex flex-col items-center justify-center p-2" onclick="event.stopPropagation()">
-            <div class="bg-white p-3 rounded-3xl shadow-2xl flex items-center justify-center border border-white/40 max-h-[75vh]">
-                <img id="lightbox-img" src="" alt="Enlarged" loading="lazy" class="max-h-[70vh] w-auto max-w-full rounded-2xl object-contain shadow-md">
+        <div class="relative max-w-5xl w-full max-h-[90vh] flex flex-col items-center justify-center p-2" onclick="event.stopPropagation()">
+            <div class="bg-white/10 p-3 rounded-3xl shadow-2xl flex items-center justify-center border border-white/20 max-h-[80vh] overflow-hidden">
+                <img id="lightbox-img" src="" alt="Agrandie" loading="lazy" class="max-h-[75vh] w-auto max-w-full rounded-2xl object-contain shadow-md cursor-zoom-in transition-transform duration-300" onclick="toggleZoomImage(this)">
             </div>
             <p id="lightbox-caption" class="text-white font-bold text-center mt-4 text-sm sm:text-base bg-white/10 backdrop-blur-md px-6 py-2.5 rounded-full border border-white/20 shadow-lg max-w-xl"></p>
+            <p class="text-xs text-slate-300 mt-2 text-center"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Cliquez sur l'image pour zoomer/dézoomer</p>
         </div>
     </div>
 
@@ -376,7 +383,7 @@
                 title: "Qui sommes-nous ?", 
                 desc: "Une équipe dynamique de parents bénévoles dédiée à l'épanouissement des enfants de notre école.", 
                 block1Title: "Notre Mission", 
-                block1Text: "Organiser des manifestations festives pour financer les matériel pédagogique, sorties et activités scolaires.", 
+                block1Text: "Organiser des manifestations festives pour financer le matériel pédagogique, sorties et activités scolaires.", 
                 block1Img: "", 
                 block2Title: "Le Mot du Bureau", 
                 block2Text: "Merci à l'ensemble des parents, enseignants et partenaires pour votre confiance et soutien continus !", 
@@ -413,7 +420,7 @@
             if (headerBox) {
                 const iconVal = gen.headerIcon || 'fa-heart';
                 if (iconVal.startsWith('http') || iconVal.startsWith('data:image')) {
-                    headerBox.innerHTML = `<img src="${iconVal}" loading="eager" class="w-full h-full object-cover rounded-xl">`;
+                    headerBox.innerHTML = `<img src="${iconVal}" loading="eager" class="w-full h-full object-cover rounded-xl cursor-pointer" onclick="openLightbox('${iconVal}', 'Logo En-tête')">`;
                 } else {
                     const cleanClass = iconVal.replace(/^fa-solid\s+/, '');
                     headerBox.innerHTML = `<i id="header-icon" class="fa-solid ${cleanClass} text-brand-red drop-shadow-sm"></i>`;
@@ -513,7 +520,7 @@
                 fileBox.classList.remove('hidden');
             } else { fileBox.classList.add('hidden'); }
 
-            // Locations Rendering
+            // Locations Rendering (AFfICHAGE EN GRAND SANS LIGHTBOX)
             if (document.getElementById('locations-tag')) document.getElementById('locations-tag').textContent = loc.tag || defaultSiteData.locations.tag;
             if (document.getElementById('locations-title')) document.getElementById('locations-title').textContent = loc.title || defaultSiteData.locations.title;
             if (document.getElementById('locations-desc')) document.getElementById('locations-desc').textContent = loc.desc || defaultSiteData.locations.desc;
@@ -528,16 +535,16 @@
                     document.getElementById('locations').style.display = 'block';
                     locs.forEach(l => {
                         locationsContainer.innerHTML += `
-                            <div class="glass-card rounded-3xl p-6 shadow-glass border border-white/80 flex flex-col items-center text-center justify-between hover:shadow-glass-hover hover:-translate-y-1 transition-all duration-300 group">
+                            <div class="glass-card rounded-3xl p-6 sm:p-8 shadow-glass border border-white/80 flex flex-col items-center text-center justify-between hover:shadow-glass-hover hover:-translate-y-1 transition-all duration-300 group">
                                 <div class="w-full flex flex-col items-center">
-                                    <div class="w-full h-48 rounded-2xl bg-slate-50 p-2 border border-slate-100 flex items-center justify-center mb-4 overflow-hidden shadow-inner group-hover:scale-[1.02] transition-transform">
+                                    <div class="w-full h-80 sm:h-96 rounded-2xl bg-slate-50 p-2 border border-slate-200/80 flex items-center justify-center mb-6 overflow-hidden shadow-md group-hover:scale-[1.02] transition-transform">
                                         <img src="${l.image || ''}" alt="${l.name || ''}" loading="lazy" class="w-full h-full object-cover rounded-xl">
                                     </div>
-                                    <h3 class="font-bold text-xl text-slate-900 mb-2">${l.name || ''}</h3>
-                                    ${l.price ? `<span class="bg-blue-100/80 text-blue-900 font-bold text-xs px-3 py-1 rounded-full mb-3">${l.price}</span>` : ''}
-                                    <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">${l.desc || ''}</p>
+                                    <h3 class="font-bold text-2xl text-slate-900 mb-2">${l.name || ''}</h3>
+                                    ${l.price ? `<span class="bg-blue-100/90 text-blue-900 font-bold text-sm px-4 py-1.5 rounded-full mb-4 inline-block shadow-sm">${l.price}</span>` : ''}
+                                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed">${l.desc || ''}</p>
                                 </div>
-                                ${l.link ? `<a href="${l.link}" target="_blank" class="mt-5 w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-blue to-sky-500 text-white font-bold text-xs px-4 py-3 rounded-xl shadow-md transition-all"><span>Réserver / En savoir plus</span> <i class="fa-solid fa-arrow-right text-[10px]"></i></a>` : ''}
+                                ${l.link ? `<a href="${l.link}" target="_blank" class="mt-6 w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-blue to-sky-500 hover:from-sky-500 hover:to-brand-blue text-white font-bold text-sm px-5 py-3.5 rounded-2xl shadow-md transition-all"><span>Réserver / En savoir plus</span> <i class="fa-solid fa-arrow-right text-xs"></i></a>` : ''}
                             </div>`;
                     });
                 }
@@ -560,7 +567,7 @@
                         partnersContainer.innerHTML += `
                             <div class="glass-card rounded-3xl p-6 shadow-glass border border-white/80 flex flex-col items-center text-center justify-between hover:shadow-glass-hover hover:-translate-y-1 transition-all duration-300 group">
                                 <div class="w-full flex flex-col items-center">
-                                    <div class="w-24 h-24 rounded-2xl bg-slate-50 p-3 border border-slate-100 flex items-center justify-center mb-4 overflow-hidden shadow-inner group-hover:scale-105 transition-transform">
+                                    <div class="w-24 h-24 rounded-2xl bg-slate-50 p-3 border border-slate-100 flex items-center justify-center mb-4 overflow-hidden shadow-inner group-hover:scale-105 transition-transform cursor-pointer" onclick="openLightbox('${p.logo || ''}', '${(p.name || '').replace(/'/g, "\\'")}')">
                                         <img src="${p.logo || ''}" alt="${p.name || ''}" loading="lazy" class="max-w-full max-h-full object-contain">
                                     </div>
                                     <h3 class="font-bold text-lg text-slate-900 mb-2">${p.name || ''}</h3>
@@ -642,7 +649,6 @@
         }
 
         async function loadAndSyncData() {
-            // Affichage rapide immédiat depuis la mémoire cache locale
             const rawData = localStorage.getItem('sou_petit_coeur_data') || localStorage.getItem('sou_app_data');
             if (rawData) {
                 try {
@@ -651,7 +657,6 @@
                 } catch(e) {}
             }
 
-            // Mise à jour synchrone / en arrière-plan depuis Supabase
             try {
                 const { data } = await _supabase.from('site_content').select('content').eq('id', 1).single();
                 if (data && data.content) {
@@ -666,19 +671,28 @@
             loadAndSyncData();
         });
 
+        // Fonction d'ouverture de la Lightbox
         function openLightbox(imgUrl, caption) { 
             if (!imgUrl) return; 
             const modal = document.getElementById('modal-lightbox');
-            document.getElementById('lightbox-img').src = imgUrl; 
+            const imgEl = document.getElementById('lightbox-img');
+            imgEl.src = imgUrl; 
+            imgEl.classList.remove('zoom-active'); // Réinitialise le zoom
             document.getElementById('lightbox-caption').textContent = caption || ''; 
             modal.classList.remove('hidden'); 
             setTimeout(() => modal.classList.remove('opacity-0'), 10);
         }
 
+        // Fonction de fermeture de la Lightbox
         function closeLightbox() { 
             const modal = document.getElementById('modal-lightbox');
             modal.classList.add('opacity-0');
             setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        // Fonction pour basculer le zoom sur l'image dans la lightbox
+        function toggleZoomImage(img) {
+            img.classList.toggle('zoom-active');
         }
     </script>
 </body>
